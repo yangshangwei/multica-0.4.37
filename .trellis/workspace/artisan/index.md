@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 192
+- **Total Sessions**: 193
 - **Last Active**: 2026-11-23
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~681 | Active |
+| `journal-4.md` | ~721 | Active |
 | `journal-3.md` | ~1928 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
@@ -32,6 +32,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 193 | 2026-11-23 | 提交剩余通知与市场改动，保留历史计划 | `2d8fa836e`, `914c1bf77`, `95c8b12dc`, `9bca2c02e` | `codex/cross-workspace-collaboration` |
 | 192 | 2026-11-23 | 侧栏常用图标：本地提交与任务归档 | `76c61f95dbbd` | `codex/cross-workspace-collaboration` |
 | 191 | 2026-11-23 | 折叠侧栏保留常用图标（方案 A，未提交） | - | `codex/cross-workspace-collaboration` |
 | 190 | 2026-11-23 | 项目欢迎页：注册激活案例与智能体分配 | `7d8a027e0` | `codex/cross-workspace-collaboration` |

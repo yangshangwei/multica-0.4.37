@@ -679,3 +679,43 @@ Source/spec commit `00aaf3f5e`; acceptance-evidence commit `9eced3cc1`; archive 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 193: 提交剩余通知与市场改动，保留历史计划
+<!-- trellis-session: v=2 fp=8e9bfa29377d7a0a -->
+
+**Date**: 2026-11-23
+**Task**: 提交剩余通知与市场改动，保留历史计划
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按用户要求提交并推送此前保留的通知整行点击修复、桌面模板返回测试、历史 PAY-241 计划和 Next 生成声明。实际原生测试发现并修复紧凑示例及滚动位置恢复问题，相关代码、测试与规范分组本地提交。
+
+### Main Changes
+
+- 通知行复用既有 rowLink；标题与读、归档、重试操作隔离 click/auxclick，保留精确目的地和显式写入。
+- 模板示例通过现有页面 memento 恢复展开状态，目录仅在活动且就绪后恢复位置；保留原生完整旅程断言。
+- 三份 PAY-241 文档保留当时数字，标明历史日期并修复 10 个归档引用；生成声明只记录生产 route-types 路径。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `2d8fa836e` | fix(notifications): make the complete row open its exact target |
+| `914c1bf77` | docs(plans): preserve the dated PAY-241 continuation evidence |
+| `95c8b12dc` | chore(web): keep generated route types aligned with production builds |
+| `9bca2c02e` | fix(marketplace): restore compact examples before catalog scroll |
+
+### Testing
+
+- [OK] 112 个相关单元测试、Views/Web/Desktop typecheck 和定向 lint 通过；未新增依赖或全局存储。
+- [OK] 生产通知 Web/Electron 2 条、原生市场 1 条、生产 Web 市场 2 条全部通过，零跳过或重试。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 完成当前分支普通推送并核对远端；截图、日志与其他验收产物保留本地。
