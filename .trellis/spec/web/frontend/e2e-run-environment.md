@@ -20,6 +20,12 @@ over the default Windows limit; deleting those records or skipping the native
 jobs is not a checkout fix. `agent-critical-path-workflow.test.mjs` checks the
 initialization ordering for installer and native/runtime verification jobs.
 
+Listener discovery first uses `lsof -sTCP:LISTEN`. If that returns no PID and
+Linux `ss` is available, query `ss -H -ltnp "sport = :<port>"` for the actual
+listener. Some lsof versions omit Next's renamed server process. Discovery is
+not ownership: the existing launcher/process ancestry checks still apply, and
+an unknown listener must never be adopted or killed based only on an HTTP 200.
+
 `playwright.config.ts` starts no servers — "they must be running already". `baseURL`
 resolves from `PLAYWRIGHT_BASE_URL`, then `FRONTEND_ORIGIN`, then
 `http://localhost:3000`. Whatever listens on that port decides the suite's verdict,

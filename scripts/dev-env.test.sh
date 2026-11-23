@@ -71,6 +71,24 @@ EOF
 
 out="$tmp_dir/out"
 
+# Linux lsof can miss a renamed next-server listener. Socket discovery must
+# still produce the actual PID, while component ownership remains separate.
+socket_probe="$tmp_dir/socket-probe.sh"
+cat > "$socket_probe" <<'EOF'
+set -euo pipefail
+source "$1"
+mode=$2
+lsof() { [ "$mode" = lsof ] && printf '456\n'; }
+ss() {
+  [ "$*" = '-H -ltnp sport = :13071' ] || return 8
+  [ "$mode" != empty ] && printf 'LISTEN 0 511 *:13071 *:* users:(("next-server",pid=789,fd=19))\n'
+}
+port_listener_pid 13071
+EOF
+[ "$(bash "$socket_probe" "$root_dir/scripts/dev-env.sh" lsof)" = 456 ] || fail "lsof PID changed"
+[ "$(bash "$socket_probe" "$root_dir/scripts/dev-env.sh" socket)" = 789 ] || fail "socket listener was missed after lsof returned no PID"
+[ -z "$(bash "$socket_probe" "$root_dir/scripts/dev-env.sh" empty)" ] || fail "empty port gained an invented PID"
+
 # ---------------------------------------------------------------------------
 # An empty registry is a normal state, not an error.
 # ---------------------------------------------------------------------------
