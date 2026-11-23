@@ -812,6 +812,7 @@ start_web_locked() {
     if curl -sf --max-time 15 "http://localhost:${FRONTEND_PORT}" >/dev/null 2>&1; then
       listener="$(port_listener_pid "$FRONTEND_PORT")"
       if ! listener_belongs_to_component web "$FRONTEND_PORT"; then
+        info "Web ownership mismatch: launcher=$(component_pid web || true), listener=${listener:-none}, listener-group=$(process_group_id "${listener:-0}"), listener-parent=$(parent_process_id "${listener:-0}")."
         stop_component web
         die "Web on :$FRONTEND_PORT is not owned by this environment."
       fi

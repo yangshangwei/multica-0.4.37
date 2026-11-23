@@ -237,7 +237,7 @@ func (h *HostExecutor) prepareGit(ctx context.Context, temp, work string, lifecy
 		}
 	}
 	command := func(args ...string) *exec.Cmd {
-		fixed := []string{"-c", "protocol.allow=never", "-c", "protocol.file.allow=always", "-c", "core.hooksPath=" + os.DevNull,
+		fixed := []string{"-c", "protocol.allow=never", "-c", "protocol.file.allow=always", "-c", "core.longpaths=true", "-c", "core.hooksPath=" + os.DevNull,
 			"-c", "core.attributesfile=" + os.DevNull, "-c", "core.fsmonitor=false", "-c", "gc.auto=0", "-c", "maintenance.auto=false", "-c", "transfer.fsckObjects=true"}
 		cmd := lifecycle.CommandContext(ctx, agent.LaunchInfo{Provider: "git", Kind: agent.LaunchKindPreparation}, g.Executable, append(fixed, args...)...)
 		cmd.Dir, cmd.Env, cmd.Stderr, cmd.WaitDelay = temp, env, io.Discard, time.Second

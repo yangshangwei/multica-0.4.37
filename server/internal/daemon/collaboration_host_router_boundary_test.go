@@ -10,6 +10,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -76,7 +77,8 @@ func TestCollaborationHostHarnessGitUsesExistingConfigValidation(t *testing.T) {
 	if err != nil || config.Git != nil {
 		t.Fatalf("default Git changed: %+v %v", config, err)
 	}
-	input.Git = &collaborationrun.HostGitConfig{Executable: "/owned/git", BundleFile: "/owned/source.bundle", BundleDigest: strings.Repeat("a", 64), SizeBytes: 128, ObjectFormat: "sha1", CommitOID: strings.Repeat("b", 40)}
+	owned := t.TempDir()
+	input.Git = &collaborationrun.HostGitConfig{Executable: filepath.Join(owned, "git"), BundleFile: filepath.Join(owned, "source.bundle"), BundleDigest: strings.Repeat("a", 64), SizeBytes: 128, ObjectFormat: "sha1", CommitOID: strings.Repeat("b", 40)}
 	config, err = input.hostConfiguration()
 	if err != nil || config.Git == nil || *config.Git != *input.Git {
 		t.Fatalf("Git input not forwarded before registration: %+v %v", config, err)
@@ -96,7 +98,7 @@ func TestCollaborationHostHarnessGitUsesExistingConfigValidation(t *testing.T) {
 			copy.SizeBytes = 0
 		}
 		invalid := collaborationHostRouterInput{Git: &copy}
-		if _, err := invalid.hostConfiguration(); err == nil || strings.Contains(err.Error(), "/owned/") {
+		if _, err := invalid.hostConfiguration(); err == nil || strings.Contains(err.Error(), owned) {
 			t.Fatalf("%s did not safely refuse: %v", kind, err)
 		}
 	}

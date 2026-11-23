@@ -142,6 +142,11 @@ func TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback(t *testing.
 			if err := protocol.SealCollaborationPreparation(h.claim.Preparation); err != nil {
 				t.Fatal(err)
 			}
+			// Initialize the private root before fixture-created descendants so
+			// Windows inherits the production ACL rather than the temp-root ACL.
+			if err := h.runner.Host.Probe(t.Context()); err != nil {
+				t.Fatal(err)
+			}
 			seedHostResume(t, h.hostRunFixture)
 			key, err := hostSessionKey(h.claim)
 			if err != nil {
