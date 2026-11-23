@@ -4,6 +4,9 @@ import { nativeScreenshot } from "./fixtures/collaboration-native";
 
 test("Electron MCP welcome retains real creation and reachable manual examples in a narrow pane", async ({ native }, info) => {
   const { page, desktop } = native;
+  const resources = page.getByRole("navigation", { name: "Application navigation", exact: true })
+    .getByRole("button", { name: "Resources & connections", exact: true });
+  if (await resources.getAttribute("aria-expanded") !== "true") await resources.click();
   const mcp = page.getByRole("link", { name: "MCP", exact: true }).and(page.locator('[data-sidebar="menu-button"]'));
   await mcp.click();
   const welcome = page.getByRole("region", { name: "Connect your agents to your tools", exact: true });

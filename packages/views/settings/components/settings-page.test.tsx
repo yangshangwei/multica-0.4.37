@@ -88,16 +88,16 @@ describe("SettingsPage nav trigger", () => {
     expect(screen.getByTestId("nav-open").textContent).toBe("true");
   });
 
-  it("hides the trigger only where the nav is a permanent column", () => {
-    // The nav is in-flow from `xl` up, so the control is CSS-gated rather than
-    // unmounted — jsdom applies no stylesheet, hence the class assertion.
+  it("hides the content trigger where the sidebar owns its toggle", () => {
+    // From `lg` up, the sidebar rail owns its toggle. The content trigger is
+    // CSS-gated — jsdom applies no stylesheet, hence the class assertion.
     renderWithI18n(
       <SidebarProvider>
         <SettingsPage />
       </SidebarProvider>,
     );
 
-    expect(trigger().className).toContain("xl:hidden");
+    expect(trigger().className).toContain("lg:hidden");
   });
 
   it("still renders standalone, without a sidebar around it", () => {

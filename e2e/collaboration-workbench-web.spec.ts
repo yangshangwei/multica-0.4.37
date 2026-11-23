@@ -142,7 +142,11 @@ test("Web workbench keeps account scope through comments, uncertain cancellation
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog", { name: "Activity", exact: true })).toBeHidden();
   await page.getByRole("link", { name: "Participating", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Collaboration issues" }).getByRole("link", { name: new RegExp(created.title) })).toBeVisible();
+  const participatingIssue = page.getByRole("region", { name: "Collaboration issues" }).getByRole("link", { name: new RegExp(created.title) });
+  await expect(participatingIssue).toBeVisible();
+  await participatingIssue.click();
+  await expect.poll(() => new URL(page.url()).searchParams.get("issue")).toBe(created.id);
+  await expect(page.getByRole("heading", { name: created.title, exact: true })).toBeVisible();
   const moreActions = page.getByRole("button", { name: "More actions", exact: true });
   if (await moreActions.isVisible()) await revealCollaborationDisclosure(page, "More actions");
   await expect(page.getByRole("button", { name: "Transfer", exact: true, includeHidden: true })

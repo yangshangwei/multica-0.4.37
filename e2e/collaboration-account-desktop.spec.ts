@@ -853,7 +853,9 @@ test("Desktop cold account links work without workspaces and survive a controlle
     overrides.workspaceError = true;
     await native.page.reload();
     await expect(native.page.getByRole("heading", { name: fixture.issues[0].title, exact: true })).toBeVisible();
-    await expect(native.page.getByRole("button", { name: "Refresh", exact: true }).first()).toBeVisible();
+    const retry = native.page.getByRole("navigation", { name: "Application navigation", exact: true })
+      .getByRole("button", { name: "Retry loading workspaces", exact: true });
+    await expect(retry).toBeVisible();
     await native.page.screenshot({ path: testInfo.outputPath("desktop-workspace-list-error.png"), animations: "disabled" });
     expect(native.errors).toEqual([]);
     await Promise.all([native.page.waitForEvent("close", { timeout: 10_000 }), nativeCloseShortcut(app, native.page)]);

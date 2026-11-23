@@ -776,6 +776,21 @@ complete corrected file replay.
 
 ### Business-scenario fixture contracts
 
+- Synthetic namespace control journeys (`collaboration-live-revoke-web` and
+  `collaboration-terminal-reopen-web`) need `creation_enabled=true`,
+  `enabled=true`, and `host_execution_enabled=false` in their owned database.
+  Their signed runtime deliberately has no host capabilities and uses the v2
+  namespace claim/permit protocol. Turning on the host gate makes preparation
+  reject newly promoted groups before the run can be claimed. Keep them in a
+  separate allocation from actual host S1/S2/S3 and compare the recorded live
+  gate with the fixture protocol, not only with a launch script's intended
+  settings. Restore original booleans with a monotonic epoch; never weaken the
+  server's host capability check to admit this simulation.
+- Empty Squad inventories intentionally show the welcome creation link instead
+  of a header creation action. `localized-template-defaults.spec.ts` locates
+  the exact localized link and its `/<slug>/squads/new` destination. Preserve
+  localized roles, restaffing reuse and all-or-nothing collision assertions;
+  do not restore a redundant product button to satisfy a header-only locator.
 - Use `gapWorkflowObservations(issue)` for ordinary `/ai-policy` and `/lifecycle`
   refusal probes. `hostAuthority()` also adds `execution_view_version`, which
   those strict bodies reject with 400 before authorization. Preserve the exact

@@ -293,11 +293,13 @@ function Sidebar({
   className,
   children,
   dir,
+  compactInitialFocus,
   ...props
 }: React.ComponentProps<"div"> & {
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
+  compactInitialFocus?: React.ComponentProps<typeof SheetContent>["initialFocus"]
 }) {
   const { isCompact, state, openMobile, setOpenMobile } = useSidebar()
 
@@ -320,6 +322,7 @@ function Sidebar({
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
+          initialFocus={compactInitialFocus}
           dir={dir}
           data-sidebar="sidebar"
           data-slot="sidebar"

@@ -193,9 +193,13 @@ test("capability market isolates workspace resources, preferences and transient 
 
     // Use the real workspace switcher so the same application instance must
     // rehydrate the prior workspace's preferences without retaining a draft.
-    await page.getByRole("button", { name: new RegExp(`${second.name}$`) }).click();
+    await expect(page.getByRole("button", { name: "Switch workspace", exact: true })).toHaveAttribute("aria-description", second.name);
+    await page.getByRole("button", { name: "Switch workspace", exact: true }).click();
     await page.getByRole("menuitem", { name: new RegExp(`${first.name}$`) }).click();
     await expect(page).toHaveURL(`/${first.slug}/issues`);
+    const firstResources = page.getByRole("navigation", { name: "Application navigation", exact: true })
+      .getByRole("button", { name: "Resources & connections", exact: true });
+    if (await firstResources.getAttribute("aria-expanded") !== "true") await firstResources.click();
     await page.getByRole("link", { name: "Skills", exact: true }).click();
     await expect(page.getByText(firstName, { exact: true })).toBeVisible();
     await expect(page.getByText(secondName, { exact: true })).toHaveCount(0);
@@ -209,11 +213,15 @@ test("capability market isolates workspace resources, preferences and transient 
     await expect(dialog.getByRole("textbox", { name: "Name", exact: true })).not.toHaveValue(draftName);
     await page.keyboard.press("Escape");
     await expect(dialog).toHaveCount(0);
-    await page.getByRole("button", { name: new RegExp(`${first.name}$`) }).click();
+    await expect(page.getByRole("button", { name: "Switch workspace", exact: true })).toHaveAttribute("aria-description", first.name);
+    await page.getByRole("button", { name: "Switch workspace", exact: true }).click();
     await page.getByRole("menuitem", { name: new RegExp(`${second.name}$`) }).click();
     // Wait for the switch to land, as above: until then the sidebar's Skills
     // link still points at the first workspace.
     await expect(page).toHaveURL(`/${second.slug}/issues`);
+    const secondResources = page.getByRole("navigation", { name: "Application navigation", exact: true })
+      .getByRole("button", { name: "Resources & connections", exact: true });
+    if (await secondResources.getAttribute("aria-expanded") !== "true") await secondResources.click();
     await page.getByRole("link", { name: "Skills", exact: true }).click();
     await expect(page.getByText(secondName, { exact: true })).toBeVisible();
     await expect(page.getByText(firstName, { exact: true })).toHaveCount(0);

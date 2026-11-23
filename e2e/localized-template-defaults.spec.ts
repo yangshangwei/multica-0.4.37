@@ -79,7 +79,8 @@ async function openDiscoveryStaffing(page: Page, fixture: LocalizedFixture, loca
     return url.pathname === "/api/squads/templates" && url.searchParams.get("language") === language;
   });
   await page.goto(`/${fixture.slug}/squads`);
-  await page.locator("header").getByRole("link", { name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true }).click();
+  await page.getByRole("link", { name: locale === "zh-Hans" ? "新建AI小队" : "New Squad", exact: true })
+    .and(page.locator(`a[href="/${fixture.slug}/squads/new"]`)).click();
   await expect(page).toHaveURL(`/${fixture.slug}/squads/new`);
   await page.getByRole("link", {
     name: locale === "zh-Hans" ? /^从模板创建/ : /^Create from template/,
@@ -239,7 +240,26 @@ test("specialist skills localize, search and open their official copies without 
       : page.getByRole("tablist", { name: locale === "en" ? "Capability type" : "能力类型", exact: true, includeHidden: true });
     const entryBounds = await entry.boundingBox();
     expect(entryBounds).not.toBeNull();
-    expect(entryBounds!.height).toBeLessThanOrEqual(viewport.width >= 768 ? 64 : 112);
+    if (state === "workspace") {
+      expect(entryBounds!.height).toBeLessThanOrEqual(viewport.width >= 768 ? 64 : 112);
+    } else {
+      // The marketplace welcome uses a two-column category directory.
+      // Check each target instead of assuming the whole tablist is one row.
+      const categoryBounds = await entry.getByRole("tab", { includeHidden: true }).evaluateAll((tabs) => tabs.map((tab) => {
+        const bounds = tab.getBoundingClientRect();
+        return { width: bounds.width, height: bounds.height, left: bounds.left, right: bounds.right, top: bounds.top, bottom: bounds.bottom };
+      }));
+      expect(categoryBounds).toHaveLength(4);
+      for (const bounds of categoryBounds) {
+        expect(bounds.width).toBeGreaterThanOrEqual(44);
+        expect(bounds.height).toBeGreaterThanOrEqual(44);
+        expect(bounds.left).toBeGreaterThanOrEqual(entryBounds!.x - 1);
+        expect(bounds.right).toBeLessThanOrEqual(entryBounds!.x + entryBounds!.width + 1);
+        expect(bounds.top).toBeGreaterThanOrEqual(entryBounds!.y - 1);
+        expect(bounds.bottom).toBeLessThanOrEqual(entryBounds!.y + entryBounds!.height + 1);
+      }
+      visualStates.push({ state, locale, theme, categoryBounds });
+    }
     const openDialog = page.getByRole("dialog");
     if (await openDialog.count()) {
       await expect.poll(async () => {

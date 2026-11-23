@@ -304,9 +304,27 @@ export async function exerciseOfflineHandoff(fixture: OfflineHandoffFixture, cli
   const deniedList = await openCollaborationNotifications(fresh.page, "all");
   await expect(deniedList.getByText("You were removed from this collaboration issue.", { exact: true })).toBeVisible();
   await expect(deniedList.getByRole("link", { name: fixture.title, exact: true })).toHaveCount(0);
+  const deniedReads: { path: string; status: number }[] = [];
+  fresh.page.on("response", (response) => {
+    const path = new URL(response.url()).pathname;
+    if (path === issuePath(fixture) || path === "/api/me/collaboration-notifications") {
+      deniedReads.push({ path: path === issuePath(fixture) ? "issue" : "notifications", status: response.status() });
+    }
+  });
   const archivedDestination = new URL(archived.old_href, fixture.apiUrl);
   await fresh.navigate(archivedDestination.pathname + archivedDestination.search + archivedDestination.hash);
-  await expect(fresh.page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
+  await expect(fresh.page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+  const denial = fresh.page.getByText("You no longer have access to this issue.", { exact: true });
+  await expect(denial).toBeVisible();
+  // Observe the settled denied view across a bounded interval; the canonical
+  // realtime test owns exact subscription counts and access recovery.
+  await denial.evaluate(async (element) => {
+    await new Promise<void>((resolve) => setTimeout(resolve, 1000));
+    if (!element.isConnected) throw new Error("The denied detail was remounted during the stability observation");
+  });
+  await expect(denial).toBeVisible();
+  await expect(fresh.page.getByRole("heading", { name: fixture.title, exact: true })).toHaveCount(0);
+  await expect(fresh.page.getByText("Retained discussion available after offline assignment and notification archive.", { exact: true })).toHaveCount(0);
   expect(await fixture.recipient.client.getWorkspaces()).toEqual([]);
   const final = await issueFor(fixture);
   expect(final.handler.user_id).toBe(fixture.creator.id);
@@ -314,6 +332,7 @@ export async function exerciseOfflineHandoff(fixture: OfflineHandoffFixture, cli
   await fresh.close();
   await source.close();
   return { issue_id: fixture.issueId, creator_id: fixture.creator.id, recipient_id: fixture.recipient.id,
+    archived_denial_reads: deniedReads,
     source_workspace_id: fixture.workspace.id, invite, assignment: assigned, transfer_back: transferBack, archived,
     recipient_login_calls: fixture.recipient.logins, clients_closed_before_send: true, fresh_login_after_send_and_archive: true,
     workbench_snapshots: { after_invite: { creator: invitedSourceLists, recipient: invitedRecipientLists },

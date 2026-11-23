@@ -261,7 +261,8 @@ it("keeps account creation entry usable with zero sources and returns keyboard f
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ ...options, creation_enabled: false, sources: [] })));
   const client = new QueryClient(); clients.push(client);
   const navigation: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
-  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><CollaborationCreationEntry scope={collaborationScope(actor)} /></NavigationProvider></QueryClientProvider>);
+  const onDismiss = vi.fn();
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><CollaborationCreationEntry scope={collaborationScope(actor)} onDismiss={onDismiss} /></NavigationProvider></QueryClientProvider>);
   const trigger = screen.getByRole("button", { name: "New collaboration issue" });
   const user = userEvent.setup();
   await user.click(trigger);
@@ -270,9 +271,15 @@ it("keeps account creation entry usable with zero sources and returns keyboard f
   expect(screen.queryByRole("button", { name: "Create collaboration issue" })).toBeNull();
   await user.keyboard("{Escape}");
   await waitFor(() => expect(trigger).toHaveFocus());
+  expect(onDismiss).toHaveBeenCalledTimes(1);
   await user.click(trigger);
   await user.click(screen.getByRole("button", { name: "Cancel" }));
   await waitFor(() => expect(trigger).toHaveFocus());
+  expect(onDismiss).toHaveBeenCalledTimes(2);
+  await user.click(trigger);
+  await user.click(screen.getByRole("button", { name: "Close" }));
+  await waitFor(() => expect(trigger).toHaveFocus());
+  expect(onDismiss).toHaveBeenCalledTimes(3);
 });
 
 it("opens the existing dialog from a controlled New action and returns focus without a duplicate trigger", async () => {
@@ -281,11 +288,12 @@ it("opens the existing dialog from a controlled New action and returns focus wit
   vi.stubGlobal("fetch", fetch);
   const client = new QueryClient(); clients.push(client);
   const navigation: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
+  const onDismiss = vi.fn();
   function Controlled() {
     const [open, setOpen] = useState(false);
     const trigger = useRef<HTMLButtonElement>(null);
     return <><button type="button" ref={trigger} onClick={() => setOpen(true)}>New</button>
-      <CollaborationCreationEntry scope={collaborationScope(actor)} open={open} onOpenChange={setOpen} hideTrigger returnFocus={trigger} />
+      <CollaborationCreationEntry scope={collaborationScope(actor)} open={open} onOpenChange={setOpen} onDismiss={onDismiss} hideTrigger returnFocus={trigger} />
     </>;
   }
   renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><Controlled /></NavigationProvider></QueryClientProvider>);
@@ -297,6 +305,7 @@ it("opens the existing dialog from a controlled New action and returns focus wit
   expect(fetch.mock.calls.every(([url]) => !new URL(String(url)).searchParams.has("source_workspace_id"))).toBe(true);
   await userEvent.keyboard("{Escape}");
   await waitFor(() => expect(trigger).toHaveFocus());
+  expect(onDismiss).toHaveBeenCalledOnce();
 });
 
 it("opens from a sidebar trigger with the current source and restores its keyboard focus", async () => {
@@ -576,13 +585,16 @@ it("cancels with its draft intact and still submits natively by Enter after reop
   }));
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } }); clients.push(client);
   const navigation: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
-  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><CollaborationCreationEntry scope={collaborationScope(actor)} /></NavigationProvider></QueryClientProvider>);
+  const onDismiss = vi.fn();
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><CollaborationCreationEntry scope={collaborationScope(actor)} onDismiss={onDismiss} /></NavigationProvider></QueryClientProvider>);
   const user = userEvent.setup();
   const entry = screen.getByRole("button", { name: "New collaboration issue" });
   await user.click(entry);
   await user.type(await screen.findByLabelText("Title"), "Retain the cancelled draft");
   await user.click(screen.getByRole("button", { name: "Cancel" }));
   await waitFor(() => expect(entry).toHaveFocus());
+  expect(onDismiss).toHaveBeenCalledOnce();
+  onDismiss.mockClear();
   expect(writes).toEqual([]);
   await user.click(entry);
   const title = await screen.findByLabelText("Title");
@@ -590,6 +602,7 @@ it("cancels with its draft intact and still submits natively by Enter after reop
   await user.click(title);
   await user.keyboard("{Enter}");
   await waitFor(() => expect(navigation.push).toHaveBeenCalledOnce());
+  expect(onDismiss).not.toHaveBeenCalled();
   expect(writes).toEqual([expect.objectContaining({ title: "Retain the cancelled draft" })]);
 });
 

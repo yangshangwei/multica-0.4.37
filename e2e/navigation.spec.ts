@@ -29,7 +29,7 @@ test.describe("Navigation", () => {
   });
 
   test("settings page loads via sidebar", async ({ page }) => {
-    await page.getByRole("link", { name: "Workspace settings", exact: true }).click();
+    await page.getByRole("navigation", { name: "Application navigation", exact: true }).getByRole("link", { name: "Settings", exact: true }).click();
     await expect(page).toHaveURL(/\/settings/, { timeout: ROUTE_CHANGE_TIMEOUT });
     await waitForPageText(page, "Settings");
 

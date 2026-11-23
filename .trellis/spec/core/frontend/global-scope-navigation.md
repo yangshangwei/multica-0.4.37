@@ -244,6 +244,28 @@ reduce that scroller to zero height at 200% native zoom. Native popup focus and 
 must be verified in production browser/actual Electron, not inferred from CSS
 class assertions.
 
+### Creation dialog ownership across breakpoints
+
+Keep `CollaborationCreationEntry` as a stable sibling of `Sidebar` inside
+`AppSidebar`. `Sidebar` replaces its desktop subtree with a compact `Sheet`;
+placing a dialog inside that subtree unmounts its form when a closed Sheet takes
+over. Keep the API/viewer/workspace key and existing creation state under their
+current owners so a scope change still resets the form deliberately.
+
+Starting collaboration closes the compact navigation before opening the dialog.
+Explicit cancellation, Escape or Close use `CollaborationCreationEntry.onDismiss`
+to reopen compact navigation; successful creation closes and navigates without
+that callback. `Sidebar.compactInitialFocus` forwards the native Sheet initial
+focus option, allowing the reopened navigation to focus its actual Start
+collaboration control. Consume the restoration request once and clear it on
+route/scope changes; ordinary navigation openings keep the primitive default.
+
+Verify desktop-to-compact and compact-to-desktop transitions preserve the same
+draft instance and accessible dialog, explicit dismissal restores keyboard
+focus, and successful creation leaves navigation closed. Use the actual
+Sidebar/Sheet in the component regression and preserve the original
+Web/Electron sidebar and recipient-picker browser assertions.
+
 ## 4. Validation / Error Matrix
 
 | Condition | Behavior |

@@ -9,6 +9,11 @@ live API acceptance and Electron Main are separate verification surfaces.
 
 ## 2. Signatures
 
+- `CollaborationCreationEntry.onDismiss?()` runs once for explicit Escape,
+  Cancel or Close in controlled and uncontrolled usage. Successful creation
+  closes through the existing `onOpenChange` path and navigates without invoking
+  dismissal. Owners can restore their launching surface without reopening it
+  after submission; callers that omit the callback retain their behavior.
 - `CollaborationCreationPanel({ scope, sourceWorkspaceId?, onCreated, constrained?, onCancel? })`; standalone defaults remain unconstrained without a Dialog dependency.
 - `CollaborationAccountPicker.compact?` uses the shared pill chrome;
   `triggerLabel?` changes its visible single-selection caption only. Full account

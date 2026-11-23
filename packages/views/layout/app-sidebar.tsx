@@ -567,16 +567,26 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
   const [collaborationOpen, setCollaborationOpen] = useState(false);
   const collaborationTrigger = useRef<HTMLButtonElement>(null);
   const moreTrigger = useRef<HTMLButtonElement>(null);
+  const fullPath = currentPath(navigation);
+  const creationKey = `${scope.apiScope}:${scope.userId}:${workspace?.id ?? "account"}`;
+  const restoreCollaborationFocus = useRef(false);
   const collaborationReturnFocus = React.useMemo(() => ({
     get current() { return iconCollapsed ? moreTrigger.current : collaborationTrigger.current; },
   }), [iconCollapsed]);
   const onStartCollaboration = () => {
     useModalStore.getState().cancelWorkspaceIssueCreation();
+    restoreCollaborationFocus.current = false;
+    setOpenMobile(false);
     setCollaborationOpen(true);
   };
+  const onCollaborationDismiss = () => {
+    if (isCompact) {
+      restoreCollaborationFocus.current = true;
+      setOpenMobile(true);
+    }
+  };
   const overflow = { onStartCollaboration, moreTrigger, collaborationOpen };
-  const fullPath = currentPath(navigation);
-  useEffect(() => { setOpenMobile(false); }, [fullPath, setOpenMobile]);
+  useEffect(() => { restoreCollaborationFocus.current = false; setOpenMobile(false); }, [fullPath, creationKey, setOpenMobile]);
   useEffect(() => { void useSidebarPreferences.persist.rehydrate(); }, []);
   const scroll = useRef<HTMLDivElement>(null);
   const fade = useScrollFade(scroll, 24);
@@ -608,7 +618,11 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
       </SidebarGroupContent></SidebarGroup>}
     </div>
   </>;
-  return <Sidebar variant="inset" collapsible="icon">
+  return <><Sidebar variant="inset" collapsible="icon" compactInitialFocus={() => {
+    const requested = restoreCollaborationFocus.current;
+    restoreCollaborationFocus.current = false;
+    return requested ? collaborationTrigger.current : true;
+  }}>
     {topSlot}
     <nav aria-label={t(($) => $.global_navigation.label)} className="flex min-h-0 flex-1 flex-col" onClickCapture={(event) => {
       if (event.target instanceof Element && event.target.closest("a[href]")) {
@@ -632,9 +646,11 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
         </div>
       </SidebarFooter>
     </nav>
-    <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${workspace?.id ?? "account"}`} scope={scope} sourceWorkspaceId={workspace?.id} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={collaborationReturnFocus} />
     <SidebarRail />
-  </Sidebar>;
+  </Sidebar>
+    {/* Sidebar replaces its children when it switches to a compact Sheet. */}
+    <CollaborationCreationEntry key={creationKey} scope={scope} sourceWorkspaceId={workspace?.id} open={collaborationOpen} onOpenChange={setCollaborationOpen} onDismiss={onCollaborationDismiss} hideTrigger returnFocus={collaborationReturnFocus} />
+  </>;
 }
 
 function SidebarAccountMenu() {

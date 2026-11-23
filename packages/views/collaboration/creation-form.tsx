@@ -26,9 +26,11 @@ import { PillButton } from "../common/pill-button";
 import { recoverFocus } from "./focus";
 import { CollaborationCreationDescriptionAssist } from "./creation-description-assist";
 
-export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTrigger, open: controlledOpen, onOpenChange, hideTrigger = false, returnFocus }: {
+export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTrigger, open: controlledOpen, onOpenChange, onDismiss, hideTrigger = false, returnFocus }: {
   scope: CollaborationScope; sourceWorkspaceId?: string; renderTrigger?: (label: string) => ReactElement;
   open?: boolean; onOpenChange?: (open: boolean) => void; hideTrigger?: boolean;
+  /** Explicit dismissal only; successful creation closes and navigates separately. */
+  onDismiss?: () => void;
   returnFocus?: { current: HTMLElement | null };
 }) {
   const { t } = useT("collaboration");
@@ -36,6 +38,7 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTri
   const [localOpen, setLocalOpen] = useState(false);
   const open = controlledOpen ?? localOpen;
   const setOpen = onOpenChange ?? setLocalOpen;
+  const dismiss = () => { setOpen(false); onDismiss?.(); };
   const [size, setSize] = useState<"default" | "assist" | "expanded">("default");
   const explicitlySized = useRef(false);
   useEffect(() => {
@@ -56,7 +59,8 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTri
   </div>;
   return <Dialog open={open} onOpenChange={(next) => {
     if (next) { setSize("default"); explicitlySized.current = false; }
-    setOpen(next);
+    if (next) setOpen(true);
+    else dismiss();
   }}>
     {!hideTrigger && <DialogTrigger ref={trigger} render={renderTrigger?.(t(($) => $.creation.entry)) ??
       <Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground">{t(($) => $.creation.entry)}</Button>} />}
@@ -79,7 +83,7 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTri
       <DialogTitle className="sr-only">{t(($) => $.creation.title)}</DialogTitle>
       <DialogDescription className="sr-only">{t(($) => $.creation.help)}</DialogDescription>
       {open && <CollaborationCreationPanel scope={scope} sourceWorkspaceId={sourceWorkspaceId} constrained headerActions={headerActions}
-        onNeedsSpace={() => { if (!explicitlySized.current) setSize((current) => current === "default" ? "assist" : current); }} onCancel={() => setOpen(false)} onCreated={(issue) => {
+        onNeedsSpace={() => { if (!explicitlySized.current) setSize((current) => current === "default" ? "assist" : current); }} onCancel={dismiss} onCreated={(issue) => {
         setOpen(false); navigation.push(accountPath({ view: "participating", issueId: issue.id }));
       }} />}
     </DialogContent>

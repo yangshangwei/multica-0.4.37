@@ -4,6 +4,9 @@ import { nativeScreenshot } from "./fixtures/collaboration-native";
 
 test("Electron skills welcome keeps creation and the carousel reachable in a narrow pane", async ({ native }, info) => {
   const { page, desktop, workspace } = native;
+  const resources = page.getByRole("navigation", { name: "Application navigation", exact: true })
+    .getByRole("button", { name: "Resources & connections", exact: true });
+  if (await resources.getAttribute("aria-expanded") !== "true") await resources.click();
   const skills = page.getByRole("link", { name: "Skills", exact: true }).and(page.locator('[data-sidebar="menu-button"]'));
   await skills.click();
   const welcome = page.getByRole("region", { name: "Turn your team’s know-how into a skill", exact: true });

@@ -1,8 +1,10 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { cloneElement } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { cloneElement, useState } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@multica/core/api";
+import { SidebarProvider, useSidebar } from "@multica/ui/components/ui/sidebar";
+import { Dialog, DialogContent, DialogTitle } from "@multica/ui/components/ui/dialog";
 import { useSidebarPreferences } from "@multica/core/navigation";
 import type { Workspace } from "@multica/core/types";
 import { useModalStore } from "@multica/core/modals";
@@ -19,7 +21,7 @@ const { authState, eventCallbacks, invalidateQueries, logout, queryLog, iteratio
   appForeground: { current: true },
   iterationCapability: { current: { supported: true, manual: true, enabled: false } },
   triageSettings: { current: { enabled: false } },
-  sidebarState: { setOpenMobile: vi.fn(), state: "expanded" as "expanded" | "collapsed", isCompact: false, hasExternalTrigger: false },
+  sidebarState: { real: false, setOpenMobile: vi.fn(), state: "expanded" as "expanded" | "collapsed", isCompact: false, hasExternalTrigger: false },
   menuState: { real: false },
   chatSessions: { current: [] as { id?: string; unread_count?: number }[] },
   chatStore: { current: { activeSessionId: null as string | null, isOpen: false } },
@@ -59,7 +61,17 @@ vi.mock("@multica/core/realtime", () => ({
   useWSReconnect: (callback: () => void) => { eventCallbacks.set("reconnect", callback); },
 }));
 vi.mock("../collaboration/creation-form", () => ({
-  CollaborationCreationEntry: ({ sourceWorkspaceId, open }: { sourceWorkspaceId?: string; open?: boolean }) => open ? <div data-testid="collaboration-creation" data-workspace-id={sourceWorkspaceId} /> : null,
+  CollaborationCreationEntry: ({ sourceWorkspaceId, open, onOpenChange, onDismiss, returnFocus }: { sourceWorkspaceId?: string; open?: boolean; onOpenChange?: (open: boolean) => void; onDismiss?: () => void; returnFocus?: { current: HTMLElement | null } }) => {
+    const [draft, setDraft] = useState("");
+    if (!sidebarState.real) return open ? <div data-testid="collaboration-creation" data-workspace-id={sourceWorkspaceId} /> : null;
+    const dismiss = () => { onOpenChange?.(false); onDismiss?.(); };
+    return <Dialog open={open} onOpenChange={(next) => { if (next) onOpenChange?.(true); else dismiss(); }}><DialogContent aria-describedby={undefined} finalFocus={() => returnFocus?.current}>
+      <DialogTitle>Collaboration draft</DialogTitle>
+      <input aria-label="Draft title" value={draft} onChange={(event) => setDraft(event.target.value)} />
+      <button type="button" onClick={dismiss}>Cancel draft</button>
+      <button type="button" onClick={() => { onOpenChange?.(false); navigation.current = { pathname: "/account", search: "view=participating" }; }}>Complete draft</button>
+    </DialogContent></Dialog>;
+  },
 }));
 vi.mock("@dnd-kit/core", () => ({
   DndContext: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -74,8 +86,11 @@ vi.mock("@dnd-kit/sortable", () => ({
   verticalListSortingStrategy: vi.fn(),
 }));
 vi.mock("@dnd-kit/utilities", () => ({ CSS: { Transform: { toString: () => undefined } } }));
-vi.mock("@multica/ui/components/ui/sidebar", () => ({
-  Sidebar: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+vi.mock("@multica/ui/components/ui/sidebar", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/ui/components/ui/sidebar")>();
+  return {
+  ...actual,
+  Sidebar: (props: React.ComponentProps<typeof actual.Sidebar>) => sidebarState.real ? <actual.Sidebar {...props} /> : <>{props.children}</>,
   SidebarContent: ({ children }: { children: React.ReactNode }) => <div data-slot="sidebar-content">{children}</div>,
   SidebarFooter: ({ children }: { children: React.ReactNode }) => <div data-slot="sidebar-footer">{children}</div>,
   SidebarGroup: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -106,8 +121,9 @@ vi.mock("@multica/ui/components/ui/sidebar", () => ({
     onClick?.(event);
     sidebarState.state = sidebarState.state === "expanded" ? "collapsed" : "expanded";
   }}>Toggle sidebar</button>,
-  useSidebar: () => sidebarState,
-}));
+  useSidebar: () => actual.useSidebarSafe() ?? sidebarState,
+  };
+});
 vi.mock("@multica/ui/components/ui/dropdown-menu", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@multica/ui/components/ui/dropdown-menu")>();
   const mocks = {
@@ -290,10 +306,128 @@ beforeEach(() => {
   navigation.current = { pathname: "/acme/issues" };
   navigationPush.mockClear();
   notificationUnread.current = undefined;
+  sidebarState.real = false;
   sidebarState.state = "expanded";
   sidebarState.isCompact = false;
   sidebarState.hasExternalTrigger = false;
   menuState.real = false;
+});
+
+describe("collaboration draft across responsive sidebar branches", () => {
+  const originalMatchMedia = window.matchMedia;
+  const originalWidth = window.innerWidth;
+  const listeners = new Set<{ query: string; change: (event: MediaQueryListEvent) => void }>();
+  let width = 1280;
+  const matches = (query: string) => {
+    const min = /min-width:\s*(\d+)px/.exec(query);
+    const max = /max-width:\s*(\d+)px/.exec(query);
+    return (!min || width >= Number(min[1])) && (!max || width <= Number(max[1]));
+  };
+  const resize = (next: number) => {
+    width = next;
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: next, writable: true });
+    act(() => {
+      for (const { query, change } of listeners) change({ matches: matches(query) } as MediaQueryListEvent);
+    });
+  };
+  function SheetControls() {
+    const { openMobile, setOpenMobile } = useSidebar();
+    return <><button type="button" onClick={() => setOpenMobile(true)}>Open navigation sheet</button>
+      <output data-testid="sheet-open">{String(openMobile)}</output></>;
+  }
+  function shell(workspace: Workspace | null = null) {
+    return <SidebarProvider><SheetControls /><AppSidebar navigationWorkspace={workspace} /></SidebarProvider>;
+  }
+  beforeEach(() => {
+    sidebarState.real = true;
+    navigation.current = { pathname: "/account" };
+    listeners.clear();
+    window.matchMedia = ((query: string) => ({
+      get matches() { return matches(query); }, media: query, onchange: null,
+      addEventListener: (_type: string, change: (event: MediaQueryListEvent) => void) => { listeners.add({ query, change }); },
+      removeEventListener: (_type: string, change: (event: MediaQueryListEvent) => void) => {
+        for (const entry of listeners) if (entry.query === query && entry.change === change) listeners.delete(entry);
+      },
+      addListener: () => {}, removeListener: () => {}, dispatchEvent: () => false,
+    })) as typeof window.matchMedia;
+    resize(1280);
+  });
+  afterEach(() => {
+    window.matchMedia = originalMatchMedia;
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: originalWidth, writable: true });
+    listeners.clear();
+  });
+
+  it("retains the open draft instance when resizing into a closed compact sheet and back", async () => {
+    renderWithI18n(shell());
+    fireEvent.click(screen.getByRole("button", { name: "Start collaboration" }));
+    const input = await screen.findByRole("textbox", { name: "Draft title" });
+    fireEvent.change(input, { target: { value: "Keep this draft" } });
+
+    resize(375);
+    expect(screen.getByTestId("sheet-open")).toHaveTextContent("false");
+    expect(screen.queryByRole("navigation", { name: "Application navigation" })).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Draft title" })).toBe(input);
+    expect(input).toHaveValue("Keep this draft");
+
+    resize(1280);
+    expect(screen.getByRole("textbox", { name: "Draft title" })).toBe(input);
+    expect(input).toHaveValue("Keep this draft");
+  });
+
+  it("retains a draft opened inside the compact sheet across both breakpoint crossings", async () => {
+    resize(375);
+    renderWithI18n(shell());
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation sheet" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Start collaboration" }));
+    const input = await screen.findByRole("textbox", { name: "Draft title" });
+    fireEvent.change(input, { target: { value: "Started on a small screen" } });
+    expect(screen.getByTestId("sheet-open")).toHaveTextContent("false");
+
+    resize(1280);
+    expect(screen.getByRole("textbox", { name: "Draft title" })).toBe(input);
+    expect(input).toHaveValue("Started on a small screen");
+    resize(375);
+    expect(screen.getByRole("textbox", { name: "Draft title" })).toBe(input);
+    expect(input).toHaveValue("Started on a small screen");
+  });
+
+  it("keeps explicit cancellation and workspace-key reset after responsive preservation", async () => {
+    const workspace: Workspace = { id: "ws-2", name: "Other", slug: "other", description: null, context: null,
+      settings: {}, repos: [], issue_prefix: "OTHER", avatar_url: null,
+      created_at: "2026-11-22T00:00:00Z", updated_at: "2026-11-22T00:00:00Z" };
+    const view = renderWithI18n(shell(workspace));
+    fireEvent.click(screen.getByRole("button", { name: "Start collaboration" }));
+    const input = await screen.findByRole("textbox", { name: "Draft title" });
+    fireEvent.change(input, { target: { value: "Workspace-owned draft" } });
+    resize(375);
+    view.rerender(shell({ ...workspace, id: "ws-3", name: "Selected", slug: "selected" }));
+    const replacement = await screen.findByRole("textbox", { name: "Draft title" });
+    expect(replacement).not.toBe(input);
+    expect(replacement).toHaveValue("");
+
+    fireEvent.click(screen.getByRole("button", { name: "Cancel draft" }));
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Collaboration draft" })).not.toBeInTheDocument());
+    expect(screen.getByTestId("sheet-open")).toHaveTextContent("true");
+    await waitFor(() => expect(screen.getByRole("button", { name: "Start collaboration" })).toHaveFocus());
+    resize(1280);
+    expect(screen.queryByRole("dialog", { name: "Collaboration draft" })).not.toBeInTheDocument();
+  });
+
+  it("returns compact Escape focus to navigation but does not reopen it after completion navigates", async () => {
+    resize(375);
+    renderWithI18n(shell());
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation sheet" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Start collaboration" }));
+    await screen.findByRole("textbox", { name: "Draft title" });
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(screen.getByRole("button", { name: "Start collaboration" })).toHaveFocus());
+    fireEvent.click(screen.getByRole("button", { name: "Start collaboration" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Complete draft" }));
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Collaboration draft" })).not.toBeInTheDocument());
+    expect(screen.getByTestId("sheet-open")).toHaveTextContent("false");
+    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Application navigation" })).not.toBeInTheDocument());
+  });
 });
 
 describe("common icon navigation", () => {

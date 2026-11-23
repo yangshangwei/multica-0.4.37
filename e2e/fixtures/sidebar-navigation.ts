@@ -53,6 +53,10 @@ export async function openNewCollaborationIssue(page: Page, options: SidebarOpti
 
 export async function openAccountMenu(page: Page) {
   const navigation = await openSidebarNavigation(page);
-  await navigation.getByRole("button", { name: "Multica", exact: true }).click();
+  const account = navigation.getByTestId("sidebar-footer-row").getByRole("button")
+    .filter({ has: page.locator('[data-slot="avatar"]') });
+  await expect(account).toHaveCount(1);
+  await expect(account).toHaveAccessibleName(/\S/);
+  await account.click();
   await expect(page.getByRole("menuitem", { name: /^(Log out|退出登录)$/ })).toBeVisible();
 }
