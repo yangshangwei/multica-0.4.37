@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   Sidebar,
   SidebarProvider,
+  SidebarTrigger,
   useSidebar,
 } from "@multica/ui/components/ui/sidebar";
 import { renderWithI18n } from "../test/i18n";
@@ -169,6 +170,40 @@ describe("sidebar auto-collapse between lg and xl", () => {
     setWidth(851);
 
     expect(state()).toBe("expanded");
+  });
+
+  it("uses one inset icon width for both the reserved and painted sidebar", () => {
+    const { container } = renderWithI18n(
+      <SidebarProvider defaultOpen={false}>
+        <Sidebar variant="inset" collapsible="icon" />
+      </SidebarProvider>,
+    );
+    const wrapper = container.querySelector<HTMLElement>("[data-slot='sidebar-wrapper']")!;
+    const gap = container.querySelector<HTMLElement>("[data-slot='sidebar-gap']")!;
+    const painted = container.querySelector<HTMLElement>("[data-slot='sidebar-container']")!;
+
+    expect(wrapper.style.getPropertyValue("--sidebar-width-inset-icon")).toBe("64px");
+    for (const element of [gap, painted]) {
+      expect(element).toHaveClass("group-data-[collapsible=icon]:w-(--sidebar-width-inset-icon)");
+    }
+  });
+
+  it("opens a full compact sheet while the large-screen icon state remains collapsed", () => {
+    const { container } = renderWithI18n(
+      <SidebarProvider defaultOpen={false}>
+        <Probe />
+        <SidebarTrigger />
+        <Sidebar variant="inset" collapsible="icon"><span>Full navigation</span></Sidebar>
+      </SidebarProvider>,
+    );
+    setWidth(900);
+    fireEvent.click(container.querySelector("[data-slot='sidebar-trigger']")!);
+
+    expect(state()).toBe("collapsed");
+    expect(screen.getByText("Full navigation")).toBeVisible();
+    expect(container.querySelector("[data-slot='sidebar-container']")).toBeNull();
+    expect(screen.getByText("Full navigation").closest("[data-slot='sidebar']")).toHaveAttribute("data-mobile", "true");
+    expect(screen.getByText("Full navigation").closest("[data-slot='sidebar']")).not.toHaveAttribute("data-collapsible", "icon");
   });
 
   it("never persists the open state, however it changed", () => {

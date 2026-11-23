@@ -8,6 +8,7 @@ import { getCurrentSlug, getCurrentWsId, setCurrentWorkspace } from "@multica/co
 import { useWorkspaceSlug } from "@multica/core/paths";
 import type { Workspace } from "@multica/core/types";
 import AccountLayout from "../app/account/layout";
+import { useSidebar } from "@multica/ui/components/ui/sidebar";
 
 const state = vi.hoisted(() => ({
   sidebar: {
@@ -23,10 +24,11 @@ vi.mock("react-i18next", () => ({ useTranslation: () => ({ t: (selector: (value:
 // This suite owns account layout wiring; shared tests own directory UI behavior.
 vi.mock("@multica/views/layout", () => ({
   AppSidebar: (props: typeof state.sidebar) => {
+    const { hasExternalTrigger } = useSidebar();
     expect(useWorkspaceSlug()).toBeNull();
     expect(getCurrentSlug()).toBeNull();
     expect(getCurrentWsId()).toBeNull();
-    return <aside aria-label="Application navigation">
+    return <aside aria-label="Application navigation" data-external-trigger={hasExternalTrigger}>
       <output data-testid="preview">{props.navigationWorkspace?.slug ?? "none"}</output>
       {props.workspaceListUnavailable && <button onClick={props.onRetryWorkspaces}>Retry workspaces</button>}
     </aside>;
@@ -72,5 +74,15 @@ describe("Web account sidebar layout", () => {
     fireEvent.click(screen.getByRole("button", { name: "Retry workspaces" }));
     expect(state.sidebar.onRetryWorkspaces).toHaveBeenCalledOnce();
     expect(screen.getByRole("button", { name: "Toggle sidebar" })).toBeInTheDocument();
+  });
+
+  it("relies on the shared rail toggle on large screens and reserves the content opener for compact layouts", () => {
+    render(<AccountLayout><PrivateContent>Account content</PrivateContent></AccountLayout>);
+    const sidebar = screen.getByRole("complementary", { name: "Application navigation" });
+    const compactTrigger = screen.getByRole("button", { name: "Toggle sidebar" });
+
+    expect(sidebar).toHaveAttribute("data-external-trigger", "false");
+    expect(compactTrigger.parentElement).toHaveClass("lg:hidden");
+    expect(compactTrigger.parentElement).not.toHaveClass("xl:hidden");
   });
 });

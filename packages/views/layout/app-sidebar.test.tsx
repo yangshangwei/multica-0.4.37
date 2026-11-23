@@ -10,7 +10,7 @@ import { openCreateIssueWithPreference } from "@multica/core/issues/stores/creat
 import { AppSidebar } from "./app-sidebar";
 import { renderWithI18n } from "../test/i18n";
 
-const { authState, eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, navigationPush, notificationUnread, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+const { authState, eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, menuState, navigation, navigationPush, notificationUnread, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
   authState: { user: { id: "user-1", name: "Alex", email: "alex@example.test" }, status: "authenticated" },
   eventCallbacks: new Map<string, () => void>(),
   invalidateQueries: vi.fn(),
@@ -19,7 +19,8 @@ const { authState, eventCallbacks, invalidateQueries, logout, queryLog, iteratio
   appForeground: { current: true },
   iterationCapability: { current: { supported: true, manual: true, enabled: false } },
   triageSettings: { current: { enabled: false } },
-  sidebarState: { setOpenMobile: vi.fn() },
+  sidebarState: { setOpenMobile: vi.fn(), state: "expanded" as "expanded" | "collapsed", isCompact: false, hasExternalTrigger: false },
+  menuState: { real: false },
   chatSessions: { current: [] as { id?: string; unread_count?: number }[] },
   chatStore: { current: { activeSessionId: null as string | null, isOpen: false } },
   detail: { current: { isPending: false, isError: false, data: null as unknown, error: null as unknown } },
@@ -75,8 +76,8 @@ vi.mock("@dnd-kit/sortable", () => ({
 vi.mock("@dnd-kit/utilities", () => ({ CSS: { Transform: { toString: () => undefined } } }));
 vi.mock("@multica/ui/components/ui/sidebar", () => ({
   Sidebar: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  SidebarContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  SidebarFooter: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  SidebarContent: ({ children }: { children: React.ReactNode }) => <div data-slot="sidebar-content">{children}</div>,
+  SidebarFooter: ({ children }: { children: React.ReactNode }) => <div data-slot="sidebar-footer">{children}</div>,
   SidebarGroup: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarGroupContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarGroupLabel: ({ children, render, ...props }: React.ComponentProps<"div"> & { render?: React.ReactElement<React.ComponentProps<"div">> }) => {
@@ -89,27 +90,55 @@ vi.mock("@multica/ui/components/ui/sidebar", () => ({
     children,
     isActive,
     render,
+    tooltip,
     ...props
   }: React.HTMLAttributes<HTMLElement> & {
     isActive?: boolean;
+    tooltip?: string;
     render?: React.ReactElement<React.HTMLAttributes<HTMLElement> & { href?: string }>;
   }) => {
-    const attributes = { ...props, "data-active": isActive ? "true" : undefined, "data-href": render?.props.href };
+    const attributes = { ...props, "data-tooltip": tooltip, "data-active": isActive ? "true" : undefined, "data-href": render?.props.href };
     return render ? cloneElement(render, attributes, children) : <button type="button" {...attributes}>{children}</button>;
   },
   SidebarMenuItem: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarRail: () => null,
-  useSidebar: () => ({ setOpenMobile: sidebarState.setOpenMobile }),
+  SidebarTrigger: ({ onClick, ...props }: React.ComponentProps<"button">) => <button type="button" data-slot="sidebar-trigger" {...props} onClick={(event) => {
+    onClick?.(event);
+    sidebarState.state = sidebarState.state === "expanded" ? "collapsed" : "expanded";
+  }}>Toggle sidebar</button>,
+  useSidebar: () => sidebarState,
 }));
-vi.mock("@multica/ui/components/ui/dropdown-menu", () => ({
+vi.mock("@multica/ui/components/ui/dropdown-menu", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/ui/components/ui/dropdown-menu")>();
+  const mocks = {
   DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  DropdownMenuContent: ({ children, "data-sidebar-more": more }: { children: React.ReactNode; "data-sidebar-more"?: string }) => <div data-sidebar-more={more}>{children}</div>,
   DropdownMenuGroup: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  DropdownMenuItem: ({ children, onClick, disabled, "aria-description": ariaDescription }: React.ComponentProps<"button">) => <button type="button" onClick={onClick} disabled={disabled} aria-description={ariaDescription}>{children}</button>,
+  DropdownMenuItem: ({ children, onClick, disabled, render, "aria-description": ariaDescription, "aria-current": current }: React.HTMLAttributes<HTMLElement> & { disabled?: boolean; render?: React.ReactElement<React.HTMLAttributes<HTMLElement>> }) => render ? cloneElement(render, { onClick, role: "menuitem", "aria-description": ariaDescription, "aria-current": current }, children) : <button type="button" onClick={onClick} disabled={disabled} aria-description={ariaDescription}>{children}</button>,
   DropdownMenuLabel: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   DropdownMenuSeparator: () => null,
-  DropdownMenuTrigger: ({ render, children, ...props }: React.ComponentProps<"button"> & { render?: React.ReactNode }) => render ? <>{render}</> : <button type="button" {...props}>{children}</button>,
-}));
+  DropdownMenuTrigger: ({ render, children, ...props }: React.ComponentProps<"button"> & { render?: React.ReactElement }) => render ? <>{render}</> : <button type="button" {...props}>{children}</button>,
+  DropdownMenuSub: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  DropdownMenuSubContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  DropdownMenuSubTrigger: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
+  };
+  function choose<Props extends object>(Mock: React.ComponentType<Props>, Real: React.ComponentType<Props>) {
+    function SelectedMenuPrimitive(props: Props) { return menuState.real ? <Real {...props} /> : <Mock {...props} />; }
+    return SelectedMenuPrimitive;
+  }
+  return {
+    DropdownMenu: choose(mocks.DropdownMenu, actual.DropdownMenu),
+    DropdownMenuContent: choose(mocks.DropdownMenuContent, actual.DropdownMenuContent),
+    DropdownMenuGroup: choose(mocks.DropdownMenuGroup, actual.DropdownMenuGroup),
+    DropdownMenuItem: choose(mocks.DropdownMenuItem, actual.DropdownMenuItem),
+    DropdownMenuLabel: choose(mocks.DropdownMenuLabel, actual.DropdownMenuLabel),
+    DropdownMenuSeparator: choose(mocks.DropdownMenuSeparator, actual.DropdownMenuSeparator),
+    DropdownMenuTrigger: choose(mocks.DropdownMenuTrigger, actual.DropdownMenuTrigger),
+    DropdownMenuSub: choose(mocks.DropdownMenuSub, actual.DropdownMenuSub),
+    DropdownMenuSubContent: choose(mocks.DropdownMenuSubContent, actual.DropdownMenuSubContent),
+    DropdownMenuSubTrigger: choose(mocks.DropdownMenuSubTrigger, actual.DropdownMenuSubTrigger),
+  };
+});
 vi.mock("@multica/ui/components/ui/collapsible", async () => {
   const { createContext, useContext } = await import("react");
   const Context = createContext<{ open: boolean; onOpenChange: (open: boolean) => void }>({ open: false, onOpenChange: (_open: boolean) => undefined });
@@ -122,19 +151,33 @@ vi.mock("@multica/ui/components/ui/collapsible", async () => {
     },
   };
 });
-vi.mock("@multica/ui/components/ui/tooltip", () => ({
+vi.mock("@multica/ui/components/ui/tooltip", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/ui/components/ui/tooltip")>();
+  const mocks = {
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipTrigger: ({ children, render, ...props }: React.ComponentProps<"button"> & { render?: React.ReactElement<React.ComponentProps<"button">> }) => render ? cloneElement(render, props, children) : <button type="button" {...props}>{children}</button>,
-}));
+  };
+  function choose<Props extends object>(Mock: React.ComponentType<Props>, Real: React.ComponentType<Props>) {
+    function SelectedTooltipPrimitive(props: Props) { return menuState.real ? <Real {...props} /> : <Mock {...props} />; }
+    return SelectedTooltipPrimitive;
+  }
+  return {
+    Tooltip: choose(mocks.Tooltip, actual.Tooltip),
+    TooltipContent: choose(mocks.TooltipContent, actual.TooltipContent),
+    TooltipTrigger: choose(mocks.TooltipTrigger, actual.TooltipTrigger),
+  };
+});
 vi.mock("../common/use-app-foreground", () => ({
   useAppForeground: () => appForeground.current,
 }));
-vi.mock("./help-launcher", () => ({
-  HelpLauncher: ({ versionSlot }: { versionSlot?: React.ReactNode }) => (
-    <div data-testid="help-launcher">{versionSlot}</div>
-  ),
-}));
+vi.mock("./help-launcher", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./help-launcher")>();
+  return {
+    HelpLauncher: (props: React.ComponentProps<typeof actual.HelpLauncher>) => menuState.real
+      ? <actual.HelpLauncher {...props} /> : <div data-testid="help-launcher">{props?.versionSlot}</div>,
+  };
+});
 vi.mock("../auth", () => ({ useLogout: () => logout }));
 vi.mock("../issues/components/status-icon", () => ({ StatusIcon: () => <span /> }));
 vi.mock("../navigation", async (importOriginal) => ({
@@ -247,6 +290,170 @@ beforeEach(() => {
   navigation.current = { pathname: "/acme/issues" };
   navigationPush.mockClear();
   notificationUnread.current = undefined;
+  sidebarState.state = "expanded";
+  sidebarState.isCompact = false;
+  sidebarState.hasExternalTrigger = false;
+  menuState.real = false;
+});
+
+describe("common icon navigation", () => {
+  beforeEach(() => {
+    sidebarState.state = "collapsed";
+    detail.current = { isPending: false, isError: false, data: null, error: null };
+    chatSessions.current = [];
+    chatStore.current = { activeSessionId: null, isOpen: false };
+    appForeground.current = true;
+    summary.current = [];
+    workspaces.current = [];
+  });
+
+  it("keeps common actions independent of collapsed directory preferences", () => {
+    useSidebarPreferences.setState({ groups: { work: false, ai: false, resources: false, collaboration: false } });
+    renderWithI18n(<AppSidebar />);
+    for (const [name, href] of [["My Issues", "/acme/my-issues"], ["Workspace issues", "/acme/issues"], ["Projects", "/acme/projects"], ["Agents", "/acme/agents"]]) {
+      const link = screen.getByRole("link", { name });
+      expect(link).toHaveAttribute("href", href);
+      expect(link).toHaveAttribute("data-tooltip", `${name} · Acme`);
+    }
+    expect(screen.getByRole("link", { name: "Workspace issues" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("button", { name: "More navigation" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Expand collaboration navigation" })).not.toBeInTheDocument();
+    expect(useSidebarPreferences.getState().groups).toEqual({ work: false, ai: false, resources: false, collaboration: false });
+    fireEvent.click(screen.getByRole("button", { name: "New Issue" }));
+    expect(openCreateIssueWithPreference).toHaveBeenCalledOnce();
+  });
+
+  it("keeps secondary native destinations and capability gates in More", () => {
+    const view = renderWithI18n(<AppSidebar />);
+    for (const [name, href] of [["Inbox", "/acme/inbox"], ["Squads", "/acme/squads"], ["MCP", "/acme/mcp"], ["Analytics", "/acme/usage"], ["Participating", "/account?view=participating"]]) {
+      expect(screen.getByRole("menuitem", { name })).toHaveAttribute("href", href);
+    }
+    expect(screen.queryByRole("menuitem", { name: "Iterations" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("menuitem", { name: "Triage" })).not.toBeInTheDocument();
+    iterationCapability.current = { supported: true, manual: true, enabled: true };
+    triageSettings.current = { enabled: true };
+    view.rerender(<AppSidebar />);
+    expect(screen.getByRole("menuitem", { name: "Iterations" })).toHaveAttribute("href", "/acme/iterations");
+    expect(screen.getByRole("menuitem", { name: "Triage" })).toHaveAttribute("href", "/acme/triage");
+    iterationCapability.current.enabled = false;
+    triageSettings.current.enabled = false;
+  });
+
+  it("keeps positive chat and collaboration unread feedback with stable names", () => {
+    notificationUnread.current = 3;
+    chatSessions.current = [{ id: "chat-1", unread_count: 2 }];
+    const view = renderWithI18n(<AppSidebar />);
+    const notification = screen.getByRole("link", { name: "Collaboration notifications" });
+    expect(notification).toHaveAttribute("href", "/account?view=notifications&filter=unread");
+    expect(notification.querySelector("number-flow-react")).toHaveAttribute("aria-label", "3");
+    expect(screen.getByRole("link", { name: "AI Chat" })).toHaveAccessibleDescription("Acme · 2 unread messages");
+    notificationUnread.current = undefined;
+    view.rerender(<AppSidebar />);
+    expect(screen.getByRole("link", { name: "Collaboration notifications" }).querySelector("number-flow-react")).toBeNull();
+  });
+
+  it("marks More when a secondary destination is current", () => {
+    navigation.current = { pathname: "/acme/mcp" };
+    renderWithI18n(<AppSidebar />);
+    expect(screen.getByRole("button", { name: "More navigation" })).toHaveAttribute("aria-current", "location");
+    expect(screen.getByRole("menuitem", { name: "MCP" })).toHaveAttribute("aria-current", "page");
+  });
+
+  it("keeps full navigation in a compact sheet with parked collapsed desktop state", () => {
+    sidebarState.isCompact = true;
+    renderWithI18n(<AppSidebar />);
+    expect(screen.getByRole("button", { name: "Expand collaboration navigation" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Start collaboration" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "More navigation" })).not.toBeInTheDocument();
+  });
+
+  it("scrolls compact start-work actions with the directory while the footer stays reachable", () => {
+    sidebarState.isCompact = true;
+    renderWithI18n(<AppSidebar />);
+    const create = screen.getByRole("button", { name: "New Issue" });
+    const directory = screen.getByRole("button", { name: "Expand collaboration navigation" });
+    const scrollport = create.closest('[data-slot="sidebar-content"]');
+    expect(scrollport).not.toBeNull();
+    expect(directory.closest('[data-slot="sidebar-content"]')).toBe(scrollport);
+    expect(screen.getByRole("button", { name: "Alex" }).closest('[data-slot="sidebar-content"]')).toBeNull();
+  });
+
+  it("keeps account access and disabled workspace actions with no workspace", () => {
+    navigation.current = { pathname: "/account", search: "view=participating" };
+    queryLog.length = 0;
+    renderWithI18n(<AppSidebar navigationWorkspace={null} />);
+    expect(screen.getByRole("button", { name: "New Issue" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "AI Chat" })).toBeDisabled();
+    expect(screen.getByRole("link", { name: "Collaboration notifications" })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: "Participating" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Projects" })).not.toBeInTheDocument();
+    expect(queryLog.every((key) => key === "workspaces" || key === "invitations")).toBe(true);
+  });
+
+  it("uses the retained collaboration owner when opened from More", () => {
+    const view = renderWithI18n(<AppSidebar />);
+    fireEvent.click(screen.getByRole("button", { name: "Start collaboration" }));
+    expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", "ws-1");
+    sidebarState.state = "expanded";
+    view.rerender(<AppSidebar />);
+    expect(screen.getByTestId("collaboration-creation")).toBeInTheDocument();
+  });
+
+  it("opens resolved pin destinations with native menu navigation and Escape focus", async () => {
+    menuState.real = true;
+    detail.current = { isPending: false, isError: false, data: { identifier: "MUL-123", title: "Keep this pin", status: "todo" }, error: null };
+    renderWithI18n(<AppSidebar />);
+    const more = screen.getByRole("button", { name: "More navigation" });
+    more.focus();
+    await userEvent.keyboard("{Enter}");
+    const pinned = await screen.findByRole("menuitem", { name: "Pinned" });
+    await userEvent.hover(pinned);
+    const pin = await screen.findByRole("menuitem", { name: "Keep this pin" });
+    expect(pin).toHaveAttribute("href", "/acme/issues/issue-1");
+    expect(pin).not.toHaveAttribute("draggable", "true");
+    await userEvent.keyboard("{Escape}{Escape}");
+    expect(more).toHaveFocus();
+  });
+
+  it.each([
+    ["Help", "Help"],
+    ["Alex", "Alex"],
+    ["Toggle sidebar", "Toggle left sidebar"],
+  ])("shows the %s icon name on real keyboard focus", async (action, label) => {
+    menuState.real = true;
+    renderWithI18n(<AppSidebar />);
+    const control = screen.getByRole("button", { name: action });
+    control.focus();
+    await userEvent.tab({ shift: true });
+    await userEvent.tab();
+    expect(control).toHaveFocus();
+    expect(await screen.findByText(label, { selector: '[data-slot="tooltip-content"]' })).toBeVisible();
+    expect(control.querySelector("button")).toBeNull();
+  });
+
+  it("shows Help on hover while the icon rail keeps its original menu action", async () => {
+    menuState.real = true;
+    renderWithI18n(<AppSidebar />);
+    const control = screen.getByRole("button", { name: "Help" });
+    await userEvent.hover(control);
+    expect(await screen.findByText("Help", { selector: '[data-slot="tooltip-content"]' })).toBeVisible();
+    control.focus();
+    await userEvent.keyboard("{Enter}");
+    expect(await screen.findByRole("menuitem", { name: "Feedback" })).toBeVisible();
+  });
+
+  it("preserves the native sidebar trigger slot and click action through its tooltip", async () => {
+    menuState.real = true;
+    const view = renderWithI18n(<AppSidebar />);
+    const trigger = screen.getByRole("button", { name: "Toggle sidebar" });
+    expect(trigger).toHaveAttribute("data-slot", "sidebar-trigger");
+    await userEvent.click(trigger);
+    expect(sidebarState.state).toBe("expanded");
+    view.rerender(<AppSidebar />);
+    expect(screen.queryByRole("button", { name: "More navigation" })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Toggle sidebar" }));
+    expect(sidebarState.state).toBe("collapsed");
+  });
 });
 
 it("offers all three start-work entries directly before the existing directories", () => {

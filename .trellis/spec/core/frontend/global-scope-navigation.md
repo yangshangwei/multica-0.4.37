@@ -11,6 +11,10 @@ must remain available with zero, pending or unavailable workspaces.
 - The shared `AppSidebar` owns the accessible Start work, Collaboration and
   Workspace groups. Platform shells provide workspace-selection callbacks;
   they do not render a separate fixed scope-switch row.
+- `AppSidebar` uses `<Sidebar variant="inset" collapsible="icon">`. Icon
+  presentation is `state === "collapsed" && !isCompact`; compact Sheets always
+  use complete navigation. `SIDEBAR_WIDTH_INSET_ICON` from the generic primitive
+  owns both the painted/reserved 64px width and Desktop's remaining clearance.
 - `AppSidebar({ navigationWorkspace?, onWorkspaceSelect?,
   workspaceListUnavailable?, onRetryWorkspaces?,
   topSlot?, searchSlot?, versionSlot? })` accepts an authoritative directory
@@ -51,7 +55,7 @@ and task links keep explicit path/query/fragment semantics. Group disclosure
 only changes its open state; it never navigates. Do not send a default issue/list
 path to a global resume operation.
 
-Collaboration appears above Workspace in the shared left directory. Its fresh
+In complete navigation, Collaboration appears above Workspace in the shared left directory. Its fresh
 preference is collapsed, presenting a single quiet heading with a neutral Beta
 marker. The whole heading is one native disclosure button: clicking its title,
 Beta marker, unread count, arrow or remaining row space toggles the directory
@@ -79,7 +83,7 @@ localized `aria-description` independently of the floating content. The heading
 has a localized expand/collapse name, one keyboard stop and a coarse-pointer
 target; Enter and Space each toggle it once. Child links own account navigation.
 
-Start work is fixed in the sidebar header above both scope directories. Its
+In complete navigation, Start work is fixed in the sidebar header above both scope directories. Its
 three directly visible controls are New issue, Start collaboration and AI Chat,
 in that order. New issue and Start collaboration use the same neutral sidebar
 menu styling, with no persistent primary fill; hover uses the shared sidebar
@@ -131,7 +135,7 @@ ordinary creation. Without a sidebar workspace, retain the creation panel's
 existing source selection and recovery. Pending creation/upload recovery still
 owns and locks its original source. The ordinary shortcut remains
 workspace-scoped. The controlled collaboration dialog returns focus to the
-visible Start collaboration button. Shared notifications keep the protected account
+visible Start collaboration button, or to More navigation in icon mode. Shared notifications keep the protected account
 Query and original exact links/read/archive flow. Workspace-side realtime owns
 notification invalidation only; the account workbench owns issue subscriptions.
 
@@ -196,9 +200,49 @@ or workspace. Ordinary `replace` calls still use the platform router.
 
 The shared sidebar remains outside the content canvas and owns both scope
 headings. Desktop's toolbar sits in the top 48px with 92px traffic-light
-clearance, no-drag sidebar/history controls and 200px tab clearance when the
-sidebar is hidden. Its sidebar top spacer remains draggable. Do not reintroduce
+clearance and no-drag sidebar/history controls. Its tab clearance is 136px beside
+the 64px icon rail, 200px with a compact Sheet and zero beside complete navigation.
+The top sidebar spacer is draggable only beyond the toolbar controls; an icon
+rail's narrow spacer is no-drag. Do not reintroduce
 a fixed scope-switch row, footer switch, or content-level workspace selector.
+
+### Common icon rail
+
+Large-screen collapse retains New Issue, AI Chat, Collaboration notifications,
+workspace selection, My Issues, Workspace issues, Projects, Agents and More
+navigation. Settings, Help and the account remain in the footer. Common links
+are independent of the complete directory's disclosure preferences; do not
+leave opacity-hidden group buttons focusable. Route icons and action handlers
+stay under their existing owners. Known positive chat/notification counts remain
+visible; unknown counts are not zero.
+
+More navigation uses Base UI dropdown groups/submenus for existing omitted
+destinations, retaining the same Iterations/Triage capability gates. Account
+creation/current/participating destinations remain available without a workspace.
+Workspace resources and Analytics require the displayed workspace. Pin menu
+rows reuse resolved PinRow destinations and view activation, return native menu
+items before sortable hooks, and do not register dragging/unpinning in the menu.
+Empty pins do not create an empty submenu. More marks its current location when
+an omitted destination is active, and closes on full-path/workspace changes.
+
+The collapsed web rail owns one reachable toggle on `lg` and larger screens;
+page/account content openers are compact-only. Desktop retains its external
+window toolbar toggle. `hasExternalTrigger` means an always-reachable shell
+control, not a content trigger hidden by a breakpoint. Collapse state remains
+nonpersisted and route-provider-owned: Web account/workspace shell remounts may
+expand, while the stored expanded width survives. Do not add a collapse cookie
+or global preference implicitly.
+
+Resize begins only in expanded noncompact presentation. Folding, compact
+transition or unmount cancels live inline width previews without committing
+them. Icon content can scroll vertically in short windows; coarse icon controls
+retain centered 16px icons in 44px targets inside the same 64px rail. Compact
+complete navigation puts its header (search and Start work) and directory in one
+`SidebarContent` scrollport, with a nonshrinking content wrapper; the footer stays
+outside. Fixing a tall compact header outside the only directory scroller can
+reduce that scroller to zero height at 200% native zoom. Native popup focus and tooltips
+must be verified in production browser/actual Electron, not inferred from CSS
+class assertions.
 
 ## 4. Validation / Error Matrix
 
@@ -234,6 +278,12 @@ a fixed scope-switch row, footer switch, or content-level workspace selector.
 | No authoritative displayed workspace | Explain disabled New issue/AI Chat; keep account collaboration available |
 | AI Chat entered from account | Navigate to the displayed workspace's native chat route without preview requests |
 | Named AI Chat link has positive unread messages | Keep its action name stable; announce the workspace and message count in its description |
+| Large-screen navigation collapses | Keep the 64px common rail and More; retain stored expanded width |
+| Compact Sheet opens with parked collapsed desktop state | Show complete labeled navigation and its original actions |
+| Compact header and footer exceed available directory height | Scroll header and directory together; keep the footer reachable |
+| Sidebar folds while a resize preview is active | Cancel preview styles; do not write the pending width |
+| Web account/workspace shell provider remounts | Preserve stored expanded width; open state follows the new provider |
+| More enters a gated resource or pinned view | Keep original capability/identity rules and native exact destination |
 
 ## 5. Good / Base / Bad Cases
 
@@ -278,6 +328,18 @@ That journey also verifies the direct Start work controls and their scope
 captions, account-to-workspace ordinary creation and AI Chat, native
 collaboration focus return, and compact sheet dismissal. Preserve its original
 account/workspace restoration assertions when adding these interactions.
+`e2e/sidebar-icon-rail.spec.ts` owns the focused production Web/actual Electron
+rail journey: painted/reserved width, common route links, More/current location,
+positive unread, keyboard tooltips/menu dismissal, source-bound creation,
+stored width recovery, viewport transitions and native toolbar hit/clearance.
+Await an actual visible popup before negative capability assertions or Escape.
+Tooltips may retain a closed outgoing popup during a focus transition: select
+the open popup for the expected action, not every tooltip mentioning the same
+workspace. Retain short/coarse geometry and theme/locale captures separately
+from packaged Main/installer claims. The native compact original must activate
+the collaboration disclosure and a child link at 450×500 CSS pixels under actual
+200% zoom; a zero-height directory hidden beneath the fixed header/footer is a
+product failure, not a reason to force-click or enlarge the test viewport.
 `e2e/collaboration-notifications-page.spec.ts` adds complete filtered pages,
 exact targets, processing and same-issue list/detail return offsets. Assert real
 Base UI active-attribute presence and NumberFlow's accessible numeric label;

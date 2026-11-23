@@ -11,6 +11,7 @@ import {
 import {
   SidebarProvider,
   SidebarTrigger,
+  SIDEBAR_WIDTH_INSET_ICON,
   useSidebar,
 } from "@multica/ui/components/ui/sidebar";
 import { FeedbackModalHost, ModalRegistry } from "@multica/views/modals/registry";
@@ -132,12 +133,14 @@ function WindowToolbar() {
 }
 
 function SidebarTopSpacer() {
+  const { state, isCompact } = useSidebar();
+  const iconRail = state === "collapsed" && !isCompact;
   // Native drag hit testing ignores the toolbar's z-index. Keep this region
   // beyond its controls so the sidebar toggle and history buttons receive clicks.
   return (
     <div
-      className={cn("shrink-0", TOP_BAR_HEIGHT_CLASS)}
-      style={{ WebkitAppRegion: "drag", marginLeft: WINDOW_TOOLBAR_CLEARANCE } as React.CSSProperties}
+      className={cn("min-w-0 shrink-0", TOP_BAR_HEIGHT_CLASS)}
+      style={{ WebkitAppRegion: iconRail ? "no-drag" : "drag", marginLeft: iconRail ? 0 : WINDOW_TOOLBAR_CLEARANCE } as React.CSSProperties}
     />
   );
 }
@@ -158,13 +161,12 @@ function useNativeNavigationGestures() {
 
 
 // The main area's top bar doubles as a window drag region. When the sidebar
-// is not occupying main-flow width, leave room for the fixed window toolbar
-// so tabs do not land beneath the traffic lights / navigation controls.
+// occupies less width than the fixed window toolbar, reserve its remainder so
+// tabs do not land beneath the traffic lights or navigation controls.
 function MainTopBar({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
   const { state, isCompact } = useSidebar();
-  const sidebarHidden = state === "collapsed" || isCompact;
   const toolbarOffset = useShellGeometry(
-    sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0,
+    isCompact ? WINDOW_TOOLBAR_CLEARANCE : state === "collapsed" ? WINDOW_TOOLBAR_CLEARANCE - SIDEBAR_WIDTH_INSET_ICON : 0,
     shouldReduceMotion,
   );
 
@@ -185,16 +187,14 @@ function MainTopBar({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
   );
 }
 
-// The canvas hugs the expanded sidebar with a hairline gap. When the sidebar
-// leaves the main flow, the left margin must grow to mirror the fixed mr-2 so
-// the floating canvas sits symmetrically inside the window frame.
+// The canvas hugs either the expanded sidebar or its persistent icon rail.
+// Only a compact sheet removes that column and needs symmetric window margins.
 function MainCanvas({ children, shouldReduceMotion }: {
   children: React.ReactNode;
   shouldReduceMotion: boolean;
 }) {
-  const { state, isCompact } = useSidebar();
-  const sidebarHidden = state === "collapsed" || isCompact;
-  const marginLeft = useShellGeometry(sidebarHidden ? 8 : 2, shouldReduceMotion);
+  const { isCompact } = useSidebar();
+  const marginLeft = useShellGeometry(isCompact ? 8 : 2, shouldReduceMotion);
 
   return (
     <motion.div

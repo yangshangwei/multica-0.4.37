@@ -16,28 +16,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@multica/ui/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@multica/ui/components/ui/tooltip";
 import { useModalStore } from "@multica/core/modals";
 import { useConfigStore } from "@multica/core/config";
 import { paths, useWorkspaceSlug } from "@multica/core/paths";
 import { AppLink } from "../navigation";
 import { useT } from "../i18n";
 
-export function HelpLauncher({ versionSlot }: { versionSlot?: ReactNode } = {}) {
+export function HelpLauncher({ versionSlot, tooltip = false }: { versionSlot?: ReactNode; tooltip?: boolean } = {}) {
   const { t } = useT("layout");
   const serverVersion = useConfigStore((state) => state.serverVersion);
   // Nullable on purpose: this menu lives in the dashboard sidebar, which is
   // always workspace-scoped, but reading the slug defensively keeps the Help
   // menu from being the thing that throws if it is ever mounted elsewhere.
   const workspaceSlug = useWorkspaceSlug();
+  const trigger = <DropdownMenuTrigger
+    render={tooltip ? <TooltipTrigger data-slot="dropdown-menu-trigger" /> : undefined}
+    aria-label={t(($) => $.help.trigger)}
+    title={t(($) => $.help.trigger)}
+    className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-hidden transition-colors cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-foreground data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:size-11"
+  >
+    <CircleHelp className="size-4" />
+  </DropdownMenuTrigger>;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        aria-label={t(($) => $.help.trigger)}
-        title={t(($) => $.help.trigger)}
-        className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-hidden transition-colors cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-foreground data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:size-11"
-      >
-        <CircleHelp className="size-4" />
-      </DropdownMenuTrigger>
+      {tooltip ? <Tooltip>{trigger}<TooltipContent side="right">{t(($) => $.help.trigger)}</TooltipContent></Tooltip> : trigger}
       <DropdownMenuContent
         align="start"
         side="top"

@@ -33,6 +33,7 @@ import { Layers,
   Bell,
   Inbox,
   RefreshCw,
+  MoreHorizontal,
   X,
 } from "lucide-react";
 import { WorkspaceAvatar } from "../workspace/workspace-avatar";
@@ -55,6 +56,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  SidebarTrigger,
   useSidebar,
 } from "@multica/ui/components/ui/sidebar";
 import {
@@ -65,6 +67,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@multica/ui/components/ui/dropdown-menu";
 import { useAuthStore } from "@multica/core/auth";
 import { issueViewDetailOptions } from "@multica/core/issue-views/queries";
@@ -199,6 +204,18 @@ const bottomNav: NavItem[] = [
   { key: "settings", labelKey: "settings" },
 ];
 
+const commonNav = [
+  ...personalNav.filter((item) => item.key === "myIssues"),
+  ...workNav.filter((item) => item.key === "issues" || item.key === "projects"),
+  ...aiTeamNav.filter((item) => item.key === "agents"),
+];
+
+interface SidebarOverflowProps {
+  onStartCollaboration: () => void;
+  moreTrigger: React.RefObject<HTMLButtonElement | null>;
+  collaborationOpen: boolean;
+}
+
 function DraftDot() {
   const hasDraft = useIssueDraftStore((s) => s.hasDraft());
   if (!hasDraft) return null;
@@ -230,25 +247,28 @@ function NavRow({
   description?: string;
 }) {
   const { pathname } = useNavigation();
+  const { state, isCompact } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
   const Icon = routeIconForPath(href);
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         isActive={isActive}
         aria-current={isActive ? (pathname === href ? "page" : "location") : undefined}
-        aria-label={scopeCaption ? label : undefined}
+        aria-label={iconCollapsed || scopeCaption ? label : undefined}
         aria-description={description ?? scopeCaption}
         title={scopeCaption ?? label}
+        tooltip={iconCollapsed ? `${label}${description ?? scopeCaption ? ` · ${description ?? scopeCaption}` : ""}` : undefined}
         render={<AppLink href={href} />}
         className={cn("text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
-          scopeCaption && "h-auto min-h-10 py-1.5 pointer-coarse:min-h-11 data-active:font-medium")}
+          scopeCaption && "h-auto min-h-10 py-1.5 pointer-coarse:min-h-11 data-active:font-medium", iconCollapsed && "relative mx-auto")}
       >
-        <Icon />
-        {scopeCaption ? <span className="flex min-w-0 flex-1 flex-col items-start">
+        <Icon aria-hidden />
+        {!iconCollapsed && (scopeCaption ? <span className="flex min-w-0 flex-1 flex-col items-start">
           <span className="max-w-full truncate">{label}</span>
           <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{scopeCaption}</span>
-        </span> : <span className="min-w-0 flex-1 truncate">{label}</span>}
-        {trailing && <span className="shrink-0">{trailing}</span>}
+        </span> : <span className="min-w-0 flex-1 truncate">{label}</span>)}
+        {trailing && <span className={iconCollapsed ? "absolute right-0 top-0 rounded bg-sidebar px-0.5 text-micro" : "shrink-0"}>{trailing}</span>}
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
@@ -345,6 +365,15 @@ function SortablePinItem({
   );
 }
 
+function PinMenuItem({ href, label, iconNode, isActive, onNavigate }: {
+  href: string; label: string; iconNode: React.ReactNode; isActive: boolean; onNavigate?: () => void;
+}) {
+  return <DropdownMenuItem render={<AppLink href={href} newTabTitle={label} />} aria-current={isActive ? "page" : undefined}
+    className={cn("min-h-8 pointer-coarse:min-h-11", isActive && "bg-accent font-medium text-accent-foreground")} onClick={onNavigate}>
+    {iconNode}<span className="min-w-0 flex-1 truncate">{label}</span>
+  </DropdownMenuItem>;
+}
+
 /**
  * Smart wrapper that resolves a pin's display data (label + status/icon)
  * from the issue / project detail query cache. Both queries are declared
@@ -361,12 +390,14 @@ function PinRow({
   pathname,
   onUnpin,
   wsId,
+  inMenu = false,
 }: {
   pin: PinnedItem;
   href: string;
   pathname: string;
   onUnpin: () => void;
   wsId: string;
+  inMenu?: boolean;
 }) {
   const isIssue = pin.item_type === "issue";
   const isView = pin.item_type === "view";
@@ -422,6 +453,8 @@ function PinRow({
       scope_type: scopeType,
       scope_id: scopeType === "project" ? view.scope_id : null,
     });
+    if (inMenu) return <PinMenuItem href={`${viewPath}?view=${view.id}`} label={view.name} iconNode={<Layers aria-hidden />}
+      isActive={pathname === viewPath && activeViewByContainer[containerKey] === view.id} onNavigate={() => setActiveView(containerKey, view.id)} />;
     return (
       <SortablePinItem
         pin={pin}
@@ -457,6 +490,7 @@ function PinRow({
         className="!size-3.5 shrink-0"
       />
     );
+    if (inMenu) return <PinMenuItem href={href} label={label} iconNode={iconNode} isActive={pathname === href} />;
     return (
       <SortablePinItem
         pin={pin}
@@ -473,6 +507,7 @@ function PinRow({
   if (projectQuery.isError || !projectQuery.data) return null;
   const project = projectQuery.data;
   const iconNode = <ProjectIcon project={project} size="sm" />;
+  if (inMenu) return <PinMenuItem href={href} label={project.title} iconNode={iconNode} isActive={pathname === href} />;
   return (
     <SortablePinItem
       pin={pin}
@@ -512,6 +547,7 @@ interface AppSidebarProps {
 export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, headerStyle,
   navigationWorkspace, onWorkspaceSelect, workspaceListUnavailable = false, onRetryWorkspaces }: AppSidebarProps = {}) {
   const { t } = useT("layout");
+  const { t: ui } = useT("ui");
   const navigation = useNavigation();
   const routeWorkspace = useCurrentWorkspace();
   const workspace = navigationWorkspace === undefined ? routeWorkspace : navigationWorkspace;
@@ -525,49 +561,78 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
     else navigation.push(paths.workspace(slug).issues());
   };
   const pickerProps = { workspace, workspaces, invitations, creationDisabled, selectWorkspace };
-  const { setOpenMobile } = useSidebar();
+  const { setOpenMobile, state, isCompact, hasExternalTrigger } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
+  const scope = useCollaborationScope();
+  const [collaborationOpen, setCollaborationOpen] = useState(false);
+  const collaborationTrigger = useRef<HTMLButtonElement>(null);
+  const moreTrigger = useRef<HTMLButtonElement>(null);
+  const collaborationReturnFocus = React.useMemo(() => ({
+    get current() { return iconCollapsed ? moreTrigger.current : collaborationTrigger.current; },
+  }), [iconCollapsed]);
+  const onStartCollaboration = () => {
+    useModalStore.getState().cancelWorkspaceIssueCreation();
+    setCollaborationOpen(true);
+  };
+  const overflow = { onStartCollaboration, moreTrigger, collaborationOpen };
   const fullPath = currentPath(navigation);
   useEffect(() => { setOpenMobile(false); }, [fullPath, setOpenMobile]);
   useEffect(() => { void useSidebarPreferences.persist.rehydrate(); }, []);
   const scroll = useRef<HTMLDivElement>(null);
   const fade = useScrollFade(scroll, 24);
-  return <Sidebar variant="inset">
+  const header = (
+    <SidebarHeader className={cn("py-3", headerClassName, iconCollapsed && "items-center px-0")} style={headerStyle}>
+      {(!iconCollapsed || !hasExternalTrigger) && <div className={cn("flex h-8 items-center text-body font-semibold", !iconCollapsed && "justify-between px-2")}>
+        {!iconCollapsed && <span>{PRODUCT_NAME}</span>}
+        {!hasExternalTrigger && (iconCollapsed ? <Tooltip>
+          <TooltipTrigger data-slot="sidebar-trigger" render={<SidebarTrigger className="hidden lg:inline-flex pointer-coarse:size-11" />} />
+          <TooltipContent side="right">{ui(($) => $.toggle_sidebar)}</TooltipContent>
+        </Tooltip> : <SidebarTrigger className="hidden lg:inline-flex pointer-coarse:size-11" />)}
+      </div>}
+      {!iconCollapsed && activeWorkspace && searchSlot && <SidebarMenu><SidebarMenuItem>{searchSlot}</SidebarMenuItem></SidebarMenu>}
+      <SidebarStartWork workspace={workspace} workspaceActive={activeWorkspace} onStartCollaboration={onStartCollaboration} collaborationTrigger={collaborationTrigger} />
+    </SidebarHeader>
+  );
+  const directory = <>
+    <CollaborationNavigation workspaceActive={activeWorkspace} />
+    <div data-sidebar-scope="workspace" className="min-w-0">
+      {activeWorkspace && workspace ? <WorkspaceNavigation workspace={workspace} pickerProps={pickerProps} overflow={overflow} /> : <>
+        <WorkspacePicker {...pickerProps} />
+        {workspace && <WorkspacePreview workspace={workspace} overflow={overflow} />}
+      </>}
+      {!workspace && <SidebarGroup className={iconCollapsed ? "items-center px-0" : undefined}><SidebarGroupContent>
+        {workspaceListUnavailable ? <SidebarMenu><SidebarMenuItem><SidebarMenuButton onClick={onRetryWorkspaces}>
+          <RefreshCw aria-hidden /><span className={iconCollapsed ? "sr-only" : undefined}>{t(($) => $.sidebar.retry_workspaces)}</span>
+        </SidebarMenuButton></SidebarMenuItem></SidebarMenu> : !iconCollapsed && <p className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.sidebar.no_workspace_selected)}</p>}
+        {iconCollapsed && <SidebarMore {...overflow} />}
+      </SidebarGroupContent></SidebarGroup>}
+    </div>
+  </>;
+  return <Sidebar variant="inset" collapsible="icon">
     {topSlot}
     <nav aria-label={t(($) => $.global_navigation.label)} className="flex min-h-0 flex-1 flex-col" onClickCapture={(event) => {
       if (event.target instanceof Element && event.target.closest("a[href]")) {
         useModalStore.getState().cancelWorkspaceIssueCreation();
       }
     }}>
-      <SidebarHeader className={cn("py-3", headerClassName)} style={headerStyle}>
-        <div className="flex h-8 items-center px-2 text-body font-semibold">{PRODUCT_NAME}</div>
-        {activeWorkspace && searchSlot && <SidebarMenu><SidebarMenuItem>{searchSlot}</SidebarMenuItem></SidebarMenu>}
-        <SidebarStartWork workspace={workspace} workspaceActive={activeWorkspace} />
-      </SidebarHeader>
-      <SidebarContent ref={scroll} style={fade}>
-        <CollaborationNavigation workspaceActive={activeWorkspace} />
-        <div data-sidebar-scope="workspace" className="min-w-0">
-          {activeWorkspace && workspace ? <WorkspaceNavigation workspace={workspace} pickerProps={pickerProps} /> : <>
-            <WorkspacePicker {...pickerProps} />
-            {workspace && <WorkspacePreview workspace={workspace} />}
-          </>}
-          {!workspace && <SidebarGroup><SidebarGroupContent>
-            {workspaceListUnavailable ? <SidebarMenu><SidebarMenuItem><SidebarMenuButton onClick={onRetryWorkspaces}>
-              <RefreshCw aria-hidden /><span>{t(($) => $.sidebar.retry_workspaces)}</span>
-            </SidebarMenuButton></SidebarMenuItem></SidebarMenu> : <p className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.sidebar.no_workspace_selected)}</p>}
-          </SidebarGroupContent></SidebarGroup>}
-        </div>
-      </SidebarContent>
-      <SidebarFooter className="p-2">
-        {workspace && <SidebarMenu className="gap-0.5">{bottomNav.map((item) => {
+      {isCompact ? <SidebarContent ref={scroll} style={fade}>
+        <div className="shrink-0">{header}{directory}</div>
+      </SidebarContent> : <>
+        {header}
+        <SidebarContent ref={scroll} style={fade}>{directory}</SidebarContent>
+      </>}
+      <SidebarFooter className={cn("p-2", iconCollapsed && "items-center px-0")}>
+        {workspace && <SidebarMenu className="gap-0.5">{bottomNav.filter((item) => !iconCollapsed || item.key === "settings").map((item) => {
           const href = paths.workspace(workspace.slug)[item.key]();
-          return <NavRow key={item.key} href={href} label={t(($) => $.nav[item.labelKey])} isActive={isNavActive(navigation.pathname, href)} />;
+          return <NavRow key={item.key} href={href} label={t(($) => $.nav[item.labelKey])} scopeCaption={iconCollapsed ? workspace.name : undefined} isActive={isNavActive(navigation.pathname, href)} />;
         })}</SidebarMenu>}
-        <div data-testid="sidebar-footer-row" className="flex min-w-0 items-center gap-2">
-          <HelpLauncher versionSlot={versionSlot} />
+        <div data-testid="sidebar-footer-row" className={cn("flex min-w-0 items-center gap-2", iconCollapsed && "flex-col")}>
+          <HelpLauncher key={iconCollapsed ? "icon" : "full"} versionSlot={versionSlot} tooltip={iconCollapsed} />
           <SidebarAccountMenu />
         </div>
       </SidebarFooter>
     </nav>
+    <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${workspace?.id ?? "account"}`} scope={scope} sourceWorkspaceId={workspace?.id} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={collaborationReturnFocus} />
     <SidebarRail />
   </Sidebar>;
 }
@@ -579,16 +644,20 @@ function SidebarAccountMenu() {
   const name = user?.name || user?.email || PRODUCT_NAME;
   const initials = (user?.name || user?.email || "U").charAt(0).toUpperCase();
   const avatarUrl = resolvePublicFileUrl(user?.avatar_url);
-  return <DropdownMenu>
-    <DropdownMenuTrigger
+  const { state, isCompact } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
+  const trigger = <DropdownMenuTrigger
+      render={iconCollapsed ? <TooltipTrigger data-slot="dropdown-menu-trigger" /> : undefined}
       aria-label={name}
       title={name}
-      className="ml-auto inline-flex h-8 min-w-0 max-w-full items-center gap-2 rounded-md px-2 text-body font-medium text-sidebar-foreground outline-hidden transition-colors hover:bg-sidebar-accent data-popup-open:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:h-11 pointer-coarse:min-w-11"
+      className={cn("ml-auto inline-flex h-8 min-w-0 max-w-full items-center gap-2 rounded-md px-2 text-body font-medium text-sidebar-foreground outline-hidden transition-colors hover:bg-sidebar-accent data-popup-open:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:h-11 pointer-coarse:min-w-11", iconCollapsed && "ml-0 justify-center px-1")}
     >
       <span aria-hidden="true"><ActorAvatar name={name} initials={initials} avatarUrl={avatarUrl} size="sm" /></span>
-      <span className="min-w-0 truncate">{name}</span>
-      <ChevronUp aria-hidden className="size-3 shrink-0 text-muted-foreground" />
-    </DropdownMenuTrigger>
+      {!iconCollapsed && <><span className="min-w-0 truncate">{name}</span>
+        <ChevronUp aria-hidden className="size-3 shrink-0 text-muted-foreground" /></>}
+    </DropdownMenuTrigger>;
+  return <DropdownMenu key={iconCollapsed ? "icon" : "full"}>
+    {iconCollapsed ? <Tooltip>{trigger}<TooltipContent side="right">{name}</TooltipContent></Tooltip> : trigger}
     <DropdownMenuContent align="end" side="top" sideOffset={8} className="w-64 max-w-[calc(100vw-2rem)]">
       <div className="flex items-center gap-2.5 px-2 py-2"><ActorAvatar name={name} initials={initials} avatarUrl={avatarUrl} size="lg" />
         <div className="min-w-0"><p className="truncate text-body font-medium">{user?.name}</p><p className="truncate text-caption text-muted-foreground">{user?.email}</p></div>
@@ -598,14 +667,18 @@ function SidebarAccountMenu() {
   </DropdownMenu>;
 }
 
-function SidebarStartWork({ workspace, workspaceActive }: { workspace: Workspace | null; workspaceActive: boolean }) {
+function SidebarStartWork({ workspace, workspaceActive, onStartCollaboration, collaborationTrigger }: {
+  workspace: Workspace | null;
+  workspaceActive: boolean;
+  onStartCollaboration: () => void;
+  collaborationTrigger: React.RefObject<HTMLButtonElement | null>;
+}) {
   const { t } = useT("layout");
   const { t: collaboration } = useT("collaboration");
   const navigation = useNavigation();
   const fullPath = currentPath(navigation);
-  const scope = useCollaborationScope();
-  const [collaborationOpen, setCollaborationOpen] = useState(false);
-  const collaborationTrigger = useRef<HTMLButtonElement>(null);
+  const { state, isCompact } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
   const shortcut = useShortcut("createIssue");
   const pendingCreation = useModalStore((state) => state.workspaceIssueCreation);
   const userId = useAuthStore((state) => state.user?.id);
@@ -645,41 +718,43 @@ function SidebarStartWork({ workspace, workspaceActive }: { workspace: Workspace
 
   return <>
     <div role="group" aria-label={t(($) => $.sidebar.start_work)} className="min-w-0">
-      <SidebarGroupLabel>{t(($) => $.sidebar.start_work)}</SidebarGroupLabel>
+      {!iconCollapsed && <SidebarGroupLabel>{t(($) => $.sidebar.start_work)}</SidebarGroupLabel>}
       <SidebarMenu className="gap-1">
         <SidebarMenuItem><SidebarMenuButton disabled={!workspace} onClick={createIssue}
           aria-label={t(($) => $.sidebar.new_issue)}
           aria-description={workspace ? workspace.name : t(($) => $.sidebar.open_workspace_to_create)}
           title={workspaceCaption}
-          className="h-auto min-h-10 py-1.5 text-muted-foreground pointer-coarse:min-h-11">
+          tooltip={iconCollapsed ? `${t(($) => $.sidebar.new_issue)} · ${workspaceCaption}` : undefined}
+          className={cn("h-auto min-h-10 py-1.5 text-muted-foreground pointer-coarse:min-h-11", iconCollapsed && "relative mx-auto")}>
           <SquarePen aria-hidden />
-          <span className="flex min-w-0 flex-1 flex-col items-start">
+          {!iconCollapsed && <span className="flex min-w-0 flex-1 flex-col items-start">
             <span className="relative w-full truncate pr-2">{t(($) => $.sidebar.new_issue)}{workspaceActive && <DraftDot />}</span>
             <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{workspaceCaption}</span>
-          </span>
-          {workspaceActive && shortcut && <ShortcutKeycaps shortcut={shortcut} decorative className="pointer-events-none ms-auto shrink-0" />}
+          </span>}
+          {iconCollapsed && workspaceActive && <DraftDot />}
+          {!iconCollapsed && workspaceActive && shortcut && <ShortcutKeycaps shortcut={shortcut} decorative className="pointer-events-none ms-auto shrink-0" />}
         </SidebarMenuButton></SidebarMenuItem>
-        <SidebarMenuItem><SidebarMenuButton ref={collaborationTrigger}
+        {!iconCollapsed && <SidebarMenuItem><SidebarMenuButton ref={collaborationTrigger}
           aria-label={t(($) => $.sidebar.start_collaboration)} aria-description={collaboration(($) => $.beta.description)}
           className="h-auto min-h-10 py-1.5 text-muted-foreground pointer-coarse:min-h-11"
-          onClick={() => { useModalStore.getState().cancelWorkspaceIssueCreation(); setCollaborationOpen(true); }}>
+          onClick={onStartCollaboration}>
           <UsersRound aria-hidden />
           <span className="flex min-w-0 flex-1 flex-col items-start">
             <span className="max-w-full truncate">{t(($) => $.sidebar.start_collaboration)}</span>
             <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{t(($) => $.sidebar.cross_workspace)}</span>
           </span>
           <span aria-hidden="true" className="shrink-0 rounded bg-muted px-1 py-0.5 text-micro font-normal text-muted-foreground">{collaboration(($) => $.beta.label)}</span>
-        </SidebarMenuButton></SidebarMenuItem>
+        </SidebarMenuButton></SidebarMenuItem>}
         {workspace ? workspaceActive ? <ActiveWorkspaceChatLink workspace={workspace} /> : <WorkspaceChatLink workspace={workspace} />
           : <SidebarMenuItem><SidebarMenuButton disabled aria-label={t(($) => $.nav.chat)}
             aria-description={t(($) => $.sidebar.open_workspace_to_chat)} className="h-auto min-h-10 py-1.5 text-muted-foreground pointer-coarse:min-h-11">
             <MessageSquare aria-hidden />
-            <span className="flex min-w-0 flex-1 flex-col items-start"><span>{t(($) => $.nav.chat)}</span>
+            {!iconCollapsed && <span className="flex min-w-0 flex-1 flex-col items-start"><span>{t(($) => $.nav.chat)}</span>
               <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{chatCaption}</span></span>
+            }
           </SidebarMenuButton></SidebarMenuItem>}
       </SidebarMenu>
     </div>
-    <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${workspace?.id ?? "account"}`} scope={scope} sourceWorkspaceId={workspace?.id} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={collaborationTrigger} />
   </>;
 }
 
@@ -733,9 +808,18 @@ function CollaborationNavigation({ workspaceActive }: { workspaceActive: boolean
   const unread = notifications.data?.pages[0]?.unread_count;
   const notificationsSelected = destination?.view === "notifications";
   const notificationsLabel = collaboration(($) => $.notifications.title);
-  return <SidebarGroup data-sidebar-scope="collaboration">
+  const { state, isCompact } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
+  const notificationLink = <SidebarMenuItem><SidebarMenuButton render={<AppLink href={accountPath({ view: "notifications" })} />} isActive={notificationsSelected} aria-current={notificationsSelected ? destination.notificationId ? "location" : "page" : undefined}
+    aria-label={notificationsLabel} aria-description={t(($) => $.sidebar.cross_workspace)} title={notificationsLabel}
+    tooltip={iconCollapsed ? `${notificationsLabel} · ${t(($) => $.sidebar.cross_workspace)}` : undefined}
+    className={cn("text-muted-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground data-active:hover:bg-sidebar-accent", iconCollapsed && "relative mx-auto")}>
+    <Bell aria-hidden />{!iconCollapsed && <span className="min-w-0 flex-1 truncate">{t(($) => $.sidebar.collaboration_notifications)}</span>}
+    {unread !== undefined && unread > 0 && <span className={iconCollapsed ? "absolute right-0 top-0 rounded bg-sidebar px-0.5" : "ml-auto"}><CappedNumberFlow value={unread} animated={false} className="text-caption" /></span>}
+  </SidebarMenuButton></SidebarMenuItem>;
+  return <SidebarGroup data-sidebar-scope="collaboration" className={iconCollapsed ? "items-center px-0 py-0" : undefined}>
     {workspaceActive && <WorkspaceNotificationRealtime scope={scope} />}
-    <Collapsible {...disclosure}>
+    {iconCollapsed ? <SidebarGroupContent><SidebarMenu>{notificationLink}</SidebarMenu></SidebarGroupContent> : <Collapsible {...disclosure}>
       <Tooltip>
         <SidebarGroupLabel aria-label={disclosure.open ? collaboration(($) => $.page.collapseNavigation) : collaboration(($) => $.page.expandNavigation)} aria-description={collaboration(($) => $.beta.description)} render={<TooltipTrigger render={<CollapsibleTrigger />} />} className="h-auto min-h-8 w-full min-w-0 cursor-pointer gap-2 text-left hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground pointer-coarse:min-h-11">
           <span className="flex min-w-0 flex-1 items-center gap-2"><span className="min-w-0 truncate">{collaboration(($) => $.page.title)}</span><span aria-hidden="true" className="shrink-0 rounded bg-sidebar-accent/50 px-1 py-0.5 text-micro font-normal">{collaboration(($) => $.beta.label)}</span></span>
@@ -753,12 +837,9 @@ function CollaborationNavigation({ workspaceActive }: { workspaceActive: boolean
           <Icon aria-hidden /><span>{view === "current" ? collaboration(($) => $.page.current) : collaboration(($) => $.page.participating)}</span>
         </SidebarMenuButton></SidebarMenuItem>;
       })}
-      <SidebarMenuItem><SidebarMenuButton render={<AppLink href={accountPath({ view: "notifications" })} />} isActive={notificationsSelected} aria-current={notificationsSelected ? destination.notificationId ? "location" : "page" : undefined}
-        aria-label={notificationsLabel} title={notificationsLabel} className="text-muted-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground data-active:hover:bg-sidebar-accent">
-        <Bell aria-hidden /><span className="min-w-0 flex-1 truncate">{t(($) => $.sidebar.collaboration_notifications)}</span>{unread !== undefined && unread > 0 && <CappedNumberFlow value={unread} animated={false} className="ml-auto text-caption" />}
-      </SidebarMenuButton></SidebarMenuItem>
+      {notificationLink}
       </SidebarMenu></SidebarGroupContent></CollapsibleContent>}
-    </Collapsible>
+    </Collapsible>}
   </SidebarGroup>;
 }
 
@@ -776,6 +857,8 @@ function WorkspacePicker({ workspace, workspaces, invitations, creationDisabled,
   const { t } = useT("layout");
   const { push } = useNavigation();
   const client = useQueryClient();
+  const { state, isCompact } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
   const accept = useMutation({ mutationFn: (id: string) => api.acceptInvitation(id), onSuccess: async (_, id) => {
     const invitation = invitations.find((entry) => entry.id === id);
     void client.invalidateQueries({ queryKey: workspaceKeys.myInvitations() });
@@ -784,18 +867,20 @@ function WorkspacePicker({ workspace, workspaces, invitations, creationDisabled,
     if (joined) selectWorkspace(joined.slug);
   } });
   const decline = useMutation({ mutationFn: (id: string) => api.declineInvitation(id), onSuccess: () => { void client.invalidateQueries({ queryKey: workspaceKeys.myInvitations() }); } });
-  return <SidebarGroup className="pb-0">
-    <SidebarGroupLabel>{t(($) => $.sidebar.workspaces_label)}</SidebarGroupLabel>
+  return <SidebarGroup className={cn("pb-0", iconCollapsed && "items-center px-0")}>
+    {!iconCollapsed && <SidebarGroupLabel>{t(($) => $.sidebar.workspaces_label)}</SidebarGroupLabel>}
     <div className="flex min-w-0 items-center gap-1">
-      {workspace && <SidebarMenuButton aria-label={workspace.name} onClick={() => selectWorkspace(workspace.slug)} className="min-w-0 flex-1 font-medium">
+      {!iconCollapsed && workspace && <SidebarMenuButton aria-label={workspace.name} onClick={() => selectWorkspace(workspace.slug)} className="min-w-0 flex-1 font-medium">
         <span aria-hidden="true" className="relative"><WorkspaceAvatar name={workspace.name} avatarUrl={workspace.avatar_url} size="sm" />
           {(invitations.length > 0 || otherUnread) && <span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-brand ring-1 ring-sidebar" />}
         </span><span className="truncate">{workspace.name}</span>
       </SidebarMenuButton>}
-      <DropdownMenu><DropdownMenuTrigger render={<SidebarMenuButton aria-label={t(($) => $.sidebar.switch_workspace)} title={t(($) => $.sidebar.switch_workspace)} className={workspace ? "w-9 shrink-0 justify-center pointer-coarse:min-w-11" : "text-muted-foreground"}>
-        {!workspace && <span className="flex-1">{t(($) => $.sidebar.switch_workspace)}</span>}<ChevronDown aria-hidden className="size-4" />
+      <DropdownMenu key={iconCollapsed ? "icon" : "full"}><DropdownMenuTrigger render={<SidebarMenuButton aria-label={t(($) => $.sidebar.switch_workspace)} aria-description={workspace?.name} title={t(($) => $.sidebar.switch_workspace)} tooltip={iconCollapsed ? `${t(($) => $.sidebar.switch_workspace)}${workspace ? ` · ${workspace.name}` : ""}` : undefined} className={iconCollapsed ? "mx-auto justify-center" : workspace ? "w-9 shrink-0 justify-center pointer-coarse:min-w-11" : "text-muted-foreground"}>
+        {iconCollapsed && workspace ? <span aria-hidden="true" className="relative"><WorkspaceAvatar name={workspace.name} avatarUrl={workspace.avatar_url} size="sm" />
+          {(invitations.length > 0 || otherUnread) && <span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-brand ring-1 ring-sidebar" />}
+        </span> : <>{!workspace && <span className={iconCollapsed ? "sr-only" : "flex-1"}>{t(($) => $.sidebar.switch_workspace)}</span>}<ChevronDown aria-hidden className="size-4" /></>}
       </SidebarMenuButton>} />
-        <DropdownMenuContent align="start" className="min-w-56 max-w-[calc(100vw-2rem)]">
+        <DropdownMenuContent align="start" side={iconCollapsed ? "right" : "bottom"} className="min-w-56 max-w-[calc(100vw-2rem)]">
           <DropdownMenuGroup><DropdownMenuLabel>{t(($) => $.sidebar.workspaces_label)}</DropdownMenuLabel>
             {workspaces.map((entry) => <DropdownMenuItem key={entry.id} onClick={() => selectWorkspace(entry.slug)}>
               <WorkspaceAvatar name={entry.name} avatarUrl={entry.avatar_url} size="sm" /><span className="min-w-0 flex-1 truncate">{entry.name}</span>
@@ -815,20 +900,103 @@ function WorkspacePicker({ workspace, workspaces, invitations, creationDisabled,
   </SidebarGroup>;
 }
 
-function WorkspaceLinks({ workspace, personalCounts, pinned, isActivePinnedRoute = false, iterationEnabled = false, triageEnabled = false, triageCount }: {
+function SidebarMore({ workspace, personalCounts, pinned, iterationEnabled = false, triageEnabled = false, triageCount,
+  onStartCollaboration, moreTrigger, collaborationOpen }: SidebarOverflowProps & {
+  workspace?: Workspace;
+  personalCounts?: { inbox: number };
+  pinned?: React.ReactNode;
+  iterationEnabled?: boolean;
+  triageEnabled?: boolean;
+  triageCount?: number;
+}) {
+  const { t } = useT("layout");
+  const { t: collaboration } = useT("collaboration");
+  const navigation = useNavigation();
+  const fullPath = currentPath(navigation);
+  const destination = parseAccountPath(fullPath);
+  const p = workspace ? paths.workspace(workspace.slug) : null;
+  const [open, setOpen] = useState(false);
+  useEffect(() => { setOpen(false); }, [fullPath, workspace?.id]);
+  const omittedWork = workNav.filter((item) => (item.key === "iterations" && iterationEnabled) || (item.key === "triage" && triageEnabled));
+  const groups = [
+    { label: t(($) => $.sidebar.my_work_group), items: personalNav.filter((item) => item.key === "inbox") },
+    { label: t(($) => $.sidebar.work_group), items: omittedWork },
+    { label: t(($) => $.sidebar.ai_team_group), items: aiTeamNav.filter((item) => item.key !== "agents") },
+    { label: t(($) => $.sidebar.resources_group), items: resourceNav },
+  ];
+  const workspaceOmittedActive = p !== null && [...groups.flatMap((group) => group.items), ...bottomNav.filter((item) => item.key === "usage")].some((item) => isNavActive(navigation.pathname, p[item.key]()));
+  const accountOmittedActive = destination !== null && !destination.administration && destination.view !== "notifications";
+  const active = workspaceOmittedActive || accountOmittedActive;
+  const row = (item: NavItem) => {
+    if (!p) return null;
+    const href = p[item.key]();
+    const selected = isNavActive(navigation.pathname, href);
+    const Icon = routeIconForPath(href);
+    const count = item.key === "inbox" ? personalCounts?.inbox : item.key === "triage" ? triageCount : undefined;
+    return <DropdownMenuItem key={item.key} render={<AppLink href={href} />}
+      aria-current={selected ? navigation.pathname === href ? "page" : "location" : undefined}
+      className={cn("min-h-8 pointer-coarse:min-h-11", selected && "bg-accent font-medium text-accent-foreground")}
+      onClick={() => useModalStore.getState().cancelWorkspaceIssueCreation()}>
+      <Icon aria-hidden /><span className="min-w-0 flex-1 truncate">{t(($) => $.nav[item.labelKey])}</span>
+      {count !== undefined && (count > 0 || item.key === "triage") && <CappedNumberFlow value={count} animated={false} className="text-caption" />}
+    </DropdownMenuItem>;
+  };
+  return <SidebarMenu className="mt-2"><SidebarMenuItem><DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenuTrigger render={<SidebarMenuButton ref={moreTrigger} aria-label={t(($) => $.sidebar.more_navigation)}
+      aria-current={active ? "location" : undefined} isActive={active} tooltip={t(($) => $.sidebar.more_navigation)} className="mx-auto">
+      <MoreHorizontal aria-hidden />
+    </SidebarMenuButton>} />
+    <DropdownMenuContent data-sidebar-more="navigation" side="right" align="start" sideOffset={8}
+      finalFocus={collaborationOpen ? false : undefined} className="min-w-56 max-w-[calc(100vw-2rem)]">
+      <DropdownMenuGroup><DropdownMenuLabel>{t(($) => $.sidebar.cross_workspace)}</DropdownMenuLabel>
+        <DropdownMenuItem aria-description={collaboration(($) => $.beta.description)} className="min-h-8 pointer-coarse:min-h-11" onClick={onStartCollaboration}>
+          <UsersRound aria-hidden /><span className="min-w-0 flex-1">{t(($) => $.sidebar.start_collaboration)}</span><span aria-hidden className="rounded bg-muted px-1 text-micro text-muted-foreground">{collaboration(($) => $.beta.label)}</span>
+        </DropdownMenuItem>
+        {(["current", "participating"] as const).map((view) => {
+          const selected = destination !== null && !destination.administration && destination.view === view;
+          const Icon = view === "current" ? Inbox : UsersRound;
+          return <DropdownMenuItem key={view} render={<AppLink href={accountPath({ view })} />} aria-current={selected ? destination.issueId ? "location" : "page" : undefined}
+            className={cn("min-h-8 pointer-coarse:min-h-11", selected && "bg-accent font-medium text-accent-foreground")}>
+            <Icon aria-hidden />{view === "current" ? collaboration(($) => $.page.current) : collaboration(($) => $.page.participating)}
+          </DropdownMenuItem>;
+        })}
+      </DropdownMenuGroup>
+      {workspace && <><DropdownMenuSeparator /><DropdownMenuGroup><DropdownMenuLabel>{workspace.name}</DropdownMenuLabel>
+        {groups.filter((group) => group.items.length > 0).map((group) => <DropdownMenuSub key={group.label}>
+          <DropdownMenuSubTrigger className="min-h-8 pointer-coarse:min-h-11">{group.label}</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent className="min-w-48 max-w-[calc(100vw-2rem)]">{group.items.map(row)}</DropdownMenuSubContent>
+        </DropdownMenuSub>)}
+        {pinned && <DropdownMenuSub><DropdownMenuSubTrigger className="min-h-8 pointer-coarse:min-h-11">{t(($) => $.sidebar.pinned_label)}</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent className="min-w-56 max-w-[calc(100vw-2rem)]">{pinned}</DropdownMenuSubContent>
+        </DropdownMenuSub>}
+        {bottomNav.filter((item) => item.key === "usage").map(row)}
+      </DropdownMenuGroup></>}
+    </DropdownMenuContent>
+  </DropdownMenu></SidebarMenuItem></SidebarMenu>;
+}
+
+function WorkspaceLinks({ workspace, personalCounts, pinned, isActivePinnedRoute = false, iterationEnabled = false, triageEnabled = false, triageCount, overflow }: {
   workspace: Workspace; personalCounts?: { inbox: number }; pinned?: React.ReactNode; isActivePinnedRoute?: boolean;
   iterationEnabled?: boolean; triageEnabled?: boolean; triageCount?: number;
+  overflow: SidebarOverflowProps;
 }) {
   const { t } = useT("layout");
   const { pathname } = useNavigation();
   const p = paths.workspace(workspace.slug);
+  const { state, isCompact } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
   const renderRows = (items: NavItem[]) => <SidebarMenu className="gap-0.5">{items.map((item) => {
     const href = p[item.key]();
     const count = item.key === "inbox" ? personalCounts?.inbox : item.key === "triage" ? triageCount : undefined;
     return <NavRow key={item.key} href={href} label={item.key === "issues" ? t(($) => $.sidebar.workspace_issues) : t(($) => $.nav[item.labelKey])}
-      isActive={!(isActivePinnedRoute && (item.key === "issues" || item.key === "projects")) && isNavActive(pathname, href)}
+      scopeCaption={iconCollapsed ? workspace.name : undefined}
+      isActive={!(!iconCollapsed && isActivePinnedRoute && (item.key === "issues" || item.key === "projects")) && isNavActive(pathname, href)}
       trailing={count !== undefined && (count > 0 || item.key === "triage") ? <CappedNumberFlow value={count} animated={false} className="ml-auto text-caption" /> : undefined} />;
   })}</SidebarMenu>;
+  if (iconCollapsed) return <SidebarGroup className="items-center px-0"><SidebarGroupContent>
+    {renderRows(commonNav)}
+    <SidebarMore {...overflow} workspace={workspace} personalCounts={personalCounts} pinned={pinned} iterationEnabled={iterationEnabled} triageEnabled={triageEnabled} triageCount={triageCount} />
+  </SidebarGroupContent></SidebarGroup>;
   return <>
     <SidebarGroup><SidebarGroupContent>{renderRows(personalNav)}</SidebarGroupContent></SidebarGroup>
     {pinned}
@@ -841,20 +1009,22 @@ function WorkspaceLinks({ workspace, personalCounts, pinned, isActivePinnedRoute
 }
 
 /** Cached capabilities may reveal links, but account scope never requests them. */
-function WorkspacePreview({ workspace }: { workspace: Workspace }) {
+function WorkspacePreview({ workspace, overflow }: { workspace: Workspace; overflow: SidebarOverflowProps }) {
   const { data: iteration } = useQuery({ ...iterationCapabilitiesOptions(workspace.id), enabled: false });
   const { data: triage } = useQuery({ ...triageSettingsOptions(workspace.id), enabled: false });
-  return <WorkspaceLinks workspace={workspace}
+  return <WorkspaceLinks workspace={workspace} overflow={overflow}
     iterationEnabled={iteration?.supported === true && iteration.manual === true && iteration.enabled === true}
     triageEnabled={triage?.enabled === true} />;
 }
 
 /** Workspace hooks and implicit-header mutations mount only under the active route. */
-function WorkspaceNavigation({ workspace, pickerProps }: { workspace: Workspace; pickerProps: WorkspacePickerProps }) {
+function WorkspaceNavigation({ workspace, pickerProps, overflow }: { workspace: Workspace; pickerProps: WorkspacePickerProps; overflow: SidebarOverflowProps }) {
   const { t } = useT("layout");
   const { pathname } = useNavigation();
   const userId = useAuthStore((state) => state.user?.id);
   const p = useWorkspacePaths();
+  const { state, isCompact } = useSidebar();
+  const iconCollapsed = state === "collapsed" && !isCompact;
   const wsId = workspace.id;
   const { data: iterationCapability } = useQuery({ ...iterationCapabilitiesOptions(wsId ?? ""), enabled: !!wsId });
   const { data: triageSettings } = useQuery({ ...triageSettingsOptions(wsId ?? ""), enabled: !!wsId });
@@ -941,7 +1111,8 @@ function WorkspaceNavigation({ workspace, pickerProps }: { workspace: Workspace;
   );
 
 
-  const pinned = <>{visiblePinned.length > 0 && (
+  const pinned = visiblePinned.length > 0 ? (iconCollapsed ? visiblePinned.map((pin) => <PinRow key={pin.id} pin={pin} href={getPinHref(pin)} pathname={pathname}
+    onUnpin={() => deletePin.mutate({ itemType: pin.item_type, itemId: pin.item_id })} wsId={wsId} inMenu />) : (
             <Collapsible defaultOpen>
               <SidebarGroup className="group/pinned">
                 <SidebarGroupLabel
@@ -974,12 +1145,10 @@ function WorkspaceNavigation({ workspace, pickerProps }: { workspace: Workspace;
                 </CollapsibleContent>
               </SidebarGroup>
             </Collapsible>
-          )}
-
-</>;
+          )) : null;
   return <>
     <WorkspacePicker {...pickerProps} otherUnread={otherWorkspaceUnread} unreadIds={unreadWsIds} />
-    <WorkspaceLinks workspace={workspace} personalCounts={{ inbox: unreadCount }} pinned={pinned} isActivePinnedRoute={isActivePinnedRoute}
+    <WorkspaceLinks workspace={workspace} personalCounts={{ inbox: unreadCount }} pinned={pinned} isActivePinnedRoute={isActivePinnedRoute} overflow={overflow}
       iterationEnabled={iterationCapability?.supported === true && iterationCapability.manual === true && iterationCapability.enabled === true}
       triageEnabled={triageSettings?.enabled === true} triageCount={triageCounts?.ready} />
   </>;
