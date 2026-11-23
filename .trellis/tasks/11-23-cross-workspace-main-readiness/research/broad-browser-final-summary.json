@@ -1,0 +1,31 @@
+{
+  "candidate": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+  "identities": 538,
+  "latest_status_counts": {
+    "passed": 464,
+    "skipped": 74
+  },
+  "initial_failed_cases_closed": 22,
+  "auto_retries": 0,
+  "final_run_source_digest": "a0c856da7308e0ed3e6bc441d5d3be2fbb2ef8734edb39200934c570ecde387e",
+  "final_web_build_id": "VLKTO9SF0CdGqBRibRIvB",
+  "private_ledger": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/final-ledger.json",
+  "private_cleanup": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/final-cleanup.json",
+  "cleanup": {
+    "allocations": 32,
+    "all_owned_application_ports_closed": true,
+    "owned_database_stopped": true,
+    "owned_database_port_free": true,
+    "other_client_connections": 0
+  },
+  "remaining_skip_files": 33,
+  "handoff_source_digest": "8222d487253da58bf90b77d8b3802dab3a0781f49c73da14faaf53d67c2657f8",
+  "post_runtime_mechanical_files": [
+    "e2e/mcp-desktop.spec.ts"
+  ],
+  "e2e_scoped_lint": {
+    "files": 16,
+    "exit": 0,
+    "scope": "repository base with devDependencies permitted only under **/e2e/**"
+  }
+}

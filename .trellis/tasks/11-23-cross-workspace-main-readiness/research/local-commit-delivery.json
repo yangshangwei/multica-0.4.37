@@ -1,0 +1,94 @@
+{
+  "authorized_at": "2026-11-23T22:11:35.201064+08:00",
+  "authorization": "User replied 执行 after the concrete six-group local commit plan.",
+  "baseline": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+  "work_commits": [
+    {
+      "number": 1,
+      "sha": "153103f75efca1127efb0f12cd9ae96266c896b8",
+      "subject": "fix(ci): keep large merge candidates fully checkable",
+      "files": [
+        ".github/workflows/ci.yml",
+        ".trellis/spec/web/frontend/image-budget-check.md",
+        ".trellis/spec/web/frontend/index.md",
+        "scripts/check-image-budget.mjs",
+        "scripts/check-image-budget.test.mjs"
+      ]
+    },
+    {
+      "number": 2,
+      "sha": "2a8d44e8710a39eb3bb8c0107b4bf926d430431a",
+      "subject": "fix(navigation): preserve collaboration drafts across viewport changes",
+      "files": [
+        ".trellis/spec/core/frontend/global-scope-navigation.md",
+        ".trellis/spec/views/frontend/collaboration-creation.md",
+        ".trellis/spec/web/frontend/e2e-run-environment.md",
+        "e2e/capability-market.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "e2e/fixtures/collaboration-knowledge.ts",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/iterations-i1.ts",
+        "e2e/fixtures/sidebar-navigation.ts",
+        "e2e/iterations-audit-desktop.spec.ts",
+        "e2e/localized-template-defaults.spec.ts",
+        "e2e/mcp-desktop.spec.ts",
+        "e2e/mcp-welcome-desktop.spec.ts",
+        "e2e/navigation.spec.ts",
+        "e2e/sidebar-icon-rail.spec.ts",
+        "e2e/skill-market.spec.ts",
+        "e2e/skill-welcome-desktop.spec.ts",
+        "e2e/workspace-defaults.spec.ts",
+        "packages/ui/components/ui/sidebar.tsx",
+        "packages/views/collaboration/creation-form.test.tsx",
+        "packages/views/collaboration/creation-form.tsx",
+        "packages/views/layout/app-sidebar.test.tsx",
+        "packages/views/layout/app-sidebar.tsx",
+        "packages/views/settings/components/settings-page.test.tsx"
+      ]
+    },
+    {
+      "number": 3,
+      "sha": "e5c843a750bebab90d00fc4843d999c8e2a9fe10",
+      "subject": "fix(collaboration): stop denied subscriptions from refreshing indefinitely",
+      "files": [
+        ".trellis/spec/server/collaboration-realtime.md",
+        "packages/core/realtime/collaboration.test.ts",
+        "packages/core/realtime/collaboration.ts"
+      ]
+    },
+    {
+      "number": 4,
+      "sha": "513417d49ae0c9b53d8bb2a0348d5fea24969c21",
+      "subject": "test(dbid): preserve notification identity through replay",
+      "files": [
+        "server/pkg/dbid/writes_test.go"
+      ]
+    },
+    {
+      "number": 5,
+      "sha": "f0a3f71cf10cc33e18b81aa8d1633c8166fa971b",
+      "subject": "docs: keep embedded guides aligned with current sources",
+      "files": [
+        "server/internal/docs/content/pages/collaboration.json",
+        "server/internal/docs/content/pages/desktop-app.json",
+        "server/internal/docs/content/pages/feature-overview.json",
+        "server/internal/docs/content/pages/tutorial.json"
+      ]
+    }
+  ],
+  "task_record_commit": "This record is included in the sixth approved task-evidence commit.",
+  "committed_source_head": "f0a3f71cf10cc33e18b81aa8d1633c8166fa971b",
+  "verified_source_files": 38,
+  "all_committed_blob_sha256_match_integration": true,
+  "remote_actions": {
+    "push": false,
+    "pr_create": false,
+    "main_merge": false
+  },
+  "remaining": [
+    "121image exception proposal not published/approved",
+    "RemoteCI not run for final commits",
+    "74explicit unexecuted browser prerequisites"
+  ]
+}

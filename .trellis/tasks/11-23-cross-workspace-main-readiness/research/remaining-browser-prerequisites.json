@@ -1,0 +1,559 @@
+{
+  "candidate": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+  "skipped_count": 74,
+  "by_file": {
+    "admin-resource-publishing.spec.ts": 3,
+    "auth-device.spec.ts": 1,
+    "collaboration-cross-client-execution.spec.ts": 1,
+    "collaboration-detail-journey.spec.ts": 2,
+    "collaboration-host-installed.spec.ts": 1,
+    "collaboration-information-recovery.spec.ts": 2,
+    "collaboration-installed-clients.spec.ts": 1,
+    "collaboration-installed-main.spec.ts": 1,
+    "collaboration-knowledge-deployed.spec.ts": 1,
+    "collaboration-lane-close-controls.spec.ts": 6,
+    "collaboration-lifecycle-controls.spec.ts": 2,
+    "collaboration-memory-runtime.spec.ts": 1,
+    "collaboration-multi-account-closure.spec.ts": 1,
+    "collaboration-offline-result-notifications.spec.ts": 2,
+    "collaboration-pay-creation.spec.ts": 2,
+    "collaboration-performance.spec.ts": 3,
+    "collaboration-recovery-extras.spec.ts": 6,
+    "collaboration-recovery-ordinary-ui.spec.ts": 2,
+    "collaboration-recovery-runtime.spec.ts": 4,
+    "collaboration-recovery-subscriptions.spec.ts": 2,
+    "collaboration-recovery.spec.ts": 6,
+    "collaboration-requirements-history.spec.ts": 2,
+    "collaboration-runtime-output.spec.ts": 2,
+    "collaboration-stage-approvals.spec.ts": 1,
+    "collaboration-stage-execution.spec.ts": 3,
+    "collaboration-timeout-recovery.spec.ts": 1,
+    "inbox-snooze.spec.ts": 6,
+    "issue-completion-authorization.spec.ts": 2,
+    "password-binding-desktop.spec.ts": 1,
+    "password-migration.spec.ts": 2,
+    "password-server-switch.spec.ts": 1,
+    "platform-admin-initialization.spec.ts": 1,
+    "project-knowledge-automation.spec.ts": 2
+  },
+  "cases": [
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "first resource page screenshot",
+      "reasons": [
+        "Requires task-owned API, Web, database and managed storage"
+      ]
+    },
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "localized responsive states and deployment-disabled feedback",
+      "reasons": [
+        "Requires task-owned API, Web, database and managed storage"
+      ]
+    },
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+      "reasons": [
+        "Requires task-owned API, Web, database and managed storage"
+      ]
+    },
+    {
+      "file": "auth-device.spec.ts",
+      "title": "device login authenticates a distinct user without granting another user's workspace",
+      "reasons": [
+        "Requires a dedicated API with MULTICA_DEVICE_AUTH_ENABLED=true"
+      ]
+    },
+    {
+      "file": "collaboration-cross-client-execution.spec.ts",
+      "title": "AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+      "reasons": [
+        "Requires explicit task-owned password API/Web/renderer and static Linux daemon/provider executables"
+      ]
+    },
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "reasons": [
+        "Requires the root session's task-owned production runtime permit"
+      ]
+    },
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "reasons": [
+        "Requires the root session's task-owned production runtime permit"
+      ]
+    },
+    {
+      "file": "collaboration-host-installed.spec.ts",
+      "title": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "reasons": [
+        "Requires an explicitly selected packaged Main image or native Windows/macOS executable"
+      ]
+    },
+    {
+      "file": "collaboration-information-recovery.spec.ts",
+      "title": "Desktop information recovery preserves structured blocks, exact repairs, original receipts and protected history across A B C E F G",
+      "reasons": [
+        "Requires the fresh PAY-241 S3 password API, production Web and matching real Desktop information candidate"
+      ]
+    },
+    {
+      "file": "collaboration-information-recovery.spec.ts",
+      "title": "Web information recovery preserves structured blocks, exact repairs, original receipts and protected history across A B C E F G",
+      "reasons": [
+        "Requires the fresh PAY-241 S3 password API, production Web and matching real Desktop information candidate"
+      ]
+    },
+    {
+      "file": "collaboration-installed-clients.spec.ts",
+      "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "reasons": [
+        "Requires the existing isolated password API, exact cached OCI package and explicit Linux stdio relay"
+      ]
+    },
+    {
+      "file": "collaboration-installed-main.spec.ts",
+      "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "reasons": [
+        "Requires a task-owned packaged Linux full Main image and password API"
+      ]
+    },
+    {
+      "file": "collaboration-knowledge-deployed.spec.ts",
+      "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+      "reasons": [
+        "Requires an explicit true/false expectation and isolated task-owned deployment"
+      ]
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "reasons": [
+        "Requires root-owned production/password API, Electron and explicit Linux fixtures"
+      ]
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "reasons": [
+        "Requires root-owned production/password API, Electron and explicit Linux fixtures"
+      ]
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "reasons": [
+        "Requires the root-owned production/password API, renderer and explicit fixture identities"
+      ]
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "reasons": [
+        "Requires root-owned production/password API, Electron and explicit Linux fixtures"
+      ]
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "reasons": [
+        "Requires root-owned production/password API, Electron and explicit Linux fixtures"
+      ]
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "reasons": [
+        "Requires the root-owned production/password API, renderer and explicit fixture identities"
+      ]
+    },
+    {
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "reasons": [
+        "Requires root-allocated task-owned production Web/password API/renderer and explicit Linux fixtures"
+      ]
+    },
+    {
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "reasons": [
+        "Requires root-allocated task-owned production Web/password API/renderer and explicit Linux fixtures"
+      ]
+    },
+    {
+      "file": "collaboration-memory-runtime.spec.ts",
+      "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+      "reasons": [
+        "Requires explicit task-owned host daemon, memory-provider and Multica CLI executables"
+      ]
+    },
+    {
+      "file": "collaboration-multi-account-closure.spec.ts",
+      "title": "three account owners and three native agents close one cross-workspace issue after revision",
+      "reasons": [
+        "Requires explicit task-owned password API, production Web and closure Provider binaries"
+      ]
+    },
+    {
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "reasons": [
+        "Requires task-owned password production services and explicit test-built Linux executables"
+      ]
+    },
+    {
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "reasons": [
+        "Requires task-owned password production services and explicit test-built Linux executables"
+      ]
+    },
+    {
+      "file": "collaboration-pay-creation.spec.ts",
+      "title": "Desktop creates one complete PAY issue through real controls and preserves its original creation identity",
+      "reasons": [
+        "Requires PAY241_TC01_CREATION_ACCEPTANCE=1, owned password API/database, production Web and matching Desktop renderer/preload"
+      ]
+    },
+    {
+      "file": "collaboration-pay-creation.spec.ts",
+      "title": "Web creates one complete PAY issue through real controls and preserves its original creation identity",
+      "reasons": [
+        "Requires PAY241_TC01_CREATION_ACCEPTANCE=1, owned password API/database, production Web and matching Desktop renderer/preload"
+      ]
+    },
+    {
+      "file": "collaboration-performance.spec.ts",
+      "title": "prepare: 100 password accounts join one collaboration issue through public routes",
+      "reasons": [
+        "Requires COLLABORATION_PERF_ACCEPTANCE=1 and a coordinator-allocated isolated S5 run"
+      ]
+    },
+    {
+      "file": "collaboration-performance.spec.ts",
+      "title": "propagation: 100 observers each see 100 status changes on their own socket and token",
+      "reasons": [
+        "Requires COLLABORATION_PERF_ACCEPTANCE=1 and a coordinator-allocated isolated S5 run"
+      ]
+    },
+    {
+      "file": "collaboration-performance.spec.ts",
+      "title": "writeback: 100 controlled runs each return one business result and one finalization",
+      "reasons": [
+        "Requires COLLABORATION_PERF_ACCEPTANCE=1 and a coordinator-allocated isolated S5 run"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "Desktop recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 managed password Extras-A allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "Desktop recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 managed password Extras-A allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "Desktop recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 managed password Extras-A allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "Web recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 managed password Extras-A allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "Web recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 managed password Extras-A allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "Web recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 managed password Extras-A allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-ordinary-ui.spec.ts",
+      "title": "Desktop ordinary child priority and assignee UI retain observed numeric revisions with a separate versionlessAPI control",
+      "reasons": [
+        "Requires PAY241_S3_ORDINARY_UI_CAS_ACCEPTANCE=1 and the explicit S3 password/API/production Web/matching native allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-ordinary-ui.spec.ts",
+      "title": "Web ordinary child priority and assignee UI retain observed numeric revisions with a separate versionlessAPI control",
+      "reasons": [
+        "Requires PAY241_S3_ORDINARY_UI_CAS_ACCEPTANCE=1 and the explicit S3 password/API/production Web/matching native allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "title": "Desktop controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 password host-runtime allocation and explicit test-built executables"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "title": "Desktop controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 password host-runtime allocation and explicit test-built executables"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "title": "Web controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 password host-runtime allocation and explicit test-built executables"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "title": "Web controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+      "reasons": [
+        "Requires the separately authorized PAY-241 S3 password host-runtime allocation and explicit test-built executables"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-subscriptions.spec.ts",
+      "title": "Desktop ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+      "reasons": [
+        "Requires PAY241_S3_SUBSCRIPTION_ACCEPTANCE=1 and the existing explicit S3 password/source/database allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery-subscriptions.spec.ts",
+      "title": "Web ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+      "reasons": [
+        "Requires PAY241_S3_SUBSCRIPTION_ACCEPTANCE=1 and the existing explicit S3 password/source/database allocation"
+      ]
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "title": "Desktop recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+      "reasons": [
+        "Requires the newly allocated PAY-241 S3 password API, production Web and matching Desktop source"
+      ]
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "title": "Desktop recovery priority and handler contention preserve original receipts in both submission orders",
+      "reasons": [
+        "Requires the newly allocated PAY-241 S3 password API, production Web and matching Desktop source"
+      ]
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "title": "Desktop recovery reads 55 offline comments through complete pages and a reauthenticated live WebSocket",
+      "reasons": [
+        "Requires the newly allocated PAY-241 S3 password API, production Web and matching Desktop source"
+      ]
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "title": "Web recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+      "reasons": [
+        "Requires the newly allocated PAY-241 S3 password API, production Web and matching Desktop source"
+      ]
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "title": "Web recovery priority and handler contention preserve original receipts in both submission orders",
+      "reasons": [
+        "Requires the newly allocated PAY-241 S3 password API, production Web and matching Desktop source"
+      ]
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "title": "Web recovery reads 55 offline comments through complete pages and a reauthenticated live WebSocket",
+      "reasons": [
+        "Requires the newly allocated PAY-241 S3 password API, production Web and matching Desktop source"
+      ]
+    },
+    {
+      "file": "collaboration-requirements-history.spec.ts",
+      "title": "Desktop three authorized sessions synchronize acceptance criteria and reopen complete V1 V2 V3 history",
+      "reasons": [
+        "Requires PAY241_TC02_REQUIREMENTS_ACCEPTANCE=1, owned password API/database, production Web and matching Desktop renderer/preload"
+      ]
+    },
+    {
+      "file": "collaboration-requirements-history.spec.ts",
+      "title": "Web three authorized sessions synchronize acceptance criteria and reopen complete V1 V2 V3 history",
+      "reasons": [
+        "Requires PAY241_TC02_REQUIREMENTS_ACCEPTANCE=1, owned password API/database, production Web and matching Desktop renderer/preload"
+      ]
+    },
+    {
+      "file": "collaboration-runtime-output.spec.ts",
+      "title": "Desktop controlled Agent output preserves original files, receipts, results and current authority",
+      "reasons": [
+        "Requires the separately permitted fresh PAY-241 output allocation and explicit test-built executables"
+      ]
+    },
+    {
+      "file": "collaboration-runtime-output.spec.ts",
+      "title": "Web controlled Agent output preserves original files, receipts, results and current authority",
+      "reasons": [
+        "Requires the separately permitted fresh PAY-241 output allocation and explicit test-built executables"
+      ]
+    },
+    {
+      "file": "collaboration-stage-approvals.spec.ts",
+      "title": "stage decisions and prepared test reports retain human and runtime history across Web and Desktop",
+      "reasons": [
+        "Requires explicit stage acceptance, task-owned password API, production Web and matching Desktop build"
+      ]
+    },
+    {
+      "file": "collaboration-stage-execution.spec.ts",
+      "title": "a late authenticated deployment stays historical and a fresh approval cannot endorse it",
+      "reasons": [
+        "Requires final stage sources and the task-owned private control bridge"
+      ]
+    },
+    {
+      "file": "collaboration-stage-execution.spec.ts",
+      "title": "release and rollback keep exact builds, human decisions and controlled execution separate on Web and Desktop",
+      "reasons": [
+        "Requires the final stage API/production Web/Desktop and private controlled-source harness"
+      ]
+    },
+    {
+      "file": "collaboration-stage-execution.spec.ts",
+      "title": "stage evidence gates real submission, M1 completion and administrative or project exits",
+      "reasons": [
+        "Requires final stage/M1 writer integration and the task-owned password/admin environment"
+      ]
+    },
+    {
+      "file": "collaboration-timeout-recovery.spec.ts",
+      "title": "actual host timeout retains its failure and recovers committed receipts after a same-ledger restart",
+      "reasons": [
+        "Requires the explicit password API, production Web/Desktop and closure Provider binaries"
+      ]
+    },
+    {
+      "file": "inbox-snooze.spec.ts",
+      "title": "Native Electron uses the shared snooze journey and keeps main, Snoozed and Archived tabs independent",
+      "reasons": [
+        "Requires the explicit owned inbox-snooze runtime permit"
+      ]
+    },
+    {
+      "file": "inbox-snooze.spec.ts",
+      "title": "Web Chinese touch controls preserve keyboard focus, custom time and narrow layouts in both themes",
+      "reasons": [
+        "Requires the explicit owned inbox-snooze runtime permit"
+      ]
+    },
+    {
+      "file": "inbox-snooze.spec.ts",
+      "title": "Web failed save retains selection and custom input; another device invalidates the visible undo",
+      "reasons": [
+        "Requires the explicit owned inbox-snooze runtime permit"
+      ]
+    },
+    {
+      "file": "inbox-snooze.spec.ts",
+      "title": "Web group snooze survives reload, changes time, undoes and reminds the original unread group",
+      "reasons": [
+        "Requires the explicit owned inbox-snooze runtime permit"
+      ]
+    },
+    {
+      "file": "inbox-snooze.spec.ts",
+      "title": "Web ordinary and group mentions stay snoozed; personal mentions and assignment wake across devices while another workspace is active",
+      "reasons": [
+        "Requires the explicit owned inbox-snooze runtime permit"
+      ]
+    },
+    {
+      "file": "inbox-snooze.spec.ts",
+      "title": "Web server expiry returns original unread notifications near the top and never revives an archived plan",
+      "reasons": [
+        "Requires the explicit owned inbox-snooze runtime permit"
+      ]
+    },
+    {
+      "file": "issue-completion-authorization.spec.ts",
+      "title": "Electron renderer enforces the explicit evidence authorization in a narrow window",
+      "reasons": [
+        "Requires an explicit task-owned M1 fixture from m1-renderer-fixture-20261113.mjs"
+      ]
+    },
+    {
+      "file": "issue-completion-authorization.spec.ts",
+      "title": "Web enforces the explicit evidence authorization and shows a narrow keyboard flow",
+      "reasons": [
+        "Requires an explicit task-owned M1 fixture from m1-renderer-fixture-20261113.mjs"
+      ]
+    },
+    {
+      "file": "password-binding-desktop.spec.ts",
+      "title": "an existing Desktop account binds password login without losing its history",
+      "reasons": [
+        "Requires a local password-mode server and migration window"
+      ]
+    },
+    {
+      "file": "password-migration.spec.ts",
+      "title": "legacy setup returns to the original identity and workspace",
+      "reasons": [
+        "Requires isolated password-mode deployment"
+      ]
+    },
+    {
+      "file": "password-migration.spec.ts",
+      "title": "temporary recovery returns to the original identity and workspace",
+      "reasons": [
+        "Requires isolated password-mode deployment"
+      ]
+    },
+    {
+      "file": "password-server-switch.spec.ts",
+      "title": "Electron server switch clears same-host credentials and closes issue windows",
+      "reasons": [
+        "Opt-in isolated password acceptance"
+      ]
+    },
+    {
+      "file": "platform-admin-initialization.spec.ts",
+      "title": "initialized administrator changes the temporary password before entering administration",
+      "reasons": [
+        "Requires a fresh isolated administrator-initialization deployment"
+      ]
+    },
+    {
+      "file": "project-knowledge-automation.spec.ts",
+      "title": "desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "reasons": [
+        "Requires the active task's isolated production runtime"
+      ]
+    },
+    {
+      "file": "project-knowledge-automation.spec.ts",
+      "title": "web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "reasons": [
+        "Requires the active task's isolated production runtime"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "candidate": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+  "commits": [
+    {
+      "intent": "fix(ci): keep large merge candidates fully checkable",
+      "files": [
+        ".github/workflows/ci.yml",
+        ".trellis/spec/web/frontend/image-budget-check.md",
+        ".trellis/spec/web/frontend/index.md",
+        "scripts/check-image-budget.mjs",
+        "scripts/check-image-budget.test.mjs"
+      ]
+    },
+    {
+      "intent": "fix(navigation): preserve collaboration drafts across viewport changes",
+      "files": [
+        ".trellis/spec/core/frontend/global-scope-navigation.md",
+        ".trellis/spec/views/frontend/collaboration-creation.md",
+        ".trellis/spec/web/frontend/e2e-run-environment.md",
+        "e2e/capability-market.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "e2e/fixtures/collaboration-knowledge.ts",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/iterations-i1.ts",
+        "e2e/fixtures/sidebar-navigation.ts",
+        "e2e/iterations-audit-desktop.spec.ts",
+        "e2e/localized-template-defaults.spec.ts",
+        "e2e/mcp-desktop.spec.ts",
+        "e2e/mcp-welcome-desktop.spec.ts",
+        "e2e/navigation.spec.ts",
+        "e2e/sidebar-icon-rail.spec.ts",
+        "e2e/skill-market.spec.ts",
+        "e2e/skill-welcome-desktop.spec.ts",
+        "e2e/workspace-defaults.spec.ts",
+        "packages/ui/components/ui/sidebar.tsx",
+        "packages/views/collaboration/creation-form.test.tsx",
+        "packages/views/collaboration/creation-form.tsx",
+        "packages/views/layout/app-sidebar.test.tsx",
+        "packages/views/layout/app-sidebar.tsx",
+        "packages/views/settings/components/settings-page.test.tsx"
+      ]
+    },
+    {
+      "intent": "fix(collaboration): stop denied subscriptions from refreshing indefinitely",
+      "files": [
+        ".trellis/spec/server/collaboration-realtime.md",
+        "packages/core/realtime/collaboration.test.ts",
+        "packages/core/realtime/collaboration.ts"
+      ]
+    },
+    {
+      "intent": "test(dbid): preserve notification identity through replay",
+      "files": [
+        "server/pkg/dbid/writes_test.go"
+      ]
+    },
+    {
+      "intent": "docs: keep embedded guides aligned with current sources",
+      "files": [
+        "server/internal/docs/content/pages/collaboration.json",
+        "server/internal/docs/content/pages/desktop-app.json",
+        "server/internal/docs/content/pages/feature-overview.json",
+        "server/internal/docs/content/pages/tutorial.json"
+      ]
+    }
+  ],
+  "task_record_commit": "chore(task): retain merge readiness evidence and explicit verification limits",
+  "task_record_directory": ".trellis/tasks/11-23-cross-workspace-main-readiness",
+  "unrecognized_tracked_dirty_files": [],
+  "untracked_outside_task": "Existing historical artifacts and other task records excluded; no git add -A",
+  "status": "Approved by user; five work commits completed and this sixth task-record commit delivers the evidence.",
+  "remote_actions": "No push, PR or main merge in this batch.",
+  "approval": "2026-11-23 user: 执行",
+  "executed_work_commits": [
+    {
+      "sha": "153103f75efca1127efb0f12cd9ae96266c896b8",
+      "intent": "fix(ci): keep large merge candidates fully checkable"
+    },
+    {
+      "sha": "2a8d44e8710a39eb3bb8c0107b4bf926d430431a",
+      "intent": "fix(navigation): preserve collaboration drafts across viewport changes"
+    },
+    {
+      "sha": "e5c843a750bebab90d00fc4843d999c8e2a9fe10",
+      "intent": "fix(collaboration): stop denied subscriptions from refreshing indefinitely"
+    },
+    {
+      "sha": "513417d49ae0c9b53d8bb2a0348d5fea24969c21",
+      "intent": "test(dbid): preserve notification identity through replay"
+    },
+    {
+      "sha": "f0a3f71cf10cc33e18b81aa8d1633c8166fa971b",
+      "intent": "docs: keep embedded guides aligned with current sources"
+    }
+  ]
+}
