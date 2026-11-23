@@ -146,6 +146,7 @@ jobs:
               - '**/*.webp'
               - '**/*.avif'
               - 'scripts/check-image-budget.mjs'
+              - 'scripts/check-image-budget.test.mjs'
 
       - name: Decide
         id: decide
@@ -872,6 +873,14 @@ jobs:
           # The check diffs against the base branch, which a shallow
           # clone does not contain.
           fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Test image budget check
+        run: node --test scripts/check-image-budget.test.mjs
 
       - name: Check image budget
         env:

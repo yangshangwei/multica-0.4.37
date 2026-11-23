@@ -21,6 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Full-path session history, account mementos and committed navigation intent | Active |
 | [Collaboration notifications](../../core/frontend/collaboration-notifications.md) | Account page, matching query/fragment commits and real browser return proof | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
+| [Image budget check](./image-budget-check.md) | Streamed Git paths, 300 KiB growth policy, explicit PR exceptions and CI regressions | Active |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Agent critical-path CI](./agent-critical-path-ci.md) | Four production-Web paths, exact inventory and isolated launch contract | Active |
 | [E2E Run Environment](./e2e-run-environment.md) | Production Web, password actor/onboarding, managed profile owner and source/runtime binding | Active |
