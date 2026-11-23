@@ -613,3 +613,69 @@ Source/spec commit `00aaf3f5e`; acceptance-evidence commit `9eced3cc1`; archive 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 191: 折叠侧栏保留常用图标（方案 A，未提交）
+<!-- trellis-session: v=2 fp=972d476281d269f4 -->
+
+**Date**: 2026-11-23
+**Task**: 折叠侧栏保留常用图标（方案 A，未提交）
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按已审阅的方案 A 完成 64px 常用图标栏、更多菜单和 Web/Desktop 布局适配。143 个相关单元测试与 4 条生产 Web/真实 Electron 原始旅程通过；遵照用户要求未暂存、未提交。
+
+### Main Changes
+
+- 共享侧栏复用原路由、查询、功能开关与新建任务交接；图标提示和 More/固定项使用现有 Base UI。
+- 共享 64px 宽度、44px 触控目标与图标居中；桌面顶部保留工具栏间距；200% 窄屏抽屉顶部与导航同滚动。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] UI/Views/Web/Desktop typecheck、定向 lint、设计检测通过；包 lint 0 错误，保留原有无关警告。
+- [OK] 共享 110 + Web 13 + Desktop 20 个测试通过；confirmed/report.json 四条真实旅程 0 重试/跳过/失败。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 任务 11-23-sidebar-common-icon-rail 已验收，保留活跃记录供用户审阅；仅在明确授权后提交。
+
+
+## Session 192: 侧栏常用图标：本地提交与任务归档
+<!-- trellis-session: v=2 fp=f3f7791180093b35 -->
+
+**Date**: 2026-11-23
+**Task**: 侧栏常用图标：本地提交与任务归档
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+用户在验收后明确授权提交。已本地提交方案 A 的侧栏代码、测试与导航规范，并归档任务 sidebar-common-icon-rail；原有无关修改保留，未推送远端。
+
+### Main Changes
+
+- 工作提交 76c61f95d 仅包含本任务 16 个源代码、规范和测试文件。
+- 归档 11-23-sidebar-common-icon-rail，记录后续提交授权、工作提交与完整验收证据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `76c61f95dbbd` | feat(navigation): keep common actions reachable when the sidebar folds |
+
+### Testing
+
+- [OK] 提交前比对当前源码与最终生产验收绑定，哈希一致；143 个相关单元测试及 4 条生产 Web/真实 Electron 原始旅程通过。
+- [OK] 归档上下文校验、暂存 diff check 通过；无关文件内容保留。
+
+### Status
+
+[OK] **Completed**

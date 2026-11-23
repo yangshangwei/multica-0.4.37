@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 190
+- **Total Sessions**: 192
 - **Last Active**: 2026-11-23
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~615 | Active |
+| `journal-4.md` | ~681 | Active |
 | `journal-3.md` | ~1928 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
@@ -32,6 +32,8 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 192 | 2026-11-23 | 侧栏常用图标：本地提交与任务归档 | `76c61f95dbbd` | `codex/cross-workspace-collaboration` |
+| 191 | 2026-11-23 | 折叠侧栏保留常用图标（方案 A，未提交） | - | `codex/cross-workspace-collaboration` |
 | 190 | 2026-11-23 | 项目欢迎页：注册激活案例与智能体分配 | `7d8a027e0` | `codex/cross-workspace-collaboration` |
 | 189 | 2026-11-22 | 侧栏直接提供任务、协作与 AI 对话入口 | `fe4f311dd` | `codex/cross-workspace-collaboration` |
 | 188 | 2026-11-22 | 协作通知独立页完成与双端返回验收 | `00aaf3f5e`, `9eced3cc1` | `codex/cross-workspace-collaboration` |
