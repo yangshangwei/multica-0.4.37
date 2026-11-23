@@ -1,5 +1,7 @@
 # PAY-241 推进计划（2026-11-18）
 
+> 历史推进记录：以下状态与验收数字保留于文档所述日期。相关任务已迁入归档目录，引用已更新；当前进度以归档任务的验收矩阵和后续记录为准。
+
 继续现有任务，按已接受的 S2 候选进入 S3。主会话负责进度、环境和整合，原生 Trellis 实施与检查代理负责明确的文件范围。
 
 ## 当前进度
@@ -8,13 +10,20 @@
 | --- | --- | --- |
 | S1 身份与闭环基线 | 已检查、提交并归档 | 保留原证据 |
 | S2 角色审批与阶段门禁 | R33 完整代码及合成验收独立接受；12 A、18 W、12 Q 全部核对；原四旅程 4 PASS / 0 FAIL / 0 NOT_RUN、零重试 | 提交与归档待处理；真实外部证据属于 S4 |
-| S3 执行与协作恢复 | timeout-proof 已归档；v2/r05 规划已通过；字段并发首增量及 TestMain 清理已独立接受，normal/race 与 ROOT 检查通过 | 当前 API/Web/Desktop 并发与批次补读、混合通知、上传恢复和阻塞四项验收 |
+| S3 执行与协作恢复 | 字段并发、双端 55 条评论补读、人工通知/上传/撤权已有证据；R08 的结构化阻塞、解除及历史恢复双端 12/12 通过 | 普通订阅收件人与去重；受控运行结果通知/撤权；S3 全范围验收 |
 | S4 外部集成 | 接入清单与受控合同已准备 | I02–I09 的真实沙箱、仓库/CI、非生产部署/回滚、指标及人员输入 |
 | S5 性能与总验收 | r02 工具演练已检查 | S2–S4 最终候选上的正式性能采样及业务签字 |
 
-父矩阵为 **2 PASS / 12 PARTIAL / 10 NOT_RUN**，完整 24 条分母保留。TC-05、TC-08 已通过；TC-16 本轮以 service/HTTP 并发和原回执证据推进为 PARTIAL，当前客户端组合仍待验证。S2 合成签字和受控外部事实不替代支付、真实模型或业务验收。R31/R32 及更早失败仍在历史记录中，S2 结论以 R33 最终报告为准。
+截至 2026-11-18 的父任务记录（[归档逐项矩阵](../../.trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/test-matrix.csv)，其中矩阵包含后续更新）：**4 PASS / 13 PARTIAL / 7 NOT_RUN**。已通过 TC-05、TC-08、TC-15、TC-23。TC-22 的混合提及和原事件去重已有证据，普通订阅交付尚未验证。TC-16 的普通子任务界面版本参数仍可选，保持 PARTIAL。
 
-## 推进顺序与验收门槛
+## 接下来怎么推进
+
+1. **已执行：核对恢复证据。** R05 单轮 6/6、18/18，不拼接 R01–R04。已按原上传请求、附件、密文、评论回执和实际收件人核账，更新 TC-14/21/22；旧失败留存。
+2. **已执行：阻塞与解除（TC-23）。** [R08 双端验收](../../.trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/research/block-runtime-r08-20261118.md)单轮 12/12 通过，读回 70 条原操作回执。候选后端及共享客户端变更已整合，保留原有工作树改动；首次合法分页 GET 的 503 单独跟踪。
+3. **补齐通知与运行恢复。** 分开验证普通订阅收件人及同事件去重；在独立受控环境运行[已编写的 Extras-B 场景](../../.trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/research/recovery-runtime-implementation-20261118.md)，核对成功、失败、停止的结果通知及撤权（4 个场景、10 个子场景）。静态检查与人工上传都不能替代这次运行。
+4. **真实 S4 → 最终 S5。** 收齐 I02–I09 的非生产目标、数据和审核人，再跑 E01–E07。用最终候选采集 100 用户的 10,000 个传播样本和 100 次结果回写，复核 24 条用例并由产品、研发、QA、项目经理签字。未提供的真实输入不以演练冲抵。
+
+## 原定顺序与验收门槛（保留历史）
 
 1. **校正进度并绑定 S3 前置。**核对 R33 完整 S2 与运行后报告、源码 manifest 和既有 v2/r05 规划；更新父任务的旧等待字段与 S3 的 implement/check 上下文。已完成最终源码全量哈希核对并建立独立验证副本，原运行库、历史与成功请求保持。
 2. **S3 首增量：优先级与处理人并发。**增加 `server/internal/service/collaboration_recovery_cas_test.go` 和 `server/internal/handler/collaboration_child_recovery_cas_test.go`，并修正本轮真实复现的 `server/internal/handler/handler_test.go` 退出清理缺项。复用真实 PostgreSQL 提交/PID 屏障，验证同键同载荷、同键不同优先级、不同键同版本竞争、处理人转交与优先级两种提交顺序、原 GET 回执恢复及普通关联子任务的显式 numeric CAS。每个 package/mode 使用新专库，检查精确字段、版本、原请求和副作用；通过 normal/race、gofmt、编译、vet 和独立审查后记为局部证据。
@@ -35,9 +44,9 @@
 
 证据入口：父任务 `session-progress.md`、S2 `research/r33-full-s2-a01-a12-independent-check-20261118.md`、S3 `research/s3-source-binding-20261118.md` 和父任务 `research/s3-cas-intake-20261118.md`。
 
-新会话入口：`.trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md`。本次代码提交仅含三个Go文件和两个spec；此前S2、父任务历史与其他工作区WIP保留，后续先核对归属和当前来源。
+新会话入口：`.trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md`。本次代码提交仅含三个Go文件和两个spec；此前S2、父任务历史与其他工作区WIP保留，后续先核对归属和当前来源。
 
-当前会话已接续S3，细化计划见 `.trellis/tasks/11-13-pay-241-s3-recovery/research/current-clients-plan-20261118.md`。共享工作树按完整文件视图保存388条基线，原index为空；已接受R04持有源码无漂移且ROOT生产路径一致。新证据/状态根单独分配，由主会话核对配置、真实专库和构建身份后执行。下一增量先补当前API/Web/Electron字段并发与原回执，后续以完整55条评论分页和真实WS重认证推进，不沿用单条评论旧证据判PASS。
+当前会话已接续S3，细化计划见 `.trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/research/current-clients-plan-20261118.md`。共享工作树按完整文件视图保存388条基线，原index为空；已接受R04持有源码无漂移且ROOT生产路径一致。新证据/状态根单独分配，由主会话核对配置、真实专库和构建身份后执行。下一增量先补当前API/Web/Electron字段并发与原回执，后续以完整55条评论分页和真实WS重认证推进，不沿用单条评论旧证据判PASS。
 
 ## Current-client field acceptance R06 — 2026-11-18
 
