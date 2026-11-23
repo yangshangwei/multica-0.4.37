@@ -541,6 +541,12 @@ jobs:
         with:
           node-version: 22
 
+      - name: Initialize test-only signing key
+        if: ${{ needs.changes.outputs.backend == 'true' }}
+        shell: bash
+        run: |
+          node -e 'const key = require("node:crypto").randomBytes(32).toString("hex"); console.log("::add-mask::" + key); require("node:fs").appendFileSync(process.env.GITHUB_ENV, "JWT_SECRET=" + key + "\n")'
+
       - name: Verify release and database test preconditions
         if: ${{ needs.changes.outputs.backend == 'true' }}
         run: bash scripts/go-test-with-agent-cli-guard.sh -- node --test scripts/changelog-workflow.test.mjs scripts/go-test-database-preconditions.test.mjs

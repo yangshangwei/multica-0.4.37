@@ -93,6 +93,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Initialize test-only signing key
+        shell: bash
+        run: |
+          node -e 'const key = require("node:crypto").randomBytes(32).toString("hex"); console.log("::add-mask::" + key); require("node:fs").appendFileSync(process.env.GITHUB_ENV, "JWT_SECRET=" + key + "\n")'
+
       - name: Verify changelog generation, publication and release graph
         run: node --test scripts/*changelog*.test.mjs
 

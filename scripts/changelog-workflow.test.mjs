@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import test from "node:test";
 import { scripts } from "./changelog-test-helpers.mjs";
 
@@ -39,6 +41,36 @@ test("backend CI runs the offline database and release regressions when their in
   const backend = /^ {2}backend-tests:\n([\s\S]*?)(?=^ {2}[a-z][a-z0-9-]*:)/m.exec(ci)?.[1] ?? "";
   assert.match(backend, /actions\/setup-node@\S+[\s\S]*?node-version: 22/);
   assert.match(backend, /node --test scripts\/changelog-workflow\.test\.mjs scripts\/go-test-database-preconditions\.test\.mjs/);
+});
+
+test("CI and release initialize a fresh private history signing key before Go tests", (t) => {
+  const ci = readFileSync(resolve(scripts, "../.github/workflows/ci.yml"), "utf8");
+  const backend = /^ {2}backend-tests:\n([\s\S]*?)(?=^ {2}[a-z][a-z0-9-]*:)/m.exec(ci)?.[1] ?? "";
+  const directory = mkdtempSync(join(tmpdir(), "multica-ci-signing-"));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const keys = new Set();
+  for (const [name, body] of [["ci", backend], ["release", jobs.get("verify")]]) {
+    const setup = body.indexOf("- name: Initialize test-only signing key");
+    const tests = body.indexOf("bash scripts/go-test-with-agent-cli-guard.sh");
+    assert.ok(setup >= 0 && setup < tests, `${name}: initialize before any Go test process can cache the default key`);
+    const step = body.slice(setup).split(/\n {6}- name:/, 1)[0];
+    const run = /\n {8}run: \|\n([\s\S]*)/.exec(step)?.[1];
+    assert.ok(run, `${name}: missing signing-key initializer`);
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const envFile = join(directory, `${name}-${attempt}.env`);
+      const result = spawnSync("bash", ["-e", "-c", run.replace(/^ {10}/gm, "")], {
+        env: { ...process.env, GITHUB_ENV: envFile }, encoding: "utf8",
+      });
+      assert.equal(result.status, 0, result.stderr);
+      const setting = readFileSync(envFile, "utf8");
+      assert.match(setting, /^JWT_SECRET=[a-f0-9]{64}\n$/);
+      const key = setting.slice("JWT_SECRET=".length).trimEnd();
+      assert.equal(result.stdout, `::add-mask::${key}\n`, "register only the runner masking command before later step environment logging");
+      assert.equal(result.stderr, "");
+      assert.equal(keys.has(setting), false, "each test job needs its own generated key");
+      keys.add(setting);
+    }
+  }
 });
 
 test("repository-wide serialization starts before discovery and never cancels an active release", () => {

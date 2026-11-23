@@ -86,6 +86,28 @@ development default with HTTP 503 `information_context_unavailable`. Preserve
 that refusal; configure the isolated fixture instead of weakening the check.
 Keep the generated value only in the private environment file, never the report.
 
+The backend CI and release verification jobs initialize a fresh 32-byte random
+`JWT_SECRET` through `GITHUB_ENV` before their first Go test process. The
+initializer first registers the key with GitHub's `add-mask` command, then writes
+directly to that file so later step environment preambles also hide it. The
+workflow contract executes each initializer twice and checks fresh keys, the
+exact matching masking command and no other output;
+do not substitute a public fixture constant or relax the production cursor-key
+refusal to make an unconfigured job pass.
+
+Completion-preview fixtures may run after packages that retain durable delivery
+history. Assert their initial empty state within the fixture's exact workspace
+(join terminal rows through their authorization); keep the complete global
+before/after snapshots around preview reads so unexpected writes remain visible.
+An unrelated retained authorization is not a write by a newly created fixture.
+
+For receipts and protocol records recovered from JSON, compare complete wire
+values or timestamp instants rather than Go `time.Location` pointers. A
+PostgreSQL timestamp can use `time.Local` while JSON restores `time.UTC` on a UTC
+host. Both represent the same instant but fail struct equality. Keep every
+non-time field and strict decoder assertion, and run these regressions with
+`TZ=UTC` as well as a non-UTC host.
+
 ### Interrupted concurrent index fixtures
 
 When a migration test holds a writer transaction to interrupt a concurrent index
