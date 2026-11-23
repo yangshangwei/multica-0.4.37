@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { afterEach, expect, it, vi } from "vitest";
-import { act, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { defaultScheduler, notifyManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
@@ -100,6 +100,42 @@ it.each([
   expect(screen.queryByRole("button", { name: "Load more" })).not.toBeInTheDocument();
 });
 
+it.each(["unread", "all", "archived"] as const)("opens the exact %s notification from its description, date and card padding", async (notificationView) => {
+  const item = notification({ source_kind: "comment", source_id: commentId,
+    read_at: notificationView === "all" ? timestamp : null, archived_at: notificationView === "archived" ? timestamp : null });
+  const fetch = vi.fn(async (_input: string, _options?: RequestInit) => page([item], notificationView));
+  vi.stubGlobal("fetch", fetch);
+  const view = mount(destination({ notificationView }));
+  const title = await screen.findByRole("link", { name: "Shared issue" });
+  const card = title.closest("li")!;
+  const href = `/account?view=notifications&filter=${notificationView}&notification=${firstId}&issue=${issueId}#comment-${commentId}`;
+  for (const target of [card.querySelector("p")!, card.querySelector("time")!, card]) {
+    await userEvent.click(target);
+    expect(view.push).toHaveBeenCalledExactlyOnceWith(href);
+    view.push.mockClear();
+  }
+  expect(fetch.mock.calls.every(([, options]) => options?.method !== "POST")).toBe(true);
+});
+
+it("preserves title middle-click behavior and isolates notification action middle clicks", async () => {
+  const fetch = vi.fn(async (_input: string, _options?: RequestInit) => page([notification()]));
+  vi.stubGlobal("fetch", fetch);
+  const view = mount();
+  const title = await screen.findByRole("link", { name: "Shared issue" });
+  const open = vi.spyOn(window, "open").mockReturnValue(null);
+  try {
+    const titleClick = new MouseEvent("auxclick", { bubbles: true, button: 1, cancelable: true });
+    fireEvent(title, titleClick);
+    expect(titleClick.defaultPrevented).toBe(false);
+    for (const action of ["Mark read", "Archive"]) {
+      fireEvent(row(firstId).getByRole("button", { name: action }), new MouseEvent("auxclick", { bubbles: true, button: 1, cancelable: true }));
+    }
+    expect(open).not.toHaveBeenCalled();
+    expect(view.push).not.toHaveBeenCalled();
+    expect(fetch.mock.calls.every(([, options]) => options?.method !== "POST")).toBe(true);
+  } finally { open.mockRestore(); }
+});
+
 it("retries a failed later page without losing loaded rows or calling a write", async () => {
   let laterReads = 0;
   const fetch = vi.fn(async (input: string, _options?: RequestInit) => {
@@ -136,10 +172,12 @@ it("keeps the list and same-issue draft mounted across exact notification select
   expect(screen.getByRole("link", { name: "Recorded run" })).toHaveAttribute("href", `/account?view=notifications&filter=unread&notification=${runId}&issue=${issueId}#run-${runId}`);
   expect(screen.getByRole("link", { name: "Issue requirements" })).toHaveAttribute("href", `/account?view=notifications&filter=unread&notification=${bodyId}&issue=${issueId}#description`);
   await userEvent.click(first);
+  expect(view.push).toHaveBeenCalledExactlyOnceWith(`/account?view=notifications&filter=unread&notification=${firstId}&issue=${issueId}#comment-${commentId}`);
   view.navigate(destination({ notificationId: firstId, issueId, commentId }));
   const draft = screen.getByRole("textbox", { name: "Preview draft" });
   await userEvent.type(draft, "Keep this draft");
   await userEvent.click(screen.getByRole("link", { name: "Second comment" }));
+  expect(view.push).toHaveBeenCalledTimes(2);
   view.navigate(destination({ notificationId: secondId, issueId, commentId: secondCommentId }));
   expect(document.querySelector("[data-tab-scroll-root=account-notifications-list]")).toBe(list);
   expect(list.scrollTop).toBe(144);
@@ -268,6 +306,8 @@ it("keeps removed and unavailable notifications content-free even with a stale i
   expect(screen.queryByTestId("collaboration-preview")).not.toBeInTheDocument();
   expect(detailMount).not.toHaveBeenCalled();
   expect(realtime.mock.calls.every(([, selected]) => selected === null)).toBe(true);
+  await userEvent.click(row(firstId).getByRole("link", { name: "Issue unavailable" }).closest("li")!);
+  expect(view.push).toHaveBeenCalledExactlyOnceWith(`/account?view=notifications&filter=unread&notification=${firstId}`);
   view.navigate(destination({ notificationId: secondId, issueId, runId }));
   expect(screen.queryByTestId("collaboration-preview")).not.toBeInTheDocument();
   expect(fetch.mock.calls.every(([url]) => String(url).includes("/collaboration-notifications"))).toBe(true);
@@ -281,7 +321,7 @@ it("awaits read confirmation, retains the selected preview and recovers focus wh
     return page([...(readAt ? [] : [notification()]), notification({ id: secondId, event_seq: "9", issue_title: "Still unread" })], "unread", null, readAt ? 1 : 2);
   });
   vi.stubGlobal("fetch", fetch);
-  mount(destination({ notificationId: firstId, issueId }));
+  const view = mount(destination({ notificationId: firstId, issueId }));
   await screen.findByRole("link", { name: "Shared issue" });
   await userEvent.click(row(firstId).getByRole("button", { name: "Mark read" }));
   expect(row(firstId).getByText("Marking read...")).toBeInTheDocument();
@@ -295,6 +335,7 @@ it("awaits read confirmation, retains the selected preview and recovers focus wh
   expect(screen.getByText("1 unread")).toBeInTheDocument();
   await waitFor(() => expect(document.querySelector("[data-tab-scroll-root=account-notifications-list]")).toHaveFocus());
   expect(fetch.mock.calls.filter(([, options]) => options?.method === "POST")).toHaveLength(1);
+  expect(view.push).not.toHaveBeenCalled();
 });
 
 it("recovers to a stable list before a confirmed archive's final Query projection removes its row", async () => {
@@ -422,7 +463,7 @@ it.each([
     return failRead ? new Response("{}", { status: 503 }) : page([notification()]);
   });
   vi.stubGlobal("fetch", fetch);
-  mount();
+  const view = mount();
   await screen.findByRole("link", { name: "Shared issue" });
   await userEvent.click(row(firstId).getByRole("button", { name: action }));
   expect(await screen.findByText(error)).toBeInTheDocument();
@@ -434,8 +475,15 @@ it.each([
   await waitFor(() => expect(screen.queryByText("Could not load collaboration. Try again.")).not.toBeInTheDocument());
   expect(screen.getByText(error)).toBeInTheDocument();
   expect(writes).toBe(1);
+  const open = vi.spyOn(window, "open").mockReturnValue(null);
+  try {
+    fireEvent(row(firstId).getByRole("button", { name: retry }), new MouseEvent("auxclick", { bubbles: true, button: 1, cancelable: true }));
+    expect(open).not.toHaveBeenCalled();
+    expect(writes).toBe(1);
+  } finally { open.mockRestore(); }
   await userEvent.click(row(firstId).getByRole("button", { name: retry }));
   await waitFor(() => expect(writes).toBe(2));
+  expect(view.push).not.toHaveBeenCalled();
 });
 
 it("awaits archive confirmation without marking read and keeps the archived unread fact", async () => {
@@ -461,6 +509,7 @@ it("awaits archive confirmation without marking read and keeps the archived unre
   expect(row(firstId).getByRole("button", { name: "Mark read" })).toBeEnabled();
   expect(row(firstId).queryByRole("button", { name: "Archive" })).not.toBeInTheDocument();
   expect(fetch.mock.calls.filter(([, options]) => options?.method === "POST").map(([input]) => new URL(input).pathname)).toEqual([`/api/me/collaboration-notifications/${firstId}/archive`]);
+  expect(view.push).not.toHaveBeenCalled();
 });
 
 it("shows an unavailable filtered read instead of a false empty view on an older server", async () => {

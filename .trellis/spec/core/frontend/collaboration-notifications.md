@@ -68,6 +68,14 @@ title, source ID or run, and cannot mount or subscribe to their private detail.
 Unknown event kinds use the generic label. A URL for a known unavailable row
 contains its notification UUID without an issue or content fragment.
 
+`NotificationRow` applies the existing `useRowLink()(href)` to its `li` so the
+description, timestamp and card padding open that same exact destination without
+marking read. Its title remains a native `AppLink` for keyboard and modified
+link navigation. Spread `rowLinkInteractiveProps` onto the title and containing
+action area to isolate both click and auxclick; a retry button's custom click
+handler must stop propagation explicitly while retaining its auxclick shield.
+Read, archive and retry clicks must never also select the row or open a tab.
+
 Read and archive are explicit, awaited operations. A successful receipt
 invalidates the entire notification prefix; the page joins its current list's
 refresh. Archive preserves `read_at`. Mutation failures retain their own retry;
@@ -159,6 +167,9 @@ after it unmounts. No additional memento store is introduced.
 | Back/Forward or scope return to a retained same-issue detail | Restore its saved offsets; preserve draft/list nodes |
 | Explicit repeated source link | New focus intent; exact source anchor, preserved list offset |
 | Notification selection passed to native issue-window admission | Reject popout admission; use the main account tab |
+| Description, timestamp or card padding clicked | Open the same exact notification target; do not write read/archive state |
+| Title middle-clicked | Keep native link behavior without invoking the row's fallback |
+| Read/archive/retry action clicked or middle-clicked | Isolate the row handler; only an explicit ordinary action may issue its write |
 
 ## 5. Good / Base / Bad Cases
 
@@ -185,7 +196,12 @@ privacy. Service tests own early validation and archive/read independence.
 Run DB packages on distinct, recorded migrated databases.
 
 Shared page tests own loading/empty/error/retry, exact links, read/archive
-feedback, focus and stable list identity. `run-navigation.test.tsx` composes real
+feedback, focus and stable list identity. They cover row description/date/padding
+selection across all three views, unavailable-row targets, title middle-click,
+action/retry isolation and the absence of implicit writes. The shared
+`navigation/use-row-link.test.tsx` and `app-link.test.tsx` own modifier/tab
+semantics; do not repeat that full matrix through each notification mount.
+`run-navigation.test.tsx` composes real
 detail with same-issue draft/offset restoration. Platform suites own committed
 query/fragment races, history intent, titles and native window admission.
 `e2e/collaboration-notifications-page.spec.ts` proves complete second pages,

@@ -10,7 +10,7 @@ import { accountPath, parseAccountPath, type AccountNotificationsDestination } f
 import { Button } from "@multica/ui/components/ui/button";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { useIsCompact } from "@multica/ui/hooks/use-mobile";
-import { AppLink, currentPath, useNavigation } from "../navigation";
+import { AppLink, currentPath, rowLinkInteractiveProps, useNavigation, useRowLink } from "../navigation";
 import { useLocale, useT, useTimeAgo } from "../i18n";
 import { PAGE_GUTTER, PageHeader } from "../layout/page-header";
 import { useScrollRestorationAdapter } from "../platform/scroll-restoration";
@@ -140,6 +140,7 @@ function NotificationRow({ scope, item, query, destination, onActionSettled }: {
   const locale = useLocale();
   const timeAgo = useTimeAgo();
   const notificationLabel = useCollaborationNotificationLabel();
+  const rowLink = useRowLink();
   const update = useUpdateCollaborationNotification(scope);
   const root = useRef<HTMLLIElement>(null);
   const metadataId = useId();
@@ -165,11 +166,11 @@ function NotificationRow({ scope, item, query, destination, onActionSettled }: {
     // A confirmed row can still be mounted while its filtered Query projection commits.
     onActionSettled(rowStaysInView ? root.current : null);
   }
-  return <li ref={root} data-notification-id={item.id} data-unread={unread || undefined} data-selected={selected || undefined}
-    className={`${selected ? "bg-accent" : "hover:bg-accent"} min-w-0 rounded-md px-3 py-3 [overflow-wrap:anywhere]`}>
+  return <li ref={root} {...rowLink(href)} data-notification-id={item.id} data-unread={unread || undefined} data-selected={selected || undefined}
+    className={`${selected ? "bg-accent" : "hover:bg-accent"} min-w-0 cursor-pointer rounded-md px-3 py-3 [overflow-wrap:anywhere]`}>
     <div className="flex min-w-0 items-start gap-2">
       {unread && <><span aria-hidden="true" className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand" /><span className="sr-only">{t(($) => $.notifications.unread)}</span></>}
-      <AppLink href={href} aria-current={selected ? "true" : undefined} aria-describedby={metadataId}
+      <AppLink href={href} {...rowLinkInteractiveProps} aria-current={selected ? "true" : undefined} aria-describedby={metadataId}
         className={`${selected ? "font-semibold text-foreground" : unread ? "font-medium text-foreground" : "text-muted-foreground"} min-w-0 flex-1 rounded-sm text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11`}>
         {canOpen ? item.issue_title : t(($) => $.page.notificationUnavailable)}
       </AppLink>
@@ -177,7 +178,7 @@ function NotificationRow({ scope, item, query, destination, onActionSettled }: {
     <p id={metadataId} className="mt-1 text-caption text-muted-foreground">{item.is_mention ? t(($) => $.notifications.mention) : notificationLabel(item.kind)}</p>
     <div className="mt-2 flex min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-1">
       <time dateTime={item.created_at} title={date.toLocaleString(locale)} className="text-caption tabular-nums text-muted-foreground">{Date.now() - date.getTime() < 7 * 86400_000 ? timeAgo(item.created_at) : date.toLocaleDateString(locale)}</time>
-      <div className="flex min-w-0 flex-wrap gap-1">
+      <div {...rowLinkInteractiveProps} className="flex min-w-0 flex-wrap gap-1">
         {unread && <Button type="button" variant="ghost" size="sm" className="h-auto min-h-8 whitespace-normal pointer-coarse:min-h-11" disabled={update.isPending} onClick={() => void change("read")}>{t(($) => $.page.read)}</Button>}
         {!archived && <Button type="button" variant="ghost" size="sm" className="h-auto min-h-8 whitespace-normal pointer-coarse:min-h-11" disabled={update.isPending} onClick={() => void change("archive")}>{t(($) => $.page.archive)}</Button>}
       </div>
@@ -185,7 +186,8 @@ function NotificationRow({ scope, item, query, destination, onActionSettled }: {
     {update.isPending && <p role="status" className="mt-2 text-caption text-muted-foreground">{update.variables.action === "read" ? t(($) => $.notifications.reading) : t(($) => $.notifications.archiving)}</p>}
     {update.error && <div role="alert" className="mt-2 space-y-2 text-caption">
       <p>{update.variables?.action === "archive" ? t(($) => $.notifications.archiveError) : t(($) => $.notifications.readError)}</p>
-      <Button type="button" variant="outline" size="sm" className="h-auto min-h-8 whitespace-normal pointer-coarse:min-h-11" onClick={() => void change(update.variables?.action ?? "read")}>{update.variables?.action === "archive" ? t(($) => $.notifications.retryArchive) : t(($) => $.notifications.retryRead)}</Button>
+      <Button {...rowLinkInteractiveProps} type="button" variant="outline" size="sm" className="h-auto min-h-8 whitespace-normal pointer-coarse:min-h-11"
+        onClick={(event) => { event.stopPropagation(); void change(update.variables?.action ?? "read"); }}>{update.variables?.action === "archive" ? t(($) => $.notifications.retryArchive) : t(($) => $.notifications.retryRead)}</Button>
     </div>}
   </li>;
 }
