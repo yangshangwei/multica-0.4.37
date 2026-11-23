@@ -68,7 +68,7 @@ does not install, assign, create, or execute a resource. Keep the documentation
 link category-specific and use the existing documentation/navigation adapter.
 
 The welcome directory uses a two-column layout on narrow surfaces and sits
-beside the example on wide surfaces. On compact layouts, use a native closed
+beside the example on wide surfaces. On compact layouts, use a native initially closed
 `details` disclosure inside the active catalog's existing scroll root so the
 example can open without trapping the catalog below a second scroller. Preserve
 the agent-template panel's original scroll root and restoration key by passing
@@ -78,6 +78,20 @@ keyboard focus stays visible, coarse-pointer targets remain at least 44px, and
 the case transition is disabled for reduced-motion users. Keep the welcome
 presentation-only and workspace-scoped; it must not add preferences, queries,
 or a new route.
+
+`MarketplaceCompactExample({ category, active = true })` records changed native
+toggle state through the existing route/tab view-state adapter under
+`marketplace-example-${category.value}`. Restore an explicit `"true"` or
+`"false"` on the initial native `open` property; default closed when unsaved.
+Do not write mount-generated or unchanged toggle events, and ignore queued
+toggle events while the retained category is inactive. This is route memento
+state, not a new persisted preference or store.
+
+The restored example must contribute its height before the agent-template
+catalog assigns a saved scroll offset. Its existing parent ref callback restores
+once only when the panel is active and real template data is ready. An inactive
+mounted panel cannot consume or replace that first restoration; a closed or
+hidden layout may clamp a valid saved offset. Preserve explicit zero.
 
 Market copy creation and ordinary skill creation keep their different success
 navigation. MCP save and assignment remain separate. Domain permission,
@@ -128,6 +142,9 @@ provenance, input and retry contracts live in the corresponding market specs.
 | Market marker plus explicit squad | Preserve the squad creation/back semantics |
 | Legacy squad template URL | Replace with the market squad-template type and preserve other URL context |
 | Empty resource library | Keep management page and offer explicit market link |
+| Template configuration returns to a previously expanded compact example | Restore native open state before assigning the saved catalog offset |
+| First catalog mount is inactive or templates are not ready | Retain its saved offset until an active ready layout can restore it |
+| Queued disclosure toggle reaches an inactive category | Do not overwrite saved active state |
 
 ## Good, base and bad cases
 
@@ -144,6 +161,13 @@ command search, desktop tab presentation and editor workspace prefixes. Market
 page tests cover lazy first mount, retained visited panels and workspace reset.
 Domain suites own real creation, dirty state, portal hiding and permission tests.
 Production Web and native Desktop verify the routed user journeys.
+`marketplace-welcome.test.tsx` covers saved true/false, default closed, category
+identity and inactive toggle guards. `agent-templates-market-panel.test.tsx`
+composes the real leading disclosure with a browser-like scroll-clamping control
+to prove open-before-offset, readiness, inactive admission and zero recovery.
+`e2e/agent-template-marketplace-desktop.spec.ts` keeps the original cold-tab,
+source-aware Back and creation checks, opens actual sidebar disclosure groups,
+and proves compact example/scroll restoration through the native renderer.
 Agent-template suites additionally cover no instance Query, template loading and
 retry, known/unknown policy display, exact source-marker handoff, safe-history
 versus cold fallback, squad priority, original picker links and scroll recovery.

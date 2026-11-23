@@ -55,7 +55,7 @@ function WorkspaceMarketplace({ workspaceId }: { workspaceId: string }) {
           const active = item.value === type;
           // Agent templates own their scroller so the creation route can restore it.
           const Catalog = item.value === "agent-templates" ? null : catalogs[item.value];
-          const example = <MarketplaceCompactExample category={item} />;
+          const example = <MarketplaceCompactExample category={item} active={active} />;
 
           return (
             <TabsContent

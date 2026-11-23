@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useState } from "react";
 import { Tabs as BaseTabs } from "@base-ui/react/tabs";
 import { ArrowDownRight, ArrowRight, BookOpen, Bot, ChevronDown, Circle, ClipboardList, Plug, UsersRound } from "lucide-react";
 import { DOCS_SLUGS } from "@multica/core/docs";
@@ -9,6 +9,7 @@ import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../i18n";
 import { PAGE_GUTTER } from "../layout/page-header";
 import { AppLink } from "../navigation";
+import { useRestoredViewState, useViewStateWriter } from "../platform/scroll-restoration";
 import styles from "./marketplace-welcome.module.css";
 
 export const MARKETPLACE_CATEGORIES = [
@@ -91,11 +92,20 @@ export function MarketplaceWelcome({ category }: { category: MarketplaceCategory
   );
 }
 
-export function MarketplaceCompactExample({ category }: { category: MarketplaceCategory }) {
+export function MarketplaceCompactExample({ category, active = true }: { category: MarketplaceCategory; active?: boolean }) {
   const { t } = useT("layout");
+  const entryKey = `marketplace-example-${category.value}`;
+  const restoredOpen = useRestoredViewState(entryKey);
+  const writeViewState = useViewStateWriter();
+  const [open, setOpen] = useState(() => restoredOpen === "true");
 
   return (
-    <details className={styles.compactExample}>
+    <details open={open} onToggle={(event) => {
+      const nextOpen = event.currentTarget.open;
+      if (!active || nextOpen === open) return;
+      setOpen(nextOpen);
+      writeViewState(entryKey, String(nextOpen));
+    }} className={styles.compactExample}>
       <summary className={styles.summary}>
         <BookOpen className="size-4 shrink-0 text-info-foreground" aria-hidden="true" />
         <span className="min-w-0 flex-1">{t(($) => $.marketplace.example.show)}</span>

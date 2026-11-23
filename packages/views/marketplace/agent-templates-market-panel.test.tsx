@@ -11,6 +11,7 @@ import { ScrollRestorationProvider, type ScrollRestorationAdapter } from "../pla
 import { renderWithI18n } from "../test/i18n";
 import enAgents from "../locales/en/agents.json";
 import { AgentTemplatesMarketPanel } from "./agent-templates-market-panel";
+import { MARKETPLACE_CATEGORIES, MarketplaceCompactExample } from "./marketplace-welcome";
 
 const mocks = vi.hoisted(() => ({ roles: vi.fn(), agents: vi.fn(), create: vi.fn(), push: vi.fn() }));
 vi.mock("@multica/core/api", () => ({ api: {
@@ -25,14 +26,16 @@ const ROLE: AgentRoleTemplate = {
   avatar_emoji: "🔍", max_concurrent_tasks: 1, skill_names: [], instructions: "Analyze requirements.",
 };
 
-function setup({ active = true, adapter, locale = "en" }: {
+function setup({ active = true, adapter, locale = "en", withExample = false }: {
   active?: boolean;
   adapter?: ScrollRestorationAdapter;
   locale?: "en" | "zh-Hans";
+  withExample?: boolean;
 } = {}) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 } } });
   function Panel({ active }: { active: boolean }) {
-    const content = <AgentTemplatesMarketPanel workspaceId="ws-1" active={active} />;
+    const content = <AgentTemplatesMarketPanel workspaceId="ws-1" active={active}
+      leading={withExample ? <MarketplaceCompactExample category={MARKETPLACE_CATEGORIES[3]} /> : undefined} />;
     return (
       <QueryClientProvider client={client}>
         <WorkspaceSlugProvider slug="acme">
@@ -123,6 +126,61 @@ describe("AgentTemplatesMarketPanel", () => {
     expect(root.scrollTop).toBe(240);
     fireEvent.scroll(root, { target: { scrollTop: 0 } });
     expect(state.get("agent-template-market-scroll")).toBe("0");
+  });
+
+  it("restores the expanded compact example before assigning a remounted catalog offset", async () => {
+    const state = new Map<string, string>([["marketplace-example-agent-templates", "true"], ["agent-template-market-scroll", "240"]]);
+    const assignments: { top: number; exampleOpen: boolean }[] = [];
+    const topValues = new WeakMap<HTMLElement, number>();
+    const originalTop = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "scrollTop");
+    Object.defineProperty(HTMLElement.prototype, "scrollTop", {
+      configurable: true,
+      get(this: HTMLElement) { return topValues.get(this) ?? 0; },
+      set(this: HTMLElement, top: number) {
+        const exampleOpen = this.querySelector("details")?.open === true;
+        assignments.push({ top, exampleOpen });
+        topValues.set(this, exampleOpen ? top : Math.min(top, 100));
+      },
+    });
+    const adapter: ScrollRestorationAdapter = {
+      get: () => undefined,
+      getViewState: (key) => state.get(key),
+      setViewState: (key, value) => { if (value !== undefined) state.set(key, value); },
+    };
+    try {
+      const first = setup({ adapter, withExample: true });
+      await screen.findByRole("listitem", { name: "Product Analyst" });
+      const firstRoot = screen.getByRole("region", { name: "Agent templates" });
+      expect(firstRoot.querySelector("details")).toHaveProperty("open", true);
+      expect(firstRoot.scrollTop).toBe(240);
+      first.unmount();
+      setup({ adapter, withExample: true });
+      await screen.findByRole("listitem", { name: "Product Analyst" });
+      const root = screen.getByRole("region", { name: "Agent templates" });
+      expect(root.querySelector("details")).toHaveProperty("open", true);
+      expect(root.scrollTop).toBe(240);
+      expect(assignments.filter(({ top }) => top === 240).every(({ exampleOpen }) => exampleOpen)).toBe(true);
+      fireEvent.scroll(root, { target: { scrollTop: 0 } });
+      expect(state.get("agent-template-market-scroll")).toBe("0");
+    } finally {
+      if (originalTop) Object.defineProperty(HTMLElement.prototype, "scrollTop", originalTop);
+      else Reflect.deleteProperty(HTMLElement.prototype, "scrollTop");
+    }
+  });
+
+  it("does not consume or overwrite saved scroll while the retained catalog is inactive", async () => {
+    const state = new Map<string, string>([["agent-template-market-scroll", "240"]]);
+    const adapter: ScrollRestorationAdapter = {
+      get: () => undefined, getViewState: (key) => state.get(key),
+      setViewState: (key, value) => { if (value !== undefined) state.set(key, value); },
+    };
+    const view = setup({ active: false, adapter });
+    expect(screen.getByRole("region", { name: "Agent templates" }).scrollTop).toBe(0);
+    fireEvent.scroll(screen.getByRole("region", { name: "Agent templates" }), { target: { scrollTop: 17 } });
+    expect(state.get("agent-template-market-scroll")).toBe("240");
+    view.setActive(true);
+    await screen.findByRole("listitem", { name: "Product Analyst" });
+    expect(screen.getByRole("region", { name: "Agent templates" }).scrollTop).toBe(240);
   });
 
   it("uses Chinese market copy without borrowing the creation page title", async () => {

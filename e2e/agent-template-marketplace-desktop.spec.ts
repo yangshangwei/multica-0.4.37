@@ -1,10 +1,19 @@
-import { test, expect, _electron as electron } from "@playwright/test";
+import { test, expect, _electron as electron, type Page } from "@playwright/test";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { TestApiClient } from "./fixtures";
+import { openSidebarNavigation } from "./fixtures/sidebar-navigation";
 
-test("native desktop keeps market and direct role creation entrances with source-aware Back", async ({}, info) => {
+async function openSidebarGroup(page: Page, name: string) {
+  const navigation = await openSidebarNavigation(page);
+  const disclosure = navigation.getByRole("button", { name, exact: true });
+  await expect(disclosure).toBeVisible();
+  if (await disclosure.getAttribute("aria-expanded") === "false") await disclosure.click();
+  await expect(disclosure).toHaveAttribute("aria-expanded", "true");
+}
+
+test("native desktop keeps market and direct role creation entrances with source-aware Back", async ({ browserName: _browserName }, info) => {
   const rendererUrl = process.env.COLLABORATION_ELECTRON_RENDERER_URL;
   const apiUrl = process.env.COLLABORATION_E2E_API_URL;
   test.skip(!rendererUrl || !apiUrl, "Requires a task-owned production Desktop renderer and local API");
@@ -50,6 +59,7 @@ test("native desktop keeps market and direct role creation entrances with source
         localStorage.setItem("theme", "light");
       }, api.getToken());
       await page.reload({ waitUntil: "domcontentloaded" });
+      await openSidebarGroup(page, "Resources & connections");
       const marketLink = page.getByRole("link", { name: "Capability market", exact: true });
       await expect(marketLink).toBeVisible({ timeout: 45_000 });
       await marketLink.click();
@@ -91,6 +101,7 @@ test("native desktop keeps market and direct role creation entrances with source
       await page.evaluate(() => localStorage.setItem("multica-locale", "en"));
       await page.reload({ waitUntil: "domcontentloaded" });
 
+      await openSidebarGroup(page, "AI Team");
       await page.getByRole("link", { name: "Agents", exact: true }).click();
       await page.getByRole("link", { name: "New agent", exact: true }).click();
       await page.getByText("Use a template", { exact: true }).click();
@@ -100,6 +111,30 @@ test("native desktop keeps market and direct role creation entrances with source
       await configurationBack.click();
       await expect(page.getByRole("heading", { name: "Start from a role template", exact: true })).toBeVisible();
 
+      await openSidebarGroup(page, "Resources & connections");
+      await marketLink.click();
+      await agentType.click();
+      await desktop.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]?.setContentSize(720, 680));
+      const catalog = page.getByRole("region", { name: "Agent templates", exact: true });
+      const example = catalog.locator("details");
+      await expect(example).toHaveJSProperty("open", false);
+      await example.locator("summary").click();
+      await expect(example).toHaveJSProperty("open", true);
+      await page.screenshot({ path: info.outputPath("native-agent-template-market-compact.png"), animations: "disabled" });
+      const laterTemplate = catalog.getByRole("link", { name: "Use template", exact: true }).last();
+      await laterTemplate.scrollIntoViewIfNeeded();
+      const savedTop = await catalog.evaluate((node) => node.scrollTop);
+      expect(savedTop).toBeGreaterThan(0);
+      await laterTemplate.click();
+      await expect(page.getByText("Role instructions", { exact: true })).toBeVisible();
+      await configurationBack.click();
+      await expect(example).toHaveJSProperty("open", true);
+      await expect.poll(() => catalog.evaluate((node) => node.scrollTop)).toBe(savedTop);
+      await expect(laterTemplate).toBeInViewport();
+
+      await desktop.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]?.setContentSize(1300, 860));
+      await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1300);
+      await openSidebarGroup(page, "Resources & connections");
       await marketLink.click();
       await agentType.click();
       await useTemplate.click();

@@ -34,12 +34,12 @@ function AgentTemplatesMarketPanelContent({ workspaceId, active, leading }: Agen
   const ready = !isPending && !isError;
   const attachScroll = useCallback((element: HTMLElement | null) => {
     scrollElement.current = element;
-    if (!element || !ready || didRestore.current) return;
+    if (!element || !active || !ready || didRestore.current) return;
     didRestore.current = true;
     const top = restoredTop === undefined ? undefined : Number(restoredTop);
     if (top !== undefined && Number.isFinite(top) && top >= 0) element.scrollTop = top;
     else restoreScroll(element);
-  }, [ready, restoredTop, restoreScroll]);
+  }, [active, ready, restoredTop, restoreScroll]);
   const rememberScroll = () => {
     if (!active || !ready || !didRestore.current) return;
     writeViewState("agent-template-market-scroll", String(scrollElement.current?.scrollTop ?? 0));
