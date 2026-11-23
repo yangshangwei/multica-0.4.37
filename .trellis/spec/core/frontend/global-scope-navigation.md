@@ -81,8 +81,9 @@ target; Enter and Space each toggle it once. Child links own account navigation.
 
 Start work is fixed in the sidebar header above both scope directories. Its
 three directly visible controls are New issue, Start collaboration and AI Chat,
-in that order. New issue receives primary emphasis; collaboration remains a
-secondary action with a neutral Beta marker. Ordinary creation and AI Chat show
+in that order. New issue and Start collaboration use the same neutral sidebar
+menu styling, with no persistent primary fill; hover uses the shared sidebar
+accent. Collaboration keeps a neutral Beta marker. Ordinary creation and AI Chat show
 the displayed workspace name; collaboration shows cross-workspace scope. Keep
 supporting captions accessible without changing the controls' stable action
 names. Long workspace names may truncate visually only with the full name

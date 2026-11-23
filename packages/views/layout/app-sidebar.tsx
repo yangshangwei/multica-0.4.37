@@ -651,7 +651,7 @@ function SidebarStartWork({ workspace, workspaceActive }: { workspace: Workspace
           aria-label={t(($) => $.sidebar.new_issue)}
           aria-description={workspace ? workspace.name : t(($) => $.sidebar.open_workspace_to_create)}
           title={workspaceCaption}
-          className="h-auto min-h-10 bg-primary py-1.5 text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground pointer-coarse:min-h-11">
+          className="h-auto min-h-10 py-1.5 text-muted-foreground pointer-coarse:min-h-11">
           <SquarePen aria-hidden />
           <span className="flex min-w-0 flex-1 flex-col items-start">
             <span className="relative w-full truncate pr-2">{t(($) => $.sidebar.new_issue)}{workspaceActive && <DraftDot />}</span>
