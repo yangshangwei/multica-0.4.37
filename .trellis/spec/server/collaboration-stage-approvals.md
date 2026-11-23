@@ -49,6 +49,16 @@ Run potentially slow artifact/evidence observations before the final authority c
 
 Code-review CI requires a complete, nonempty current-head check set, an observation no later than the database time and within the 30-minute horizon, and every check explicitly completed/success. Missing, unknown, skipped, neutral, running or unsupported repository-less VCS status cannot satisfy it. The stable CI digest excludes refresh time. Equal provider timestamps with different heads invalidate snapshot completeness rather than selecting a winner.
 
+Internal execution finalization compares the retained invocation with its
+consumed entry, including the exact dispatch-expiry instant. Normalize copies
+of both `DispatchExpiresAt` values to UTC before struct comparison: PostgreSQL
+and JSON can represent the same instant with different location pointers.
+Preserve all other invocation fields, the consumed-entry requirement and the
+original finalization deadline. A one-nanosecond expiry change still conflicts;
+a location-only difference must preserve the `unknown` / `not_started` receipt.
+`TestStageExecutionInternalObservationPreservesInvocationBinding` covers both
+cases and every current invocation binding field.
+
 ### Historical report reads and artifact authority
 
 Source-workspace membership alone does not authorize an artifact-bound report. T4 list/detail and optional QA report references must reuse M1's current initiator/manager authority for the **original frozen subject's artifact**. Verify its child, approval, execution, spec, receipt and output identities. Do not substitute the latest candidate's artifact or require the historical candidate, PR head or failed outcome to remain usable for a new approval.

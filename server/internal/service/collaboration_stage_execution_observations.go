@@ -115,7 +115,12 @@ func (s *CollaborationService) recordStageInternalObservation(ctx context.Contex
 	if err != nil {
 		return StageExecutionReceipt{}, err
 	}
-	if !reflect.DeepEqual(inv, entry.invocation) {
+	// JSON drops time.Location identity and monotonic clock readings. Compare
+	// the exact deadline instant while retaining every other invocation field.
+	expected := entry.invocation
+	inv.DispatchExpiresAt = inv.DispatchExpiresAt.UTC()
+	expected.DispatchExpiresAt = expected.DispatchExpiresAt.UTC()
+	if !reflect.DeepEqual(inv, expected) {
 		return StageExecutionReceipt{}, collaborationError(409, "stage_execution_conflict")
 	}
 	now, err := q.ArtifactExecutionDatabaseTime(ctx)
