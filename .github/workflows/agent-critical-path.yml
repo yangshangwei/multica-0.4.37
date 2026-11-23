@@ -30,7 +30,9 @@ concurrency:
 jobs:
   smoke:
     name: agent-critical-path
-    runs-on: ubuntu-latest
+    # Playwright 1.58.2 supports Ubuntu 24.04; newer runner images need a
+    # deliberate browser/toolchain upgrade rather than an implicit OS change.
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     services:
       postgres:

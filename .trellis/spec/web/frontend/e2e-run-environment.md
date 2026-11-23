@@ -9,6 +9,11 @@ workflow using `${{ runner.temp }}` there is rejected before any job starts.
 Step-level upload paths may still use that context. The workflow contract test
 executes the initializer with a temporary path containing spaces.
 
+Pin Agent smoke to `ubuntu-24.04` while the lockfile uses Playwright 1.58.2.
+The `ubuntu-latest` image advanced beyond that browser version's supported
+dependency targets. Upgrade the OS and locked browser together deliberately;
+do not override Playwright's host detection or skip dependency installation.
+
 Windows CI jobs enable `git config --global core.longpaths true` on their
 ephemeral runner before `actions/checkout`. Historical evidence contains paths
 over the default Windows limit; deleting those records or skipping the native

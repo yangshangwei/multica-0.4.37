@@ -27,6 +27,7 @@ test("PR smoke covers integration/main and every shared source/config boundary",
 test("one isolated service plus locked browser dependencies precede the actual launcher", () => {
   const job = workflow.jobs.smoke;
   assert.equal(job.name, "agent-critical-path");
+  assert.equal(job["runs-on"], "ubuntu-24.04");
   assert.equal(job["timeout-minutes"], 30);
   assert.deepEqual(Object.keys(job.services), ["postgres"]);
   assert.equal(job.services.postgres.image, "pgvector/pgvector:pg17");
