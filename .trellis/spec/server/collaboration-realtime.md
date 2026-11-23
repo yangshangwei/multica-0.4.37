@@ -57,6 +57,18 @@ then revalidates any surviving source-only projection. Losing source membership
 preserves independently valid participation and its drafts. Reconnect and denied
 subscription recovery perform reads only. They never Resume or submit execution.
 
+Repeated `subscribe_error: {scope: "issue", id, error: "forbidden"}` is
+idempotent while that issue's shared access fence is already denied. Always
+retain the binding's denied flag, but do not clear freshly redacted account
+lists or start another recovery read for the same denial. Otherwise an archived
+notification outside the loaded list can cycle: detail subscribe → denial →
+clear notification data → unmount detail → list refetch → resubscribe.
+Use `collaborationIssueAccessDenied(client, scope, id)` for this guard, not a
+binding-local flag that resets on remount. Actual access-change events still
+advance the fence; account invalidation can revalidate the subscription, and a
+successful protected HTTP read clears denial so a later genuine revocation
+performs its full cleanup again.
+
 Ignore stale socket callbacks and old issue events at or before the authorized
 snapshot cursor. Account/source-authority hints without an issue cursor cannot
 be dismissed using an unrelated issue's sequence. Keep the existing polling,
@@ -74,6 +86,8 @@ focus and reconnect recovery for lost transient hints and older servers.
 | Relay publish fails | Roll back delivery marker; retry same event |
 | Source member is not a participant | Empty workspace hint refreshes authorized source queries |
 | Reconnect / old socket callback | Revalidate snapshots / ignore stale callback |
+| Repeated forbidden subscription after remount while already denied | Retain redacted lists and epoch; no repeated purge/read cycle |
+| Successful recovery followed by a new forbidden subscription | Clear private data and drafts under a new access epoch |
 
 ## 5. Good / Base / Bad Cases
 
@@ -98,6 +112,13 @@ retry, removed recipients, redaction and runtime replay. Core WS/realtime suites
 cover ref-counts, reauth, late reads/writes, normal concurrent events and GET-only
 recovery. Browser tests must observe a live account WS and clear private content
 without reload; a poll-only success is not realtime integration evidence.
+The real QueryClient/binder regression in
+`packages/core/realtime/collaboration.test.ts` covers first private purge,
+duplicate errors across rebinds, preserved redacted lists, bounded HTTP reads,
+account revalidation, successful recovery and a subsequent new revocation.
+The offline handoff Web/Electron originals must keep direct-issue denial and
+archived notification denial distinct, preserve title/body redaction, and reach
+a stable denial state instead of an automatic request storm.
 The source-member case in `e2e/collaboration-editing-web.spec.ts` checks the empty
 workspace frame and list refresh while the account participating list stays empty.
 

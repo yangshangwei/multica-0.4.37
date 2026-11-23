@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { z } from "zod";
-import { collaborationAccessEpoch, collaborationKeys, clearCollaborationAccess, clearCollaborationProjection, isCollaborationScopeCurrent, type CollaborationScope } from "../collaboration/access";
+import { collaborationAccessEpoch, collaborationIssueAccessDenied, collaborationKeys, clearCollaborationAccess, clearCollaborationProjection, isCollaborationScopeCurrent, type CollaborationScope } from "../collaboration/access";
 import { collaborationIssueOptions } from "../collaboration/queries";
 import { invalidateCollaborationSourceViews, isCollaborationInvalidation } from "../collaboration/invalidation";
 import { nonnegativeVersion } from "../collaboration/version";
@@ -111,7 +111,9 @@ export function bindCollaborationRealtime(client: QueryClient, scope: Collaborat
       const parsed = subscriptionSchema.safeParse(payload);
       if (parsed.success && parsed.data.id === selected && parsed.data.error === "forbidden") {
         subscriptionDenied = true;
-        recoverAccess(parsed.data.id);
+        // A remounted denied subscription must not clear its refreshed parent
+        // list again and trigger another mount/subscribe/refetch cycle.
+        if (!collaborationIssueAccessDenied(client, scope, parsed.data.id)) recoverAccess(parsed.data.id);
       }
       // Old servers and transient lookup failures retain HTTP polling recovery.
     }),

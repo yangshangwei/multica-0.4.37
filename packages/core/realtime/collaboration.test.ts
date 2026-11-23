@@ -41,13 +41,17 @@ function setup() {
   let authenticated = () => {};
   const subscribeScope = vi.fn(() => () => {});
   const revalidateScope = vi.fn();
-  cleanups.push(bindCollaborationRealtime(client, scope, issueId, {
+  const transport = {
     subscribe: (event, callback) => { handlers.set(event, callback); return () => { handlers.delete(event); }; },
     onAuthenticated: (callback) => { authenticated = callback; return () => {}; }, subscribeScope, revalidateScope,
-  }));
+  } satisfies Parameters<typeof bindCollaborationRealtime>[3];
+  const bind = () => bindCollaborationRealtime(client, scope, issueId, transport);
+  let dispose = bind();
+  cleanups.push(() => dispose());
   const preview = parseCollaborationTriggerPreview({ protocol_version: 2, issue_id: issueId, lifecycle_epoch: "1", write_context: { participant_epoch: "1", account_epoch: "1" }, targets: [], recipients: [] })!;
   const draft = prepareCollaborationComment(scope, issueId, requestId, "Private draft", [], preview);
-  return { client, scope, key, issue, draft, subscribeScope, revalidateScope, emit: (event: WSEventType, payload: unknown) => handlers.get(event)?.(payload), reconnect: () => authenticated() };
+  return { client, scope, key, issue, draft, subscribeScope, revalidateScope, rebind: () => { dispose(); dispose = bind(); },
+    emit: (event: WSEventType, payload: unknown) => handlers.get(event)?.(payload), reconnect: () => authenticated() };
 }
 
 it("subscribes once and preserves an original comment POST through ordinary updates", async () => {
@@ -211,4 +215,48 @@ it("rechecks a denied issue subscription when account membership changes again",
   f.emit("collaboration:workbench_changed", {});
   expect(f.revalidateScope).toHaveBeenCalledTimes(1);
   await vi.waitFor(() => expect(collaborationIssueAccessDenied(f.client, f.scope, issueId)).toBe(true));
+});
+
+it("does not clear refreshed account lists again when a denied issue subscription remounts", async () => {
+  const f = setup();
+  const fetch = vi.fn(async () => json({ code: "not_found" }, 404));
+  vi.stubGlobal("fetch", fetch);
+  const listKey = [...collaborationKeys.notifications(f.scope), { view: "all" }];
+  f.client.setQueryData(listKey, { items: [{ issue_title: "Private title" }] });
+  saveCollaborationDraft(f.draft);
+  const refused = { scope: "issue", id: issueId, error: "forbidden" };
+  f.emit("subscribe_error", refused);
+  await vi.waitFor(() => expect(f.client.isFetching()).toBe(0));
+  expect(f.client.getQueryData(f.key)).toBeUndefined();
+  expect(f.client.getQueryData(listKey)).toBeUndefined();
+  expect(readCollaborationDrafts(f.draft.scope)).toEqual([]);
+  const deniedEpoch = collaborationAccessEpoch(f.client, f.scope, issueId);
+  const readCount = fetch.mock.calls.length;
+  const redacted = { items: [{ issue_title: null, can_open: false }] };
+  f.client.setQueryData(listKey, redacted);
+
+  f.emit("subscribe_error", refused);
+  f.rebind();
+  f.emit("subscribe_error", refused);
+  expect(collaborationAccessEpoch(f.client, f.scope, issueId)).toBe(deniedEpoch);
+  expect(f.client.getQueryData(listKey)).toEqual(redacted);
+  expect(f.client.getQueryData(f.key)).toBeUndefined();
+  expect(fetch).toHaveBeenCalledTimes(readCount);
+
+  f.emit("collaboration:workbench_changed", {});
+  expect(f.revalidateScope).toHaveBeenCalledExactlyOnceWith("issue", issueId);
+  fetch.mockImplementation(async () => json(f.issue));
+  await expect(f.client.fetchQuery(collaborationIssueOptions(f.client, f.scope, issueId))).resolves.toMatchObject({ id: issueId });
+  expect(collaborationIssueAccessDenied(f.client, f.scope, issueId)).toBe(false);
+  f.emit("subscribe_ack", { scope: "issue", id: issueId });
+  f.emit("collaboration:workbench_changed", {});
+  expect(f.revalidateScope).toHaveBeenCalledTimes(1);
+
+  fetch.mockImplementation(async () => json({ code: "not_found" }, 404));
+  f.client.setQueryData(listKey, { items: [{ issue_title: "Private title again" }] });
+  f.emit("subscribe_error", refused);
+  expect(collaborationAccessEpoch(f.client, f.scope, issueId)).toBe(deniedEpoch + 1);
+  expect(f.client.getQueryData(listKey)).toBeUndefined();
+  expect(f.client.getQueryData(f.key)).toBeUndefined();
+  await vi.waitFor(() => expect(f.client.isFetching()).toBe(0));
 });
