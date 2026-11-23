@@ -217,6 +217,8 @@ func baselineVisibleSources(ctx context.Context, tx pgx.Tx, state State) error {
 }
 
 func Snooze(ctx context.Context, tx pgx.Tx, state *State, until time.Time, revision int64) error {
+	// Match pgx/PostgreSQL precision before validating or returning the state.
+	until = until.UTC().Truncate(time.Microsecond)
 	now, err := Now(ctx, tx)
 	if err != nil {
 		return err

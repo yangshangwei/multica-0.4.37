@@ -125,7 +125,9 @@ func (f stateFixture) snooze(t *testing.T, item db.InboxItem) State {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err = Snooze(context.Background(), tx, &state, time.Now().Add(time.Hour), state.Revision); err != nil {
+	// Keep submicrosecond input even on hosts whose clock only reports microseconds.
+	until := time.Now().Add(time.Hour).Truncate(time.Microsecond).Add(789 * time.Nanosecond)
+	if err = Snooze(context.Background(), tx, &state, until, state.Revision); err != nil {
 		t.Fatal(err)
 	}
 	if err = tx.Commit(context.Background()); err != nil {

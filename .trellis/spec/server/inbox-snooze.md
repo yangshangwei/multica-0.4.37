@@ -49,6 +49,12 @@ notification, not raw unread-row totals. Sort with
 `greatest(created_at, reminded_at)`; preserve original ID/time/comment anchor.
 Snoozed groups sort by deadline.
 
+`Snooze` canonicalizes the requested deadline to UTC microsecond precision
+before final-clock validation, persistence and receipt construction. pgx stores
+PostgreSQL timestamps at that precision; the immediate receipt, later list and
+undo/replay must report the same instant. Tests inject a nonzero nanosecond
+remainder explicitly so a microsecond-only host clock cannot hide the boundary.
+
 Undo consumes only the last server snapshot/token at the current group version.
 Read/archive, another schedule/reminder, expiry and conflicting new critical
 delivery invalidate it. Never restore client Query snapshots over newer state.

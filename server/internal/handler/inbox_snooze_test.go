@@ -32,7 +32,12 @@ func (f snoozeFixture) request(action string, body any) *http.Request {
 func (f snoozeFixture) snooze(t *testing.T, revision int64) InboxSnoozeReceipt {
 	t.Helper()
 	var receipt InboxSnoozeReceipt
-	testutil.Call(t, inboxWorkspaceHandler(testHandler.SnoozeInboxItem), f.request("snooze", map[string]any{"snoozed_until": time.Now().UTC().Add(time.Hour).Format(time.RFC3339Nano), "expected_revision": revision})).Want(200).JSON(&receipt)
+	// Exercise PostgreSQL's precision boundary regardless of the host clock.
+	until := time.Now().UTC().Add(time.Hour).Truncate(time.Microsecond).Add(789 * time.Nanosecond)
+	testutil.Call(t, inboxWorkspaceHandler(testHandler.SnoozeInboxItem), f.request("snooze", map[string]any{"snoozed_until": until.Format(time.RFC3339Nano), "expected_revision": revision})).Want(200).JSON(&receipt)
+	if receipt.SnoozedUntil == nil || *receipt.SnoozedUntil != until.Truncate(time.Microsecond).Format(time.RFC3339Nano) {
+		t.Fatal("snooze receipt did not retain the requested deadline at database precision")
+	}
 	return receipt
 }
 
@@ -60,7 +65,7 @@ func TestInboxSnoozeGroupAndItemIsolation(t *testing.T) {
 		t.Fatalf("snoozed raw rows=%d, want both siblings", len(snoozed))
 	}
 	for _, item := range snoozed {
-		if item.SnoozedUntil == nil || item.SnoozeRevision != 1 || item.Archived {
+		if item.SnoozedUntil == nil || *item.SnoozedUntil != *receipt.SnoozedUntil || item.SnoozeRevision != 1 || item.Archived {
 			t.Fatalf("incomplete group projection: %+v", item)
 		}
 	}
