@@ -71,3 +71,31 @@ committed. Initial macOS artifact fixture setup failures from the symlinked
 `/var` temp path are preserved separately; corrected canonical external temp
 paths produced the real red/green evidence. These focused results do not claim
 a new complete remote CI pass. Merge waits for the corrected PR's actual gates.
+
+
+## Completed merge
+
+Candidate `662d6694301842d2bab77cdfc8ead1a81d400328` passed all 19 PR checks:
+
+- [Complete CI 45230509413](https://github.com/yangshangwei/multica-0.4.37/actions/runs/45230509413): success, including backend-tests and both strict aggregates.
+- [Agent critical path 45230509837](https://github.com/yangshangwei/multica-0.4.37/actions/runs/45230509837): success.
+- Focused source-matching Go race inventory reconciles to **167 named PASS**,
+  zero failures/skips. The workflow contract set has 80 PASS.
+
+PR #6 merged at `2026-11-23T22:29:51Z` as
+`0302e4cb98a8e76ea74cd25ba27e69c8099f4180`. Its parents are the original main
+and tested candidate, and its tree `a1a56a7696ac33c53e0502bd505c7b068e005214`
+is identical to that candidate. Both parent ancestry checks passed. The initial
+merge call returned HTTP 502; a read of PR state and the remote main reference
+confirmed successful completion, without retrying the mutation.
+
+Local main was fast-forwarded with an expected-old-value check and selected
+without changing file contents. The feature branch and all unrelated untracked
+artifacts remain. Only this continuation's exact labeled Go/PostgreSQL containers
+were stopped after proving zero remaining database clients; databases and raw
+logs were retained. No release tag or deployment was created.
+
+The push-to-main workflow was separately queued as run 45280293517. The PR gate
+above is complete; this later run was not misrepresented as completed in the
+merge decision. Task archival and the session journal change documentation only.
+Previously recorded conditional/browser/provider acceptance limits remain.
