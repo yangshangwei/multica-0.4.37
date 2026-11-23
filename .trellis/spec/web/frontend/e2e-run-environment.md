@@ -1,5 +1,20 @@
 # E2E Run Environment
 
+## GitHub smoke bootstrap
+
+Runner-owned smoke paths must be initialized in a shell step from `RUNNER_TEMP`
+and exported through `GITHUB_ENV` before browser installation or allocation.
+GitHub does not expose the `runner` expression context in job-level `env`; a
+workflow using `${{ runner.temp }}` there is rejected before any job starts.
+Step-level upload paths may still use that context. The workflow contract test
+executes the initializer with a temporary path containing spaces.
+
+Windows CI jobs enable `git config --global core.longpaths true` on their
+ephemeral runner before `actions/checkout`. Historical evidence contains paths
+over the default Windows limit; deleting those records or skipping the native
+jobs is not a checkout fix. `agent-critical-path-workflow.test.mjs` checks the
+initialization ordering for installer and native/runtime verification jobs.
+
 `playwright.config.ts` starts no servers — "they must be running already". `baseURL`
 resolves from `PLAYWRIGHT_BASE_URL`, then `FRONTEND_ORIGIN`, then
 `http://localhost:3000`. Whatever listens on that port decides the suite's verdict,

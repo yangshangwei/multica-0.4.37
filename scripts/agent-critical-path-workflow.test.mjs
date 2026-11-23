@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { test } from "node:test";
 import { createRequire } from "node:module";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { spawnSync } from "node:child_process";
 
 // yaml is already a direct dependency of the shared core package; use that
 // package's resolution instead of adding a duplicate root dependency.
@@ -41,6 +44,29 @@ test("one isolated service plus locked browser dependencies precede the actual l
   assert.equal(steps[run]["continue-on-error"], undefined);
 });
 
+test("runner-owned paths are initialized before consumers without job-level runner context", (t) => {
+  const job = workflow.jobs.smoke;
+  assert.doesNotMatch(JSON.stringify(job.env ?? {}), /\$\{\{\s*runner\./);
+  const setup = job.steps.findIndex((step) => step.name === "Initialize runner-owned paths");
+  const install = job.steps.findIndex((step) => step.name === "Install locked dependencies and Chromium");
+  assert.ok(setup >= 0 && setup < install);
+  assert.equal(job.steps[setup].shell, "bash");
+  const directory = mkdtempSync(join(tmpdir(), "multica-smoke-paths-"));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const runnerTemp = join(directory, "runner temp");
+  const envFile = join(directory, "github.env");
+  const result = spawnSync("bash", ["-e", "-c", job.steps[setup].run], {
+    env: { ...process.env, RUNNER_TEMP: runnerTemp, GITHUB_ENV: envFile },
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(readFileSync(envFile, "utf8").trimEnd().split("\n"), [
+    `PLAYWRIGHT_BROWSERS_PATH=${runnerTemp}/agent-smoke-browsers`,
+    `SMOKE_RUN=${runnerTemp}/agent-smoke-run`,
+    `SMOKE_CONFIG=${runnerTemp}/agent-smoke-allocation.json`,
+  ]);
+});
+
 test("evidence upload always runs and excludes private configuration/registry", () => {
   const upload = workflow.jobs.smoke.steps.at(-1);
   assert.equal(upload.if, "always()");
@@ -48,4 +74,15 @@ test("evidence upload always runs and excludes private configuration/registry", 
   assert.equal(upload.with["if-no-files-found"], "error");
   assert.ok(!upload.with.path.includes("registry"));
   assert.ok(!upload.with.path.includes("allocation"));
+});
+
+test("Windows CI enables long paths before checking out retained evidence", () => {
+  const ci = parse(readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8"));
+  for (const name of ["collaboration-host-native", "windows-execenv", "installer"]) {
+    const steps = ci.jobs[name].steps;
+    const prepare = steps.findIndex((step) => step.run === "git config --global core.longpaths true");
+    const checkout = steps.findIndex((step) => step.uses?.startsWith("actions/checkout@"));
+    assert.ok(prepare >= 0 && prepare < checkout, name);
+    assert.equal(steps[prepare].if, "runner.os == 'Windows'", name);
+  }
 });
