@@ -1,0 +1,48 @@
+const fs = require("node:fs");
+const vm = require("node:vm");
+const path = require("node:path");
+const crypto = require("node:crypto");
+const { createRequire } = require("node:module");
+const assert = require("node:assert/strict");
+const root = "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37";
+const dependencyRequire = createRequire("/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen03/source/packages/core/package.json");
+const ts = dependencyRequire("typescript");
+const { QueryClient, QueryObserver, onlineManager, focusManager } = dependencyRequire("@tanstack/react-query");
+const sources = {};
+const access = { collaborationKeys: { scope: scope => ["collaboration", scope.apiScope, scope.userId] }, isCollaborationScopeCurrent: () => true, protectCollaborationRead: (_c, _s, _i, request) => request() };
+const schema = new Proxy({}, { get: () => ({ safeParse: () => ({success:true}) }) });
+const load = (relative, dependencies) => {
+ const full = path.join(root, relative), input = fs.readFileSync(full,"utf8");
+ sources[relative] = crypto.createHash("sha256").update(input).digest("hex");
+ const module = {exports:{}};
+ const js = ts.transpileModule(input,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+ vm.runInNewContext(js,{module,exports:module.exports,require:key=>{if (!(key in dependencies)) throw new Error("Unbound dependency: "+key);return dependencies[key]},setTimeout,clearTimeout,performance,DOMException,Map,WeakMap,console},{filename:full});
+ return module.exports;
+};
+const lease = load("packages/core/collaboration/knowledge-lease.ts", {"./knowledge-schema":{KNOWLEDGE_MAX_VISIBLE_MS:30000}});
+const cache = load("packages/core/collaboration/knowledge-cache.ts", {"@tanstack/react-query":{onlineManager,focusManager},"./access":access,"./knowledge-lease":lease});
+const rt = load("packages/core/realtime/knowledge.ts", {react:{useEffect:()=>{}},"@tanstack/react-query":{},"../collaboration/access":access,"../collaboration/knowledge-cache":cache,"../collaboration/knowledge-schema":schema,"../collaboration/invalidation":{isCollaborationInvalidation:()=>true},"../collaboration/realtime-schema":schema,"./provider":{}});
+(async()=>{
+ onlineManager.setOnline(true);focusManager.setFocused(true);
+ const client=new QueryClient({defaultOptions:{queries:{retry:false,gcTime:Infinity}}});
+ const scope={server:"control",apiScope:"control",userId:"control"};
+ const rootKey=[...cache.knowledgeScopeKey(scope),"source","control"], queryKey=[...rootKey,"page"];
+ const counts={started:0,aborted:0};
+ const observer=new QueryObserver(client,{queryKey,retry:false,queryFn:({signal})=>cache.readKnowledgeProjection(client,scope,rootKey,queryKey,()=>new Promise((_resolve,reject)=>{
+  counts.started++;
+  signal.addEventListener("abort",()=>{counts.aborted++;reject(new DOMException("aborted","AbortError"))},{once:true});
+ }))});
+ const unsubscribe=observer.subscribe(()=>{});
+ const callbacks={};
+ const dispose=rt.bindKnowledgeRealtime(client,scope,{subscribe:(name,cb)=>{callbacks[name]=cb;return ()=>{}},onAuthenticated:()=>()=>{},onDisconnected:()=>()=>{}});
+ const settle=async()=>{for(let n=0;n<5;n++)await new Promise(setImmediate)};
+ await settle();
+ const before={...counts};
+ callbacks["collaboration:changed"]({});await settle();const afterIssue={...counts};
+ callbacks["collaboration:workbench_changed"]({});await settle();const afterWorkbench={...counts};
+ assert.equal(before.started,1);assert.equal(before.aborted,0);
+ assert.equal(afterIssue.started,2);assert.equal(afterIssue.aborted,1);
+ assert.equal(afterWorkbench.started,3);assert.equal(afterWorkbench.aborted,2);
+ dispose();unsubscribe();client.clear();
+ console.log(JSON.stringify({status:"pass",before,afterIssue,afterWorkbench,sources,scope:"Real current knowledge realtime/cache/lease methods and actual TanStack Query; synthetic accepted hints, current scope and pending transport. No API/DB/auth/model."},null,2));
+})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,0 +1,63 @@
+{
+  "argv": [
+    "bash",
+    "/work/source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/usr/local/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-race",
+    "./internal/service"
+  ],
+  "cwd": "/work/source/server",
+  "platform": "linux/arm64",
+  "source_manifest_sha256": "8d3e26556b8104f0fea1eb006384bf0a3e64c1d2cf4e56d38f344a911b6c23f6",
+  "tool_sha256": "2c77b9243b17c9d5ecd5983acbdeaee36d470a9b62a2952f1279c319cc9b97fb",
+  "config_sha256": "312b81227f3ecb3bfe87ca84c79e893abcb742caa16993bea9e579c8bc732e87",
+  "runner_sha256": "4e207719381c166a1e87f0f9cb110d83281f7408ed81b183eba2f8a83217cada",
+  "start": 1795620980.5068173,
+  "database": "rc_service_race01",
+  "uid": 1000,
+  "exit": 0,
+  "end": 1795623448.8246157,
+  "counts": {
+    "pass": 4631,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "skips": [],
+  "unfinished": [],
+  "unreached": [],
+  "duplicate_runs": [],
+  "package_terminal": "pass",
+  "build_events": 0,
+  "parse_errors": [],
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "tool_unchanged": true,
+  "raw_hashes": {
+    "test.jsonl": "a4b4fbbac34042d889602d1ec739239e8548aaaf1ed634e59720c54e1717842b",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "package_elapsed_seconds": 2066.422,
+  "top_level_count": 1891,
+  "raw_evidence_root": "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/service/linux-race-01",
+  "platform_scope": "Linux/arm64 Go1.26.11 same PostgreSQL network namespace; not Darwin published-port acceptance",
+  "container_allocation": {
+    "owner": "root-causes-0b43832067",
+    "container": "9530c04d1e59b1a33126cde3e66392d238f25457dbc2b7e0a427b6495d2a46f5",
+    "image": "sha256:ea47ee45f1284d60f9cc09cb2c3bb4f508c256b640bd8bb30342ff13d1adcb52",
+    "network_mode": "container:4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "source": "/private/tmp/root-causes-service/source01",
+    "uid": 1000,
+    "redis_container": "08ac557be95758861e2d80d3d8caa8368bc05fa863212e2897013587b240612b",
+    "redis_ip": "172.17.0.3"
+  }
+}

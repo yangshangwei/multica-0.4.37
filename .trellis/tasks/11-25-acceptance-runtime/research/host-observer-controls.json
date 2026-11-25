@@ -1,0 +1,111 @@
+{
+  "source": {
+    "network-observer.cjs": "bd2d2130c2ea520f9210f9c65de5d4559b38c11a14d47a3232344746c5d17eb7",
+    "network-observer-test.ts": "f1949df75e11fa7cd32d77e3bdae461f8de87955e3331021c51a9982da56850c"
+  },
+  "runs": [
+    {
+      "path": "/private/tmp/root-causes-0b43832067/host-observer-control",
+      "raw_sha256": "f00db88f27c56049941661374e38d0b22a38286ea55184ed470007a4a6029135",
+      "event_counts": {
+        "error_code": 1,
+        "observer_sealed": 1,
+        "request": 2,
+        "requestfailed": 1,
+        "requestfinished": 1,
+        "response": 1
+      },
+      "seals": [
+        {
+          "at": "2026-11-25T15:03:24.159Z",
+          "event": "observer_sealed",
+          "pending": 0
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/root-causes-0b43832067/host-observer-control02",
+      "raw_sha256": "e55c6806cf6dc08151bf6b07760662dcffa495c1669759d79d0a6145bd19475a",
+      "event_counts": {
+        "error_code": 1,
+        "observer_sealed": 1,
+        "request": 2,
+        "requestfailed": 1,
+        "requestfinished": 1,
+        "response": 1
+      },
+      "seals": [
+        {
+          "at": "2026-11-25T15:04:39.033Z",
+          "event": "observer_sealed",
+          "pending": 0,
+          "unfinished": []
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/root-causes-0b43832067/host-observer-fixture-control",
+      "raw_sha256": "fd7f6fd696797d9f87771baa1664b181aaa7bad8753345f9f174f126edcd3bba",
+      "event_counts": {
+        "error_code_unreadable": 2,
+        "observer_sealed": 2,
+        "request": 2,
+        "response": 2,
+        "test_body_finished": 1
+      },
+      "seals": [
+        {
+          "at": "2026-11-25T15:08:00.622Z",
+          "event": "observer_sealed",
+          "pending": 0,
+          "unfinished": [
+            {
+              "request_id": "control-id",
+              "method": "GET",
+              "path": "/api/check"
+            }
+          ]
+        },
+        {
+          "at": "2026-11-25T15:08:00.622Z",
+          "event": "observer_sealed",
+          "pending": 0,
+          "unfinished": [
+            {
+              "request_id": "control-id",
+              "method": "GET",
+              "path": "/api/check"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/root-causes-0b43832067/host-observer-fixture-control02",
+      "raw_sha256": "fab4d7e7996012799c8ddbb8c3cb1f32f933975a89dcc27022104765f934b21a",
+      "event_counts": {
+        "error_code": 2,
+        "observer_sealed": 2,
+        "request": 2,
+        "requestfinished": 2,
+        "response": 2,
+        "test_body_finished": 1
+      },
+      "seals": [
+        {
+          "at": "2026-11-25T15:08:51.164Z",
+          "event": "observer_sealed",
+          "pending": 0,
+          "unfinished": []
+        },
+        {
+          "at": "2026-11-25T15:08:51.164Z",
+          "event": "observer_sealed",
+          "pending": 0,
+          "unfinished": []
+        }
+      ]
+    }
+  ],
+  "retained_failure": "Initial fixture wrapper closed context before accepted response bodies were drained; it produced error_code_unreadable and unfinished entries. Control retained, wrapper now drains pending response reads before closing contexts and sealing."
+}

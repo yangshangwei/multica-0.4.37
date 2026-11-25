@@ -1,0 +1,184 @@
+{
+  "started": 1795621763.742636,
+  "original_builder_exit": 1,
+  "original_receipt_sha256": "05996168f9b4f982b6dc5f51f2839968e4c97b14656264f7a741ebd27e3a6475",
+  "original_bundle": "/private/tmp/root-causes-0b43832067/native/package-mac/mac-arm64/Multica.app",
+  "final_bundle": "/private/tmp/root-causes-0b43832067/native/package-ready02/Multica.app",
+  "baseline": {
+    "scheme": "multica",
+    "default_application_url": "file:///Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+    "handlers": [
+      "ai.multica.desktop",
+      "com.github.Electron"
+    ],
+    "registrations": {
+      "ai.multica.desktop": [
+        "file:///Applications/Multica.app/",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r2/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/mac-package/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app/"
+      ],
+      "com.github.Electron": [
+        "file:///Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/mc-core-e2e-20261108/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/mc-core-qa-20261108/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/mc-s1-agent-identity-20261113-01/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.artifacts/e2e-20261118-203130/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/core-20261121.kV2VvV/src/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/src/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-acceptance-current-20261026/collaboration-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source-password/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source-password/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/password-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-e2e-build-1118-203130-s60orm/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/multica-e2e-fix-20261119-002358-fc3f5ec4/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+        "file:///Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ]
+    }
+  },
+  "reason": "Empty CSC_LINK was treated as certificate path after assembly; preserve failed output and complete ad-hoc signing only on verified fresh clone.",
+  "source_asar_sha256": "fd4e7a6a158b06b60c76e301a5e5f8fa77feedba321a61c06eefedb531e64471",
+  "frameworks": [
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Versions/Current",
+      "target": "A",
+      "files": 234
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Electron Framework",
+      "target": "Versions/Current/Electron Framework",
+      "files": 1
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Helpers",
+      "target": "Versions/Current/Helpers",
+      "files": 1
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Libraries",
+      "target": "Versions/Current/Libraries",
+      "files": 5
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Resources",
+      "target": "Versions/Current/Resources",
+      "files": 227
+    },
+    {
+      "path": "Contents/Frameworks/Mantle.framework/Versions/Current",
+      "target": "A",
+      "files": 2
+    },
+    {
+      "path": "Contents/Frameworks/Mantle.framework/Mantle",
+      "target": "Versions/Current/Mantle",
+      "files": 1
+    },
+    {
+      "path": "Contents/Frameworks/Mantle.framework/Resources",
+      "target": "Versions/Current/Resources",
+      "files": 1
+    },
+    {
+      "path": "Contents/Frameworks/ReactiveObjC.framework/Versions/Current",
+      "target": "A",
+      "files": 2
+    },
+    {
+      "path": "Contents/Frameworks/ReactiveObjC.framework/ReactiveObjC",
+      "target": "Versions/Current/ReactiveObjC",
+      "files": 1
+    },
+    {
+      "path": "Contents/Frameworks/ReactiveObjC.framework/Resources",
+      "target": "Versions/Current/Resources",
+      "files": 1
+    },
+    {
+      "path": "Contents/Frameworks/Squirrel.framework/Versions/Current",
+      "target": "A",
+      "files": 3
+    },
+    {
+      "path": "Contents/Frameworks/Squirrel.framework/Resources",
+      "target": "Versions/Current/Resources",
+      "files": 2
+    },
+    {
+      "path": "Contents/Frameworks/Squirrel.framework/Squirrel",
+      "target": "Versions/Current/Squirrel",
+      "files": 1
+    }
+  ],
+  "sign_command": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/sign_mac.mjs",
+    "/private/tmp/root-causes-0b43832067/native/package-ready02/Multica.app",
+    "/private/tmp/root-causes-0b43832067/frontend-source"
+  ],
+  "sign_exit": 0,
+  "codesign_verify_exit": 0,
+  "status": "verified_signed",
+  "protocol_cleanup": {
+    "status": "pass",
+    "steps": [],
+    "error": null,
+    "final": {
+      "scheme": "multica",
+      "default_application_url": "file:///Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+      "handlers": [
+        "ai.multica.desktop",
+        "com.github.Electron"
+      ],
+      "registrations": {
+        "ai.multica.desktop": [
+          "file:///Applications/Multica.app/",
+          "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r2/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app/"
+        ],
+        "com.github.Electron": [
+          "file:///Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/mc-core-e2e-20261108/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/mc-core-qa-20261108/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/mc-s1-agent-identity-20261113-01/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.artifacts/e2e-20261118-203130/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/core-20261121.kV2VvV/src/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/src/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-acceptance-current-20261026/collaboration-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source-password/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source-password/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/password-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-e2e-build-1118-203130-s60orm/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/multica-e2e-fix-20261119-002358-fc3f5ec4/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+          "file:///Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+        ]
+      }
+    }
+  },
+  "ended": 1795621794.175508
+}

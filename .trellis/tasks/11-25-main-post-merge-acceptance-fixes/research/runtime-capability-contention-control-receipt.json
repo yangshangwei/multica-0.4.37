@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "bash",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=5m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-overlay",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-capability-contention-overlay.json",
+    "-run",
+    "^TestAcceptanceCapabilityAccountContentionControl$",
+    "./internal/service"
+  ],
+  "exit": 0,
+  "database": "rc_runtime_contention01",
+  "started": 1795622927.8225322,
+  "elapsed_s": 28.822916746139526,
+  "source": {
+    "server/internal/service/collaboration_runtime_preparation_capabilities.go": "e625a0286ff4e7f468f956145a149727b2c1836399d0afdeadc72320215f14b9",
+    "server/internal/service/managed_runtime.go": "325251ecb8a8adeaf3c8c3a97ef53302750fce9a8c163d579087e25f12288e96",
+    "server/internal/service/collaboration_runtime.go": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+    "server/pkg/db/queries/agent_artifact_execution.sql": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+    "server/internal/auth/password_session.go": "69530f6da81e79658f47e28f4db801d651a6603b9fd7bea621aaecf8e393d33c"
+  },
+  "source_unchanged": true,
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "config_sha256": "d10beb4c7c16fc510f83bf3a1088fba331c6dfac1842ffe4781ab83c9266d0a9"
+}

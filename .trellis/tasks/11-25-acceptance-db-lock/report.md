@@ -49,3 +49,8 @@ Final SQL audit: diag01, normal01, normal02, race01, reservednormal03 each zero 
 Dedicated Redis (fixtures force DB12 regardless of URL): container `f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2`, loopback51112, owneracceptance-fixes-4b9d3494a2/lanedb-lock, pinned existing Redis7-alpine image. Fresh random password stayed private; AUTH/PING verified before tests. Exact ID/image/owner checked before docker stop, exit0, running=false. Stopped container/config retained; sharedPG remains parent-owned. No test/monitor processes remain in this lane. Final-resource-audit.json and redis-stop-receipt.json record cleanup.
 
 **Release HOLD:** D02historical cause unknown; supported final service normal/race incomplete and new unrelated failures unresolved. Parent owns whether to authorize a new bounded diagnosis after coordinating workload. No speculative code repair is proposed.
+
+
+## 2026-11-26 continuation
+
+The preceding report remains the original failed-run record. New work on main9ffa3728 repaired fixture ownership: invalidation bootstrap no longer drains unrelated retained jobs. Deterministic RED/GREEN, all20 owning tests and complete supported Linux/arm64 normal/race each4631PASS/0FAIL/0SKIP (1891 top-level) are now recorded in `research/resume-root-cause-results.md`. Actual package times1009.990s/2066.422s preserve40m. Default-policy Linux database locality bypasses the separately measured host published-port delay; this is not a Darwin whole-package PASS or a historical NOWAIT holder attribution. New raw receipts, source identity, independent review and stopped owned-resource proof are linked from that note. No product authorization guard/worker semantics changed.

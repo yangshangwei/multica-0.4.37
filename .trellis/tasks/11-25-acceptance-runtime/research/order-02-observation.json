@@ -1,0 +1,253 @@
+{
+  "run": "order-02",
+  "case": [
+    {
+      "title": "order export: independent owner queues merge authors and preserve AI across transfer",
+      "status": "passed",
+      "duration_ms": 55922,
+      "retry": 0,
+      "errors": 0
+    }
+  ],
+  "budget_ms": 600000,
+  "503_count": 309,
+  "503_by_context": {
+    "canceled": 294,
+    "none": 15
+  },
+  "503_by_code": {
+    "not_observed": 309
+  },
+  "browser_received_5xx": [],
+  "503_matched_browser_failed": 293,
+  "unmatched_503": [
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-000741",
+      "duration": "135.189ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 994
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001167",
+      "duration": "95.674ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 1882
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001168",
+      "duration": "116.085ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 1884
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001287",
+      "duration": "122.928ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 2135
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001288",
+      "duration": "198.64ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 2136
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001337",
+      "duration": "83.348ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 2238
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001492",
+      "duration": "162.387ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 2518
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001581",
+      "duration": "130.933ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 2744
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001722",
+      "duration": "242.108ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 3032
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001953",
+      "duration": "299.775ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 3538
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001963",
+      "duration": "98.155ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 3548
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-001994",
+      "duration": "81.496ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 3580
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-002041",
+      "duration": "334.515ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 3713
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-002352",
+      "duration": "195.743ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 4421
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-002358",
+      "duration": "145.741ms",
+      "request_context": "none",
+      "diagnostic_response_code": null,
+      "line": 4422
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "233f4509904f/wINguzFYVs-002403",
+      "duration": "182\u00b5s",
+      "request_context": "canceled",
+      "diagnostic_response_code": null,
+      "line": 4516
+    }
+  ],
+  "observer_seals": [
+    {
+      "at": "2026-11-25T15:34:25.513Z",
+      "event": "observer_sealed",
+      "pending": 0,
+      "unfinished": []
+    },
+    {
+      "at": "2026-11-25T15:34:25.514Z",
+      "event": "observer_sealed",
+      "pending": 0,
+      "unfinished": []
+    },
+    {
+      "at": "2026-11-25T15:34:25.514Z",
+      "event": "observer_sealed",
+      "pending": 0,
+      "unfinished": []
+    },
+    {
+      "at": "2026-11-25T15:34:25.514Z",
+      "event": "observer_sealed",
+      "pending": 0,
+      "unfinished": []
+    }
+  ],
+  "bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/order-02/receipt.json": "5c29848ca67d6584b2562ed36a0228107914ee4e47128da11b85e1711c48b41d",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/order-02/playwright.json": "eaa2404edc8b55d171db8b5e95e821852701f089c4026ce1ec1f9b4dae8e4b38",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/order-02/api.log": "659596ea243b058343ace839524171ee4311b56511941beeb9b5cf37855a8aeb",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/order-02/network.jsonl": "bacc3a3c781caa2c3536ca41ec8795b7b6a0ae18c0afabe8a0e023a21e31277f"
+  },
+  "cleanup": {
+    "exit": 0,
+    "source_unchanged": true,
+    "build_unchanged": true,
+    "binaries_unchanged": true,
+    "gate_before": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": 2
+    },
+    "gate_after": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": 4
+    },
+    "remaining_db_clients": 0,
+    "listeners_closed": [
+      true,
+      true,
+      true
+    ],
+    "api_cleanup": {
+      "owner": "root-causes-0b43832067/order-02",
+      "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+      "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+      "postgres_bridge_ip": "172.17.0.2",
+      "port": 49640,
+      "env_sha256": "6e7c70cb4b54b76ffd3bc7e5acc0ad68a6a2ae4d3408d4506e44fff65e3ff5d1",
+      "container": "233f4509904f2e2118ccd2e48af7d25b9a2cfd2a2dab4474b5edd31e1a56c798",
+      "volume": "root-causes-0b43832067-order-02-binary",
+      "container_absent": true,
+      "volume_absent": true
+    }
+  }
+}

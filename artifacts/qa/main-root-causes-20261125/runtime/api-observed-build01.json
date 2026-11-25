@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "build",
+    "-overlay",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/code-overlay.json",
+    "-ldflags",
+    "-X main.commit=9ffa37281184ae605bcbc0bc7a09caf3df60d180",
+    "-o",
+    "/private/tmp/root-causes-0b43832067/host-frozen01/bin/api-observed",
+    "./cmd/server"
+  ],
+  "cwd": "/private/tmp/root-causes-0b43832067/host-frozen01/source/server",
+  "exit": 0,
+  "started": 1795621032.745236,
+  "ended": 1795621047.253216,
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_manifest_sha256": "fea4e75768ed7cef545722862c4eca80a7b6824c17d69b13f7453840d10bad05",
+  "source_unchanged": true,
+  "overlay_sha256": "bd0bbf7962829ec530979f0f9eb2de0c1ddb3a618e3ca31c83b446a054b98994",
+  "overlay_config_sha256": "24ea181a571280c421d0697e140eb1c143c80d44620f0c878cc9189f4b17de39",
+  "api_sha256": "95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f",
+  "scope": "Private fixed allowlist error-code observation from existing bounded tee; status/body/severity unchanged."
+}

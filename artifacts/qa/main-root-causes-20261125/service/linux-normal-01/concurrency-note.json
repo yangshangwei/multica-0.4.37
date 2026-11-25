@@ -1,0 +1,23 @@
+{
+  "at": 1795619906.134858,
+  "overlap": "CLI full04 locality run overlaps initial service normal tests; no frontend build",
+  "pause_attempt": "pretest gate refused after detecting service.test5233; no signal sent; original40m clock unchanged",
+  "claim_limit": "success requires all actual assertions; any failure must be investigated with overlap considered",
+  "additional_overlap": {
+    "at": 1795620392.651762,
+    "action": "request_logging bounded native/Linux Go compilation GOMAXPROCS2 p2, parent approved",
+    "no_new_host_db_workload": true,
+    "ended": "2026-11-25T15:28:15Z",
+    "started": "2026-11-25T15:26:50Z"
+  },
+  "frontend_overlap": {
+    "at": 1795620472.262439,
+    "action": "parent production frontend build bounded1staticworker Nodeheap3GiB",
+    "approved_by_parent": true
+  },
+  "host_journey_overlap": {
+    "at": 1795620813.990674,
+    "action": "request_logging full Host order-02 LinuxAPI + nativeDarwinproviders original600s1worker0retries",
+    "approved_by_parent": true
+  }
+}

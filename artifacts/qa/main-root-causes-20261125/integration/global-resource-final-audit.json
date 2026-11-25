@@ -1,0 +1,176 @@
+{
+  "owner": "root-causes-0b43832067",
+  "at": "2026-11-25T16:23:41.119365+00:00",
+  "postgres": {
+    "container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "image": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+    "volume": "root-causes-0b43832067-data",
+    "database_count": 26,
+    "databases": [
+      "rc_cli_diag01",
+      "rc_cli_diag02",
+      "rc_cli_full01",
+      "rc_cli_full02",
+      "rc_cli_full03",
+      "rc_cli_full04",
+      "rc_mac_off02",
+      "rc_mac_on01",
+      "rc_mac_on02",
+      "rc_mac_on03",
+      "rc_middleware_normal01",
+      "rc_middleware_normal02",
+      "rc_middleware_normal03",
+      "rc_middleware_race01",
+      "rc_middleware_race02",
+      "rc_middleware_race03",
+      "rc_runtime_contention01",
+      "rc_runtime_memory01",
+      "rc_runtime_memory02",
+      "rc_runtime_order01",
+      "rc_runtime_order02",
+      "rc_runtime_order03",
+      "rc_service_diag01",
+      "rc_service_normal01",
+      "rc_service_race01",
+      "rc_upload_contract01"
+    ],
+    "other_clients": []
+  },
+  "containers": [
+    {
+      "id": "2d7c2b3ad95ea66d09f214db6cbdb80949086654422317e9a143df536415bdcc",
+      "name": "/root-causes-0b43832067-middleware-redis",
+      "owner": "root-causes-0b43832067/middleware",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "running": false
+    },
+    {
+      "id": "08ac557be95758861e2d80d3d8caa8368bc05fa863212e2897013587b240612b",
+      "name": "/root-causes-0b43832067-service-redis",
+      "owner": "root-causes-0b43832067",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "running": false
+    },
+    {
+      "id": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+      "name": "/root-causes-0b43832067-pg",
+      "owner": "root-causes-0b43832067",
+      "image": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+      "running": false
+    },
+    {
+      "id": "9530c04d1e59b1a33126cde3e66392d238f25457dbc2b7e0a427b6495d2a46f5",
+      "name": "/root-causes-0b43832067-service-linux",
+      "owner": "root-causes-0b43832067",
+      "owner_label": "owner",
+      "image": "sha256:ea47ee45f1284d60f9cc09cb2c3bb4f508c256b640bd8bb30342ff13d1adcb52",
+      "running": false
+    }
+  ],
+  "ports": [
+    {
+      "port": 49640,
+      "open": false
+    },
+    {
+      "port": 49641,
+      "open": false
+    },
+    {
+      "port": 49642,
+      "open": false
+    },
+    {
+      "port": 51069,
+      "open": false
+    },
+    {
+      "port": 51070,
+      "open": false
+    },
+    {
+      "port": 51071,
+      "open": false
+    },
+    {
+      "port": 52839,
+      "open": false
+    },
+    {
+      "port": 53897,
+      "open": false
+    },
+    {
+      "port": 55762,
+      "open": false
+    },
+    {
+      "port": 55763,
+      "open": false
+    },
+    {
+      "port": 55764,
+      "open": false
+    },
+    {
+      "port": 56885,
+      "open": false
+    },
+    {
+      "port": 56886,
+      "open": false
+    },
+    {
+      "port": 56887,
+      "open": false
+    },
+    {
+      "port": 57005,
+      "open": false
+    },
+    {
+      "port": 58145,
+      "open": false
+    },
+    {
+      "port": 58146,
+      "open": false
+    },
+    {
+      "port": 58147,
+      "open": false
+    },
+    {
+      "port": 59294,
+      "open": false
+    },
+    {
+      "port": 59295,
+      "open": false
+    },
+    {
+      "port": 59296,
+      "open": false
+    },
+    {
+      "port": 59938,
+      "open": false
+    },
+    {
+      "port": 59939,
+      "open": false
+    },
+    {
+      "port": 59940,
+      "open": false
+    },
+    {
+      "port": 61942,
+      "open": false
+    }
+  ],
+  "open_ports": [],
+  "status": "pass",
+  "initial_audit_sha256": "23554acf239bc10baea4da60c3da0bb2f8445f3eff0104f7f94b584e397c08cd",
+  "process_candidates": []
+}

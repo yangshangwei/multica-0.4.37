@@ -1,0 +1,2669 @@
+{
+  "order-export-01": {
+    "source": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/order-export-01/api.log",
+    "sha256": "2af020761abbbc9da90dd17a303f48a877c14ef7b0834ce39030567538c4599c",
+    "count": 320,
+    "route_counts": {
+      "GET /api/me/collaboration-notifications": 19,
+      "GET /api/me/workbench": 25,
+      "GET /api/collaboration/attachments/drafts/:id": 1,
+      "GET /api/collaboration/creation-options": 2,
+      "GET /api/collaboration/issues/:id": 42,
+      "GET /api/collaboration/issues/:id/knowledge-candidates": 170,
+      "GET /api/collaboration/runtime/capabilities": 16,
+      "GET /api/collaboration/issues/:id/commands": 1,
+      "GET /api/collaboration/issues/:id/mention-targets": 14,
+      "GET /api/collaboration/issues/:id/resources/identity": 3,
+      "GET /api/collaboration/issues/:id/stage": 5,
+      "GET /api/collaboration/issues/:id/resources": 7,
+      "GET /api/collaboration/issues/:id/comments": 1,
+      "GET /api/collaboration/issues/:id/reactions": 1,
+      "GET /api/collaboration/issues/:id/activity": 3,
+      "GET /api/collaboration/issues/:id/resources/offers": 3,
+      "GET /api/collaboration/issues/:id/attachments": 2,
+      "POST /api/collaboration/runtime/runs/:id/recording/seal": 2,
+      "POST /api/daemon/tasks/claim": 3
+    },
+    "entries": [
+      {
+        "line": 262,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.041054,
+        "request_id": "e4d27896"
+      },
+      {
+        "line": 263,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.038561,
+        "request_id": "04b2758a"
+      },
+      {
+        "line": 302,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.048119999999999996,
+        "request_id": "3efb1789"
+      },
+      {
+        "line": 303,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.052716,
+        "request_id": "01e2d2db"
+      },
+      {
+        "line": 343,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.024314000000000002,
+        "request_id": "94f404a6"
+      },
+      {
+        "line": 345,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.030256,
+        "request_id": "1fe3fa94"
+      },
+      {
+        "line": 421,
+        "route": "GET /api/collaboration/attachments/drafts/:id",
+        "duration_s": 0.01141,
+        "request_id": "682d0001"
+      },
+      {
+        "line": 422,
+        "route": "GET /api/collaboration/creation-options",
+        "duration_s": 0.012096,
+        "request_id": "595d5216"
+      },
+      {
+        "line": 423,
+        "route": "GET /api/collaboration/creation-options",
+        "duration_s": 0.013182000000000001,
+        "request_id": "31b85aeb"
+      },
+      {
+        "line": 445,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.038985,
+        "request_id": "45b513bb"
+      },
+      {
+        "line": 446,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.034763,
+        "request_id": "3adf8a12"
+      },
+      {
+        "line": 447,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.034811,
+        "request_id": "73af8c91"
+      },
+      {
+        "line": 511,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.012146,
+        "request_id": "40e35481"
+      },
+      {
+        "line": 512,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.012990999999999999,
+        "request_id": "6cabf530"
+      },
+      {
+        "line": 612,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0030080000000000003,
+        "request_id": "cf189321"
+      },
+      {
+        "line": 615,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.039486,
+        "request_id": "d5ecd44f"
+      },
+      {
+        "line": 619,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.052797,
+        "request_id": "e48b74c2"
+      },
+      {
+        "line": 638,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.089645,
+        "request_id": "24dedfe5"
+      },
+      {
+        "line": 639,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.088463,
+        "request_id": "744f7693"
+      },
+      {
+        "line": 680,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.019319,
+        "request_id": "8941477d"
+      },
+      {
+        "line": 681,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.015337,
+        "request_id": "6e644dfc"
+      },
+      {
+        "line": 682,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.016762,
+        "request_id": "44b2ac16"
+      },
+      {
+        "line": 759,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.01813,
+        "request_id": "61b42af2"
+      },
+      {
+        "line": 760,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.015618,
+        "request_id": "7f7f8860"
+      },
+      {
+        "line": 761,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.016322,
+        "request_id": "0cb6eaba"
+      },
+      {
+        "line": 851,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.008726000000000001,
+        "request_id": "88a61a20"
+      },
+      {
+        "line": 866,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 4.7e-05,
+        "request_id": "d0bfae41"
+      },
+      {
+        "line": 867,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0039900000000000005,
+        "request_id": "b6aa0c0e"
+      },
+      {
+        "line": 869,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.031613,
+        "request_id": "2345c804"
+      },
+      {
+        "line": 874,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.03719,
+        "request_id": "cf879fc8"
+      },
+      {
+        "line": 900,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.055316000000000004,
+        "request_id": "9418d29c"
+      },
+      {
+        "line": 901,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.053099,
+        "request_id": "f31fe52d"
+      },
+      {
+        "line": 902,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.05415400000000001,
+        "request_id": "92886961"
+      },
+      {
+        "line": 944,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.14685900000000002,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-000638"
+      },
+      {
+        "line": 967,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.0076289999999999995,
+        "request_id": "9064d710"
+      },
+      {
+        "line": 978,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0007869999999999999,
+        "request_id": "09183173"
+      },
+      {
+        "line": 984,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000406,
+        "request_id": "879892ce"
+      },
+      {
+        "line": 998,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.031364,
+        "request_id": "29268d05"
+      },
+      {
+        "line": 1065,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001174,
+        "request_id": "05d4b88d"
+      },
+      {
+        "line": 1072,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.040059,
+        "request_id": "8b8e1ad3"
+      },
+      {
+        "line": 1079,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.039765,
+        "request_id": "147a040a"
+      },
+      {
+        "line": 1107,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.033759000000000004,
+        "request_id": "bb37feb9"
+      },
+      {
+        "line": 1110,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.060598,
+        "request_id": "82ca4efb"
+      },
+      {
+        "line": 1132,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.214035,
+        "request_id": "80a4bdc7"
+      },
+      {
+        "line": 1133,
+        "route": "GET /api/collaboration/issues/:id/commands",
+        "duration_s": 0.13286099999999998,
+        "request_id": "b9418a23"
+      },
+      {
+        "line": 1136,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.048637,
+        "request_id": "af3ec246"
+      },
+      {
+        "line": 1149,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.11098300000000001,
+        "request_id": "fa4250c6"
+      },
+      {
+        "line": 1166,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000897,
+        "request_id": "f84a1288"
+      },
+      {
+        "line": 1223,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.039522,
+        "request_id": "e379603e"
+      },
+      {
+        "line": 1226,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.04312,
+        "request_id": "a92b7d10"
+      },
+      {
+        "line": 1245,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.219983,
+        "request_id": "5ce5391f"
+      },
+      {
+        "line": 1247,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.243978,
+        "request_id": "60e28157"
+      },
+      {
+        "line": 1249,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.049771,
+        "request_id": "e3143455"
+      },
+      {
+        "line": 1273,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.28737900000000005,
+        "request_id": "1884d831"
+      },
+      {
+        "line": 1289,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.028379,
+        "request_id": "256ab889"
+      },
+      {
+        "line": 1290,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.049727,
+        "request_id": "1ee396c1"
+      },
+      {
+        "line": 1291,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.005314,
+        "request_id": "7e1f0166"
+      },
+      {
+        "line": 1302,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000798,
+        "request_id": "240fcfc2"
+      },
+      {
+        "line": 1310,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 6.4e-05,
+        "request_id": "c62ce450"
+      },
+      {
+        "line": 1323,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.15099500000000002,
+        "request_id": "55c1740a"
+      },
+      {
+        "line": 1324,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000297,
+        "request_id": "72da9341"
+      },
+      {
+        "line": 1327,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000184,
+        "request_id": "d9107e88"
+      },
+      {
+        "line": 1328,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.086725,
+        "request_id": "8096e407"
+      },
+      {
+        "line": 1339,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.033197000000000004,
+        "request_id": "19e77c22"
+      },
+      {
+        "line": 1354,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000111,
+        "request_id": "051dbe4e"
+      },
+      {
+        "line": 1373,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.20013999999999998,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-000840"
+      },
+      {
+        "line": 1384,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001665,
+        "request_id": "202bca49"
+      },
+      {
+        "line": 1389,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.029698000000000002,
+        "request_id": "9dc8d8ce"
+      },
+      {
+        "line": 1427,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 1.8e-05,
+        "request_id": "da145c4a"
+      },
+      {
+        "line": 1432,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.023753,
+        "request_id": "6cbc80bc"
+      },
+      {
+        "line": 1452,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.051207,
+        "request_id": "4379a3bb"
+      },
+      {
+        "line": 1484,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.016146999999999998,
+        "request_id": "cf35d33f"
+      },
+      {
+        "line": 1485,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.021291,
+        "request_id": "88741d13"
+      },
+      {
+        "line": 1539,
+        "route": "GET /api/collaboration/issues/:id/resources/identity",
+        "duration_s": 0.024041,
+        "request_id": "2601dbba"
+      },
+      {
+        "line": 1564,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.074761,
+        "request_id": "cefbc93c"
+      },
+      {
+        "line": 1565,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.076643,
+        "request_id": "100b3c6e"
+      },
+      {
+        "line": 1570,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0011259999999999998,
+        "request_id": "e0f22753"
+      },
+      {
+        "line": 1573,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001577,
+        "request_id": "a0bfa9cf"
+      },
+      {
+        "line": 1578,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.041891,
+        "request_id": "ac7a5072"
+      },
+      {
+        "line": 1582,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.042055999999999996,
+        "request_id": "f9f14b31"
+      },
+      {
+        "line": 1613,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0010880000000000002,
+        "request_id": "ffbb9339"
+      },
+      {
+        "line": 1616,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.018202000000000003,
+        "request_id": "3c76935f"
+      },
+      {
+        "line": 1660,
+        "route": "GET /api/collaboration/issues/:id/resources/identity",
+        "duration_s": 0.030484,
+        "request_id": "5d732361"
+      },
+      {
+        "line": 1690,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.041195999999999997,
+        "request_id": "f95ee53e"
+      },
+      {
+        "line": 1691,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.028605000000000002,
+        "request_id": "994e2e4f"
+      },
+      {
+        "line": 1710,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 9.4e-05,
+        "request_id": "270b3809"
+      },
+      {
+        "line": 1712,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000198,
+        "request_id": "a58235c8"
+      },
+      {
+        "line": 1716,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 4.1e-05,
+        "request_id": "c259d14a"
+      },
+      {
+        "line": 1720,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.017323,
+        "request_id": "54c684b7"
+      },
+      {
+        "line": 1725,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.022664000000000004,
+        "request_id": "0b531709"
+      },
+      {
+        "line": 1789,
+        "route": "GET /api/collaboration/issues/:id/resources/identity",
+        "duration_s": 0.033280000000000004,
+        "request_id": "55d0fc47"
+      },
+      {
+        "line": 1807,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.004438,
+        "request_id": "0d32d0c2"
+      },
+      {
+        "line": 1808,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.00526,
+        "request_id": "bfe9fe7a"
+      },
+      {
+        "line": 1811,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001304,
+        "request_id": "315eed11"
+      },
+      {
+        "line": 1849,
+        "route": "GET /api/collaboration/issues/:id/stage",
+        "duration_s": 0.077406,
+        "request_id": "356dbbca"
+      },
+      {
+        "line": 1850,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.23972800000000002,
+        "request_id": "80297a08"
+      },
+      {
+        "line": 1851,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.235749,
+        "request_id": "a6b0501b"
+      },
+      {
+        "line": 1853,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.239626,
+        "request_id": "e12b1424"
+      },
+      {
+        "line": 1875,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.015666,
+        "request_id": "02ab1246"
+      },
+      {
+        "line": 1876,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.016371,
+        "request_id": "c0bfa2b4"
+      },
+      {
+        "line": 1941,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001224,
+        "request_id": "dfbc8f72"
+      },
+      {
+        "line": 1945,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.006967,
+        "request_id": "50914050"
+      },
+      {
+        "line": 1950,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.006712,
+        "request_id": "e10384c3"
+      },
+      {
+        "line": 1952,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.019429,
+        "request_id": "3904ad56"
+      },
+      {
+        "line": 1958,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.036948999999999996,
+        "request_id": "8a24e8e6"
+      },
+      {
+        "line": 1993,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.30474700000000005,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001135"
+      },
+      {
+        "line": 2013,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001299,
+        "request_id": "9d8e1d4f"
+      },
+      {
+        "line": 2017,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 7.999999999999999e-05,
+        "request_id": "78cd597c"
+      },
+      {
+        "line": 2061,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.106987,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001168"
+      },
+      {
+        "line": 2063,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.11875000000000001,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001169"
+      },
+      {
+        "line": 2065,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.167878,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001172"
+      },
+      {
+        "line": 2071,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.099184,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001177"
+      },
+      {
+        "line": 2078,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 2.3e-05,
+        "request_id": "1ffea97f"
+      },
+      {
+        "line": 2080,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.002299,
+        "request_id": "285af5f5"
+      },
+      {
+        "line": 2084,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.028985,
+        "request_id": "242c4358"
+      },
+      {
+        "line": 2092,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.041239,
+        "request_id": "3de1070f"
+      },
+      {
+        "line": 2113,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.053192,
+        "request_id": "6da47f23"
+      },
+      {
+        "line": 2129,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001873,
+        "request_id": "e50ef89c"
+      },
+      {
+        "line": 2134,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.069388,
+        "request_id": "a41d20c0"
+      },
+      {
+        "line": 2138,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.254129,
+        "request_id": "5398813a"
+      },
+      {
+        "line": 2139,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.25492,
+        "request_id": "c84d8b7f"
+      },
+      {
+        "line": 2140,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.24461000000000002,
+        "request_id": "86926b1c"
+      },
+      {
+        "line": 2141,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.043482,
+        "request_id": "fd2966ff"
+      },
+      {
+        "line": 2151,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.268606,
+        "request_id": "189cab2c"
+      },
+      {
+        "line": 2185,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.003815,
+        "request_id": "d0f7e9dd"
+      },
+      {
+        "line": 2187,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.003225,
+        "request_id": "28931e4c"
+      },
+      {
+        "line": 2189,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 7.3e-05,
+        "request_id": "41f70f50"
+      },
+      {
+        "line": 2198,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.11674200000000001,
+        "request_id": "59f5b1b0"
+      },
+      {
+        "line": 2206,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.169875,
+        "request_id": "6b94bdf6"
+      },
+      {
+        "line": 2249,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.091336,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001238"
+      },
+      {
+        "line": 2254,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.088336,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001245"
+      },
+      {
+        "line": 2265,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.091964,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001256"
+      },
+      {
+        "line": 2345,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.08380800000000001,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001335"
+      },
+      {
+        "line": 2390,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000248,
+        "request_id": "e0f5811a"
+      },
+      {
+        "line": 2398,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.013004,
+        "request_id": "d1c87c0e"
+      },
+      {
+        "line": 2409,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.122547,
+        "request_id": "fd9ccef6"
+      },
+      {
+        "line": 2410,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.040695999999999996,
+        "request_id": "986b5d67"
+      },
+      {
+        "line": 2482,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0076630000000000005,
+        "request_id": "69906ced"
+      },
+      {
+        "line": 2491,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.016858,
+        "request_id": "ab88b7cf"
+      },
+      {
+        "line": 2494,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.021315999999999998,
+        "request_id": "c26edf48"
+      },
+      {
+        "line": 2506,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.021809000000000002,
+        "request_id": "5697649c"
+      },
+      {
+        "line": 2507,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.094943,
+        "request_id": "d1a83f28"
+      },
+      {
+        "line": 2525,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.021783999999999998,
+        "request_id": "9ea23d48"
+      },
+      {
+        "line": 2527,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.088162,
+        "request_id": "e156d167"
+      },
+      {
+        "line": 2539,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000128,
+        "request_id": "1274c24b"
+      },
+      {
+        "line": 2544,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.002108,
+        "request_id": "db5fea0f"
+      },
+      {
+        "line": 2557,
+        "route": "GET /api/collaboration/issues/:id/comments",
+        "duration_s": 0.102023,
+        "request_id": "a04db8d4"
+      },
+      {
+        "line": 2558,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.10258,
+        "request_id": "b73ec271"
+      },
+      {
+        "line": 2559,
+        "route": "GET /api/collaboration/issues/:id/stage",
+        "duration_s": 0.020758,
+        "request_id": "c139e2c2"
+      },
+      {
+        "line": 2560,
+        "route": "GET /api/collaboration/issues/:id/reactions",
+        "duration_s": 0.101896,
+        "request_id": "bc847ce7"
+      },
+      {
+        "line": 2561,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.101125,
+        "request_id": "2c3d4298"
+      },
+      {
+        "line": 2562,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.085074,
+        "request_id": "1ea567cb"
+      },
+      {
+        "line": 2563,
+        "route": "GET /api/collaboration/issues/:id/activity",
+        "duration_s": 0.0006219999999999999,
+        "request_id": "ba25195a"
+      },
+      {
+        "line": 2564,
+        "route": "GET /api/collaboration/issues/:id/resources/offers",
+        "duration_s": 0.000307,
+        "request_id": "741bf8c4"
+      },
+      {
+        "line": 2565,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.372669,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001420"
+      },
+      {
+        "line": 2577,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.094752,
+        "request_id": "4c1f22df"
+      },
+      {
+        "line": 2582,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 7.4e-05,
+        "request_id": "5283c669"
+      },
+      {
+        "line": 2591,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.087775,
+        "request_id": "9f03342f"
+      },
+      {
+        "line": 2596,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.339065,
+        "request_id": "c989e7cb"
+      },
+      {
+        "line": 2597,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.173807,
+        "request_id": "6e78d60c"
+      },
+      {
+        "line": 2598,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 2.4e-05,
+        "request_id": "83401c17"
+      },
+      {
+        "line": 2599,
+        "route": "GET /api/collaboration/issues/:id/resources/offers",
+        "duration_s": 0.060019,
+        "request_id": "8009d83d"
+      },
+      {
+        "line": 2600,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.127969,
+        "request_id": "20c45dcb"
+      },
+      {
+        "line": 2678,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.053207000000000004,
+        "request_id": "03863335"
+      },
+      {
+        "line": 2680,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.053286,
+        "request_id": "70ebe804"
+      },
+      {
+        "line": 2681,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.053491000000000004,
+        "request_id": "e4c89a09"
+      },
+      {
+        "line": 2682,
+        "route": "GET /api/collaboration/issues/:id/activity",
+        "duration_s": 0.01814,
+        "request_id": "7f099912"
+      },
+      {
+        "line": 2683,
+        "route": "GET /api/collaboration/issues/:id/resources/offers",
+        "duration_s": 0.014960000000000001,
+        "request_id": "2c9ddc66"
+      },
+      {
+        "line": 2684,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000173,
+        "request_id": "165736cd"
+      },
+      {
+        "line": 2704,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.208007,
+        "request_id": "6f7ab066"
+      },
+      {
+        "line": 2730,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.27346499999999996,
+        "request_id": "b146d08d"
+      },
+      {
+        "line": 2731,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.27107600000000004,
+        "request_id": "3d0d7746"
+      },
+      {
+        "line": 2732,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.271048,
+        "request_id": "52283520"
+      },
+      {
+        "line": 2733,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.021171,
+        "request_id": "238ab7c3"
+      },
+      {
+        "line": 2787,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 7.7e-05,
+        "request_id": "7ead3d2e"
+      },
+      {
+        "line": 2790,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001244,
+        "request_id": "84ff3d1d"
+      },
+      {
+        "line": 2803,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.08092400000000001,
+        "request_id": "d74613bf"
+      },
+      {
+        "line": 2829,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.18825899999999998,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001560"
+      },
+      {
+        "line": 2835,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.329232,
+        "request_id": "e7b2c611"
+      },
+      {
+        "line": 2847,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 9.2e-05,
+        "request_id": "edc0fb98"
+      },
+      {
+        "line": 2850,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.002431,
+        "request_id": "c3e2cd44"
+      },
+      {
+        "line": 2853,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 6.8e-05,
+        "request_id": "1c175f4f"
+      },
+      {
+        "line": 2854,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.024142,
+        "request_id": "9549fabd"
+      },
+      {
+        "line": 2855,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.021164000000000002,
+        "request_id": "db01c21d"
+      },
+      {
+        "line": 2856,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.024406,
+        "request_id": "ce562442"
+      },
+      {
+        "line": 2874,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.035149,
+        "request_id": "e08bfdf0"
+      },
+      {
+        "line": 2875,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.035816,
+        "request_id": "b50ef19e"
+      },
+      {
+        "line": 2955,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0013640000000000002,
+        "request_id": "70749bea"
+      },
+      {
+        "line": 2957,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.068482,
+        "request_id": "6e9d7e76"
+      },
+      {
+        "line": 2962,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.09196599999999999,
+        "request_id": "7c26e50b"
+      },
+      {
+        "line": 3011,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000367,
+        "request_id": "7bf2545e"
+      },
+      {
+        "line": 3013,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000243,
+        "request_id": "f479e861"
+      },
+      {
+        "line": 3016,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001363,
+        "request_id": "d41968d3"
+      },
+      {
+        "line": 3101,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.015962,
+        "request_id": "babeddfa"
+      },
+      {
+        "line": 3127,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.025362,
+        "request_id": "15c34f47"
+      },
+      {
+        "line": 3131,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0015249999999999999,
+        "request_id": "175e065e"
+      },
+      {
+        "line": 3134,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 8.3e-05,
+        "request_id": "ad85c74f"
+      },
+      {
+        "line": 3152,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.06124,
+        "request_id": "7582c668"
+      },
+      {
+        "line": 3153,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.018477,
+        "request_id": "7de53b12"
+      },
+      {
+        "line": 3155,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.020870000000000003,
+        "request_id": "426d1bfd"
+      },
+      {
+        "line": 3157,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.023174,
+        "request_id": "d101cc44"
+      },
+      {
+        "line": 3165,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.05532,
+        "request_id": "7d964138"
+      },
+      {
+        "line": 3169,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.078706,
+        "request_id": "5e55f2f0"
+      },
+      {
+        "line": 3171,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.020497,
+        "request_id": "dac89f16"
+      },
+      {
+        "line": 3173,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.025855,
+        "request_id": "a12a02fd"
+      },
+      {
+        "line": 3178,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.038323,
+        "request_id": "c9c7fef4"
+      },
+      {
+        "line": 3181,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.055938,
+        "request_id": "8db0aadd"
+      },
+      {
+        "line": 3182,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.016057,
+        "request_id": "c9d6aed0"
+      },
+      {
+        "line": 3191,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.008777,
+        "request_id": "4aad10d2"
+      },
+      {
+        "line": 3194,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.140446,
+        "request_id": "f3060ee7"
+      },
+      {
+        "line": 3196,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.024616,
+        "request_id": "bddb2ab5"
+      },
+      {
+        "line": 3199,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.023604,
+        "request_id": "d2d12e39"
+      },
+      {
+        "line": 3202,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.043314,
+        "request_id": "9a6bc51b"
+      },
+      {
+        "line": 3203,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.017593,
+        "request_id": "b97b66a4"
+      },
+      {
+        "line": 3207,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001089,
+        "request_id": "bfdaa5fa"
+      },
+      {
+        "line": 3213,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.077336,
+        "request_id": "cdbc45b0"
+      },
+      {
+        "line": 3216,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.011828,
+        "request_id": "39db4e78"
+      },
+      {
+        "line": 3220,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.054259999999999996,
+        "request_id": "b186781c"
+      },
+      {
+        "line": 3223,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.085336,
+        "request_id": "4fb04b39"
+      },
+      {
+        "line": 3224,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.02935,
+        "request_id": "01ebaed3"
+      },
+      {
+        "line": 3231,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.048079000000000004,
+        "request_id": "68ef50aa"
+      },
+      {
+        "line": 3236,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.070256,
+        "request_id": "af64557f"
+      },
+      {
+        "line": 3238,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.042108,
+        "request_id": "496f1e21"
+      },
+      {
+        "line": 3243,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000797,
+        "request_id": "9b9fa7e4"
+      },
+      {
+        "line": 3251,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000163,
+        "request_id": "96d6f06d"
+      },
+      {
+        "line": 3304,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.086285,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001746"
+      },
+      {
+        "line": 3316,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.018432,
+        "request_id": "28c4736e"
+      },
+      {
+        "line": 3322,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.027223,
+        "request_id": "64c035a3"
+      },
+      {
+        "line": 3323,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.027164999999999998,
+        "request_id": "1fcf7caf"
+      },
+      {
+        "line": 3397,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.106463,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001802"
+      },
+      {
+        "line": 3459,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.010784,
+        "request_id": "19d91545"
+      },
+      {
+        "line": 3465,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.014406,
+        "request_id": "5dfbedee"
+      },
+      {
+        "line": 3467,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.014561000000000001,
+        "request_id": "847f4d0b"
+      },
+      {
+        "line": 3522,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.10423500000000001,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001852"
+      },
+      {
+        "line": 3530,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0155,
+        "request_id": "e84c57da"
+      },
+      {
+        "line": 3534,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.016171,
+        "request_id": "2e84f931"
+      },
+      {
+        "line": 3537,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.014341,
+        "request_id": "cb3aac8e"
+      },
+      {
+        "line": 3556,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.06958199999999999,
+        "request_id": "26d3e93f"
+      },
+      {
+        "line": 3559,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.06425,
+        "request_id": "b7f9cba5"
+      },
+      {
+        "line": 3578,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.285337,
+        "request_id": "cd0c3e2f"
+      },
+      {
+        "line": 3579,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.157227,
+        "request_id": "cd5fff67"
+      },
+      {
+        "line": 3599,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.055955,
+        "request_id": "9817674d"
+      },
+      {
+        "line": 3604,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.078265,
+        "request_id": "39bebfd5"
+      },
+      {
+        "line": 3605,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.13933600000000002,
+        "request_id": "809bd655"
+      },
+      {
+        "line": 3606,
+        "route": "GET /api/collaboration/issues/:id/attachments",
+        "duration_s": 0.13889500000000002,
+        "request_id": "fa93da48"
+      },
+      {
+        "line": 3607,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.027844999999999998,
+        "request_id": "5982c94c"
+      },
+      {
+        "line": 3615,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000136,
+        "request_id": "e4ad1ebf"
+      },
+      {
+        "line": 3623,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.00019999999999999998,
+        "request_id": "64244d62"
+      },
+      {
+        "line": 3638,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.28548500000000004,
+        "request_id": "10f4484d"
+      },
+      {
+        "line": 3639,
+        "route": "GET /api/collaboration/issues/:id/attachments",
+        "duration_s": 0.27260500000000004,
+        "request_id": "99521d1a"
+      },
+      {
+        "line": 3640,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.05501400000000001,
+        "request_id": "b42de7b2"
+      },
+      {
+        "line": 3653,
+        "route": "POST /api/collaboration/runtime/runs/:id/recording/seal",
+        "duration_s": 0.452373,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001888"
+      },
+      {
+        "line": 3656,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.004001,
+        "request_id": "df466140"
+      },
+      {
+        "line": 3660,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.003114,
+        "request_id": "eb8d74a0"
+      },
+      {
+        "line": 3661,
+        "route": "POST /api/collaboration/runtime/runs/:id/recording/seal",
+        "duration_s": 0.046941000000000004,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-001903"
+      },
+      {
+        "line": 3680,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.026783,
+        "request_id": "272dfab0"
+      },
+      {
+        "line": 3692,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000252,
+        "request_id": "4120cfdf"
+      },
+      {
+        "line": 3696,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.00013199999999999998,
+        "request_id": "f058cab1"
+      },
+      {
+        "line": 3698,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.029604,
+        "request_id": "2a59cf31"
+      },
+      {
+        "line": 3719,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.296918,
+        "request_id": "68394de6"
+      },
+      {
+        "line": 3720,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.294863,
+        "request_id": "ed3a29b7"
+      },
+      {
+        "line": 3729,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.250762,
+        "request_id": "7a6c873f"
+      },
+      {
+        "line": 3730,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000267,
+        "request_id": "0ecfd008"
+      },
+      {
+        "line": 3733,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0060739999999999995,
+        "request_id": "e42a62ba"
+      },
+      {
+        "line": 3746,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.044823999999999996,
+        "request_id": "8043c934"
+      },
+      {
+        "line": 3747,
+        "route": "GET /api/collaboration/issues/:id/stage",
+        "duration_s": 0.07140300000000001,
+        "request_id": "097f2f76"
+      },
+      {
+        "line": 3748,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.043215,
+        "request_id": "7d653a46"
+      },
+      {
+        "line": 3750,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.014767,
+        "request_id": "a2a42caf"
+      },
+      {
+        "line": 3758,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.007111,
+        "request_id": "c7217fdc"
+      },
+      {
+        "line": 3761,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000669,
+        "request_id": "5d662443"
+      },
+      {
+        "line": 3775,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.014249000000000001,
+        "request_id": "79178cd3"
+      },
+      {
+        "line": 3777,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.017978,
+        "request_id": "9d502c91"
+      },
+      {
+        "line": 3784,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.134432,
+        "request_id": "1f28d4db"
+      },
+      {
+        "line": 3785,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.049624,
+        "request_id": "64fa1385"
+      },
+      {
+        "line": 3797,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.069819,
+        "request_id": "8874328b"
+      },
+      {
+        "line": 3805,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.035725,
+        "request_id": "cd1c19d1"
+      },
+      {
+        "line": 3806,
+        "route": "GET /api/collaboration/issues/:id/stage",
+        "duration_s": 0.073337,
+        "request_id": "3d79f1a5"
+      },
+      {
+        "line": 3807,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.074911,
+        "request_id": "0d393f21"
+      },
+      {
+        "line": 3808,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0029820000000000003,
+        "request_id": "3cf72b12"
+      },
+      {
+        "line": 3812,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.033131,
+        "request_id": "640a62a5"
+      },
+      {
+        "line": 3813,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.0346,
+        "request_id": "9f9ef1e1"
+      },
+      {
+        "line": 3814,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.00087,
+        "request_id": "933b4570"
+      },
+      {
+        "line": 3821,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.006608,
+        "request_id": "1f713193"
+      },
+      {
+        "line": 3835,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.205363,
+        "request_id": "1bc07605"
+      },
+      {
+        "line": 3851,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.025932,
+        "request_id": "42bef652"
+      },
+      {
+        "line": 3852,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.026569,
+        "request_id": "495ffca2"
+      },
+      {
+        "line": 3855,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000385,
+        "request_id": "ea0a6625"
+      },
+      {
+        "line": 3857,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.023324,
+        "request_id": "e7251177"
+      },
+      {
+        "line": 3863,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.032805,
+        "request_id": "b1a4dbda"
+      },
+      {
+        "line": 3873,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000212,
+        "request_id": "d06747ad"
+      },
+      {
+        "line": 3890,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 5.9e-05,
+        "request_id": "af949ca7"
+      },
+      {
+        "line": 3913,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.063236,
+        "request_id": "9f03b07e"
+      },
+      {
+        "line": 3914,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.011129,
+        "request_id": "952aefa6"
+      },
+      {
+        "line": 3927,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.154477,
+        "request_id": "8b44a30f"
+      },
+      {
+        "line": 3928,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.25878500000000004,
+        "request_id": "25bba96b"
+      },
+      {
+        "line": 3940,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0013080000000000001,
+        "request_id": "96891bed"
+      },
+      {
+        "line": 3945,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.257375,
+        "request_id": "333ec6ad"
+      },
+      {
+        "line": 3946,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.25594900000000004,
+        "request_id": "2ef2b499"
+      },
+      {
+        "line": 3947,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.012728,
+        "request_id": "f3922721"
+      },
+      {
+        "line": 3961,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.085201,
+        "request_id": "fc81fcf0"
+      },
+      {
+        "line": 3962,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.084091,
+        "request_id": "1cb278a3"
+      },
+      {
+        "line": 4026,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.012327,
+        "request_id": "8608513b"
+      },
+      {
+        "line": 4053,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.016255,
+        "request_id": "75820650"
+      },
+      {
+        "line": 4059,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000439,
+        "request_id": "10719000"
+      },
+      {
+        "line": 4062,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 3.7999999999999995e-05,
+        "request_id": "b9e1e8aa"
+      },
+      {
+        "line": 4069,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.031010000000000003,
+        "request_id": "9765f71b"
+      },
+      {
+        "line": 4125,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.014109,
+        "request_id": "a9bc61fb"
+      },
+      {
+        "line": 4126,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.014767,
+        "request_id": "6f0975cb"
+      },
+      {
+        "line": 4204,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.011321,
+        "request_id": "b6371e09"
+      },
+      {
+        "line": 4215,
+        "route": "POST /api/daemon/tasks/claim",
+        "duration_s": 0.042327,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-002138"
+      },
+      {
+        "line": 4216,
+        "route": "POST /api/daemon/tasks/claim",
+        "duration_s": 0.049176000000000004,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-002139"
+      },
+      {
+        "line": 4217,
+        "route": "POST /api/daemon/tasks/claim",
+        "duration_s": 0.060719,
+        "request_id": "yangshangweideMac-mini.local/uizz13dKbz-002140"
+      },
+      {
+        "line": 4233,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.050064000000000004,
+        "request_id": "3a76543e"
+      },
+      {
+        "line": 4257,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.168539,
+        "request_id": "f05d8fbd"
+      },
+      {
+        "line": 4258,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.116208,
+        "request_id": "c111fcb6"
+      },
+      {
+        "line": 4259,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.164959,
+        "request_id": "f9e378db"
+      },
+      {
+        "line": 4260,
+        "route": "GET /api/collaboration/issues/:id/stage",
+        "duration_s": 0.002817,
+        "request_id": "0d6c3c29"
+      },
+      {
+        "line": 4261,
+        "route": "GET /api/collaboration/issues/:id/activity",
+        "duration_s": 0.070847,
+        "request_id": "3ef2ae8a"
+      },
+      {
+        "line": 4262,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.11466200000000001,
+        "request_id": "2841361d"
+      },
+      {
+        "line": 4265,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.157114,
+        "request_id": "f3406a55"
+      }
+    ]
+  },
+  "memory-runtime-02": {
+    "source": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/memory-runtime-02/api.log",
+    "sha256": "1c1c506baf75c7d6bdb945b8702d4d97772fd0e9b491d9e9a2de0a25822d7149",
+    "count": 116,
+    "route_counts": {
+      "GET /api/me/workbench": 3,
+      "GET /api/collaboration/issues/:id": 10,
+      "GET /api/collaboration/issues/:id/resources/identity": 1,
+      "GET /api/collaboration/issues/:id/knowledge-candidates": 59,
+      "GET /api/collaboration/runtime/capabilities": 16,
+      "GET /api/collaboration/issues/:id/resources": 8,
+      "GET /api/collaboration/runtime/runs/:id/stop-intent": 2,
+      "GET /api/collaboration/issues/:id/comments": 3,
+      "GET /api/collaboration/issues/:id/memory": 1,
+      "GET /api/collaboration/issues/:id/resources/offers": 2,
+      "GET /api/collaboration/issues/:id/activity": 3,
+      "GET /api/me/collaboration-notifications": 3,
+      "GET /api/collaboration/issues/:id/mention-targets": 4,
+      "GET /api/collaboration/issues/:id/attachments": 1
+    },
+    "entries": [
+      {
+        "line": 249,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.061994,
+        "request_id": "8679ef9f"
+      },
+      {
+        "line": 250,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.063067,
+        "request_id": "f2fc9232"
+      },
+      {
+        "line": 310,
+        "route": "GET /api/collaboration/issues/:id/resources/identity",
+        "duration_s": 0.093541,
+        "request_id": "7f088947"
+      },
+      {
+        "line": 321,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0011870000000000001,
+        "request_id": "b91f097c"
+      },
+      {
+        "line": 324,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.051238,
+        "request_id": "e1d3aa31"
+      },
+      {
+        "line": 361,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0008709999999999999,
+        "request_id": "2594f17d"
+      },
+      {
+        "line": 366,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.059259,
+        "request_id": "45ca6095"
+      },
+      {
+        "line": 395,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.002121,
+        "request_id": "42df2bc7"
+      },
+      {
+        "line": 397,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.00949,
+        "request_id": "ed4aa617"
+      },
+      {
+        "line": 402,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.12301000000000001,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000285"
+      },
+      {
+        "line": 423,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000642,
+        "request_id": "1b5151f0"
+      },
+      {
+        "line": 428,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.027727,
+        "request_id": "a33797c6"
+      },
+      {
+        "line": 456,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.349355,
+        "request_id": "e8536161"
+      },
+      {
+        "line": 472,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000127,
+        "request_id": "aa7c78d1"
+      },
+      {
+        "line": 475,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.017756,
+        "request_id": "bc6127d0"
+      },
+      {
+        "line": 488,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001955,
+        "request_id": "c21ef973"
+      },
+      {
+        "line": 492,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.016531,
+        "request_id": "82db3315"
+      },
+      {
+        "line": 513,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.00015999999999999999,
+        "request_id": "b7d1bf2b"
+      },
+      {
+        "line": 517,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.031408000000000005,
+        "request_id": "8ce7df39"
+      },
+      {
+        "line": 537,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0017,
+        "request_id": "104e96e3"
+      },
+      {
+        "line": 541,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.01139,
+        "request_id": "806e7f48"
+      },
+      {
+        "line": 636,
+        "route": "GET /api/collaboration/runtime/runs/:id/stop-intent",
+        "duration_s": 0.132192,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000420"
+      },
+      {
+        "line": 639,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001353,
+        "request_id": "d57a4224"
+      },
+      {
+        "line": 643,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.051406999999999994,
+        "request_id": "ef58166c"
+      },
+      {
+        "line": 670,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000816,
+        "request_id": "5e20aad8"
+      },
+      {
+        "line": 673,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.028017,
+        "request_id": "14352160"
+      },
+      {
+        "line": 684,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.24832100000000001,
+        "request_id": "4ed5e336"
+      },
+      {
+        "line": 686,
+        "route": "GET /api/collaboration/issues/:id/comments",
+        "duration_s": 0.249003,
+        "request_id": "361533f3"
+      },
+      {
+        "line": 687,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.240444,
+        "request_id": "2e169423"
+      },
+      {
+        "line": 688,
+        "route": "GET /api/collaboration/issues/:id/memory",
+        "duration_s": 0.024593,
+        "request_id": "41bfd16f"
+      },
+      {
+        "line": 689,
+        "route": "GET /api/collaboration/issues/:id/resources/offers",
+        "duration_s": 0.072115,
+        "request_id": "87a1cc74"
+      },
+      {
+        "line": 690,
+        "route": "GET /api/collaboration/issues/:id/activity",
+        "duration_s": 0.152075,
+        "request_id": "733a2ab1"
+      },
+      {
+        "line": 700,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.315816,
+        "request_id": "0d7cd053"
+      },
+      {
+        "line": 701,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.068252,
+        "request_id": "cfd201eb"
+      },
+      {
+        "line": 707,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.006764,
+        "request_id": "f09771a3"
+      },
+      {
+        "line": 709,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.019511,
+        "request_id": "59307a19"
+      },
+      {
+        "line": 722,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.350113,
+        "request_id": "c82b71c8"
+      },
+      {
+        "line": 723,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.017771000000000002,
+        "request_id": "d0d15594"
+      },
+      {
+        "line": 724,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.038504,
+        "request_id": "2f3cd76a"
+      },
+      {
+        "line": 727,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.356401,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000456"
+      },
+      {
+        "line": 731,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.196309,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000460"
+      },
+      {
+        "line": 736,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0007689999999999999,
+        "request_id": "68531d91"
+      },
+      {
+        "line": 740,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.017783999999999998,
+        "request_id": "33f9286a"
+      },
+      {
+        "line": 783,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.001638,
+        "request_id": "616d2703"
+      },
+      {
+        "line": 790,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.17472300000000002,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000496"
+      },
+      {
+        "line": 813,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000223,
+        "request_id": "10684dd1"
+      },
+      {
+        "line": 819,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.028541,
+        "request_id": "a4e9b5dd"
+      },
+      {
+        "line": 835,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.357507,
+        "request_id": "84de5198"
+      },
+      {
+        "line": 840,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.370105,
+        "request_id": "b87e05e4"
+      },
+      {
+        "line": 844,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.082642,
+        "request_id": "f173daad"
+      },
+      {
+        "line": 848,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.014028,
+        "request_id": "d27ecdc0"
+      },
+      {
+        "line": 849,
+        "route": "GET /api/collaboration/issues/:id/comments",
+        "duration_s": 0.083454,
+        "request_id": "3c073ced"
+      },
+      {
+        "line": 850,
+        "route": "GET /api/collaboration/issues/:id/resources/offers",
+        "duration_s": 0.08331699999999999,
+        "request_id": "090c080c"
+      },
+      {
+        "line": 851,
+        "route": "GET /api/collaboration/issues/:id/activity",
+        "duration_s": 0.083282,
+        "request_id": "d5d855b6"
+      },
+      {
+        "line": 852,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.040677,
+        "request_id": "2b935ba8"
+      },
+      {
+        "line": 876,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.04492,
+        "request_id": "ff9e4446"
+      },
+      {
+        "line": 877,
+        "route": "GET /api/me/collaboration-notifications",
+        "duration_s": 0.051046999999999995,
+        "request_id": "59581f70"
+      },
+      {
+        "line": 878,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.037134,
+        "request_id": "e6826d55"
+      },
+      {
+        "line": 928,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.131948,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000567"
+      },
+      {
+        "line": 949,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.004711000000000001,
+        "request_id": "1bad86df"
+      },
+      {
+        "line": 950,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.005355,
+        "request_id": "c6ea7ea7"
+      },
+      {
+        "line": 956,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.039113,
+        "request_id": "a250b88d"
+      },
+      {
+        "line": 957,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.050468000000000006,
+        "request_id": "20a725f5"
+      },
+      {
+        "line": 978,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.19812700000000003,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000587"
+      },
+      {
+        "line": 979,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.211146,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000588"
+      },
+      {
+        "line": 1001,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000263,
+        "request_id": "5c0ddc7f"
+      },
+      {
+        "line": 1005,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.02577,
+        "request_id": "c9dbcbd5"
+      },
+      {
+        "line": 1008,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.087601,
+        "request_id": "867940a3"
+      },
+      {
+        "line": 1028,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.00014199999999999998,
+        "request_id": "cf2a0df6"
+      },
+      {
+        "line": 1035,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.035287,
+        "request_id": "045c7c1d"
+      },
+      {
+        "line": 1041,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.05665100000000001,
+        "request_id": "ba8dfd7a"
+      },
+      {
+        "line": 1067,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.13623,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000621"
+      },
+      {
+        "line": 1076,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000655,
+        "request_id": "d9595665"
+      },
+      {
+        "line": 1082,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.022979,
+        "request_id": "ae8545b1"
+      },
+      {
+        "line": 1086,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.031938,
+        "request_id": "c950d0f6"
+      },
+      {
+        "line": 1098,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.009382999999999999,
+        "request_id": "6ded95cc"
+      },
+      {
+        "line": 1107,
+        "route": "GET /api/collaboration/issues/:id/comments",
+        "duration_s": 0.200903,
+        "request_id": "d719991f"
+      },
+      {
+        "line": 1108,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.20111300000000001,
+        "request_id": "667c27d4"
+      },
+      {
+        "line": 1113,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.050417000000000003,
+        "request_id": "8baa24aa"
+      },
+      {
+        "line": 1115,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.084875,
+        "request_id": "9ec7cf58"
+      },
+      {
+        "line": 1116,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.223272,
+        "request_id": "d34c49ee"
+      },
+      {
+        "line": 1132,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.113702,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000644"
+      },
+      {
+        "line": 1137,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.110514,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000647"
+      },
+      {
+        "line": 1147,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.124422,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000658"
+      },
+      {
+        "line": 1161,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 1.147071,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000674"
+      },
+      {
+        "line": 1165,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.242574,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000677"
+      },
+      {
+        "line": 1170,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.38561399999999996,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000680"
+      },
+      {
+        "line": 1199,
+        "route": "GET /api/collaboration/runtime/runs/:id/stop-intent",
+        "duration_s": 0.523824,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000696"
+      },
+      {
+        "line": 1203,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000741,
+        "request_id": "8cf9d6c8"
+      },
+      {
+        "line": 1208,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.0010940000000000001,
+        "request_id": "cb9589e6"
+      },
+      {
+        "line": 1222,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 1.473434,
+        "request_id": "703803c0"
+      },
+      {
+        "line": 1223,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.16802699999999998,
+        "request_id": "22183f29"
+      },
+      {
+        "line": 1244,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.585821,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000702"
+      },
+      {
+        "line": 1258,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.000486,
+        "request_id": "a087a216"
+      },
+      {
+        "line": 1264,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.03253,
+        "request_id": "0727c961"
+      },
+      {
+        "line": 1280,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.019422000000000002,
+        "request_id": "fa7a78e1"
+      },
+      {
+        "line": 1295,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.268013,
+        "request_id": "06d879e9"
+      },
+      {
+        "line": 1296,
+        "route": "GET /api/collaboration/issues/:id/activity",
+        "duration_s": 0.14320500000000003,
+        "request_id": "1e3a8252"
+      },
+      {
+        "line": 1297,
+        "route": "GET /api/collaboration/issues/:id/mention-targets",
+        "duration_s": 0.259756,
+        "request_id": "fadc995c"
+      },
+      {
+        "line": 1303,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.37314200000000003,
+        "request_id": "4d341bd4"
+      },
+      {
+        "line": 1304,
+        "route": "GET /api/collaboration/issues/:id/attachments",
+        "duration_s": 0.337166,
+        "request_id": "7dfbdfac"
+      },
+      {
+        "line": 1305,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.341976,
+        "request_id": "6d3231cf"
+      },
+      {
+        "line": 1306,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.053582000000000005,
+        "request_id": "b18cb7bc"
+      },
+      {
+        "line": 1314,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.175163,
+        "request_id": "ba4a52b8"
+      },
+      {
+        "line": 1319,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.015014,
+        "request_id": "3e418249"
+      },
+      {
+        "line": 1330,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.527242,
+        "request_id": "366dbdf1"
+      },
+      {
+        "line": 1332,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.116356,
+        "request_id": "018e7550"
+      },
+      {
+        "line": 1343,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.531744,
+        "request_id": "87161297"
+      },
+      {
+        "line": 1344,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.44383999999999996,
+        "request_id": "3bbc7cb2"
+      },
+      {
+        "line": 1347,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.020453,
+        "request_id": "e12220a5"
+      },
+      {
+        "line": 1366,
+        "route": "GET /api/me/workbench",
+        "duration_s": 0.004783000000000001,
+        "request_id": "97bbb288"
+      },
+      {
+        "line": 1369,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.043571,
+        "request_id": "66fd34f4"
+      },
+      {
+        "line": 1378,
+        "route": "GET /api/collaboration/issues/:id",
+        "duration_s": 0.265641,
+        "request_id": "8de1c898"
+      },
+      {
+        "line": 1380,
+        "route": "GET /api/collaboration/issues/:id/resources",
+        "duration_s": 0.22229400000000002,
+        "request_id": "5a33d3b9"
+      },
+      {
+        "line": 1381,
+        "route": "GET /api/collaboration/issues/:id/knowledge-candidates",
+        "duration_s": 0.105098,
+        "request_id": "e599e505"
+      },
+      {
+        "line": 1421,
+        "route": "GET /api/collaboration/runtime/capabilities",
+        "duration_s": 0.076693,
+        "request_id": "yangshangweideMac-mini.local/h8KJAeJuLu-000780"
+      }
+    ]
+  }
+}

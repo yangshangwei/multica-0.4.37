@@ -1,0 +1,123 @@
+{
+  "run": "mac-off02",
+  "cases": [
+    {
+      "title": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "timeout": 480000,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 57117,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-off02/receipt.json": "234824c9324f227559f5bffe8426f62ba4709c5d3952cb46935c7473e9a8d18a",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-off02/playwright.json": "c64197240ad0796eb1a4eeb6232c3098548ca580009c3bacf6a77a3214980a06",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-off02/results/collaboration-host-install-7dc38-ly-resumes-the-shared-Agent-chromium/installed-host-evidence.json": "ff5424233a9eee560f82204cb07d24ff00730817621531d3f37d3430a090ed0a"
+  },
+  "source_manifest_matches": true,
+  "package_manifest_matches": true,
+  "adapter_matches": true,
+  "first_two_same_session": true,
+  "first_two_same_workdir": true,
+  "knowledge_off": true,
+  "proofs": [
+    {
+      "phase": "proof_acknowledged",
+      "proof_state": "host_exit_observed",
+      "sealed": true,
+      "launches": [
+        {
+          "attempt_seq": "1",
+          "kind": "provider",
+          "phase": "attempt_reaped",
+          "process_observed": true,
+          "scope": "process_group",
+          "terminal_accepted": true,
+          "authorized": true,
+          "terminal_kind": "managed_launch_ended",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "proof_acknowledged",
+      "proof_state": "host_exit_observed",
+      "sealed": true,
+      "launches": [
+        {
+          "attempt_seq": "1",
+          "kind": "provider",
+          "phase": "attempt_reaped",
+          "process_observed": true,
+          "scope": "process_group",
+          "terminal_accepted": true,
+          "authorized": true,
+          "terminal_kind": "managed_launch_ended",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "proof_acknowledged",
+      "proof_state": "host_exit_observed",
+      "sealed": true,
+      "launches": [
+        {
+          "attempt_seq": "1",
+          "kind": "provider",
+          "phase": "attempt_reaped",
+          "process_observed": true,
+          "scope": "process_group",
+          "terminal_accepted": true,
+          "authorized": true,
+          "terminal_kind": "managed_launch_ended",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          }
+        }
+      ]
+    }
+  ],
+  "baseline_matches": true,
+  "cleanup": {
+    "exit": 0,
+    "remaining_db_clients": 0,
+    "source_unchanged": true,
+    "package_unchanged": true,
+    "unexpected_provider_execution": false,
+    "api_container_cleanup": {
+      "owner": "root-causes-0b43832067/mac-off02",
+      "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+      "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+      "postgres_bridge_ip": "172.17.0.2",
+      "port": 59938,
+      "env_sha256": "66990ec6e7b6b08ffa6c5b7a1d15cf56b7203ae676e0774a4cadbbf3d48f3b8d",
+      "container": "c92ea08116e8c08b32f543c10c09fe5d062fba92baad056b89f60da9bf65e437",
+      "volume": "root-causes-0b43832067-mac-off02-binary",
+      "container_absent": true,
+      "volume_absent": true
+    },
+    "descendant_cleanup": {
+      "status": "pass",
+      "fallback": [],
+      "remaining": [],
+      "initial": []
+    }
+  }
+}

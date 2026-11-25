@@ -1,0 +1,15 @@
+# Request completion context observation
+
+The existing HTTP logger records attempted status after the handler, including503 attempted after a browser has canceled its request. Add `request_context` with the fixed values `none`, `canceled`, or `deadline`, derived only from `r.Context().Err()` at completion. Response status/body and existing severity remain unchanged; context causes and errors are never included. This closes a concrete observability ambiguity, not attribution of historical503s. The value is a completion-time observation, not proof that cancellation caused the handler error; request/query/client timing is still required for causal attribution.
+
+Changed product file: `server/internal/middleware/request_logger.go` (one local switch and one attribute). Regression file: `request_logger_test.go`: actual HTTP client cancellation, cancellation within a running handler, expired deadline, live infrastructure503, private-cause exclusion and unchanged response/status/severity. Log capture now also restores legacy writer/flags per existing test-isolation spec.
+
+Pinned Go1.26.11 and CLI guard, GOMAXPROCS2/p1/parallel2, no DATABASE_URL, external HOME/TMP. Red:5namedFAIL on missing context. Green:5namedPASS. Full middleware normal and race:each130PASS/11pre-existing dependency skips (one DB test and ten Redis tests)/0FAIL/0unfinished; go vet exit0. Every run confirms middleware/module/guard source unchanged. Exact command, tool/source hashes and output hashes are in `request-context/{red,green,normal,race,vet}.json`; raw logs remain `.omx/private/root-causes/request-logging/`.
+
+The initial dependency skips remain explicit: the no-DB/no-Redis package run does not validate those integration behaviors. Subsequent DB-only runs each133PASS/10RedisSKIP; complete DB+Redis runs follow separately. Actual Host journeys with safe request-ID/browser outcome correlation are a separate follow-up in this lane. No commits, dependency changes, auth response rewrites or severity downgrades.
+
+## Complete configured middleware verification
+
+Fresh DB+dedicatedRedis normal03 andrace03 each **143PASS/0FAIL/0SKIP/0unfinished**, exit0, original40minute bound/p1/parallel2 and Go1.26.11 CLI guard. Actual Redis owner/image/running/published-port verified, host AUTH/PING succeeds before any SQL/test. All input source and configuration remained unchanged. The final cases include the previously skipped DB and Redis integration behaviors. gofmt/diff check and earlier owning-package govet exit0 remain applicable because product source did not change afterward.
+
+Preparation failures are retained: initial dedicatedRedis root-owned0600config was unreadable by its daemon; fixing container-only readability caused Docker's published ephemeral port to change, leaving two runs with10explicitRedis skips. These are not complete acceptance. A new allocation snapshot pins the actual53897port and mandatory host preflight; two fresh03databases avoid reusing prior whole-suite data. Original logs/config/allocation remain saved. Final dedicatedRedis is stopped after exact ownership check, data/config retained and portclosed; see middleware-redis-cleanup.json.

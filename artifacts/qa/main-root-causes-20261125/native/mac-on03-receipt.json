@@ -1,0 +1,149 @@
+{
+  "knowledge_context_enabled": "default_on",
+  "original_policy": "independent knowledge ON case; original OFF retained",
+  "status": "completed",
+  "source_manifest_sha256": "9f01cb20e2910d1444f703dfc7498f319c49a82e92280abf75c777d07090b56b",
+  "package_manifest_sha256": "a4e4bc0425b4251112b82b12de7fb1ceccbda81727b438c598ad4c1e048085f4",
+  "adapter_sha256": "35a021b06e36714e1b363aa001bc8398c6ad82f2fc77ee3aff5110a662f30e8e",
+  "database": "rc_mac_on03",
+  "ports": [
+    58145,
+    58146,
+    58147
+  ],
+  "started": 1795622517.248068,
+  "processes": [
+    {
+      "pid": 7415,
+      "name": "web",
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/web-server.mjs"
+      ]
+    },
+    {
+      "pid": 7419,
+      "name": "renderer",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "http.server",
+        "58147",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/private/tmp/root-causes-0b43832067/frontend-source/apps/desktop/out/renderer"
+      ]
+    },
+    {
+      "pid": 7423,
+      "name": "playwright",
+      "command": [
+        "/bin/bash",
+        "/private/tmp/root-causes-0b43832067/frontend-source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/tmp/root-causes-0b43832067/frontend-source/node_modules/@playwright/test/cli.js",
+        "test",
+        "e2e/collaboration-host-installed.spec.ts",
+        "--grep",
+        "default knowledge ON",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output",
+        "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-on03/results"
+      ]
+    }
+  ],
+  "test_args": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/private/tmp/root-causes-0b43832067/frontend-source/node_modules/@playwright/test/cli.js",
+    "test",
+    "e2e/collaboration-host-installed.spec.ts",
+    "--grep",
+    "default knowledge ON",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-on03/results"
+  ],
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false
+  },
+  "api_container": {
+    "owner": "root-causes-0b43832067/mac-on03",
+    "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+    "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "postgres_bridge_ip": "172.17.0.2",
+    "port": 58145,
+    "env_sha256": "4739fa290cb68f1ec9be728d7bab3e4a1fb3c5d2b8e79e2cca691f20bb327d33",
+    "container": "85212c42781918dd2d5359e8ac3092f9ef6218e150fb34d598c9d9c82fc99ac1",
+    "volume": "root-causes-0b43832067-mac-on03-binary",
+    "container_absent": true,
+    "volume_absent": true
+  },
+  "exit": 0,
+  "cleanup": [
+    {
+      "pid": 7423,
+      "exit": 0
+    },
+    {
+      "pid": 7419,
+      "exit": -15
+    },
+    {
+      "pid": 7415,
+      "exit": 0
+    }
+  ],
+  "api_container_cleanup": {
+    "owner": "root-causes-0b43832067/mac-on03",
+    "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+    "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "postgres_bridge_ip": "172.17.0.2",
+    "port": 58145,
+    "env_sha256": "4739fa290cb68f1ec9be728d7bab3e4a1fb3c5d2b8e79e2cca691f20bb327d33",
+    "container": "85212c42781918dd2d5359e8ac3092f9ef6218e150fb34d598c9d9c82fc99ac1",
+    "volume": "root-causes-0b43832067-mac-on03-binary",
+    "container_absent": true,
+    "volume_absent": true
+  },
+  "descendant_cleanup": {
+    "status": "pass",
+    "fallback": [],
+    "remaining": [],
+    "initial": []
+  },
+  "protocol_cleanup": {
+    "status": "pass",
+    "steps": [],
+    "error": null,
+    "final": {
+      "scheme": "multica",
+      "default_application_url": "file:///Applications/Multica.app/",
+      "handlers": [
+        "ai.multica.desktop"
+      ],
+      "registrations": {
+        "ai.multica.desktop": [
+          "file:///Applications/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app/"
+        ]
+      }
+    }
+  },
+  "remaining_db_clients": 0,
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "unexpected_provider_execution": false,
+  "ended": 1795622625.8798301
+}

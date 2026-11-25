@@ -1,0 +1,185 @@
+{
+  "state": "completed",
+  "started": 1795621106.514431,
+  "source_manifest_sha256": "fea4e75768ed7cef545722862c4eca80a7b6824c17d69b13f7453840d10bad05",
+  "runner_sha256": "808af35ea0017a737f6cefe1f6d5e03614ec7108e66598b49ae51c6daba8f041",
+  "api_helper_sha256": "c8c3711130dbf806abc4fb1ef778aaf6ef26701199a8c14a6d1eb8779ccdbe2a",
+  "api_reuse_binding_sha256": "6a5ddf8903875db556b054d59228528973bfc3a550bdb383790d8e8acbe0d9e7",
+  "config_sha256": "44095773dabf57c5933cb65d0455c41343ef9a53bd318853d832a1473eaf072f",
+  "go_version": "go version go1.26.11 darwin/arm64",
+  "tool_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "node_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+  "allocation_sha256": "a56cbbe09e6def8053a8e0feab718247a92d078211529688318e8cc33a4a4c2d",
+  "migration_sha256": "ebdf0a7b6395f8145af95ce75ad60ff42c4e70ba6f8e908722aac5fef13d42c6",
+  "database": "rc_runtime_memory02",
+  "database_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+  "ports": [
+    51069,
+    51070,
+    51071
+  ],
+  "edges": {
+    "apps/web/node_modules/@multica/core": "/private/tmp/root-causes-0b43832067/host-frozen01/source/packages/core",
+    "apps/desktop/node_modules/@multica/views": "/private/tmp/root-causes-0b43832067/host-frozen01/source/packages/views",
+    "node_modules/@playwright/test": "/private/tmp/root-causes-0b43832067/host-frozen01/source/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test"
+  },
+  "binaries": {
+    "api-observed": "95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f",
+    "api-current": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+    "host-provider": "a6ed86b5738bbcb5b132d006090d5fc5ff6bac925fcbfe2bd2bb75ffc4b5e172",
+    "daemon-test": "7e540ba0b59ec5e24fe151024fbff597a5c6ea42ec6c210adf6ff8519f36769f",
+    "multica": "5534419b52f25806e79bd6f39f70b5a6873695aa265eb59d3918200310e129b8",
+    "memory-provider": "0319d77af1c22da8600d384138c064ebdfe6ea5ad846366edd0ad8df8801747e",
+    "api": "e6fdb4e0813ff05416e54a1beaf537d905f9b7ffe9cf575aee8fe446d67782a0",
+    "multi-account-provider": "8bf37d96c8fe7bafb7218baa3449cc0d49acfbc8a6f55c894b78ec36fa87965f"
+  },
+  "build_manifest_sha256": "75290b97d99d28a9909723366cea79cbd084fa5d03dba0744f11b1164d55a9f3",
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": 2
+  },
+  "connections_before": {
+    "all": 6,
+    "max": "100"
+  },
+  "private_code_observation": true,
+  "code_observation_binding": {
+    "overlay_sha256": "bd0bbf7962829ec530979f0f9eb2de0c1ddb3a618e3ca31c83b446a054b98994",
+    "config_sha256": "24ea181a571280c421d0697e140eb1c143c80d44620f0c878cc9189f4b17de39",
+    "build_receipt_sha256": "859425dff79f8028536665c3001f47dd914f2081c7169f155b01fb68fb768a13"
+  },
+  "api_container_binding": {
+    "owner": "root-causes-0b43832067/memory-02",
+    "binary_sha256": "95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f",
+    "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "postgres_bridge_ip": "172.17.0.2",
+    "port": 51069,
+    "env_sha256": "0b76d4bd4af31fe298517043398b986148b118367a6b2eeee96f3649281caeb1",
+    "container": "cd8e59700cc5aad35f91c5acc3a2309a3c1b802f44805346751e51d7c8576be5",
+    "volume": "root-causes-0b43832067-memory-02-binary",
+    "container_absent": true,
+    "volume_absent": true
+  },
+  "processes": [
+    {
+      "name": "api",
+      "pid": 97630,
+      "argv": [
+        "docker",
+        "logs",
+        "-f",
+        "cd8e59700cc5aad35f91c5acc3a2309a3c1b802f44805346751e51d7c8576be5"
+      ],
+      "cwd": "/private/tmp/root-causes-0b43832067/host-frozen01/source"
+    },
+    {
+      "name": "web",
+      "pid": 97642,
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "node_modules/next/dist/bin/next",
+        "start",
+        "--port",
+        "51070",
+        "--hostname",
+        "127.0.0.1"
+      ],
+      "cwd": "/private/tmp/root-causes-0b43832067/host-frozen01/source/apps/web"
+    },
+    {
+      "name": "renderer",
+      "pid": 97695,
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/check-desktop-renderer.mjs",
+        "/private/tmp/root-causes-0b43832067/host-frozen01/source/apps/desktop/out/renderer",
+        "51071",
+        "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/memory-02/renderer.json"
+      ],
+      "cwd": "/private/tmp/root-causes-0b43832067/host-frozen01/source"
+    },
+    {
+      "name": "playwright",
+      "pid": 97697,
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/tmp/root-causes-0b43832067/host-frozen01/source/node_modules/@playwright/test/cli.js",
+        "test",
+        "e2e/collaboration-memory-runtime.spec.ts",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output",
+        "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/memory-02/results"
+      ],
+      "cwd": "/private/tmp/root-causes-0b43832067/host-frozen01/source"
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "pid": 1,
+    "commit": "9ffa37281184ae605bcbc0bc7a09caf3df60d180",
+    "started_at": "2026-11-25T15:38:37Z"
+  },
+  "exit": 0,
+  "api_cleanup": {
+    "owner": "root-causes-0b43832067/memory-02",
+    "binary_sha256": "95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f",
+    "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "postgres_bridge_ip": "172.17.0.2",
+    "port": 51069,
+    "env_sha256": "0b76d4bd4af31fe298517043398b986148b118367a6b2eeee96f3649281caeb1",
+    "container": "cd8e59700cc5aad35f91c5acc3a2309a3c1b802f44805346751e51d7c8576be5",
+    "volume": "root-causes-0b43832067-memory-02-binary",
+    "container_absent": true,
+    "volume_absent": true
+  },
+  "cleanup": [
+    {
+      "name": "playwright",
+      "exit": 0
+    },
+    {
+      "name": "renderer",
+      "exit": 0
+    },
+    {
+      "name": "web",
+      "exit": 143
+    },
+    {
+      "name": "api",
+      "exit": 143
+    }
+  ],
+  "ended": 1795621193.974228,
+  "listeners_closed": [
+    true,
+    true,
+    true
+  ],
+  "source_unchanged": true,
+  "build_unchanged": true,
+  "gate_after": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": 4
+  },
+  "remaining_db_clients": 0,
+  "api_helper_unchanged": true,
+  "runner_unchanged": true,
+  "config_unchanged": true,
+  "tool_unchanged": true,
+  "node_unchanged": true,
+  "binaries_unchanged": true,
+  "log_hashes": {
+    "api.log": "4f7a207442e311ab0a8730adc9e79668fb347e26d05f8aab6ae60ae91279a9fe",
+    "playwright.log": "38ff5ab2ce45689e90ec733862ce14d28b3ccebfaefe316ec9f27313ea453c65",
+    "web.log": "32878d92684b23253aff77a24f67a5063fb4efb5198984b48af42f7cb9400c65",
+    "renderer.log": "8c12d057616c5a39e4e6889a6b6e8371fadb71f07f96df7649855cc4b1c0a893"
+  }
+}

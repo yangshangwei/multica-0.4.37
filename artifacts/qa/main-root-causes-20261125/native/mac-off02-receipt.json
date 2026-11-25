@@ -1,0 +1,149 @@
+{
+  "knowledge_context_enabled": false,
+  "original_policy": "original knowledge OFF complete journey",
+  "status": "completed",
+  "source_manifest_sha256": "9f01cb20e2910d1444f703dfc7498f319c49a82e92280abf75c777d07090b56b",
+  "package_manifest_sha256": "a4e4bc0425b4251112b82b12de7fb1ceccbda81727b438c598ad4c1e048085f4",
+  "adapter_sha256": "152e285308fc621362f9dd3f87b776227cc98bbc724be8e29a651a670b590232",
+  "database": "rc_mac_off02",
+  "ports": [
+    59938,
+    59939,
+    59940
+  ],
+  "started": 1795622985.955693,
+  "processes": [
+    {
+      "pid": 9210,
+      "name": "web",
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/web-server.mjs"
+      ]
+    },
+    {
+      "pid": 9213,
+      "name": "renderer",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "http.server",
+        "59940",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/private/tmp/root-causes-0b43832067/frontend-source/apps/desktop/out/renderer"
+      ]
+    },
+    {
+      "pid": 9215,
+      "name": "playwright",
+      "command": [
+        "/bin/bash",
+        "/private/tmp/root-causes-0b43832067/frontend-source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/tmp/root-causes-0b43832067/frontend-source/node_modules/@playwright/test/cli.js",
+        "test",
+        "e2e/collaboration-host-installed.spec.ts",
+        "--grep",
+        "Packaged full Main controls a real native host run and explicitly resumes the shared Agent$",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output",
+        "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-off02/results"
+      ]
+    }
+  ],
+  "test_args": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/private/tmp/root-causes-0b43832067/frontend-source/node_modules/@playwright/test/cli.js",
+    "test",
+    "e2e/collaboration-host-installed.spec.ts",
+    "--grep",
+    "Packaged full Main controls a real native host run and explicitly resumes the shared Agent$",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-off02/results"
+  ],
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false
+  },
+  "api_container": {
+    "owner": "root-causes-0b43832067/mac-off02",
+    "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+    "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "postgres_bridge_ip": "172.17.0.2",
+    "port": 59938,
+    "env_sha256": "66990ec6e7b6b08ffa6c5b7a1d15cf56b7203ae676e0774a4cadbbf3d48f3b8d",
+    "container": "c92ea08116e8c08b32f543c10c09fe5d062fba92baad056b89f60da9bf65e437",
+    "volume": "root-causes-0b43832067-mac-off02-binary",
+    "container_absent": true,
+    "volume_absent": true
+  },
+  "exit": 0,
+  "cleanup": [
+    {
+      "pid": 9215,
+      "exit": 0
+    },
+    {
+      "pid": 9213,
+      "exit": -15
+    },
+    {
+      "pid": 9210,
+      "exit": 0
+    }
+  ],
+  "api_container_cleanup": {
+    "owner": "root-causes-0b43832067/mac-off02",
+    "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+    "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+    "postgres_bridge_ip": "172.17.0.2",
+    "port": 59938,
+    "env_sha256": "66990ec6e7b6b08ffa6c5b7a1d15cf56b7203ae676e0774a4cadbbf3d48f3b8d",
+    "container": "c92ea08116e8c08b32f543c10c09fe5d062fba92baad056b89f60da9bf65e437",
+    "volume": "root-causes-0b43832067-mac-off02-binary",
+    "container_absent": true,
+    "volume_absent": true
+  },
+  "descendant_cleanup": {
+    "status": "pass",
+    "fallback": [],
+    "remaining": [],
+    "initial": []
+  },
+  "protocol_cleanup": {
+    "status": "pass",
+    "steps": [],
+    "error": null,
+    "final": {
+      "scheme": "multica",
+      "default_application_url": "file:///Applications/Multica.app/",
+      "handlers": [
+        "ai.multica.desktop"
+      ],
+      "registrations": {
+        "ai.multica.desktop": [
+          "file:///Applications/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app/"
+        ]
+      }
+    }
+  },
+  "remaining_db_clients": 0,
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "unexpected_provider_execution": false,
+  "ended": 1795623100.392778
+}

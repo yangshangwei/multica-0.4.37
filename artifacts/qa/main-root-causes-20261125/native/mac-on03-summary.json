@@ -1,0 +1,34 @@
+{
+  "test": "Packaged full Main with default knowledge ON isolates each native run through Stop, restart and Resume",
+  "status": "passed",
+  "duration_ms": 56379,
+  "retry": 0,
+  "ledger_count": 3,
+  "default_knowledge": true,
+  "bindings": {
+    "receipt.json": "1380e2ad2cf8e0a84bcf3be87708f139fa69c7d8f71c0e86c185789cffcd9593",
+    "playwright.json": "d217b7e71ab3be93d3b9b61ca70b3fd0bb7e6f70efd06fb1f34031f7c9a2b48a",
+    "protocol-before.json": "8016ea9849eb99af5812c00920cc954058d6180ba3c07f2cd4e214fbb8ee3249",
+    "selected-tests.txt": "b86535800139e3f8d5ee1194f9d4898042b58f07ecfbda349c1d03975096af0b"
+  },
+  "session_hashes": [
+    "a547658f4f1af68dc5c5a3da00cc91f94e9fed499398d611f99346488d8d5913",
+    "0d10ffe98533860d9739d7305cf0a2e5d98945542bb29ed45eacbf5f2b2bd1d2",
+    "094fc3ee4aaaeccd8bbf0ffd5c050d15ffb91313c6e3ae5be1d22be8e6c409e2"
+  ],
+  "workdir_hashes": [
+    "1e7a8d6aa047c16241d59c845eeccfd21d19df0651a7836c511a86f3c9d06874",
+    "da9e6201eb8f3d57c17c65c4c3505e3b7b8350c4b39bead1ee70f306506e33d1",
+    "a449ac4594b4c9fcadb0e4e18afc8657bae78ab7ecfc6f7388bc3a9fdfd8b482"
+  ],
+  "resumed": [
+    false,
+    false,
+    false
+  ],
+  "no_session_persistence": [
+    true,
+    true,
+    true
+  ]
+}

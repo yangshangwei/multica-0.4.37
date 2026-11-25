@@ -1,0 +1,155 @@
+{
+  "run": "mac-on03",
+  "bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-on03/receipt.json": "1380e2ad2cf8e0a84bcf3be87708f139fa69c7d8f71c0e86c185789cffcd9593",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-on03/playwright.json": "d217b7e71ab3be93d3b9b61ca70b3fd0bb7e6f70efd06fb1f34031f7c9a2b48a",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/mac-on03/results/collaboration-host-install-0ee6c-ugh-Stop-restart-and-Resume-chromium/installed-host-evidence.json": "58a76c02f52eb7cdf80e013a151bb05c3196e85b7b34fe169a4511fc96f5409b",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/evidence/source.json": "9f01cb20e2910d1444f703dfc7498f319c49a82e92280abf75c777d07090b56b",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/evidence/package.json": "a4e4bc0425b4251112b82b12de7fb1ceccbda81727b438c598ad4c1e048085f4",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/native/evidence/package-finalized.json": "499b28e95be37f4859edca5f2729a9a279c8ae5056d54f972ec169c05e045450"
+  },
+  "source_manifest_matches": true,
+  "package_manifest_matches": true,
+  "adapter_matches": true,
+  "source_selected_matches": {
+    "e2e/collaboration-host-installed.spec.ts": true,
+    "e2e/collaboration-host-installed.spec.ts current": true,
+    "e2e/fixtures/collaboration-host-runtime.ts": true,
+    "e2e/fixtures/collaboration-host-runtime.ts current": true,
+    "apps/desktop/out/main/index.js": true,
+    "apps/desktop/out/preload/index.js": true,
+    "apps/desktop/out/renderer/index.html": true,
+    "e2e/fixtures/collaboration-installed-main.ts": true
+  },
+  "archive_matches": true,
+  "executable_matches": true,
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "providers": [
+    {
+      "session_hash": "a547658f4f1af68dc5c5a3da00cc91f94e9fed499398d611f99346488d8d5913",
+      "workdir_hash": "1e7a8d6aa047c16241d59c845eeccfd21d19df0651a7836c511a86f3c9d06874",
+      "resumed": false,
+      "knowledge_observation": {
+        "prompt_sha256": "0351de87649b9634b2ec5ea32cf045d3a4944059721f1a5da24e3db9def4cbac",
+        "section_present": true,
+        "contributions": [],
+        "no_session_persistence": true
+      }
+    },
+    {
+      "session_hash": "0d10ffe98533860d9739d7305cf0a2e5d98945542bb29ed45eacbf5f2b2bd1d2",
+      "workdir_hash": "da9e6201eb8f3d57c17c65c4c3505e3b7b8350c4b39bead1ee70f306506e33d1",
+      "resumed": false,
+      "knowledge_observation": {
+        "prompt_sha256": "52ee27fc520d0aa3b3ce1f3494a27c93af30dec98d5f5f856a1225dcbb95a44b",
+        "section_present": true,
+        "contributions": [],
+        "no_session_persistence": true
+      }
+    },
+    {
+      "session_hash": "094fc3ee4aaaeccd8bbf0ffd5c050d15ffb91313c6e3ae5be1d22be8e6c409e2",
+      "workdir_hash": "a449ac4594b4c9fcadb0e4e18afc8657bae78ab7ecfc6f7388bc3a9fdfd8b482",
+      "resumed": false,
+      "knowledge_observation": {
+        "prompt_sha256": "c36390201e9c6fe42d4610cce082d6b3f02b4782b17f2ded63035b8920262cd6",
+        "section_present": true,
+        "contributions": [],
+        "no_session_persistence": true
+      }
+    }
+  ],
+  "proofs": [
+    {
+      "phase": "proof_acknowledged",
+      "proof_state": "host_exit_observed",
+      "sealed": true,
+      "launches": [
+        {
+          "attempt_seq": "1",
+          "kind": "provider",
+          "phase": "attempt_reaped",
+          "process_observed": true,
+          "scope": "process_group",
+          "terminal_accepted": true,
+          "authorized": true,
+          "terminal_kind": "managed_launch_ended",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "proof_acknowledged",
+      "proof_state": "host_exit_observed",
+      "sealed": true,
+      "launches": [
+        {
+          "attempt_seq": "1",
+          "kind": "provider",
+          "phase": "attempt_reaped",
+          "process_observed": true,
+          "scope": "process_group",
+          "terminal_accepted": true,
+          "authorized": true,
+          "terminal_kind": "managed_launch_ended",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          }
+        }
+      ]
+    },
+    {
+      "phase": "proof_acknowledged",
+      "proof_state": "host_exit_observed",
+      "sealed": true,
+      "launches": [
+        {
+          "attempt_seq": "1",
+          "kind": "provider",
+          "phase": "attempt_reaped",
+          "process_observed": true,
+          "scope": "process_group",
+          "terminal_accepted": true,
+          "authorized": true,
+          "terminal_kind": "managed_launch_ended",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          }
+        }
+      ]
+    }
+  ],
+  "protocol_baseline_matches": true,
+  "cleanup": {
+    "exit": 0,
+    "api_container_cleanup": {
+      "owner": "root-causes-0b43832067/mac-on03",
+      "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+      "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+      "postgres_bridge_ip": "172.17.0.2",
+      "port": 58145,
+      "env_sha256": "4739fa290cb68f1ec9be728d7bab3e4a1fb3c5d2b8e79e2cca691f20bb327d33",
+      "container": "85212c42781918dd2d5359e8ac3092f9ef6218e150fb34d598c9d9c82fc99ac1",
+      "volume": "root-causes-0b43832067-mac-on03-binary",
+      "container_absent": true,
+      "volume_absent": true
+    },
+    "descendant_cleanup": {
+      "status": "pass",
+      "fallback": [],
+      "remaining": [],
+      "initial": []
+    },
+    "remaining_db_clients": 0,
+    "unexpected_provider_execution": false
+  }
+}
