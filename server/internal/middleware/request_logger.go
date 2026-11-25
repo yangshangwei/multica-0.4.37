@@ -133,11 +133,21 @@ func RequestLogger(next http.Handler) http.Handler {
 
 		duration := time.Since(start)
 		status := ww.Status()
+		// The status records an attempted response, which a canceled client
+		// may never receive. Keep context causes and other error details private.
+		requestContext := "none"
+		switch r.Context().Err() {
+		case context.Canceled:
+			requestContext = "canceled"
+		case context.DeadlineExceeded:
+			requestContext = "deadline"
+		}
 
 		attrs := []any{
 			"method", r.Method,
 			"path", redactWebhookPath(r.URL.Path),
 			"status", status,
+			"request_context", requestContext,
 			"duration", duration.Round(time.Microsecond).String(),
 		}
 		if rid := chimw.GetReqID(r.Context()); rid != "" {

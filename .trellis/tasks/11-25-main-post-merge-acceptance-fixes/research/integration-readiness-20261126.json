@@ -1,0 +1,118 @@
+{
+  "verdict": "ACCEPT_SCOPED_INTEGRATION",
+  "reviewed_at": "2026-11-25T16:35:15.761261+00:00",
+  "base": "9ffa37281184ae605bcbc0bc7a09caf3df60d180",
+  "product_files": {
+    "server/internal/middleware/request_logger.go": {
+      "sha256": "34b3f0b8e2702c719ffc7833cd310963937201420a5fb2defae5bd0948a178a9",
+      "mode": "0o755",
+      "matches_prior_verified_input": true
+    },
+    "server/internal/middleware/request_logger_test.go": {
+      "sha256": "2404872933fdd6503b2f3ca5c6b9b1134fa17bcd5e7eb80fc9a231e673de381c",
+      "mode": "0o755",
+      "matches_prior_verified_input": true
+    },
+    "server/internal/service/collaboration_knowledge_invalidation_test.go": {
+      "sha256": "d21a2367336d69cb049736a4c5df349307b20207bfd0f21ab6be5d4bbe3b367c",
+      "mode": "0o644",
+      "matches_prior_verified_input": true
+    },
+    "server/internal/handler/file_comment_membership_test.go": {
+      "sha256": "4f95af1280715199a2b51ef2714205d55b672cbe27b7020f80de2f27fb28311a",
+      "mode": "0o644",
+      "matches_prior_verified_input": true
+    },
+    "e2e/collaboration-host-installed.spec.ts": {
+      "sha256": "774042c3aad224cc8445f4b4bb70354fb609c7385e2fb274ca3ff4993f2bc844",
+      "mode": "0o644",
+      "matches_prior_verified_input": true
+    }
+  },
+  "spec_files": {
+    ".trellis/spec/server/collaboration-host-execution.md": "9e6134138fa6b769c4f7057aa008c37dec1d026b44f2a29d1dfd55e9dfae9151",
+    ".trellis/spec/server/database-test-isolation.md": "590ecdb81383cd73fde968c3fe5cbbf34248b048f063fabd5bb040ef00ed145e",
+    ".trellis/spec/server/security-boundaries.md": "4a092ab15b45cb91de68df0af47582eb528f56dff60dbb6194720df7ca247f1b"
+  },
+  "selected_manifest_sha256": "b00dc194e0c6cc955d3ed64349b66369e6cd7a8a7f73e9a11172b37c01357a40",
+  "selected_artifact_count": 61,
+  "manifest_mismatches": [],
+  "final_independent_review_report_resource_bindings_match": true,
+  "fresh_checks": {
+    "eslint_fixture": {
+      "exit": 0,
+      "config": "packages/eslint-config/base.js",
+      "source": "/private/tmp/main-root-causes-cli/source/e2e/collaboration-host-installed.spec.ts",
+      "source_equals_worktree": true
+    },
+    "typescript_fixture": {
+      "exit": 0,
+      "config": ".omx/private/root-causes/cli/tsconfig.json",
+      "source_equals_worktree": true
+    },
+    "gofmt_four_changed_go_files": {
+      "exit": 0,
+      "output": ""
+    },
+    "git_diff_check": {
+      "exit": 0,
+      "output": ""
+    }
+  },
+  "retained_verification": {
+    "service_linux_normal_race": {
+      "pass_each": 4631,
+      "top_level_each": 1891,
+      "fail": 0,
+      "skip": 0,
+      "scope": "Go1.26.11 linux/arm64, actual package1009.990/2066.422s below40m"
+    },
+    "middleware_normal_race": {
+      "pass_each": 143,
+      "fail": 0,
+      "skip": 0,
+      "configured": "isolated DB and dedicated Redis"
+    },
+    "upload_contract_normal_race": {
+      "pass_each": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "native_full": {
+      "on_seconds": 56.379,
+      "off_seconds": 57.117,
+      "budget_seconds": 480,
+      "retry": 0
+    },
+    "legacy_cli": {
+      "operations": 10,
+      "seconds": 87.787,
+      "budget_seconds": 240
+    },
+    "go_vet": "prior source-bound service/handler and middleware exit0; unchanged Go inputs"
+  },
+  "security_scan": {
+    "credential_prefix_jwt_private_key_database_url_matches": [],
+    "sensitive_json_key_review": "Only source-hash-map keys and test-status identities found, no credential values",
+    "candidate_count_at_scan": 133,
+    "candidate_bytes_at_scan": 3246314,
+    "largest_file_bytes": 683482,
+    "private_local_exclusions": [
+      ".trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-cancellation-control.jsonl",
+      ".trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-cancellation-control.stderr",
+      ".trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-capability-contention-control.stderr",
+      ".trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-capability-contention-control.jsonl",
+      ".trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-cancellation-overlay.json",
+      ".trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-capability-contention-overlay.json"
+    ]
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "limitations": [
+    "No full expensive suite rerun: current changed code equals separately verified source inputs.",
+    "Source scopes remain separate; Linuxservice does not establish Darwin published-database path parity.",
+    "Namespace and anonymousGitHubquota releaseHOLD remains; merge authorization does not authorize deployment.",
+    "Local raw logs, private configuration, overlays and build trees are not portable merely because receipts reference them.",
+    "Root owns final remote freshness, staged selection, main-worktree collision checks and Git integration."
+  ]
+}

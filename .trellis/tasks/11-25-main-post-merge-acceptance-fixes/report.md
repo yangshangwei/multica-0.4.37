@@ -1,3 +1,7 @@
+> 用户于2026-11-26随后授权提交、推送并合并main，见 [集成记录](research/integration-publication-20261126.md)；发布HOLD不变。
+
+> 2026-11-26 续修结果见 [continuation-report.md](research/continuation-report.md)。下文为前轮原报告，失败、计数和交付事实原样保留。
+
 # main 合并后验收修复报告
 
 当前结论为 **HOLD / 不建议发布**。已完成可证实的权限、依赖、诊断和客户端修复及回归，两端真实 Main 原旅程通过；完整 service 包和旧 CLI 仍有实际失败。独立终审及全局资源收尾证据随报告交付，未解决项不以重试、放宽守卫或增加超时掩盖。

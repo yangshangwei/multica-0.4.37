@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "bash",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-overlay",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-cancellation-overlay.json",
+    "-json",
+    "-count=1",
+    "-timeout=2m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-run",
+    "^TestAcceptanceCancellationLogControl$",
+    "./internal/middleware"
+  ],
+  "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/server",
+  "exit": 0,
+  "elapsed_s": 5.817380905151367,
+  "database_url_present": false,
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_sha256": {
+    "server/internal/middleware/password_auth.go": "8756a3ad22424fcdd1497db3ac90812009da4ec81a44f9840a5fde2a0b692446",
+    "server/internal/middleware/request_logger.go": "58f9212c459f15a0d538a1cadbb19d87022dca147c729481935b5ed95a50ad9b"
+  },
+  "scope": "No DB, no authentication lookup, no model or account; actual error mapper and logger only."
+}

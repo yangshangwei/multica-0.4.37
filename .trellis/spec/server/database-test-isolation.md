@@ -609,3 +609,57 @@ future-observation rejection.
    a database on the wrong cluster. Keep the selected connection identity through
    readiness, creation and migration. R3's original preparation failure and
    independent red/green evidence are in `artifacts/qa/full-e2e-20261120-r3/`.
+
+## Retained knowledge jobs within a fresh service package
+
+### Scope and signatures
+
+Fresh databases isolate complete runs, but a single service package deliberately
+retains knowledge candidates and pending invalidation history between tests.
+`newKnowledgeInvalidationFixture` and direct administrative worker fixtures use
+`isolateKnowledgeTestHistory(t, f)` before creating the work under observation.
+
+### Contract
+
+Reserve existing pending invalidation rows in a fixture-owned transaction with
+`SELECT id ... WHERE state='pending' FOR UPDATE SKIP LOCKED`. Production scan and
+hint workers already skip reserved rows. New work remains visible to the actual
+worker; retain all history and production selection/authorization rules. Register
+rollback after fixture cleanup registration so it executes before pool closure;
+release an empty reservation immediately and report rollback failures.
+
+### Validation and cases
+
+- Preexisting jobs/candidates/targets: every column remains unchanged during the
+  fixture and its cleanup. Own jobs still complete and publish the expected frame.
+- Nested fixture: skip the outer reservation; reserve only newly visible old work.
+  After nested cleanup its owner can process that work.
+- Busy-target fairness: create both fixtures before enqueueing either tested job,
+  preserving both jobs in the production worker's candidate set.
+- Good: reserve unrelated history before seeding regression-owned scans. Base:
+  an empty database releases the reservation immediately. Bad: finish all global
+  scans in setup or a regression's final check, recreating cross-test work.
+
+### Required evidence
+
+`TestKnowledgeInvalidationFixturePreservesUnrelatedPendingHistory` proves complete
+row preservation, own scan/publication, nested cleanup and subsequent processing.
+Keep all existing purge/fanout/fairness tests and run full service normal/race on
+fresh databases at the original budgets; narrow passes are not package acceptance.
+The isolation repair proves a fixture coupling, not the original NOWAIT holder or
+the initiating cause of historical transport/scheduling latency.
+
+### Redis startup and actual port binding
+
+A copied Redis configuration must be readable by the container's runtime user;
+keep the host secret file0600 under a0700 directory, while setting appropriate
+read permission on only the owned container copy. Docker start succeeding does
+not establish Redis readiness. A restart can allocate a different published port.
+
+Before database/tests, inspect exact owner/image/running state and current port
+mapping, then AUTH/PING through the same host endpoint used by tests. Bind the
+resolved URL privately and record only its fingerprint/port. Dedicated Redis is
+required when fixtures force DB11/12/13/14/15 irrespective of a URL index. Fail
+preflight on identity/mapping/readiness mismatch; do not accept connection-failure
+skips as complete configured coverage. Keep failed preparation and skipped-run
+receipts alongside the corrected, freshly bound complete runs.

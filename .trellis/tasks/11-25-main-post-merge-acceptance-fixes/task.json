@@ -2,7 +2,7 @@
   "id": "main-post-merge-acceptance-fixes",
   "name": "main-post-merge-acceptance-fixes",
   "title": "main 合并后验收失败定位与修复",
-  "description": "归组并修复验收阻塞，完成原旅程回归、独立复核及资源清理；用户后续授权提交并推送修复分支",
+  "description": "main剩余验收阻塞的已验证修复与独立复核；用户于2026-11-26授权提交、推送并合并main，发布HOLD保留",
   "status": "in_progress",
   "dev_type": null,
   "scope": null,
@@ -12,10 +12,10 @@
   "assignee": "artisan",
   "createdAt": "2026-11-25",
   "completedAt": null,
-  "branch": "codex/main-post-merge-acceptance-fixes",
+  "branch": "codex/main-acceptance-root-causes",
   "base_branch": "main",
-  "worktree_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
-  "commit": "d90d76e6bd90e9c9e2f45fef0e0efd48d359bed6",
+  "worktree_path": "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37",
+  "commit": "bf09c8d72f13332be7cb6dd1a26db821eff46287",
   "pr_url": null,
   "subtasks": [],
   "children": [
@@ -28,13 +28,50 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "本轮可证实修复、回归、独立复核和资源收尾完成；D02/D11及外部/平台阻塞保留。发布HOLD；用户于2026-11-25后续授权提交并推送当前修复分支。",
+  "notes": "验证结束时的未提交状态保留于续修报告；用户随后于2026-11-26明确授权提交、推送、合并main。集成记录单列，外部/平台条件继续HOLD。",
   "meta": {
     "delivery_status": "reviewed_repairs_with_open_release_blockers",
     "release_verdict": "HOLD",
     "commit_authorized": true,
     "push_authorized": true,
-    "open_defects": ["D02", "D11"],
-    "report": "report.md"
+    "open_defects": [],
+    "report": "report.md",
+    "continuation": {
+      "base": "9ffa37281184ae605bcbc0bc7a09caf3df60d180",
+      "branch": "codex/main-acceptance-root-causes",
+      "worktree": "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37",
+      "commit_authorized": true,
+      "push_authorized": true,
+      "merge_authorized": true,
+      "plan": "research/root-causes-plan.md",
+      "resource_owner": "root-causes-0b43832067",
+      "status": "verified_scoped_repairs_independently_reviewed",
+      "final_resource_review": "research/root-causes-global-resource-independent-audit.json"
+    },
+    "previous_delivery": {
+      "branch": "codex/main-post-merge-acceptance-fixes",
+      "worktree_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "commit": "d90d76e6bd90e9c9e2f45fef0e0efd48d359bed6"
+    },
+    "merge_authorized": true,
+    "remaining_acceptance_conditions": [
+      "Namespace policy-preserving Linux environment for 9 identities",
+      "Anonymous public GitHub import quota",
+      "Darwin service full package over published database path not rerun"
+    ],
+    "historical_evidence_limits": [
+      "NOWAIT historical holder unrecorded",
+      "Exact internal host/VM transport cause not identified",
+      "Whole-task initial protocol state unproven"
+    ],
+    "continuation_report": "research/continuation-report.md",
+    "integration": {
+      "authorized_at": "2026-11-26",
+      "base_main": "9ffa37281184ae605bcbc0bc7a09caf3df60d180",
+      "status": "reviewed_commits_ready_for_push_and_merge",
+      "report": "research/integration-publication-20261126.md",
+      "release_verdict": "HOLD",
+      "product_commit": "bf09c8d72f13332be7cb6dd1a26db821eff46287"
+    }
   }
 }

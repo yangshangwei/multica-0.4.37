@@ -1,0 +1,28 @@
+{
+  "root": "/private/tmp/root-causes-0b43832067/frontend-source",
+  "commands": [
+    {
+      "argv": [
+        "node",
+        "scripts/bundle-cli.mjs"
+      ],
+      "exit": 0,
+      "seconds": 11.145265102386475,
+      "log_sha256": "6e23ab27cca34c16d2de695d441f6e92e04cc4592eaba00d5287e1c926c6efc2"
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/electron-vite/bin/electron-vite.js",
+        "build"
+      ],
+      "exit": 0,
+      "seconds": 4.929680109024048,
+      "log_sha256": "ad41bef95899e283fda18f66d8d2a27178983c86357ccfdf367c5c0756f8cec2"
+    }
+  ],
+  "source_changes": [],
+  "source_sha256": "fbb7df1868c674bf4d5b222c9d799e82ff25829be4254950ad6a84caefb2ec38",
+  "exit": 0,
+  "before_after_equal": true
+}

@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "bash",
+    "/work/source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/usr/local/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-race",
+    "./internal/service"
+  ],
+  "cwd": "/work/source/server",
+  "platform": "linux/arm64",
+  "source_manifest_sha256": "8d3e26556b8104f0fea1eb006384bf0a3e64c1d2cf4e56d38f344a911b6c23f6",
+  "tool_sha256": "2c77b9243b17c9d5ecd5983acbdeaee36d470a9b62a2952f1279c319cc9b97fb",
+  "config_sha256": "312b81227f3ecb3bfe87ca84c79e893abcb742caa16993bea9e579c8bc732e87",
+  "runner_sha256": "4e207719381c166a1e87f0f9cb110d83281f7408ed81b183eba2f8a83217cada",
+  "start": 1795620980.5068173,
+  "database": "rc_service_race01",
+  "uid": 1000
+}

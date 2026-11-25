@@ -795,3 +795,17 @@ Implemented and verified shared Web/Desktop comment, reply and edit mention cate
 ### Next Steps
 
 - Native OS IME candidate-window and spoken screen-reader checks remain unverified; see archived verification.md.
+
+
+## 2026-11-26 — main remaining acceptance blockers
+
+Continued existing parent task in isolated codex/main-acceptance-root-causes from fetched main9ffa37281. Verified fixture history coupling and corrected isolation; separated attempted canceled HTTP503 from genuine refusals; proved account-lock capability contention with two transactions. Same-network API/PG fixes measured host/VM latency amplification without product guard changes.
+
+Linuxservice normal/race each4631PASS/1891tops/0FAIL/0SKIP, middleware DB+Redis each143PASS, uploadcontract each5PASS. Complete unchanged legacyCLI10ops87.787s, Hostorder/memory, MacdefaultON56.379s andoriginalOFF57.117s pass. Independent reviews and retained failed attempts/initial metadata gaps are in parent research/continuation-report.md. Fourownedcontainers stopped,26DBs retained,25portsclosed; protocol matches only latest actualrunbaseline.
+
+User confirmed ordinarycomment memberuploads with independentuploader. ReleaseHOLD forNamespacepolicy/environment andanonymousGitHubquota; originalDarwinpublishedDBpath remainsdistinct. No commit/push/merge authorized this round. Parent staysin_progress for external/platform acceptance scope.
+
+
+### 2026-11-26 subsequent integration authorization
+
+User explicitly requested commit, push and merge to main. Verified fetched origin/main still9ffa37281; retained previous test/source/protocol qualifications and HOLD. Integration record: parent research/integration-publication-20261126.md. No deployment/tag or external condition waiver.

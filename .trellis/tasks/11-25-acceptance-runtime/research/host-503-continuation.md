@@ -1,0 +1,28 @@
+# Complete Host journeys and observed503 classification
+
+Both original complete journeys pass on the newly bound main-derived candidate: order-02 55.922s/600s and memory-02 55.425s/300s, one case each, retry0, launcherexit0. The source differs from main only by reviewed request-context logging (plus test changes outside runtime); the private browser spec change only redirects test/expect imports to a passive observer. All original scenario assertions, host Provider/CLI controls, gate restoration and final cleanup assertions remain. Production Web/Desktop artifacts come from the parent's fresh current-source builds; all frontend inputs compared equal, relative dependency edges resolve inside the new snapshot, source/build/binaries remain unchanged across each run.
+
+API uses the existing default Docker bridge to the exact owned PostgreSQL container. No security policy was weakened: read-only API root, cap-dropALL, no-new-privileges, fixed owned binary volume, private tmpfs. Native Darwin daemon/provider/CLI remain actual local processes with synthetic account profiles and explicit fixture executables. The task environment remains separate from ordinary Go tests.
+
+|Run|Server503|Context canceled|Context none|Exact browser failed-ID matches|Browser received5xx|
+|---|---:|---:|---:|---:|---:|
+|order-02|309|294|15|293|0|
+|memory-02|112|105|7|104|0|
+
+Order uses the uninstrumented product API (SHA84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014), whose exact source-to-binary reproduction was independently reviewed. **The15context-none order503s all use GET runtime/capabilities, but their response code was not captured. Their exact refusal cause remains unknown. Do not borrow memory's code for them.** The one unmatched canceled order request is another GET runtime/capabilities; its server-generated request ID and route are retained in order-02-observation.json. It is outside the observed browser's matching IDs.
+
+Memory uses a separately bound task-private logger overlay on identical product source (API SHA95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f). It parses only a fixed allowlist code from the existing256-byte response tee; never emits body/error text and does not change response/status/severity. All7context-none responses are native runtime/capabilities `collaboration_busy`. The remaining105canceled responses are62collaboration_unavailable,31auth_unavailable and12knowledge_unavailable. The unmatched canceled request is GET runtime/runs/:id/stop-intent withcollaboration_unavailable. The browser sees0actual5xx;104of105canceled server records map directly to its failed-request IDs.
+
+The capability code path is RuntimeCapabilities -> collaborationRuntimeMutation -> lockPreparationRuntimeAccount. `collaboration_busy` is returned after the unchanged three-attempt transaction policy exhausts retryable40001/40P01/55P03 conflicts. This proves an explicit contention refusal class for those seven new requests; the exact conflicting transaction/object/SQLSTATE is not recorded, and no lock or authorization fence is relaxed. Successful full journeys prove recovery for these runs. This is separate from the historical service SHARE NOWAIT failure whose holder remains unknown.
+
+The browser observer preserves existing ApiClient X-Request-ID, never modifies requests, records request/response/requestfailed terminals, strips URL query strings, allowlists error codes and drains accepted response reads before sealing. All four order and two memory context observers seal with0pending/0unfinished. Tiny real-HTTP controls verify abort vs503, outside-origin exclusion and private-body exclusion. The initial wrapper's early-close unreadable-code outcome remains retained alongside its corrected control.
+
+Both API containers and binary volumes are removed; all six service ports are closed; DBclients0; gate booleans restored with monotonically advanced epoch2->4; no forced cleanup fallback. Owned PG and suiteRedis remain parent-owned. Exact receipts, raw hashes, rows and matching identifiers: research/{order-02,memory-02}-observation.json and artifacts/qa/main-root-causes-20261125/runtime/. Full raw logs/results/build snapshots remain task-private, not implied to be published by a path reference.
+
+The historical320/116counts and original pre-provider failure are not relabeled. New evidence closes the canceled-response ambiguity and classifies the captured native contention response; it cannot reconstruct missing historical request context/error codes. No speculative pool-size, retry, deadline or security change is introduced.
+
+## Order03 with the same safe-code overlay
+
+A new fresh database and separate complete order03 run classify the actual order workload without borrowing memory evidence: **PASS73.488s/600s**, retry0, launcher0, unchanged bindings and successful cleanup. Its271server503s split238canceled/33none;236map exact browser failed IDs, browser receives0five-hundreds, all4observers seal0pending/unfinished. All33none responses are GET runtime/capabilities with`collaboration_busy`. Two unmatched canceled capability reads retaincollaboration_unavailable andother_or_absent. The allowlist'sother_or_absent value deliberately does not guess a missing/unlisted code. Original order02's15unknown-code records remain unchanged.
+
+Order03 source/build/runner/APIhelper/config/tool/binaries unchanged; gate booleans restored,0DBclients, APIcontainer andbinaryvolume removed,3portsclosed. See order-03-observation.json and selected public receipt. This makes the current native capabilities contention class reproducible in both complete scenarios; the exact conflicting owner/SQLSTATE and historical320/116attribution remain beyond those traces.

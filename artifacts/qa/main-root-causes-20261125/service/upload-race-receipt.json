@@ -1,0 +1,45 @@
+{
+  "argv": [
+    "bash",
+    "/work/handler-source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/usr/local/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=5m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-race",
+    "./internal/handler",
+    "-run",
+    "^(TestUploadFileCommentMembershipContract|TestLegacyUploadCannotAttachToCollaboration)$"
+  ],
+  "cwd": "/work/handler-source/server",
+  "database": "rc_upload_contract01",
+  "platform": "linux/arm64",
+  "start": 1795621763.1342893,
+  "config_sha256": "21a5f87a2baa9733e3c3cb4944a13945e6d4986fff145bd12e3850daca69542b",
+  "tool_sha256": "2c77b9243b17c9d5ecd5983acbdeaee36d470a9b62a2952f1279c319cc9b97fb",
+  "exit": 0,
+  "end": 1795621859.4004931,
+  "counts": {
+    "pass": 5,
+    "fail": 0,
+    "skip": 0
+  },
+  "terminals": {
+    "TestLegacyUploadCannotAttachToCollaboration": "pass",
+    "TestUploadFileCommentMembershipContract/same_workspace_member": "pass",
+    "TestUploadFileCommentMembershipContract/nonmember": "pass",
+    "TestUploadFileCommentMembershipContract/foreign_comment": "pass",
+    "TestUploadFileCommentMembershipContract": "pass"
+  },
+  "source_unchanged": true,
+  "raw_hashes": {
+    "test.jsonl": "31d237dd098ce73c4a5d5c50e4ceaaa181f890a1756997937a3312f1887e1f46",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

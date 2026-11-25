@@ -3,12 +3,15 @@ package middleware
 import (
 	"bytes"
 	"context"
+	"errors"
+	"log"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"sync"
 	"testing"
+	"time"
 )
 
 // withCapturedLogs swaps the default slog logger for one that writes to buf,
@@ -25,9 +28,12 @@ func withCapturedLogs(t *testing.T) *bytes.Buffer {
 	defaultLoggerMu.Lock()
 	buf := &bytes.Buffer{}
 	orig := slog.Default()
+	legacyWriter, legacyFlags := log.Writer(), log.Flags()
 	slog.SetDefault(slog.New(slog.NewTextHandler(buf, &slog.HandlerOptions{Level: slog.LevelDebug})))
 	t.Cleanup(func() {
 		slog.SetDefault(orig)
+		log.SetOutput(legacyWriter)
+		log.SetFlags(legacyFlags)
 		defaultLoggerMu.Unlock()
 	})
 	return buf
@@ -90,6 +96,98 @@ func TestRequestLogger_400StaysWarn(t *testing.T) {
 func TestRequestLogger_500StaysError(t *testing.T) {
 	logs := runRequestLogger(t, http.StatusInternalServerError, `{"error":"boom"}`)
 	requireLogLevel(t, logs, "ERROR", "WARN", "INFO")
+}
+
+func TestRequestLogger_ContextAtCompletion(t *testing.T) {
+	const privateCause = "private-request-context-cause"
+	for _, state := range []string{"none", "canceled", "deadline"} {
+		t.Run(state, func(t *testing.T) {
+			logs := withCapturedLogs(t)
+			ctx, cancel := context.WithCancelCause(context.Background())
+			defer cancel(nil)
+			if state == "deadline" {
+				var stop context.CancelFunc
+				ctx, stop = context.WithDeadlineCause(ctx, time.Now().Add(-time.Second), errors.New(privateCause))
+				defer stop()
+			}
+			req := httptest.NewRequest(http.MethodGet, "/api/me", nil).WithContext(ctx)
+			rec := httptest.NewRecorder()
+			RequestLogger(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if state == "canceled" {
+					if r.Context().Err() != nil {
+						t.Fatal("request must be live before the handler cancels it")
+					}
+					cancel(errors.New(privateCause))
+				}
+				err := r.Context().Err()
+				if err == nil {
+					err = errors.New("synthetic database unavailable")
+				}
+				passwordAuthError(w, err)
+			})).ServeHTTP(rec, req)
+			if rec.Code != http.StatusServiceUnavailable || rec.Body.String() != "{\"code\":\"auth_unavailable\",\"error\":\"Service Unavailable\"}\n" {
+				t.Fatalf("response changed: status=%d body=%q", rec.Code, rec.Body.String())
+			}
+			requireLogLevel(t, logs, "ERROR", "WARN", "INFO")
+			if !strings.Contains(logs.String(), "request_context="+state) || !strings.Contains(logs.String(), "status=503") {
+				t.Fatalf("missing completed context or attempted status: %s", logs.String())
+			}
+			if strings.Contains(logs.String(), privateCause) || strings.Contains(logs.String(), "synthetic database unavailable") {
+				t.Fatalf("private error detail leaked: %s", logs.String())
+			}
+		})
+	}
+}
+
+func TestRequestLogger_ClientCancellationKeepsAttemptedStatus(t *testing.T) {
+	logs := withCapturedLogs(t)
+	entered, finished := make(chan struct{}), make(chan struct{})
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer close(finished)
+		RequestLogger(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			close(entered)
+			<-r.Context().Done()
+			passwordAuthError(w, r.Context().Err())
+		})).ServeHTTP(w, r)
+	}))
+	defer server.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, server.URL+"/api/me", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result := make(chan error, 1)
+	go func() {
+		response, err := server.Client().Do(req)
+		if response != nil {
+			_ = response.Body.Close()
+		}
+		result <- err
+	}()
+	select {
+	case <-entered:
+	case <-ctx.Done():
+		t.Fatal("server did not receive request")
+	}
+	cancel()
+	select {
+	case err := <-result:
+		if !errors.Is(err, context.Canceled) {
+			t.Fatalf("client received %v instead of cancellation", err)
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("client did not finish cancellation")
+	}
+	select {
+	case <-finished:
+	case <-time.After(5 * time.Second):
+		t.Fatal("server did not observe client cancellation")
+	}
+	requireLogLevel(t, logs, "ERROR", "WARN", "INFO")
+	if !strings.Contains(logs.String(), "request_context=canceled") || !strings.Contains(logs.String(), "status=503") {
+		t.Fatalf("missing cancellation or attempted status: %s", logs.String())
+	}
 }
 
 func TestRequestLogger_200StaysInfo(t *testing.T) {

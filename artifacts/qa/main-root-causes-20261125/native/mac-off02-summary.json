@@ -1,0 +1,34 @@
+{
+  "test": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+  "status": "passed",
+  "duration_ms": 57117,
+  "retry": 0,
+  "ledger_count": 3,
+  "knowledge_context_enabled": false,
+  "session_hashes": [
+    "c3650cb1e33cdbda960c972e06bd4267100750aaa1eb3c830f85d2e7ab202e94",
+    "c3650cb1e33cdbda960c972e06bd4267100750aaa1eb3c830f85d2e7ab202e94",
+    "c3650cb1e33cdbda960c972e06bd4267100750aaa1eb3c830f85d2e7ab202e94"
+  ],
+  "workdir_hashes": [
+    "805f1bbb3868c0eaef2990ca7f6aca5c73b4f3da9233e4471325668d56b3d465",
+    "805f1bbb3868c0eaef2990ca7f6aca5c73b4f3da9233e4471325668d56b3d465",
+    "805f1bbb3868c0eaef2990ca7f6aca5c73b4f3da9233e4471325668d56b3d465"
+  ],
+  "resumed": [
+    false,
+    true,
+    true
+  ],
+  "no_session_persistence": [
+    false,
+    false,
+    false
+  ],
+  "bindings": {
+    "receipt.json": "234824c9324f227559f5bffe8426f62ba4709c5d3952cb46935c7473e9a8d18a",
+    "playwright.json": "c64197240ad0796eb1a4eeb6232c3098548ca580009c3bacf6a77a3214980a06",
+    "protocol-before.json": "8016ea9849eb99af5812c00920cc954058d6180ba3c07f2cd4e214fbb8ee3249",
+    "selected-tests.txt": "ea4bace62057aa81846dc1300a283a47914e0ee454be6b4e867a265b6b74223a"
+  }
+}

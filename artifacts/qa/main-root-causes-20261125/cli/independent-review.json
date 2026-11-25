@@ -1,0 +1,33 @@
+{
+  "verdict": "ACCEPT scoped complete current CLI04 with supplemental binary-source reproduction",
+  "base": "9ffa37281184ae605bcbc0bc7a09caf3df60d180",
+  "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+  "duration_ms": 87787,
+  "budget_ms": 240000,
+  "operations": 10,
+  "stages": {
+    "ordinary-positive": 1,
+    "paused": 3,
+    "stop-unconfirmed": 3,
+    "participant-removed": 3
+  },
+  "retry": 0,
+  "source_files_verified": 3036,
+  "backend_files_verified": 5291,
+  "tested_binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+  "binds": {
+    "/private/tmp/root-causes-0b43832067/cli-full04/receipt.json": "d07e86d543f4680abcd2cac876d9ed512154d51ab2be05cde5d688d79077f839",
+    "/private/tmp/root-causes-0b43832067/cli-full04/playwright.json": "7cb2801ba483fa6aff7ba7f5b5da4a6cc8a04243dcd05036651c0dd248dc8963",
+    "/private/tmp/root-causes-0b43832067/cli-full04/api.log": "27ce8c25742d5996c56f659e6de5716f6bdfe5d9557126b2d4b967b383ed428a",
+    "/private/tmp/root-causes-0b43832067/cli-full04/permit.json": "f7c621362843047878959c0d3925c74abb1967c893269bce3a2772351e1552a2",
+    "/private/tmp/root-causes-0b43832067/cli-full04/resources.json": "71ec00efc889fc157dd88e1ae63b8638828d4906828e861d9e92c27958b2ee26",
+    "/private/tmp/root-causes-0b43832067/cli-full04/timings.jsonl": "c1e43bbd56ec6571f68b43b381071554a9544b928419d1a7f617734a9bc0ef6b",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/cli/source04.json": "b2236b2e718feb7abda7d9e7a5e9f531749f475de6e39f23c69ba6dd4904b42c",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/cli/run_local.py": "97d0441f0af694cfbd466723c31bb4eeca08df254fbb3ac50e66a35073c83b3d",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/cli/cli_guard.py": "fe7b222f4394c76b0e768e14d016462140f52ff650581bececf491aa5e2175a9",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/cli/relay": "b0231b754c1117c599eb60359e24e28ca2f462e48fecd625fa3572e40e7fae7b",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/artifacts/qa/main-root-causes-20261125/cli/api-build-reproduction.json": "b6eabbf49e5f99c559fba888d4474b68f9f003f1237a323d55cb16462b1c984b"
+  },
+  "provenance_qualification": "Original run lacks initial backend source and runner hash admission. Source-to-identical-tested-binary reproduction is separately observed afterward; current runner hash is not reconstructed pre-run proof.",
+  "resource_audit": "cli04-independent-resources.json"
+}

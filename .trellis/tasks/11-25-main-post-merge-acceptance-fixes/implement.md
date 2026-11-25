@@ -21,3 +21,14 @@
 每lane报告必须包含：原始文件和hash、假设与区分实验、最小修改文件、完整命令与退出码、原始结果与新结果、保留资源和剩余风险。
 默认不启动无关服务；不运行历史launcher。没有足够证据时保留UNKNOWN或BLOCKED而非编造根因。
 提交推送等待用户后续明确指令，本轮不执行。
+
+## 2026-11-26 continuation
+
+- [x] Fetched actualmain9ffa37281 and created separateworktree/branch; previous546publicationhashes match.
+- [x] Discriminating fixture/transport/request-cancellation/account-lock experiments with all failed attempts retained.
+- [x] Minimal fixture+logger+independentONtest and confirmed uploadcontract regressions.
+- [x] Complete supportedLinux service normal/race original40m, configuredmiddleware pair, uploadpair, original10opCLI240s, Host andMacON/OFF full journeys.
+- [x] Independent source/rawresult review; all ownedworkloads finished, DBhistory retained and resources stopped.
+- [ ] Required Namespace environment and anonymousGitHubquota remain unavailable; DarwinpublishedDBpath not replayed. These conditions are not rewritten as product passes.
+
+No commit/push/merge thisround. Detailed source/configuration qualifications andfinalresource review are in research/continuation-report.md.

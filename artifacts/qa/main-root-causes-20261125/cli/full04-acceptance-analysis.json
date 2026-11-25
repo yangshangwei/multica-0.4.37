@@ -1,0 +1,294 @@
+{
+  "test_status": "passed",
+  "duration_ms": 87787,
+  "retry": 0,
+  "operations": [
+    {
+      "stage": "ordinary-positive",
+      "exit_code": 0,
+      "status": 200,
+      "method": "PUT"
+    },
+    {
+      "stage": "paused",
+      "exit_code": 1,
+      "status": 409,
+      "method": "PUT"
+    },
+    {
+      "stage": "paused",
+      "exit_code": 1,
+      "status": 409,
+      "method": "POST"
+    },
+    {
+      "stage": "paused",
+      "exit_code": 1,
+      "status": 409,
+      "method": "POST"
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "exit_code": 1,
+      "status": 409,
+      "method": "PUT"
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "exit_code": 1,
+      "status": 409,
+      "method": "POST"
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "exit_code": 1,
+      "status": 409,
+      "method": "POST"
+    },
+    {
+      "stage": "participant-removed",
+      "exit_code": 1,
+      "status": 409,
+      "method": "PUT"
+    },
+    {
+      "stage": "participant-removed",
+      "exit_code": 1,
+      "status": 409,
+      "method": "POST"
+    },
+    {
+      "stage": "participant-removed",
+      "exit_code": 1,
+      "status": 409,
+      "method": "POST"
+    }
+  ],
+  "api_routes": {
+    "GET /api/config": {
+      "count": 1,
+      "sum_ms": 4.633,
+      "max_ms": 4.633
+    },
+    "POST /auth/register": {
+      "count": 3,
+      "sum_ms": 350.12899999999996,
+      "max_ms": 143.703
+    },
+    "POST /api/me/onboarding/complete": {
+      "count": 3,
+      "sum_ms": 31.331,
+      "max_ms": 21.862
+    },
+    "GET /api/workspaces": {
+      "count": 3,
+      "sum_ms": 6.754,
+      "max_ms": 3.033
+    },
+    "POST /api/workspaces": {
+      "count": 2,
+      "sum_ms": 36.699,
+      "max_ms": 29.935
+    },
+    "POST /api/collaboration/issues": {
+      "count": 1,
+      "sum_ms": 126.392,
+      "max_ms": 126.392
+    },
+    "POST /api/collaboration/issues/:id/participants": {
+      "count": 1,
+      "sum_ms": 33.762,
+      "max_ms": 33.762
+    },
+    "POST /api/installations/challenges": {
+      "count": 2,
+      "sum_ms": 15.08,
+      "max_ms": 8.356
+    },
+    "POST /api/installations/enroll": {
+      "count": 1,
+      "sum_ms": 23.106,
+      "max_ms": 23.106
+    },
+    "POST /api/tokens": {
+      "count": 1,
+      "sum_ms": 7.35,
+      "max_ms": 7.35
+    },
+    "POST /api/daemon/installation-bindings": {
+      "count": 1,
+      "sum_ms": 18.997,
+      "max_ms": 18.997
+    },
+    "POST /api/daemon/register": {
+      "count": 2,
+      "sum_ms": 72.29599999999999,
+      "max_ms": 50.028
+    },
+    "POST /api/daemon/deregister": {
+      "count": 2,
+      "sum_ms": 99.009,
+      "max_ms": 73.661
+    },
+    "GET /api/runtimes": {
+      "count": 1,
+      "sum_ms": 3.568,
+      "max_ms": 3.568
+    },
+    "POST /api/agents": {
+      "count": 4,
+      "sum_ms": 26.686,
+      "max_ms": 13.669
+    },
+    "POST /api/squads": {
+      "count": 1,
+      "sum_ms": 16.034,
+      "max_ms": 16.034
+    },
+    "POST /api/squads/:id/members": {
+      "count": 1,
+      "sum_ms": 4.075,
+      "max_ms": 4.075
+    },
+    "GET /api/collaboration/issues/:id/resources/offers/options": {
+      "count": 3,
+      "sum_ms": 75.887,
+      "max_ms": 28.497
+    },
+    "GET /api/collaboration/issues/:id": {
+      "count": 35,
+      "sum_ms": 3149.0269999999996,
+      "max_ms": 416.12
+    },
+    "POST /api/collaboration/issues/:id/resources/offers": {
+      "count": 3,
+      "sum_ms": 62.542,
+      "max_ms": 30.264
+    },
+    "GET /api/collaboration/issues/:id/resources": {
+      "count": 24,
+      "sum_ms": 2579.258,
+      "max_ms": 463.892
+    },
+    "POST /api/collaboration/issues/:id/resources/offers/:id/adopt": {
+      "count": 3,
+      "sum_ms": 70.488,
+      "max_ms": 30.185
+    },
+    "GET /api/collaboration/issues/:id/resources/identity": {
+      "count": 4,
+      "sum_ms": 19.269,
+      "max_ms": 10.279
+    },
+    "POST /api/collaboration/issues/:id/targets/:id/consents": {
+      "count": 4,
+      "sum_ms": 81.71,
+      "max_ms": 44.612
+    },
+    "GET /api/collaboration/issues/:id/mention-targets": {
+      "count": 1,
+      "sum_ms": 17.343,
+      "max_ms": 17.343
+    },
+    "POST /api/issues": {
+      "count": 1,
+      "sum_ms": 35.572,
+      "max_ms": 35.572
+    },
+    "PUT /api/issues/:id": {
+      "count": 4,
+      "sum_ms": 313.32699999999994,
+      "max_ms": 258.578
+    },
+    "GET /api/issues/:id": {
+      "count": 1,
+      "sum_ms": 53.157,
+      "max_ms": 53.157
+    },
+    "POST /api/collaboration/issues/:id/comments": {
+      "count": 2,
+      "sum_ms": 363.23,
+      "max_ms": 243.202
+    },
+    "GET /api/collaboration/issues/:id/participants": {
+      "count": 12,
+      "sum_ms": 1278.333,
+      "max_ms": 254.083
+    },
+    "GET /api/collaboration/issues/:id/commands": {
+      "count": 14,
+      "sum_ms": 1137.724,
+      "max_ms": 240.804
+    },
+    "POST /api/issues/:id/comments": {
+      "count": 3,
+      "sum_ms": 77.158,
+      "max_ms": 30.627
+    },
+    "POST /api/issues/:id/rerun": {
+      "count": 3,
+      "sum_ms": 63.977000000000004,
+      "max_ms": 25.401
+    },
+    "POST /api/collaboration/issues/:id/control": {
+      "count": 2,
+      "sum_ms": 358.904,
+      "max_ms": 256.937
+    },
+    "GET /api/collaboration/runtime/runs": {
+      "count": 1,
+      "sum_ms": 346.276,
+      "max_ms": 346.276
+    },
+    "POST /api/collaboration/runtime/runs/:id/claim": {
+      "count": 1,
+      "sum_ms": 170.296,
+      "max_ms": 170.296
+    },
+    "POST /api/collaboration/runtime/runs/:id/permit": {
+      "count": 1,
+      "sum_ms": 277.291,
+      "max_ms": 277.291
+    },
+    "POST /api/workspaces/:id/share-links": {
+      "count": 1,
+      "sum_ms": 35.16,
+      "max_ms": 35.16
+    },
+    "POST /api/share-links/join": {
+      "count": 1,
+      "sum_ms": 42.52,
+      "max_ms": 42.52
+    },
+    "POST /api/collaboration/issues/:id/participants/:id/remove": {
+      "count": 1,
+      "sum_ms": 54.068,
+      "max_ms": 54.068
+    },
+    "GET /api/collaboration/issues/:id/control/operations/:id": {
+      "count": 2,
+      "sum_ms": 37.013,
+      "max_ms": 18.81
+    },
+    "GET /api/collaboration/issues/:id/comments/operations/:id": {
+      "count": 1,
+      "sum_ms": 22.627,
+      "max_ms": 22.627
+    }
+  },
+  "api_duration_sum_ms": 11598.057999999999,
+  "scope": "Linux API same default bridge as exact owned PostgreSQL, macOS Node client, actual cached Linux amd64 CLI network none. Concurrent service Linux normal present; not quiet performance comparison. No production authority/timeout changes.",
+  "files": {
+    "receipt.json": "d07e86d543f4680abcd2cac876d9ed512154d51ab2be05cde5d688d79077f839",
+    "playwright.json": "7cb2801ba483fa6aff7ba7f5b5da4a6cc8a04243dcd05036651c0dd248dc8963",
+    "api.log": "27ce8c25742d5996c56f659e6de5716f6bdfe5d9557126b2d4b967b383ed428a",
+    "test.log": "86f69a7ec47c17680697787e99c05a406adb79d8860da0e5278943a7b5c52983",
+    "resources.json": "71ec00efc889fc157dd88e1ae63b8638828d4906828e861d9e92c27958b2ee26",
+    "timings.jsonl": "c1e43bbd56ec6571f68b43b381071554a9544b928419d1a7f617734a9bc0ef6b"
+  },
+  "http_status_counts": {
+    "200": 122,
+    "201": 27,
+    "409": 9
+  }
+}

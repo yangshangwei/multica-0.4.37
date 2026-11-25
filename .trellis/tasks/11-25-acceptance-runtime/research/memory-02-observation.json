@@ -1,0 +1,164 @@
+{
+  "run": "memory-02",
+  "case": [
+    {
+      "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+      "status": "passed",
+      "duration_ms": 55425,
+      "retry": 0,
+      "errors": 0
+    }
+  ],
+  "budget_ms": 300000,
+  "503_count": 112,
+  "503_by_context": {
+    "none": 7,
+    "canceled": 105
+  },
+  "503_by_code": {
+    "collaboration_busy": 7,
+    "collaboration_unavailable": 62,
+    "auth_unavailable": 31,
+    "knowledge_unavailable": 12
+  },
+  "browser_received_5xx": [],
+  "503_matched_browser_failed": 104,
+  "unmatched_503": [
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000044",
+      "duration": "353.296ms",
+      "request_context": "none",
+      "diagnostic_response_code": "collaboration_busy",
+      "line": 75
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000052",
+      "duration": "151.41ms",
+      "request_context": "none",
+      "diagnostic_response_code": "collaboration_busy",
+      "line": 83
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000146",
+      "duration": "88.401ms",
+      "request_context": "none",
+      "diagnostic_response_code": "collaboration_busy",
+      "line": 184
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/runs/:id/stop-intent",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000467",
+      "duration": "92.354ms",
+      "request_context": "canceled",
+      "diagnostic_response_code": "collaboration_unavailable",
+      "line": 665
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000667",
+      "duration": "528.545ms",
+      "request_context": "none",
+      "diagnostic_response_code": "collaboration_busy",
+      "line": 1076
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000670",
+      "duration": "288.038ms",
+      "request_context": "none",
+      "diagnostic_response_code": "collaboration_busy",
+      "line": 1097
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000694",
+      "duration": "878.904ms",
+      "request_context": "none",
+      "diagnostic_response_code": "collaboration_busy",
+      "line": 1175
+    },
+    {
+      "method": "GET",
+      "path": "/api/collaboration/runtime/capabilities",
+      "status": "503",
+      "request_id": "cd8e59700cc5/VpN35ame7X-000729",
+      "duration": "99.201ms",
+      "request_context": "none",
+      "diagnostic_response_code": "collaboration_busy",
+      "line": 1217
+    }
+  ],
+  "observer_seals": [
+    {
+      "at": "2026-11-25T15:39:50.209Z",
+      "event": "observer_sealed",
+      "pending": 0,
+      "unfinished": []
+    },
+    {
+      "at": "2026-11-25T15:39:50.209Z",
+      "event": "observer_sealed",
+      "pending": 0,
+      "unfinished": []
+    }
+  ],
+  "bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/memory-02/receipt.json": "ed1cd2d44ccae65100fbfc75517a7f37314678befbaec7fa5022b79d19bd6460",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/memory-02/playwright.json": "f4700750006c2e8c76f0f5bf809e13fe6479b1f33238b771f5c57bfd528258a5",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/memory-02/api.log": "4f7a207442e311ab0a8730adc9e79668fb347e26d05f8aab6ae60ae91279a9fe",
+    "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37/.omx/private/root-causes/host/runs/memory-02/network.jsonl": "505f9ae44e8d3800bffd5778072815cddd518cba507617fd71d3f953760f4dd3"
+  },
+  "cleanup": {
+    "exit": 0,
+    "source_unchanged": true,
+    "build_unchanged": true,
+    "binaries_unchanged": true,
+    "gate_before": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": 2
+    },
+    "gate_after": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": 4
+    },
+    "remaining_db_clients": 0,
+    "listeners_closed": [
+      true,
+      true,
+      true
+    ],
+    "api_cleanup": {
+      "owner": "root-causes-0b43832067/memory-02",
+      "binary_sha256": "95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f",
+      "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+      "postgres_bridge_ip": "172.17.0.2",
+      "port": 51069,
+      "env_sha256": "0b76d4bd4af31fe298517043398b986148b118367a6b2eeee96f3649281caeb1",
+      "container": "cd8e59700cc5aad35f91c5acc3a2309a3c1b802f44805346751e51d7c8576be5",
+      "volume": "root-causes-0b43832067-memory-02-binary",
+      "container_absent": true,
+      "volume_absent": true
+    }
+  }
+}

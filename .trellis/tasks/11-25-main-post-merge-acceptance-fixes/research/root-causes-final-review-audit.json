@@ -1,0 +1,479 @@
+{
+  "request-logging/full-normal03": {
+    "receipt_sha256": "0898b34ef10dd05ea2d2cf3f68d2cf8b7fe2e378a764e2ab512d4fa3d2c087bf",
+    "raw_sha256": "39c98a6dd603b476953a406d149b8ca635ed2474e7a800df10b0f38d5733f6e1",
+    "counts": {
+      "pass": 143
+    },
+    "unfinished": [],
+    "duplicates": [],
+    "package_terminals": [
+      "pass"
+    ],
+    "exit": 0,
+    "current_source_matches": true
+  },
+  "request-logging/full-race03": {
+    "receipt_sha256": "28ac6e2d0da47b90bb0bbfbcdaa5f65613c35e16d669666bc5b765a2b3d0ac41",
+    "raw_sha256": "0d9b251d2e402e758a06a392be79fb36d529e9b01f4892aaff0685ee74362df6",
+    "counts": {
+      "pass": 143
+    },
+    "unfinished": [],
+    "duplicates": [],
+    "package_terminals": [
+      "pass"
+    ],
+    "exit": 0,
+    "current_source_matches": true
+  },
+  "service/linux-normal-01": {
+    "receipt_sha256": "b5d058f1b31ed84c2376cf18caf831ce75e84e5f1f73677f639fbf9f277f55ea",
+    "raw_sha256": "4ceaaba556b6fcd37a72b450dea6d53103098f3125c7a239131fa0d08760d40f",
+    "raw_binding": true,
+    "counts": {
+      "pass": 4631
+    },
+    "top_count": 1891,
+    "unfinished": [],
+    "duplicates": [],
+    "package_terminal": [
+      {
+        "Time": "2026-11-25T23:33:48.11814901+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Elapsed": 1009.99
+      }
+    ],
+    "exit": 0,
+    "wall_seconds": 1183.530213356018,
+    "source_manifest_sha256": "8d3e26556b8104f0fea1eb006384bf0a3e64c1d2cf4e56d38f344a911b6c23f6",
+    "source_unchanged": true,
+    "config_unchanged": true,
+    "tool_unchanged": true,
+    "argv": [
+      "bash",
+      "/work/source/scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/usr/local/go/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=40m",
+      "-p",
+      "1",
+      "-parallel",
+      "2",
+      "./internal/service"
+    ],
+    "static_top_count": 1891,
+    "static_unreached": [],
+    "unexpected_top": []
+  },
+  "service/upload-normal-01": {
+    "receipt_sha256": "fbe3a6c5bfea5cfd2e67e12abee1cd482847c9c8956df0416e9e6c6154476ef5",
+    "raw_sha256": "770283b017e963318377f9ff347640ce49f42c232aac928d15b9e1bc2585fce4",
+    "counts": {
+      "pass": 5
+    },
+    "unfinished": [],
+    "duplicates": [],
+    "package_terminals": [
+      "pass"
+    ],
+    "exit": 0,
+    "raw_binding": true
+  },
+  "service/upload-race-01": {
+    "receipt_sha256": "4546d0b42401295e9ced5e9a28305df5ec9f0a404d2243222c61a9734e42964c",
+    "raw_sha256": "31d237dd098ce73c4a5d5c50e4ceaaa181f890a1756997937a3312f1887e1f46",
+    "counts": {
+      "pass": 5
+    },
+    "unfinished": [],
+    "duplicates": [],
+    "package_terminals": [
+      "pass"
+    ],
+    "exit": 0,
+    "raw_binding": true
+  },
+  "order-02": {
+    "receipt_sha256": "5c29848ca67d6584b2562ed36a0228107914ee4e47128da11b85e1711c48b41d",
+    "raw_bindings": true,
+    "receipt_log_hashes": true,
+    "503": 309,
+    "contexts": {
+      "canceled": 294,
+      "none": 15
+    },
+    "codes": {
+      "not_observed": 309
+    },
+    "matched_failed": 293,
+    "browser_received_5xx": [],
+    "seals": [
+      {
+        "at": "2026-11-25T15:34:25.513Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      },
+      {
+        "at": "2026-11-25T15:34:25.514Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      },
+      {
+        "at": "2026-11-25T15:34:25.514Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      },
+      {
+        "at": "2026-11-25T15:34:25.514Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      }
+    ],
+    "observed_case": [
+      {
+        "title": "order export: independent owner queues merge authors and preserve AI across transfer",
+        "status": "passed",
+        "duration_ms": 55922,
+        "retry": 0,
+        "errors": 0
+      }
+    ],
+    "exit": 0,
+    "unchanged": {
+      "source_unchanged": true,
+      "build_unchanged": true,
+      "api_helper_unchanged": true,
+      "runner_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "node_unchanged": true,
+      "binaries_unchanged": true
+    },
+    "cleanup": {
+      "remaining_db_clients": 0,
+      "listeners_closed": [
+        true,
+        true,
+        true
+      ],
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 4
+      },
+      "api_cleanup": {
+        "owner": "root-causes-0b43832067/order-02",
+        "binary_sha256": "84d5956706b4d964a69a22255e0984ededc297f7f9a610b8af3162e8bd588014",
+        "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+        "postgres_bridge_ip": "172.17.0.2",
+        "port": 49640,
+        "env_sha256": "6e7c70cb4b54b76ffd3bc7e5acc0ad68a6a2ae4d3408d4506e44fff65e3ff5d1",
+        "container": "233f4509904f2e2118ccd2e48af7d25b9a2cfd2a2dab4474b5edd31e1a56c798",
+        "volume": "root-causes-0b43832067-order-02-binary",
+        "container_absent": true,
+        "volume_absent": true
+      }
+    }
+  },
+  "memory-02": {
+    "receipt_sha256": "ed1cd2d44ccae65100fbfc75517a7f37314678befbaec7fa5022b79d19bd6460",
+    "raw_bindings": true,
+    "receipt_log_hashes": true,
+    "503": 112,
+    "contexts": {
+      "none": 7,
+      "canceled": 105
+    },
+    "codes": {
+      "collaboration_busy": 7,
+      "collaboration_unavailable": 62,
+      "auth_unavailable": 31,
+      "knowledge_unavailable": 12
+    },
+    "matched_failed": 104,
+    "browser_received_5xx": [],
+    "seals": [
+      {
+        "at": "2026-11-25T15:39:50.209Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      },
+      {
+        "at": "2026-11-25T15:39:50.209Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      }
+    ],
+    "observed_case": [
+      {
+        "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+        "status": "passed",
+        "duration_ms": 55425,
+        "retry": 0,
+        "errors": 0
+      }
+    ],
+    "exit": 0,
+    "unchanged": {
+      "source_unchanged": true,
+      "build_unchanged": true,
+      "api_helper_unchanged": true,
+      "runner_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "node_unchanged": true,
+      "binaries_unchanged": true
+    },
+    "cleanup": {
+      "remaining_db_clients": 0,
+      "listeners_closed": [
+        true,
+        true,
+        true
+      ],
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 4
+      },
+      "api_cleanup": {
+        "owner": "root-causes-0b43832067/memory-02",
+        "binary_sha256": "95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f",
+        "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+        "postgres_bridge_ip": "172.17.0.2",
+        "port": 51069,
+        "env_sha256": "0b76d4bd4af31fe298517043398b986148b118367a6b2eeee96f3649281caeb1",
+        "container": "cd8e59700cc5aad35f91c5acc3a2309a3c1b802f44805346751e51d7c8576be5",
+        "volume": "root-causes-0b43832067-memory-02-binary",
+        "container_absent": true,
+        "volume_absent": true
+      }
+    }
+  },
+  "order-03": {
+    "receipt_sha256": "b0b4a1bfb3395f5121f28aa278f6a91dadf2e0d06c3dc048790212b11c451294",
+    "raw_bindings": true,
+    "receipt_log_hashes": true,
+    "503": 271,
+    "contexts": {
+      "canceled": 238,
+      "none": 33
+    },
+    "codes": {
+      "collaboration_unavailable": 113,
+      "auth_unavailable": 71,
+      "collaboration_busy": 33,
+      "knowledge_unavailable": 53,
+      "other_or_absent": 1
+    },
+    "matched_failed": 236,
+    "browser_received_5xx": [],
+    "seals": [
+      {
+        "at": "2026-11-25T15:56:17.009Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      },
+      {
+        "at": "2026-11-25T15:56:17.009Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      },
+      {
+        "at": "2026-11-25T15:56:17.009Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      },
+      {
+        "at": "2026-11-25T15:56:17.009Z",
+        "event": "observer_sealed",
+        "pending": 0,
+        "unfinished": []
+      }
+    ],
+    "observed_case": [
+      {
+        "title": "order export: independent owner queues merge authors and preserve AI across transfer",
+        "status": "passed",
+        "duration_ms": 73488,
+        "retry": 0,
+        "errors": 0
+      }
+    ],
+    "exit": 0,
+    "unchanged": {
+      "source_unchanged": true,
+      "build_unchanged": true,
+      "api_helper_unchanged": true,
+      "runner_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "node_unchanged": true,
+      "binaries_unchanged": true
+    },
+    "cleanup": {
+      "remaining_db_clients": 0,
+      "listeners_closed": [
+        true,
+        true,
+        true
+      ],
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 4
+      },
+      "api_cleanup": {
+        "owner": "root-causes-0b43832067/order-03",
+        "binary_sha256": "95dc8608d332ade85268105fb4d408509bddee4739c02c8b726bd3feed15f98f",
+        "postgres_container": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+        "postgres_bridge_ip": "172.17.0.2",
+        "port": 55762,
+        "env_sha256": "ad17dbf5173f0043add191d9f2514a6166a879ba614f6a031077014aff2a1168",
+        "container": "26bbd2e2eaa1c67bc099ec21867f3a84336044aa9dcd7fc792f34b748c372c94",
+        "volume": "root-causes-0b43832067-order-03-binary",
+        "container_absent": true,
+        "volume_absent": true
+      }
+    }
+  },
+  "service_source_binding": {
+    "manifest_sha256": "8d3e26556b8104f0fea1eb006384bf0a3e64c1d2cf4e56d38f344a911b6c23f6",
+    "checked_server_guard_files": 5291,
+    "frozen_mismatches": [],
+    "current_differences": [
+      "server/internal/middleware/request_logger.go",
+      "server/internal/middleware/request_logger_test.go"
+    ]
+  },
+  "service/linux-race-01": {
+    "receipt_sha256": "34f9f05adb32f42610dc2af322d8bf671093a444f4e42c666140479e34b9b90a",
+    "raw_sha256": "a4b4fbbac34042d889602d1ec739239e8548aaaf1ed634e59720c54e1717842b",
+    "raw_binding": true,
+    "counts": {
+      "pass": 4631
+    },
+    "top_count": 1891,
+    "unfinished": [],
+    "duplicates": [],
+    "package_terminal": [
+      {
+        "Time": "2026-11-26T00:17:28.413006917+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Elapsed": 2066.422
+      }
+    ],
+    "exit": 0,
+    "wall_seconds": 2468.3177983760834,
+    "source_manifest_sha256": "8d3e26556b8104f0fea1eb006384bf0a3e64c1d2cf4e56d38f344a911b6c23f6",
+    "source_unchanged": true,
+    "config_unchanged": true,
+    "tool_unchanged": true,
+    "argv": [
+      "bash",
+      "/work/source/scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/usr/local/go/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=40m",
+      "-p",
+      "1",
+      "-parallel",
+      "2",
+      "-race",
+      "./internal/service"
+    ],
+    "static_top_count": 1891,
+    "static_unreached": [],
+    "unexpected_top": []
+  },
+  "service_named_normal_race_equal": false,
+  "service_normal_only": [
+    "TestCollaborationRecipientExactLookupAndNoWrites/email/_RECIPIENT_B6403EBFE0C640D4+TAG@EXAMPLE.TEST__",
+    "TestCollaborationRecipientExactLookupAndNoWrites/user_id/95F5D31E-86B1-4907-90BF-E181568C3DE5",
+    "TestCollaborationRecipientExactLookupAndNoWrites/user_id/95f5d31e86b1490790bfe181568c3de5",
+    "TestCollaborationRecipientExactLookupAndNoWrites/username/_RECIPIENT_B6403EBFE0C640D4_"
+  ],
+  "service_race_only": [
+    "TestCollaborationRecipientExactLookupAndNoWrites/email/_RECIPIENT_DCD3F6F082E64352+TAG@EXAMPLE.TEST__",
+    "TestCollaborationRecipientExactLookupAndNoWrites/user_id/355D007E-D2C6-4A1A-9104-48281F84C9A5",
+    "TestCollaborationRecipientExactLookupAndNoWrites/user_id/355d007ed2c64a1a910448281f84c9a5",
+    "TestCollaborationRecipientExactLookupAndNoWrites/username/_RECIPIENT_DCD3F6F082E64352_"
+  ],
+  "service_live_cleanup": [
+    {
+      "id": "9530c04d1e59b1a33126cde3e66392d238f25457dbc2b7e0a427b6495d2a46f5",
+      "image": "sha256:ea47ee45f1284d60f9cc09cb2c3bb4f508c256b640bd8bb30342ff13d1adcb52",
+      "running": false,
+      "labels": {
+        "lane": "service",
+        "owner": "root-causes-0b43832067"
+      },
+      "matches_image": true
+    },
+    {
+      "id": "08ac557be95758861e2d80d3d8caa8368bc05fa863212e2897013587b240612b",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "running": false,
+      "labels": {
+        "multica.qa.lane": "service",
+        "multica.qa.owner": "root-causes-0b43832067"
+      },
+      "matches_image": true
+    }
+  ],
+  "service_vet": {
+    "argv": [
+      "go",
+      "vet",
+      "-p",
+      "2",
+      "./internal/service",
+      "./internal/handler"
+    ],
+    "cwd": "/work/handler-source/server",
+    "platform": "linux/arm64",
+    "start": 1795623540.365453,
+    "end": 1795623599.508254,
+    "exit": 0,
+    "source_delta": "upload-source-delta.json"
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "at": "2026-11-25T16:25:19.532026+00:00",
+  "parent_record_sha256": "9b652664287b769c5c66b3de63f23050c100522d74e35927ed1e83b64a0455fd",
+  "containers": [
+    {
+      "id": "2d7c2b3ad95ea66d09f214db6cbdb80949086654422317e9a143df536415bdcc",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "owner": "root-causes-0b43832067/middleware",
+      "running": false,
+      "matches": true,
+      "mounts": [
+        {
+          "name": "097416253e0f9c186dbb2963299a677474cd718e289893b24367d9cd82bd93c1",
+          "destination": "/data"
+        }
+      ]
+    },
+    {
+      "id": "08ac557be95758861e2d80d3d8caa8368bc05fa863212e2897013587b240612b",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "owner": "root-causes-0b43832067",
+      "running": false,
+      "matches": true,
+      "mounts": [
+        {
+          "name": "3aac2859dac8518de68b623c89313ed42b88ad11931c2287b8d63eb3f1d82c97",
+          "destination": "/data"
+        }
+      ]
+    },
+    {
+      "id": "4b774f801982738b5b5449975d40c3caa11577314bf2f74948b97c74ae044f73",
+      "image": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+      "owner": "root-causes-0b43832067",
+      "running": false,
+      "matches": true,
+      "mounts": [
+        {
+          "name": "root-causes-0b43832067-data",
+          "destination": "/var/lib/postgresql/data"
+        }
+      ]
+    },
+    {
+      "id": "9530c04d1e59b1a33126cde3e66392d238f25457dbc2b7e0a427b6495d2a46f5",
+      "image": "sha256:ea47ee45f1284d60f9cc09cb2c3bb4f508c256b640bd8bb30342ff13d1adcb52",
+      "owner": "root-causes-0b43832067",
+      "running": false,
+      "matches": true,
+      "mounts": []
+    }
+  ],
+  "retained_volume": {
+    "name": "root-causes-0b43832067-data",
+    "labels": {
+      "multica.qa.owner": "root-causes-0b43832067"
+    },
+    "mount_matches": true
+  },
+  "ports": [
+    {
+      "port": 49640,
+      "open": false
+    },
+    {
+      "port": 49641,
+      "open": false
+    },
+    {
+      "port": 49642,
+      "open": false
+    },
+    {
+      "port": 51069,
+      "open": false
+    },
+    {
+      "port": 51070,
+      "open": false
+    },
+    {
+      "port": 51071,
+      "open": false
+    },
+    {
+      "port": 52839,
+      "open": false
+    },
+    {
+      "port": 53897,
+      "open": false
+    },
+    {
+      "port": 55762,
+      "open": false
+    },
+    {
+      "port": 55763,
+      "open": false
+    },
+    {
+      "port": 55764,
+      "open": false
+    },
+    {
+      "port": 56885,
+      "open": false
+    },
+    {
+      "port": 56886,
+      "open": false
+    },
+    {
+      "port": 56887,
+      "open": false
+    },
+    {
+      "port": 57005,
+      "open": false
+    },
+    {
+      "port": 58145,
+      "open": false
+    },
+    {
+      "port": 58146,
+      "open": false
+    },
+    {
+      "port": 58147,
+      "open": false
+    },
+    {
+      "port": 59294,
+      "open": false
+    },
+    {
+      "port": 59295,
+      "open": false
+    },
+    {
+      "port": 59296,
+      "open": false
+    },
+    {
+      "port": 59938,
+      "open": false
+    },
+    {
+      "port": 59939,
+      "open": false
+    },
+    {
+      "port": 59940,
+      "open": false
+    },
+    {
+      "port": 61942,
+      "open": false
+    },
+    {
+      "port": 63517,
+      "open": false
+    }
+  ],
+  "removed": [
+    {
+      "kind": "container",
+      "id": "233f4509904f2e2118ccd2e48af7d25b9a2cfd2a2dab4474b5edd31e1a56c798",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "id": "root-causes-0b43832067-order-02-binary",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "id": "cd8e59700cc5aad35f91c5acc3a2309a3c1b802f44805346751e51d7c8576be5",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "id": "root-causes-0b43832067-memory-02-binary",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "id": "26bbd2e2eaa1c67bc099ec21867f3a84336044aa9dcd7fc792f34b748c372c94",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "id": "root-causes-0b43832067-order-03-binary",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "id": "85212c42781918dd2d5359e8ac3092f9ef6218e150fb34d598c9d9c82fc99ac1",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "id": "root-causes-0b43832067-mac-on03-binary",
+      "absent": true
+    },
+    {
+      "kind": "container",
+      "id": "c92ea08116e8c08b32f543c10c09fe5d062fba92baad056b89f60da9bf65e437",
+      "absent": true
+    },
+    {
+      "kind": "volume",
+      "id": "root-causes-0b43832067-mac-off02-binary",
+      "absent": true
+    }
+  ],
+  "process_candidates": [],
+  "protocol": {
+    "getter_sha256": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+    "parent_receipt_sha256": "b35a48b013561ab697ce7ca7ac14497152714333ab938d9a4728a8314f99ca9a",
+    "current": {
+      "default_application_url": "file:///Applications/Multica.app/",
+      "handlers": [
+        "ai.multica.desktop"
+      ],
+      "registrations": {
+        "ai.multica.desktop": [
+          "file:///Applications/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app/"
+        ]
+      },
+      "scheme": "multica"
+    },
+    "matches_off02_before": true,
+    "matches_parent_final": true
+  },
+  "db_limit": "No restart or SQL; parent pre-stop receipt records26rcdatabases and0otherclients; retained volume checked live."
+}

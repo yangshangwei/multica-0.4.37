@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "before": {
+    "started": 1,
+    "aborted": 0
+  },
+  "afterIssue": {
+    "started": 2,
+    "aborted": 1
+  },
+  "afterWorkbench": {
+    "started": 3,
+    "aborted": 2
+  },
+  "sources": {
+    "packages/core/collaboration/knowledge-lease.ts": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730",
+    "packages/core/collaboration/knowledge-cache.ts": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b",
+    "packages/core/realtime/knowledge.ts": "1decb1a50eba43db34e8ee6726a0bb471da957ef71fe3d4a2c27fa671c9e612e"
+  },
+  "scope": "Real current knowledge realtime/cache/lease methods and actual TanStack Query; synthetic accepted hints, current scope and pending transport. No API/DB/auth/model."
+}
