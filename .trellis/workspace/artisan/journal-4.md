@@ -760,3 +760,38 @@ Closed backend CI failures, passed all 19 PR checks, merged PR #6, synchronized 
 ### Next Steps
 
 - No merge work remains; existing conditional browser/provider acceptance limits are recorded separately.
+
+
+## Session 195: Ship categorized issue mention discovery
+<!-- trellis-session: v=2 fp=6fb071700769a472 -->
+
+**Date**: 2026-11-25
+**Task**: Ship categorized issue mention discovery
+**Branch**: `main`
+
+### Summary
+
+Implemented and verified shared Web/Desktop comment, reply and edit mention categories, full-directory name/pinyin/responsibility search, leader filtering and incremental browsing. Reused pure discovery logic, preserved editor focus and scoped preferences, and archived task evidence after user-authorized commit and push.
+
+### Main Changes
+
+- Added categorized mention controls and saved-role previews across four shared composer hosts.
+- Resolved five independent review findings covering identity, paging, retry, accessibility and member-data permission refresh.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f0a64fdf33a276b1411a7b7fe395908ed58c3dd9` | feat(editor): make large mention directories easier to navigate |
+
+### Testing
+
+- [OK] 188 focused tests; 14 categorized follow-up tests; Views/Web/Desktop typechecks and lint; three production Web/Electron journeys; visual verdict94.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Native OS IME candidate-window and spoken screen-reader checks remain unverified; see archived verification.md.
