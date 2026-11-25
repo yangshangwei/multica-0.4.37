@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { nativeAcceptanceHome, nativeInstalledLayout } from "../../../e2e/fixtures/collaboration-installed-layout.mjs";
 
+export const windowsCollaborationTestPattern = "Packaged full Main controls a real native host run and explicitly resumes the shared Agent$";
+
 const phases = ["install_candidate", "upgrade_candidate", "reinstall_candidate"];
 
 /** Validate runner-owned inputs before reading credentials or launching Main. */
