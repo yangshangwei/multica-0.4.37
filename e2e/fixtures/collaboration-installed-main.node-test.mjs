@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import assert from "node:assert/strict";
 import { EventEmitter } from "node:events";
 import { spawnSync } from "node:child_process";
@@ -311,5 +312,27 @@ test("native controller children and their descendants share the validated home 
     for (const invalid of [undefined, "relative-home", "bad\nhome"]) assert.throws(() => run(invalid), /absolute/);
     assert.equal(launches, 1, "Invalid homes must fail before spawning");
     assert.deepEqual({ HOME: process.env.HOME, USERPROFILE: process.env.USERPROFILE }, parent);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+
+test("native discovery guard refuses marker or changed binary while preserving opt-out Mac callers", () => {
+  const source = readFileSync(new URL("./collaboration-installed-main.mjs", import.meta.url), "utf8");
+  const start = source.indexOf("function verifyDiscoveryOnly(");
+  const end = source.indexOf("\nfunction scrub(", start);
+  assert(start > 0 && end > start);
+  const root = realpathSync(mkdtempSync(join(tmpdir(), "discovery-guard-")));
+  const executable = join(root, "discovery.exe"); const marker = `${executable}.unexpected`;
+  const sha = file => createHash("sha256").update(readFileSync(file)).digest("hex");
+  writeFileSync(executable, "source-bound binary fixture");
+  const env = { COLLABORATION_INSTALLED_DISCOVERY_SHA256: sha(executable) };
+  const invoke = required => vm.compileFunction(`${source.slice(start, end)}; verifyDiscoveryOnly();`,
+    ["discoveryRequired", "discoveryCLI", "discoveryMarker", "nativeMode", "path", "assert", "existsSync", "realpathSync", "sha", "process"])
+    (required, executable, marker, true, path, assert, existsSync, realpathSync, sha, { env });
+  try {
+    invoke(true);
+    writeFileSync(marker, "unexpected agent execution\n"); assert.throws(() => invoke(true), /never execute/);
+    invoke(false);
+    rmSync(marker); writeFileSync(executable, "changed binary"); assert.throws(() => invoke(true), assert.AssertionError);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

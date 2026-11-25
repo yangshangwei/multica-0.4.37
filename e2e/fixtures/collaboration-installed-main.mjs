@@ -67,8 +67,20 @@ let executionViewVersion;
 let installation;
 let authenticatedUserId;
 let managedDeploymentId;
-const discoveryCLI = "/acceptance/discovery/claude";
-const discoveryMarker = "/root/.multica/installed-main-unexpected-agent-execution.log";
+const discoveryCLI = nativeMode ? process.env.COLLABORATION_INSTALLED_DISCOVERY_CLI : "/acceptance/discovery/claude";
+const discoveryRequired = !nativeMode || process.platform === "win32" || Boolean(discoveryCLI);
+const discoveryMarker = nativeMode ? `${discoveryCLI}.unexpected` : "/root/.multica/installed-main-unexpected-agent-execution.log";
+
+function verifyDiscoveryOnly() {
+  if (!discoveryRequired) return;
+  assert(typeof discoveryCLI === "string" && path.isAbsolute(discoveryCLI) && existsSync(discoveryCLI), "Supply the explicit discovery-only CLI");
+  if (nativeMode) {
+    assert.equal(realpathSync(discoveryCLI), discoveryCLI);
+    assert.match(process.env.COLLABORATION_INSTALLED_DISCOVERY_SHA256 ?? "", /^[a-f0-9]{64}$/);
+    assert.equal(sha(discoveryCLI), process.env.COLLABORATION_INSTALLED_DISCOVERY_SHA256);
+  }
+  assert(!existsSync(discoveryMarker), "The discovery-only CLI must never execute an agent task");
+}
 
 function scrub(value) {
   let text = typeof value === "string" ? value : JSON.stringify(value);
@@ -372,7 +384,7 @@ async function metadata() {
     updater: await window.updater.getPreferences(),
   }));
   native.cliInstalled = await cliAvailable();
-  if (!nativeMode) assert(!existsSync(discoveryMarker), "The discovery-only CLI must never execute an agent task");
+  verifyDiscoveryOnly();
   assert.equal(native.appInfo.version, main.version);
   assert.equal(native.appInfo.os, nativeLayout?.apiOS ?? "linux");
   assert.equal(native.config.ok, true);
@@ -412,7 +424,7 @@ async function expectInstalledRenderer() {
 
 async function launch() {
   app = await electron.launch({ executablePath: executable, args: nativeMode ? [] : ["--no-sandbox"],
-    env: nativeMode ? { ...process.env, MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME }
+    env: nativeMode ? { ...process.env, ...(discoveryCLI ? { MULTICA_CLAUDE_PATH: discoveryCLI } : {}), MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME }
       : { ...process.env, PATH: `${path.dirname(discoveryCLI)}:${process.env.PATH ?? ""}`, MULTICA_CLAUDE_PATH: discoveryCLI,
           MULTICA_INSTALLED_DISCOVERY_MARKER: discoveryMarker },
     timeout: 60_000 });
@@ -487,10 +499,7 @@ async function dispatch(message) {
       }
       if (debSha256 !== undefined) installation = installDeb(message.expectedInstallation);
       assert(existsSync(executable) && existsSync(packagePath), "Mount the current electron-builder directory package");
-      if (!nativeMode) {
-        assert(existsSync(discoveryCLI), "Mount the explicit discovery-only CLI for this container");
-        assert(!existsSync(discoveryMarker), "A fresh container has no unexpected agent invocation");
-      }
+      verifyDiscoveryOnly();
       apiUrl = taskEndpoint(message.apiUrl, "apiUrl");
       appUrl = taskEndpoint(message.appUrl, "appUrl");
       const configResponse = await fetch(`${apiUrl}/api/config`);
@@ -729,7 +738,7 @@ async function dispatch(message) {
     case "status": return metadata();
     case "close": {
       const failures = [];
-      try { if (!nativeMode) assert(!existsSync(discoveryMarker), "The discovery-only CLI must never execute an agent task"); }
+      try { verifyDiscoveryOnly(); }
       catch (error) { failures.push(error); }
       try { await commandPhase(message, "close.stop-daemon", () => stopOwnedManagedDaemon()); }
       catch (error) { failures.push(error); }

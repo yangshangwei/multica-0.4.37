@@ -1,5 +1,5 @@
 import { constants as cryptoConstants, createDecipheriv, generateKeyPairSync, privateDecrypt } from "node:crypto";
-import { mkdtemp, mkdir, writeFile, rm, realpath, symlink } from "node:fs/promises";
+import { mkdtemp, mkdir, writeFile, rm, realpath, symlink, readFile, lstat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { encryptedCollaborationDiagnostic } from "./windows-collaboration-encrypted-diagnostic.mjs";
@@ -11,7 +11,7 @@ import http from "node:http";
 import { once } from "node:events";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { windowsCollaborationPlan, windowsCollaborationTestPattern } from "./windows-collaboration-config.mjs";
+import { windowsCollaborationPlan, windowsCollaborationTestPattern, windowsDiscoveryEnvironment } from "./windows-collaboration-config.mjs";
 
 import { collaborationDiagnostic, collaborationResults, daemonFailureProjection } from "./windows-collaboration-diagnostics.mjs";
 
@@ -24,7 +24,7 @@ function fixture() {
     report: "D:\\runner temp\\collaboration-upgrade.json" };
   const setup = { sourceCommit: env.GITHUB_SHA, repo: env.GITHUB_WORKSPACE, api: "http://127.0.0.1:18081",
     environment: { DATABASE_URL: "postgres://postgres@127.0.0.1:15432/multica_acceptance?sslmode=disable", MULTICA_KNOWLEDGE_CONTEXT_ENABLED: "false", MULTICA_AUTH_MODE: "password" },
-    collaboration: { webUrl: "http://127.0.0.1:13001", daemon: "D:\\runner temp\\collaboration\\bin\\daemon.exe", provider: "D:\\runner temp\\collaboration\\bin\\provider.exe", cli: "D:\\runner temp\\collaboration\\bin\\cli.exe" } };
+    collaboration: { webUrl: "http://127.0.0.1:13001", daemon: "D:\\runner temp\\collaboration\\bin\\daemon.exe", provider: "D:\\runner temp\\collaboration\\bin\\provider.exe", cli: "D:\\runner temp\\collaboration\\bin\\cli.exe", discovery: "D:\\runner temp\\collaboration\\bin\\discovery-only.exe" } };
   return { env, options, setup, run: () => windowsCollaborationPlan(options, setup, env, "win32", "x64") };
 }
 
@@ -368,5 +368,49 @@ test("encrypted failure evidence authenticates source/phase and never publishes 
     await symlink(home, alias, process.platform === "win32" ? "junction" : "dir");
     assert.equal(decrypt(await encryptedCollaborationDiagnostic({ ...options, home: alias })).daemon_error_log.status, "rejected");
     assert.equal(decrypt(await encryptedCollaborationDiagnostic({ ...options, apiUrl: "https://external.example" })).daemon_error_log.status, "rejected");
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+
+test("native discovery inventory explicitly isolates Claude and refuses ambient providers", () => {
+  const f = fixture(); const plan = f.run();
+  const probe = readFileSync(new URL("../../../server/internal/daemon/agents_probe.go", import.meta.url), "utf8");
+  const descriptors = readFileSync(new URL("../../../server/pkg/agent/builtin_runtimes.go", import.meta.url), "utf8");
+  const env = windowsDiscoveryEnvironment(plan, probe, descriptors);
+  assert.equal(env.MULTICA_CLAUDE_PATH, plan.binaries.discovery);
+  assert(Object.keys(env).length >= 25);
+  for (const [key, value] of Object.entries(env)) {
+    if (key !== "MULTICA_CLAUDE_PATH") assert(value.startsWith(`${plan.phaseRoot}\\missing-providers\\`) && value.endsWith(`${key}.exe`));
+  }
+  assert.throws(() => windowsDiscoveryEnvironment(plan, "", ""));
+  f.setup.collaboration.discovery = f.setup.collaboration.provider;
+  assert.throws(f.run, /distinct/);
+  f.setup.collaboration.discovery = "D:\\outside\\discovery.exe";
+  assert.throws(f.run, /owned runner root/);
+});
+
+test("the real native discovery binary permits only version checks and records every execution refusal", { timeout: 60_000 }, async () => {
+  const root = await realpath(await mkdtemp(join(tmpdir(), "native-discovery-")));
+  const executable = join(root, process.platform === "win32" ? "discovery.exe" : "discovery");
+  const marker = `${executable}.unexpected`;
+  const source = fileURLToPath(new URL("../../../e2e/fixtures/collaboration-discovery-only.go", import.meta.url));
+  const commit = "a".repeat(40);
+  try {
+    const build = spawnSync("go", ["build", "-ldflags", `-X main.sourceCommit=${commit}`, "-o", executable, source], { encoding: "utf8", timeout: 45_000 });
+    assert.equal(build.status, 0, build.stderr);
+    const info = spawnSync("go", ["version", "-m", executable], { encoding: "utf8" });
+    assert.equal(info.status, 0, info.stderr); assert(info.stdout.includes(`main.sourceCommit=${commit}`));
+    const version = spawnSync(executable, ["--version"], { encoding: "utf8", timeout: 5000 });
+    assert.equal(version.status, 0, version.stderr); assert.equal(version.stdout, "2.1.5 (Claude Code)\n");
+    await assert.rejects(lstat(marker), { code: "ENOENT" });
+    const secret = "private-synthetic-task-input";
+    for (const args of [[], ["--print", secret], ["--version", secret], ["--fixture-capabilities"]]) {
+      const refused = spawnSync(executable, args, { encoding: "utf8", timeout: 5000 });
+      assert.equal(refused.status, 97, refused.stderr); assert.equal(refused.stdout, ""); assert.equal(refused.stderr, "");
+    }
+    const contents = await readFile(marker, "utf8");
+    assert.equal(contents, "unexpected agent execution\n".repeat(4)); assert(!contents.includes(secret));
+    const after = spawnSync(executable, ["--version"], { encoding: "utf8", timeout: 5000 });
+    assert.equal(after.status, 0); assert.equal(await readFile(marker, "utf8"), contents);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

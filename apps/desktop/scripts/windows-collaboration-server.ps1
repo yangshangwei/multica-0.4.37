@@ -73,7 +73,7 @@ $setup = Get-Content -LiteralPath $private -Raw | ConvertFrom-Json -AsHashtable
 if ($setup.environment.DATABASE_URL -notmatch '^postgres://postgres@127\.0\.0\.1:[0-9]+/multica_acceptance\?sslmode=disable$') { throw 'Explicit task database identity missing' }
 $bin = Join-Path $state 'bin'
 New-Item -ItemType Directory -Path $bin | Out-Null
-$daemon = Join-Path $bin 'host-daemon.exe'; $provider = Join-Path $bin 'host-provider.exe'; $cli = Join-Path $bin 'host-cli.exe'
+$daemon = Join-Path $bin 'host-daemon.exe'; $provider = Join-Path $bin 'host-provider.exe'; $cli = Join-Path $bin 'host-cli.exe'; $discovery = Join-Path $bin 'discovery-only.exe'
 Push-Location (Join-Path $RepoRoot 'server')
 try {
     # Compile only: the native fixture dispatches in init before TestMain.
@@ -81,12 +81,16 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Host fixture compile failed' }
     go build -o $provider (Join-Path $RepoRoot 'e2e/fixtures/collaboration-host-provider.go')
     if ($LASTEXITCODE -ne 0) { throw 'Synthetic host Provider build failed' }
+    go build -ldflags "-X main.sourceCommit=$env:GITHUB_SHA" -o $discovery (Join-Path $RepoRoot 'e2e/fixtures/collaboration-discovery-only.go')
+    if ($LASTEXITCODE -ne 0) { throw 'Discovery-only CLI build failed' }
+    $discoveryBuildInfo = & go version -m $discovery
+    if ($LASTEXITCODE -ne 0 -or ($discoveryBuildInfo -join "`n") -notmatch [regex]::Escape("main.sourceCommit=$env:GITHUB_SHA")) { throw 'Discovery-only source stamp mismatch' }
     go build -ldflags "-X main.commit=$env:GITHUB_SHA" -o $cli ./cmd/multica
     if ($LASTEXITCODE -ne 0) { throw 'Source-bound host CLI build failed' }
 } finally { Pop-Location }
 $api = $setup.api
 $webUrl = "http://127.0.0.1:$webPort"
-$setup.collaboration = @{ webUrl = $webUrl; daemon = $daemon; provider = $provider; cli = $cli }
+$setup.collaboration = @{ webUrl = $webUrl; daemon = $daemon; provider = $provider; cli = $cli; discovery = $discovery }
 $setup | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $private
 $env:REMOTE_API_URL = $api
 $env:NEXT_PUBLIC_API_URL = $api

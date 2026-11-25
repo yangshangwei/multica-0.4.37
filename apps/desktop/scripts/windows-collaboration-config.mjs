@@ -51,7 +51,18 @@ export function windowsCollaborationPlan(options, setup, env = process.env, plat
   assert.equal(database.pathname, "/multica_acceptance", "Task-created acceptance database required");
   assert.equal(setup.environment.MULTICA_KNOWLEDGE_CONTEXT_ENABLED, "false", "Knowledge must stay disabled");
   assert.equal(setup.environment.MULTICA_AUTH_MODE, "password");
-  const binaries = Object.fromEntries(["daemon", "provider", "cli"].map((key) => [key, under(state, setup.collaboration[key])]));
+  const binaries = Object.fromEntries(["daemon", "provider", "cli", "discovery"].map((key) => [key, under(state, setup.collaboration[key])]));
+  assert.equal(new Set(Object.values(binaries).map(file => file.toLowerCase())).size, 4, "Discovery-only CLI must be distinct from the task provider and daemon binaries");
   return { state, phaseRoot, report, layout, binaries, repo: local(setup.repo), apiUrl, webUrl,
     home: path.win32.join(phaseRoot, "home"), sourceCommit: env.GITHUB_SHA };
+}
+
+
+/** Explicit missing overrides stop provider discovery from resolving ambient CLIs. */
+export function windowsDiscoveryEnvironment(plan, probeSource, descriptorSource) {
+  const providers = new Set([...probeSource.matchAll(/probe\("(MULTICA_[A-Z0-9_]+_PATH)"/g)].map(match => match[1]));
+  for (const match of descriptorSource.matchAll(/EnvPrefix:\s*"(MULTICA_[A-Z0-9_]+)"/g)) providers.add(`${match[1]}_PATH`);
+  assert(providers.size >= 25 && providers.has("MULTICA_CLAUDE_PATH"), "Provider override inventory must cover the real discovery implementation");
+  return Object.fromEntries([...providers].map(key => [key, key === "MULTICA_CLAUDE_PATH" ? plan.binaries.discovery
+    : path.win32.join(plan.phaseRoot, "missing-providers", `${key}.exe`)]));
 }

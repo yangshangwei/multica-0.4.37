@@ -5,7 +5,7 @@ import { execFile } from "node:child_process";
 import { readFile, writeFile, mkdir, copyFile, realpath, lstat } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
-import { windowsCollaborationPlan, windowsCollaborationRoots, windowsCollaborationTestPattern } from "./windows-collaboration-config.mjs";
+import { windowsCollaborationPlan, windowsCollaborationRoots, windowsCollaborationTestPattern, windowsDiscoveryEnvironment } from "./windows-collaboration-config.mjs";
 import { collaborationDiagnostic, collaborationResults, parseCollaborationReport } from "./windows-collaboration-diagnostics.mjs";
 
 import { collaborationProcessEvidence, probeCollaborationApi } from "./windows-collaboration-services.mjs";
@@ -51,10 +51,23 @@ try {
   report.services = { processes: collaborationProcessEvidence(JSON.parse(ownership.stdout)), api: await probeCollaborationApi(setup) };
   assert(report.services.processes.source_matches && ["api", "web"].every(service => Object.values(report.services.processes[service]).every(Boolean)), "Owned collaboration processes must match before the installed journey");
   assert(Object.values(report.services.api).every(probe => probe.valid), "Collaboration API must pass identity, readiness and config before the installed journey");
-  const env = { ...process.env, ...setup.environment, E2E_PASSWORD_AUTH: "1", COLLABORATION_HOST_ACCEPTANCE: "1",
+  const discoveryMarker = `${plan.binaries.discovery}.unexpected`;
+  await assert.rejects(lstat(discoveryMarker), { code: "ENOENT" });
+  const discoveryEnvironment = windowsDiscoveryEnvironment(plan,
+    await readFile(path.join(plan.repo, "server/internal/daemon/agents_probe.go"), "utf8"),
+    await readFile(path.join(plan.repo, "server/pkg/agent/builtin_runtimes.go"), "utf8"));
+  for (const [key, file] of Object.entries(discoveryEnvironment)) {
+    if (key !== "MULTICA_CLAUDE_PATH") await assert.rejects(lstat(file), { code: "ENOENT" });
+  }
+  const discovered = await execute(plan.binaries.discovery, ["--version"], { timeout: 5000 });
+  assert.equal(discovered.stdout, "2.1.5 (Claude Code)\n");
+  assert.equal(discovered.stderr, "");
+  const env = { ...process.env, ...setup.environment, ...discoveryEnvironment, E2E_PASSWORD_AUTH: "1", COLLABORATION_HOST_ACCEPTANCE: "1",
     COLLABORATION_E2E_API_URL: plan.apiUrl, NEXT_PUBLIC_API_URL: plan.apiUrl, PLAYWRIGHT_BASE_URL: plan.webUrl,
     COLLABORATION_ELECTRON_RENDERER_URL: plan.webUrl, COLLABORATION_HOST_DAEMON: plan.binaries.daemon,
     COLLABORATION_HOST_PROVIDER: plan.binaries.provider, COLLABORATION_HOST_CLI: plan.binaries.cli,
+    COLLABORATION_INSTALLED_DISCOVERY_CLI: plan.binaries.discovery,
+    COLLABORATION_INSTALLED_DISCOVERY_SHA256: report.artifacts.fixture_discovery_sha256,
     COLLABORATION_INSTALLED_MAIN_EXECUTABLE: path.join(args["--installed-directory"], "Multica.exe"),
     MULTICA_PACKAGED_ACCEPTANCE_HOME: plan.home, COLLABORATION_INSTALLED_SOURCE_SHA: plan.sourceCommit,
     COLLABORATION_HOST_INSTALLED_ASAR_SHA256: report.artifacts.asar_sha256,
@@ -98,6 +111,9 @@ try {
     await copyFile(attachment.path, destination, constants.COPYFILE_EXCL);
     report.screenshots.push({ file: path.basename(destination), sha256: await digest(destination) });
   }
+  await assert.rejects(lstat(discoveryMarker), { code: "ENOENT" });
+  assert.equal(await digest(plan.binaries.discovery), report.artifacts.fixture_discovery_sha256);
+  report.discovery = { source_commit: plan.sourceCommit, sha256: report.artifacts.fixture_discovery_sha256, unexpected_task_execution: false };
   report.journey = journey;
   report.status = "passed";
 } catch (error) {
