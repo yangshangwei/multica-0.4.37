@@ -8,6 +8,8 @@ import { promisify } from "node:util";
 import { windowsCollaborationPlan, windowsCollaborationRoots, windowsCollaborationTestPattern } from "./windows-collaboration-config.mjs";
 import { collaborationDiagnostic, collaborationResults, parseCollaborationReport } from "./windows-collaboration-diagnostics.mjs";
 
+import { collaborationProcessEvidence, probeCollaborationApi } from "./windows-collaboration-services.mjs";
+
 const execute = promisify(execFile);
 const argumentsList = process.argv.slice(2);
 assert.equal(argumentsList.length, 8, "Expected phase, installed-directory, state-dir and report");
@@ -41,6 +43,12 @@ try {
   report.artifacts = { desktop_sha256: await digest(path.join(args["--installed-directory"], "Multica.exe")),
     asar_sha256: await digest(plan.layout.asar), bundled_cli_sha256: await digest(plan.layout.cli),
     ...Object.fromEntries(await Promise.all(Object.entries(plan.binaries).map(async ([name, file]) => [`fixture_${name}_sha256`, await digest(file)]))) };
+  stage = "service_probe";
+  const ownership = await execute("pwsh.exe", ["-NoProfile", "-NonInteractive", "-File", path.join(plan.repo, "apps/desktop/scripts/windows-collaboration-server.ps1"),
+    "-StateDirectory", plan.state, "-RepoRoot", plan.repo, "-Probe"], { timeout: 15_000, maxBuffer: 64 * 1024 });
+  report.services = { processes: collaborationProcessEvidence(JSON.parse(ownership.stdout)), api: await probeCollaborationApi(setup) };
+  assert(report.services.processes.source_matches && ["api", "web"].every(service => Object.values(report.services.processes[service]).every(Boolean)), "Owned collaboration processes must match before the installed journey");
+  assert(Object.values(report.services.api).every(probe => probe.valid), "Collaboration API must pass identity, readiness and config before the installed journey");
   const env = { ...process.env, ...setup.environment, E2E_PASSWORD_AUTH: "1", COLLABORATION_HOST_ACCEPTANCE: "1",
     COLLABORATION_E2E_API_URL: plan.apiUrl, NEXT_PUBLIC_API_URL: plan.apiUrl, PLAYWRIGHT_BASE_URL: plan.webUrl,
     COLLABORATION_ELECTRON_RENDERER_URL: plan.webUrl, COLLABORATION_HOST_DAEMON: plan.binaries.daemon,

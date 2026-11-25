@@ -19,6 +19,12 @@ if ($errors.Count -gt 0) { throw ($errors | Out-String) }
 $resolver = $serviceAst.Find({ param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Get-NodeApplication' }, $false)
 if ($null -eq $resolver) { throw 'Missing Node application resolver' }
 . ([scriptblock]::Create($resolver.Extent.Text))
+foreach ($name in @('Test-ServiceStartTime', 'Get-ServiceProcessEvidence')) {
+    $definition = $serviceAst.Find({ param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $name }, $false)
+    if ($null -eq $definition) { throw "Missing service ownership helper: $name" }
+    . ([scriptblock]::Create($definition.Extent.Text))
+}
+
 
 function Assert-Throws {
     param([scriptblock]$Action, [string]$Expected)
@@ -53,6 +59,21 @@ try {
     [IO.File]::WriteAllBytes($path, $bytes)
     Assert-Throws { Assert-X64Binary $path } 'Missing DOS header'
     Assert-Throws { Get-InstallerEvidence $path '0.5.2' } 'Expected exact versioned'
+    $current = Get-Process -Id $PID
+    $stamp = $current.StartTime.ToUniversalTime().ToString('o')
+    if (-not (Test-ServiceStartTime $current.StartTime $stamp)) { throw 'Round-trip string start time rejected' }
+    $owned = @{ pid = $PID; startedAt = $stamp } | ConvertTo-Json | ConvertFrom-Json
+    $proof = Get-ServiceProcessEvidence $owned $current.Path
+    if (-not ($proof.present -and $proof.alive -and $proof.path_matches -and $proof.start_matches)) { throw 'JSON-round-tripped owned process proof failed' }
+    $foreign = Get-ServiceProcessEvidence $owned (Join-Path $fixtureRoot 'foreign.exe')
+    if ($foreign.path_matches) { throw 'Foreign executable accepted' }
+    $wrongTime = @{ pid = $PID; startedAt = $current.StartTime.ToUniversalTime().AddTicks(1).ToString('o') } | ConvertTo-Json | ConvertFrom-Json
+    if ((Get-ServiceProcessEvidence $wrongTime $current.Path).start_matches) { throw 'Reused PID start time accepted' }
+    $invalidTime = @{ pid = $PID; startedAt = 'wrong-start' } | ConvertTo-Json | ConvertFrom-Json
+    if ((Get-ServiceProcessEvidence $invalidTime $current.Path).start_matches) { throw 'Malformed process start time accepted' }
+    $missing = @{ pid = 0; startedAt = '' } | ConvertTo-Json | ConvertFrom-Json
+    $absent = Get-ServiceProcessEvidence $missing $current.Path
+    if ($absent.present -or $absent.alive -or $absent.path_matches -or $absent.start_matches) { throw 'Missing process accepted' }
     $firstBin = Join-Path $fixtureRoot 'first node'
     $secondBin = Join-Path $fixtureRoot 'second node'
     New-Item -ItemType Directory -Path $firstBin, $secondBin | Out-Null
@@ -73,7 +94,7 @@ try {
         $null = Get-NodeApplication
         throw 'Expected missing Node resolution to fail'
     } catch [System.Management.Automation.CommandNotFoundException] { }
-    Write-Host 'PASS: PowerShell parse, persistent-runner rejection, PE/filename fixtures, and Node multi-PATH ordering/missing-command checks'
+    Write-Host 'PASS: PowerShell parse, persistent-runner rejection, PE/filename fixtures, owned-process evidence, and Node multi-PATH ordering/missing-command checks'
 } finally {
     $env:RUNNER_ENVIRONMENT = $originalRunnerEnvironment
     $env:PATH = $originalPath

@@ -253,19 +253,21 @@ jobs:
           if ($expected -notmatch '^[0-9a-fA-F]{64}$') { throw 'Invalid previous installer checksum' }
           $actual = (Get-FileHash -LiteralPath (Join-Path $directory $name) -Algorithm SHA256).Hash
           if ($actual -ine $expected) { throw 'Previous installer checksum mismatch' }
-      - name: Prepare isolated installed collaboration services
+      - name: Prepare installed collaboration browser
         if: inputs.windows_collaboration_acceptance == true
         shell: pwsh
         timeout-minutes: 15
         run: |
           pnpm exec playwright install chromium
           if ($LASTEXITCODE -ne 0) { throw 'Chromium preparation failed' }
-          ./apps/desktop/scripts/windows-collaboration-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-collaboration" -RepoRoot "$env:GITHUB_WORKSPACE"
       - name: Accept Windows installer lifecycle
         shell: pwsh
         working-directory: apps/desktop
         timeout-minutes: ${{ inputs.windows_collaboration_acceptance && 40 || 20 }}
         run: |
+          if ([bool]::Parse($env:COLLABORATION_ACCEPTANCE)) {
+            ./scripts/windows-collaboration-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-collaboration" -RepoRoot "$env:GITHUB_WORKSPACE"
+          }
           if ([bool]::Parse($env:BUSINESS_ACCEPTANCE)) {
             ./scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE"
           }

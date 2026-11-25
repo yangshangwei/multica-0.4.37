@@ -17,7 +17,12 @@ test("installed collaboration is a separate opt-in selecting only the Windows ac
 });
 
 test("prepares and always stops the same private collaboration services without uploading state", () => {
-  assert.match(workflow, /name: Prepare isolated installed collaboration services\n {8}if: inputs.windows_collaboration_acceptance == true/);
+  assert.match(workflow, /name: Prepare installed collaboration browser\n {8}if: inputs.windows_collaboration_acceptance == true/);
+  const accept = workflow.split("      - name: Accept Windows installer lifecycle\n")[1].split("      - name:")[0];
+  const collaboration = accept.indexOf("./scripts/windows-collaboration-server.ps1");
+  const business = accept.indexOf("./scripts/windows-business-server.ps1");
+  const consume = accept.indexOf("./scripts/accept-windows-installer.ps1");
+  assert(collaboration >= 0 && collaboration < business && business < consume, "Both owned service fixtures must live in the consuming step, with business env restored last");
   assert.match(workflow, /name: Stop isolated installed collaboration services\n {8}if: always\(\) && inputs.windows_collaboration_acceptance == true/);
   assert.match(workflow, /windows-collaboration-server.ps1 -StateDirectory "\$env:RUNNER_TEMP\/multica-collaboration" -RepoRoot "\$env:GITHUB_WORKSPACE" -Stop/);
   const upload = workflow.split("      - name: Upload native Windows evidence\n")[1].split("      - name:")[0];

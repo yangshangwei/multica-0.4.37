@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import http from "node:http";
+import { once } from "node:events";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { windowsCollaborationPlan, windowsCollaborationTestPattern } from "./windows-collaboration-config.mjs";
 
 import { collaborationDiagnostic, collaborationResults } from "./windows-collaboration-diagnostics.mjs";
+
+import { collaborationProcessEvidence, probeCollaborationApi } from "./windows-collaboration-services.mjs";
 
 function fixture() {
   const env = { GITHUB_ACTIONS: "true", RUNNER_ENVIRONMENT: "github-hosted", GITHUB_SHA: "a".repeat(40),
@@ -103,4 +107,39 @@ test("diagnostics tolerate malformed nested report data and cap result inventori
   assert.equal(result.result_statuses.length, 16);
   assert(result.result_statuses.every(value => value === "unknown"));
   assert(!JSON.stringify(result).includes("private-"));
+});
+
+
+test("service evidence rejects foreign ownership and strips private process data", () => {
+  const secret = "private-password";
+  const flags = { present: true, alive: true, path_matches: true, start_matches: true };
+  const result = collaborationProcessEvidence({ source_matches: true, api: { ...flags, command: secret }, web: { ...flags, start_matches: false }, secret });
+  assert.equal(result.api.path_matches, true);
+  assert.equal(result.web.start_matches, false);
+  assert(!JSON.stringify(result).includes(secret));
+  assert.equal(collaborationProcessEvidence({ api: { alive: secret } }).api.alive, false);
+});
+
+test("API preflight binds health/config to the owned process and exposes only fixed refusal causes", async () => {
+  let foreign = false;
+  const server = http.createServer((request, response) => {
+    response.setHeader("content-type", "application/json");
+    response.end(JSON.stringify(request.url === "/health" ? { status: "ok", pid: foreign ? 999 : 123, commit: "a".repeat(40), secret: "private-token" }
+      : request.url === "/healthz" ? { status: "ok" }
+        : { auth_mode: "password", managed_installation_supported: true, deployment_id: "private-deployment", secret: "private-password" }));
+  });
+  server.listen(0, "127.0.0.1"); await once(server, "listening");
+  const setup = { api: `http://127.0.0.1:${server.address().port}`, pid: 123, sourceCommit: "a".repeat(40), environment: { MULTICA_DEPLOYMENT_ID: "private-deployment" } };
+  try {
+    const valid = await probeCollaborationApi(setup);
+    assert(Object.values(valid).every(item => item.valid));
+    assert(!JSON.stringify(valid).includes("private-"));
+    foreign = true;
+    assert.equal((await probeCollaborationApi(setup)).health.valid, false);
+  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
+  const stopped = await probeCollaborationApi(setup);
+  for (const item of Object.values(stopped)) {
+    assert.equal(item.valid, false); assert.equal(item.status, null); assert(["ECONNREFUSED", "ECONNRESET", "UND_ERR_SOCKET"].includes(item.cause_code), "A stopped listener must expose only its fixed transport failure code");
+  }
+  assert(!JSON.stringify(stopped).includes(setup.api));
 });

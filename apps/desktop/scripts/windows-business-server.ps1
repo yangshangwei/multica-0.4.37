@@ -92,7 +92,8 @@ try {
 $environment = @{}
 foreach ($key in @('DATABASE_URL','PORT','APP_ENV','JWT_SECRET','MULTICA_AUTH_MODE','MULTICA_PASSWORD_LIMITER_MODE','MULTICA_PLATFORM_ADMIN_ENABLED','MULTICA_MANAGED_INSTALLATIONS_ENABLED','MULTICA_DEPLOYMENT_ID','MULTICA_DEVICE_AUTH_ENABLED','ALLOW_SIGNUP','MULTICA_LLM_API_KEY','MULTICA_KNOWLEDGE_CONTEXT_ENABLED','FRONTEND_ORIGIN','CORS_ALLOWED_ORIGINS','ALLOWED_ORIGINS')) { $environment[$key] = [Environment]::GetEnvironmentVariable($key) }
 $api = "http://127.0.0.1:$apiPort"
-@{ version = 1; sourceCommit = $env:GITHUB_SHA; pid = $process.Id; serverExe = $serverExe; pgBin = $pgBin; api = $api; proxyPort = $proxyPort; repo = $RepoRoot; environment = $environment } | ConvertTo-Json -Depth 5 | Set-Content $private
+$process.Refresh()
+@{ version = 1; sourceCommit = $env:GITHUB_SHA; startedAt = $process.StartTime.ToUniversalTime().ToString('o'); pid = $process.Id; serverExe = $serverExe; pgBin = $pgBin; api = $api; proxyPort = $proxyPort; repo = $RepoRoot; environment = $environment } | ConvertTo-Json -Depth 5 | Set-Content $private
 $ready = $false
 function Get-BackendFailure {
     $text = (Get-Content (Join-Path $state 'backend.stderr.log') -Tail 12 -ErrorAction SilentlyContinue) -join "`n"

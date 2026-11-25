@@ -1,6 +1,6 @@
 #Requires -Version 7.2
 [CmdletBinding()]
-param([Parameter(Mandatory)][string]$StateDirectory, [Parameter(Mandatory)][string]$RepoRoot, [switch]$Stop)
+param([Parameter(Mandatory)][string]$StateDirectory, [Parameter(Mandatory)][string]$RepoRoot, [switch]$Stop, [switch]$Probe)
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if (-not $IsWindows -or $env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') { throw 'Disposable GitHub Windows runner required' }
@@ -14,12 +14,42 @@ function Get-NodeApplication {
     if ($path -isnot [string] -or -not [IO.Path]::IsPathFullyQualified($path) -or -not (Test-Path -LiteralPath $path -PathType Leaf)) { throw 'Node application must resolve to one absolute executable file' }
     return $path
 }
+function Test-ServiceStartTime {
+    param([datetime]$ActualStart, $RecordedStart)
+    if ($RecordedStart -is [datetime]) {
+        $recorded = $RecordedStart
+    } elseif ($RecordedStart -is [string]) {
+        try { $recorded = [datetime]::ParseExact($RecordedStart, 'o', [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]::RoundtripKind) }
+        catch { return $false }
+    } else { return $false }
+    return $ActualStart.ToUniversalTime().Ticks -eq $recorded.ToUniversalTime().Ticks
+}
+function Get-ServiceProcessEvidence {
+    param($Record, [string]$ExpectedPath)
+    $process = if ($Record.pid) { Get-Process -Id $Record.pid -ErrorAction SilentlyContinue } else { $null }
+    return [ordered]@{
+        present = ($null -ne $process)
+        alive = ($null -ne $process -and -not $process.HasExited)
+        path_matches = ($null -ne $process -and $process.Path -ieq $ExpectedPath)
+        start_matches = ($null -ne $process -and (Test-ServiceStartTime $process.StartTime $Record.startedAt))
+    }
+}
+if ($Probe) {
+    $apiRecord = Get-Content -LiteralPath (Join-Path $apiState 'server-private.json') -Raw | ConvertFrom-Json
+    $web = Get-Content -LiteralPath $webRecord -Raw | ConvertFrom-Json
+    [ordered]@{
+        source_matches = ($apiRecord.sourceCommit -ceq $env:GITHUB_SHA)
+        api = Get-ServiceProcessEvidence $apiRecord (Join-Path $apiState 'business-server.exe')
+        web = Get-ServiceProcessEvidence $web $web.node
+    } | ConvertTo-Json -Compress -Depth 4
+    return
+}
 function Stop-OwnedWeb {
     param($Record)
     if (-not $Record.pid) { return }
     $process = Get-Process -Id $Record.pid -ErrorAction SilentlyContinue
     if ($null -eq $process) { return }
-    if ($process.Path -ine $Record.node -or $process.StartTime.ToUniversalTime().ToString('o') -ne $Record.startedAt) { throw 'Web PID ownership mismatch' }
+    if ($process.Path -ine $Record.node -or -not (Test-ServiceStartTime $process.StartTime $Record.startedAt)) { throw 'Web PID ownership mismatch' }
     & taskkill.exe /PID $process.Id /T /F | Out-Null
     if ($LASTEXITCODE -ne 0) { throw 'Owned production Web shutdown failed' }
 }
@@ -84,5 +114,7 @@ try {
     if (-not $web.HasExited) { Stop-OwnedWeb (Get-Content -LiteralPath $webRecord -Raw | ConvertFrom-Json) }
     throw
 }
+
+$env:MULTICA_COLLABORATION_STATE_DIR = $state
 if ($env:GITHUB_ENV) { "MULTICA_COLLABORATION_STATE_DIR=$state" | Add-Content $env:GITHUB_ENV }
 Write-Output 'Source-bound isolated collaboration API, production Web and fake Host binaries prepared; private state is not an upload artifact.'

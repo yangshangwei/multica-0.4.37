@@ -10,7 +10,7 @@ const sourceFiles = [
   "packages/core/collaboration/schema.ts",
   "apps/desktop/scripts/windows-collaboration.mjs",
 ];
-const stages = new Set(["phase_directory", "package_files", "source_commit", "artifact_hashes", "playwright", "result_contract", "journey_evidence", "screenshots"]);
+const stages = new Set(["phase_directory", "package_files", "source_commit", "artifact_hashes", "service_probe", "playwright", "result_contract", "journey_evidence", "screenshots"]);
 const errorNames = new Set(["Error", "AssertionError", "TypeError", "SyntaxError", "ReferenceError", "TimeoutError", "AggregateError"]);
 const errorCodes = new Set(["ENOENT", "EACCES", "EPERM", "ETIMEDOUT", "ERR_ASSERTION", "ERR_MODULE_NOT_FOUND", "MODULE_NOT_FOUND", "ERR_CHILD_PROCESS_STDIO_MAXBUFFER"]);
 const statuses = new Set(["passed", "failed", "timedOut", "skipped", "interrupted"]);
