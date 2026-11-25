@@ -1,0 +1,585 @@
+{
+  "reviewed_at": "2026-11-25T12:47:19.418611+00:00",
+  "runs": {
+    "principal-handler-focused01": {
+      "exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "./internal/handler",
+        "-run",
+        "^Test(CommentMutationActorVerifiedIdentity|CommentManagementMachineHandlerBackstop|UpdateComment_AutopilotAuthorityReStampedToEditingTask)$"
+      ],
+      "toolchain": "go version go1.26.11 darwin/arm64",
+      "database": "fix_comment_principal_handler01",
+      "counts": {
+        "pass": 31
+      },
+      "counts_match": true,
+      "inventory_matches": true,
+      "started_count": 31,
+      "terminal_count": 31,
+      "unfinished": [],
+      "invalid_json_lines": [],
+      "package_terminal": [
+        {
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "skips": [],
+      "source_files": 9212,
+      "source_mismatches": [],
+      "role_exclusions": [],
+      "source_manifest_hash_matches": true,
+      "environment_hash_matches": true,
+      "compiler_hash_matches": true,
+      "raw_sha256": "078863c4d27cba3b29ff413ad4d4a20726a9ecf3f0642a03088fc57d9acc4139",
+      "receipt_sha256": "48dadfb20af58e5448f0954ac9691ce7f6f54a59c6476194412156e68963a263",
+      "after_resources": {
+        "cluster_connections": 7,
+        "comments": 0,
+        "database": "fix_comment_principal_handler01",
+        "database_connections": 1,
+        "users": 0,
+        "workspaces": 0
+      },
+      "after_resources_match": true,
+      "resource_probe_hash_matches": true,
+      "current_owned_delta": [
+        {
+          "file": "server/internal/handler/comment.go",
+          "diff": [
+            "--- \n",
+            "+++ \n",
+            "@@ -3426,7 +3426,7 @@\n",
+            " \t\ttriggerIssue = &issue",
+            " \t\t// A content edit is a NEW action, so its delegation lineage must key on THIS",
+            " \t\t// edit. Only the AGENT author re-editing its OWN comment carries the lineage",
+            "-\t\t// forward (commentSourceTaskID re-stamps the current editing task) \u2014 so",
+            "+\t\t// forward (the verified token identifies the current editing task) \u2014 so",
+            " \t\t// preview, save, and the deferred completion-reconcile all resolve the",
+            " \t\t// authority from this one action. Any OTHER editor \u2014 a workspace owner/admin",
+            " \t\t// editing an AGENT's comment, or a member editing their own \u2014 CLEARS the"
+          ]
+        }
+      ],
+      "claim_controls": {
+        "TestCommentManagementClaimedLegacyHTTP": 0,
+        "TestCommentManagementClaimedPasswordHTTP": 0,
+        "TestCommentManagementValidActorHintsHTTP": 0,
+        "TestCommentMutationActorVerifiedIdentity": 11,
+        "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask": 3
+      }
+    },
+    "valid-principal-green01": {
+      "exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "./cmd/server",
+        "-run",
+        "^TestCommentManagement"
+      ],
+      "toolchain": "go version go1.26.11 darwin/arm64",
+      "database": "fix_comment_principal_green01",
+      "counts": {
+        "pass": 1081
+      },
+      "counts_match": true,
+      "inventory_matches": true,
+      "started_count": 1081,
+      "terminal_count": 1081,
+      "unfinished": [],
+      "invalid_json_lines": [],
+      "package_terminal": [
+        {
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/cmd/server"
+        }
+      ],
+      "skips": [],
+      "source_files": 9212,
+      "source_mismatches": [],
+      "role_exclusions": [],
+      "source_manifest_hash_matches": true,
+      "environment_hash_matches": true,
+      "compiler_hash_matches": true,
+      "raw_sha256": "d9b1bd3ca1f3caeccff80617c5740fe5b8515f1af2966fadbf965da8cc87ce82",
+      "receipt_sha256": "e097b3402dc0dccb13fd11d92dbded2c28ba2ccb19478ca1260b3868be20b6df",
+      "after_resources": {
+        "cluster_connections": 7,
+        "comments": 0,
+        "database": "fix_comment_principal_green01",
+        "database_connections": 1,
+        "users": 0,
+        "workspaces": 0
+      },
+      "after_resources_match": true,
+      "resource_probe_hash_matches": true,
+      "current_owned_delta": [
+        {
+          "file": "server/internal/handler/comment.go",
+          "diff": [
+            "--- \n",
+            "+++ \n",
+            "@@ -3426,7 +3426,7 @@\n",
+            " \t\ttriggerIssue = &issue",
+            " \t\t// A content edit is a NEW action, so its delegation lineage must key on THIS",
+            " \t\t// edit. Only the AGENT author re-editing its OWN comment carries the lineage",
+            "-\t\t// forward (commentSourceTaskID re-stamps the current editing task) \u2014 so",
+            "+\t\t// forward (the verified token identifies the current editing task) \u2014 so",
+            " \t\t// preview, save, and the deferred completion-reconcile all resolve the",
+            " \t\t// authority from this one action. Any OTHER editor \u2014 a workspace owner/admin",
+            " \t\t// editing an AGENT's comment, or a member editing their own \u2014 CLEARS the"
+          ]
+        },
+        {
+          "file": "server/internal/handler/comment_authority_test.go",
+          "diff": [
+            "--- \n",
+            "+++ \n",
+            "@@ -1,13 +1,80 @@\n",
+            " package handler",
+            " ",
+            " import (",
+            "+\t\"context\"",
+            " \t\"net/http\"",
+            "+\t\"net/http/httptest\"",
+            " \t\"testing\"",
+            " ",
+            " \t\"github.com/google/uuid\"",
+            "+\t\"github.com/multica-ai/multica/server/internal/auth\"",
+            " \t\"github.com/multica-ai/multica/server/internal/events\"",
+            " \t\"github.com/multica-ai/multica/server/internal/testutil\"",
+            "+\tdb \"github.com/multica-ai/multica/server/pkg/db/generated\"",
+            " )",
+            "+",
+            "+func TestCommentMutationActorVerifiedIdentity(t *testing.T) {",
+            "+\tuserID, workspaceID, agentID, taskID := uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString()",
+            "+\ttoken := db.TaskToken{ID: parseUUID(uuid.NewString()), UserID: parseUUID(userID), WorkspaceID: parseUUID(workspaceID), AgentID: parseUUID(agentID), TaskID: parseUUID(taskID)}",
+            "+\tfor _, scenario := range []struct {",
+            "+\t\tname           string",
+            "+\t\tkind           auth.CredentialKind",
+            "+\t\tverified       bool",
+            "+\t\twrongUser      bool",
+            "+\t\twrongWorkspace bool",
+            "+\t\tmissingAgent   bool",
+            "+\t\tstampedTask    bool",
+            "+\t\tallowed        bool",
+            "+\t\tactorType      string",
+            "+\t}{",
+            "+\t\t{name: \"human ignores agent hints\", kind: auth.CredentialJWT, allowed: true, actorType: \"member\"},",
+            "+\t\t{name: \"PAT ignores agent hints\", kind: auth.CredentialPAT, allowed: true, actorType: \"member\"},",
+            "+\t\t{name: \"cloud retains member identity\", kind: auth.CredentialCloud, allowed: true, actorType: \"member\"},",
+            "+\t\t{name: \"verified task retains agent\", kind: auth.CredentialTask, verified: true, stampedTask: true, allowed: true, actorType: \"agent\"},",
+            "+\t\t{name: \"task without verified binding\", kind: auth.CredentialTask, stampedTask: true},",
+            "+\t\t{name: \"stamped task without context\", kind: auth.CredentialJWT, stampedTask: true},",
+            "+\t\t{name: \"binding for other user\", kind: auth.CredentialTask, verified: true, wrongUser: true},",
+            "+\t\t{name: \"binding for other workspace\", kind: auth.CredentialTask, verified: true, wrongWorkspace: true},",
+            "+\t\t{name: \"binding lacks agent\", kind: auth.CredentialTask, verified: true, missingAgent: true},",
+            "+\t\t{name: \"task binding contradicts human credential\", kind: auth.CredentialJWT, verified: true},",
+            "+\t} {",
+            "+\t\tt.Run(scenario.name, func(t *testing.T) {",
+            "+\t\t\trequest := httptest.NewRequest(http.MethodPut, \"/api/comments/local-fixture\", nil)",
+            "+\t\t\trequest.Header.Set(\"X-Agent-ID\", uuid.NewString())",
+            "+\t\t\trequest.Header.Set(\"X-Task-ID\", uuid.NewString())",
+            "+\t\t\tif scenario.stampedTask {",
+            "+\t\t\t\trequest.Header.Set(\"X-Actor-Source\", \"task_token\")",
+            "+\t\t\t}",
+            "+\t\t\tctx := auth.WithAuthenticatedPrincipal(context.Background(), auth.AuthenticatedPrincipal{UserID: userID, Kind: scenario.kind})",
+            "+\t\t\tif scenario.verified {",
+            "+\t\t\t\tbinding := token",
+            "+\t\t\t\tif scenario.wrongUser {",
+            "+\t\t\t\t\tbinding.UserID = parseUUID(uuid.NewString())",
+            "+\t\t\t\t}",
+            "+\t\t\t\tif scenario.wrongWorkspace {",
+            "+\t\t\t\t\tbinding.WorkspaceID = parseUUID(uuid.NewString())",
+            "+\t\t\t\t}",
+            "+\t\t\t\tif scenario.missingAgent {",
+            "+\t\t\t\t\tbinding.AgentID.Valid = false",
+            "+\t\t\t\t}",
+            "+\t\t\t\tctx = auth.WithVerifiedTaskToken(ctx, binding)",
+            "+\t\t\t}",
+            "+\t\t\tactorType, actorID, allowed := commentMutationActor(request.WithContext(ctx), userID, workspaceID)",
+            "+\t\t\tif allowed != scenario.allowed || actorType != scenario.actorType {",
+            "+\t\t\t\tt.Fatalf(\"actor type=%q allowed=%v\", actorType, allowed)",
+            "+\t\t\t}",
+            "+\t\t\tif allowed {",
+            "+\t\t\t\twantID := userID",
+            "+\t\t\t\tif actorType == \"agent\" {",
+            "+\t\t\t\t\twantID = agentID",
+            "+\t\t\t\t}",
+            "+\t\t\t\tif actorID != wantID {",
+            "+\t\t\t\t\tt.Fatal(\"mutation actor does not match verified credential\")",
+            "+\t\t\t\t}",
+            "+\t\t\t}",
+            "+\t\t})",
+            "+\t}",
+            "+}",
+            " ",
+            " // Auth stamps these sources in production. Direct calls prove that moving the",
+            " // routes cannot silently drop the credential gate inside either handler."
+          ]
+        }
+      ],
+      "claim_controls": {
+        "TestCommentManagementClaimedLegacyHTTP": 134,
+        "TestCommentManagementClaimedPasswordHTTP": 134,
+        "TestCommentManagementValidActorHintsHTTP": 533,
+        "TestCommentMutationActorVerifiedIdentity": 0,
+        "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask": 0
+      }
+    },
+    "principal-handler-normal01": {
+      "exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "./internal/handler"
+      ],
+      "toolchain": "go version go1.26.11 darwin/arm64",
+      "database": "fix_principal_handler_normal01",
+      "counts": {
+        "pass": 6211,
+        "skip": 7
+      },
+      "counts_match": true,
+      "inventory_matches": true,
+      "started_count": 6218,
+      "terminal_count": 6218,
+      "unfinished": [],
+      "invalid_json_lines": [],
+      "package_terminal": [
+        {
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "skips": [
+        "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+        "TestIterationI1P95",
+        "TestIterationI1DisableP95",
+        "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+        "TestTriageQueueScaleBaseline",
+        "TestTriageWireFixtures",
+        "TestMcpMarketPublicHTTPRecipeLifecycle"
+      ],
+      "source_files": 9212,
+      "source_mismatches": [],
+      "role_exclusions": [],
+      "source_manifest_hash_matches": true,
+      "environment_hash_matches": true,
+      "compiler_hash_matches": true,
+      "raw_sha256": "4e28bdde7ce3856971ce34ccd34c4e83d25a3f06e324e3820b8dc8fa7919636a",
+      "receipt_sha256": "a2c4521ba95be7bcc15a2fc954a62a294904bfc3e533b1306b51d7e69cdf65c0",
+      "after_resources": {
+        "cluster_connections": 7,
+        "comments": 0,
+        "database": "fix_principal_handler_normal01",
+        "database_connections": 1,
+        "users": 5,
+        "workspaces": 0
+      },
+      "after_resources_match": true,
+      "resource_probe_hash_matches": true,
+      "current_owned_delta": [
+        {
+          "file": "server/internal/handler/comment.go",
+          "diff": [
+            "--- \n",
+            "+++ \n",
+            "@@ -3426,7 +3426,7 @@\n",
+            " \t\ttriggerIssue = &issue",
+            " \t\t// A content edit is a NEW action, so its delegation lineage must key on THIS",
+            " \t\t// edit. Only the AGENT author re-editing its OWN comment carries the lineage",
+            "-\t\t// forward (commentSourceTaskID re-stamps the current editing task) \u2014 so",
+            "+\t\t// forward (the verified token identifies the current editing task) \u2014 so",
+            " \t\t// preview, save, and the deferred completion-reconcile all resolve the",
+            " \t\t// authority from this one action. Any OTHER editor \u2014 a workspace owner/admin",
+            " \t\t// editing an AGENT's comment, or a member editing their own \u2014 CLEARS the"
+          ]
+        }
+      ],
+      "claim_controls": {
+        "TestCommentManagementClaimedLegacyHTTP": 0,
+        "TestCommentManagementClaimedPasswordHTTP": 0,
+        "TestCommentManagementValidActorHintsHTTP": 0,
+        "TestCommentMutationActorVerifiedIdentity": 11,
+        "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask": 3
+      }
+    },
+    "principal-handler-race01": {
+      "exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-race",
+        "./internal/handler"
+      ],
+      "toolchain": "go version go1.26.11 darwin/arm64",
+      "database": "fix_principal_handler_race01",
+      "counts": {
+        "pass": 6211,
+        "skip": 7
+      },
+      "counts_match": true,
+      "inventory_matches": true,
+      "started_count": 6218,
+      "terminal_count": 6218,
+      "unfinished": [],
+      "invalid_json_lines": [],
+      "package_terminal": [
+        {
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "skips": [
+        "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+        "TestIterationI1P95",
+        "TestIterationI1DisableP95",
+        "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+        "TestTriageQueueScaleBaseline",
+        "TestTriageWireFixtures",
+        "TestMcpMarketPublicHTTPRecipeLifecycle"
+      ],
+      "source_files": 9212,
+      "source_mismatches": [],
+      "role_exclusions": [],
+      "source_manifest_hash_matches": true,
+      "environment_hash_matches": true,
+      "compiler_hash_matches": true,
+      "raw_sha256": "4cd4679e8cc266601d54ce2852d61e1a60d77e109abf4cd2bd1dd3f85660ea20",
+      "receipt_sha256": "77e0bccc17a15289324daeb5acc51622a164155ae28d234644e9a24305b61e8d",
+      "after_resources": {
+        "cluster_connections": 7,
+        "comments": 0,
+        "database": "fix_principal_handler_race01",
+        "database_connections": 1,
+        "users": 5,
+        "workspaces": 0
+      },
+      "after_resources_match": true,
+      "resource_probe_hash_matches": true,
+      "current_owned_delta": [
+        {
+          "file": "server/internal/handler/comment.go",
+          "diff": [
+            "--- \n",
+            "+++ \n",
+            "@@ -3426,7 +3426,7 @@\n",
+            " \t\ttriggerIssue = &issue",
+            " \t\t// A content edit is a NEW action, so its delegation lineage must key on THIS",
+            " \t\t// edit. Only the AGENT author re-editing its OWN comment carries the lineage",
+            "-\t\t// forward (commentSourceTaskID re-stamps the current editing task) \u2014 so",
+            "+\t\t// forward (the verified token identifies the current editing task) \u2014 so",
+            " \t\t// preview, save, and the deferred completion-reconcile all resolve the",
+            " \t\t// authority from this one action. Any OTHER editor \u2014 a workspace owner/admin",
+            " \t\t// editing an AGENT's comment, or a member editing their own \u2014 CLEARS the"
+          ]
+        }
+      ],
+      "claim_controls": {
+        "TestCommentManagementClaimedLegacyHTTP": 0,
+        "TestCommentManagementClaimedPasswordHTTP": 0,
+        "TestCommentManagementValidActorHintsHTTP": 0,
+        "TestCommentMutationActorVerifiedIdentity": 11,
+        "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask": 3
+      }
+    },
+    "principal-router-normal01": {
+      "exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "./cmd/server"
+      ],
+      "toolchain": "go version go1.26.11 darwin/arm64",
+      "database": "fix_principal_router_normal01",
+      "counts": {
+        "pass": 2284,
+        "skip": 8
+      },
+      "counts_match": true,
+      "inventory_matches": true,
+      "started_count": 2292,
+      "terminal_count": 2292,
+      "unfinished": [],
+      "invalid_json_lines": [],
+      "package_terminal": [
+        {
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/cmd/server"
+        }
+      ],
+      "skips": [
+        "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+        "TestCollaborationPartialResumeRoutesLinux",
+        "TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+        "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+        "TestCollaborationSquadCapacityOneRoutesLinux",
+        "TestCollaborationStageExecutionHarness",
+        "TestDeliveryCompletionM1BrowserFixture"
+      ],
+      "source_files": 9212,
+      "source_mismatches": [],
+      "role_exclusions": [],
+      "source_manifest_hash_matches": true,
+      "environment_hash_matches": true,
+      "compiler_hash_matches": true,
+      "raw_sha256": "440a448fa7f4c633901f585fe0c7ce77b7e7ad48226afd34d024e2f3b0d7dd42",
+      "receipt_sha256": "aa8663f155b2fd2cb572258f68c275cd28cdc1face972510a6aa353e7a74f642",
+      "after_resources": {
+        "cluster_connections": 19,
+        "comments": 0,
+        "database": "fix_principal_router_normal01",
+        "database_connections": 1,
+        "users": 3,
+        "workspaces": 0
+      },
+      "after_resources_match": true,
+      "resource_probe_hash_matches": true,
+      "current_owned_delta": [],
+      "claim_controls": {
+        "TestCommentManagementClaimedLegacyHTTP": 134,
+        "TestCommentManagementClaimedPasswordHTTP": 134,
+        "TestCommentManagementValidActorHintsHTTP": 533,
+        "TestCommentMutationActorVerifiedIdentity": 0,
+        "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask": 0
+      }
+    },
+    "principal-router-race01": {
+      "exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-race",
+        "./cmd/server"
+      ],
+      "toolchain": "go version go1.26.11 darwin/arm64",
+      "database": "fix_principal_router_race01",
+      "counts": {
+        "pass": 2284,
+        "skip": 8
+      },
+      "counts_match": true,
+      "inventory_matches": true,
+      "started_count": 2292,
+      "terminal_count": 2292,
+      "unfinished": [],
+      "invalid_json_lines": [],
+      "package_terminal": [
+        {
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/cmd/server"
+        }
+      ],
+      "skips": [
+        "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+        "TestCollaborationPartialResumeRoutesLinux",
+        "TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+        "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+        "TestCollaborationSquadCapacityOneRoutesLinux",
+        "TestCollaborationStageExecutionHarness",
+        "TestDeliveryCompletionM1BrowserFixture"
+      ],
+      "source_files": 9212,
+      "source_mismatches": [],
+      "role_exclusions": [],
+      "source_manifest_hash_matches": true,
+      "environment_hash_matches": true,
+      "compiler_hash_matches": true,
+      "raw_sha256": "f01d5bd91076c1b3e51811b193dd4fabd1567972ab5061798e81ec775120abda",
+      "receipt_sha256": "d5e5acd595dcc151b5d82c10f3cda0228c2ac2d8865b66995c2d0cd1fc53804a",
+      "after_resources": {
+        "cluster_connections": 6,
+        "comments": 0,
+        "database": "fix_principal_router_race01",
+        "database_connections": 1,
+        "users": 3,
+        "workspaces": 0
+      },
+      "after_resources_match": true,
+      "resource_probe_hash_matches": true,
+      "current_owned_delta": [],
+      "claim_controls": {
+        "TestCommentManagementClaimedLegacyHTTP": 134,
+        "TestCommentManagementClaimedPasswordHTTP": 134,
+        "TestCommentManagementValidActorHintsHTTP": 533,
+        "TestCommentMutationActorVerifiedIdentity": 0,
+        "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask": 0
+      }
+    }
+  },
+  "resource_probe_source": "package main\n\nimport (\n \"context\"\n \"encoding/json\"\n \"os\"\n \"time\"\n \"github.com/jackc/pgx/v5\"\n)\nfunc main() {\n ctx,cancel:=context.WithTimeout(context.Background(),5*time.Second);defer cancel()\n conn,err:=pgx.Connect(ctx,os.Getenv(\"DATABASE_URL\"));if err!=nil {os.Exit(2)};defer conn.Close(ctx)\n var database string;var connections,total int;var users,workspaces,comments int64\n if err=conn.QueryRow(ctx,`SELECT current_database(),(SELECT count(*) FROM pg_stat_activity WHERE datname=current_database()),(SELECT count(*) FROM pg_stat_activity), (SELECT count(*) FROM \"user\"),(SELECT count(*) FROM workspace),(SELECT count(*) FROM comment)`).Scan(&database,&connections,&total,&users,&workspaces,&comments);err!=nil {os.Exit(3)}\n if database!=os.Getenv(\"TASK_DATABASE_NAME\") {os.Exit(4)}\n _=json.NewEncoder(os.Stdout).Encode(map[string]any{\"database\":database,\"database_connections\":connections,\"cluster_connections\":total,\"users\":users,\"workspaces\":workspaces,\"comments\":comments})\n}\n",
+  "verdict": "D01_BOUNDED_FIX_ACCEPTED"
+}

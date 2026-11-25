@@ -1,0 +1,150 @@
+{
+  "captured_unix": 1795611889.629749,
+  "scope": "Per-command source-bound records; later changes covered by individual lane evidence, not blanket candidate acceptance",
+  "runs": {
+    "frontend-static-01": {
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "lint",
+        "typecheck",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force"
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "exit": 0,
+      "status": "completed",
+      "source_changes_during_run": [
+        "e2e/admin-resource-publishing.spec.ts",
+        "e2e/fixtures/collaboration-detail-journey.ts",
+        "e2e/fixtures/collaboration-recovery-extras.ts",
+        "e2e/inbox-snooze.spec.ts"
+      ],
+      "stdout_sha256": "d1e7a9f11366a4a9f5e17c1e1d8f6ef9df8219e393a6143657d3eb72f5febdc0",
+      "stderr_sha256": "db02753d59f50c307238ff9c06a3bd9647efe34d715f4a4284ea60a4c1cc1038"
+    },
+    "frontend-unit-01": {
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force"
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "exit": 1,
+      "status": "completed",
+      "source_changes_during_run": [],
+      "stdout_sha256": "23e857f1e3645fb45a44c607000d814b7e4e0fcef51dde22c2fbae3180260121",
+      "stderr_sha256": "5b7acc6a8102ef1c6630ee3bb731daf53f8328d8aa8acddc06ee6993d1c4f144"
+    },
+    "frontend-unit-bounded-02": {
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=@multica/views",
+        "--filter=@multica/web",
+        "--filter=@multica/desktop",
+        "--filter=@multica/ui",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "exit": 0,
+      "status": "completed",
+      "source_changes_during_run": [],
+      "stdout_sha256": "86960e60803348555290360a7453ca4bb002df8c8a0ac568b2c0478707f2c0ea",
+      "stderr_sha256": "db02753d59f50c307238ff9c06a3bd9647efe34d715f4a4284ea60a4c1cc1038"
+    },
+    "integrated-go-build-01": {
+      "command": [
+        ".omx/private/acceptance-fixes/security/tools/go/bin/go",
+        "-C",
+        "server",
+        "build",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "exit": 0,
+      "status": "completed",
+      "source_changes_during_run": [],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "integrated-go-vet-01": {
+      "command": [
+        ".omx/private/acceptance-fixes/security/tools/go/bin/go",
+        "-C",
+        "server",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "exit": 0,
+      "status": "completed",
+      "source_changes_during_run": [],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ui-export-check-01": {
+      "command": [
+        "pnpm",
+        "check:ui-exports"
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "exit": 0,
+      "status": "completed",
+      "source_changes_during_run": [],
+      "stdout_sha256": "52d01134f26981d4469d4a8040206c044a095711bcd0a64f3d824e2be3f3523d",
+      "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    "final-skill-conformance-02": {
+      "command": [
+        ".omx/private/acceptance-fixes/security/tools/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "-run",
+        "^TestBuiltinSkillsConformToTemplate$",
+        "-count=1",
+        "./internal/service"
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+      "exit": 0,
+      "status": "completed",
+      "source_changes_during_run": [],
+      "stdout_sha256": "29a1589c42e1341c8f4d3071e05df1a8f995b6f39f36a2ece8747bac627e1629",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "integrated-vuln-final01": {
+      "command": [
+        "/usr/bin/env",
+        "PATH=/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin:/opt/homebrew/bin:/usr/bin:/bin",
+        "GOTOOLCHAIN=local",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "./..."
+      ],
+      "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/server",
+      "exit": 0,
+      "status": "completed",
+      "source_changes_during_run": [],
+      "stdout_sha256": "3016e51e4eac0d421674d2128bbbdefb2924b4646e0c14a1ab034977ad73fae5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

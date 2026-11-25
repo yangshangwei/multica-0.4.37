@@ -1,0 +1,443 @@
+{
+  "reviewed_at": "2026-11-25T10:38:12.369901+00:00",
+  "source_manifest_sha256": "692a51bd1549039f67c139b70f2135d721eef8d80152c1871f5c563239fc4db6",
+  "frozen_source": {
+    "source": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source",
+    "files": 9368,
+    "mismatches": [],
+    "role_excluded_context_manifests": []
+  },
+  "owned_sources": {
+    "e2e/fixtures/collaboration-host-runtime.ts": {
+      "worktree_matches": true,
+      "frozen_matches": true,
+      "sha256": "bfb9d552cafcddfaa9914511513030bc1ffc0a77d4da25f8a27afc0b1c57f760"
+    },
+    "server/internal/daemon/collaboration.go": {
+      "worktree_matches": true,
+      "frozen_matches": true,
+      "sha256": "ae9baeec447ab099c98b433879898e107b27008434ed8a6932f08a9d00cc7138"
+    },
+    "server/internal/daemon/collaboration_host_router_test.go": {
+      "worktree_matches": true,
+      "frozen_matches": true,
+      "sha256": "ebfbfa126b7a56c47d64f8b59cdeaa2287d2d7b2b56d4e44d00fdbd3912fe4a9"
+    },
+    "server/internal/daemon/collaboration_host_router_boundary_test.go": {
+      "worktree_matches": true,
+      "frozen_matches": true,
+      "sha256": "c78adbe2cf57c0fc086bb46f89ef55a2069b892a7b790a2f9d957738d8725a3c"
+    },
+    "server/internal/daemon/collaborationrun/controller.go": {
+      "worktree_matches": true,
+      "frozen_matches": true,
+      "sha256": "a5fe8148d9b889b175c0473e0b2cb4d4dd8364c822d5ccc3603e98131a7d44b9"
+    },
+    "server/internal/daemon/collaborationrun/controller_test.go": {
+      "worktree_matches": true,
+      "frozen_matches": true,
+      "sha256": "c8734ff1c21351e8dd82bd206ee214b0a2706175a090333a187bd4c6efe5fd4f"
+    }
+  },
+  "receipts": [
+    {
+      "run": "api-build01",
+      "exit": 0,
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "build",
+        "-o",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/api",
+        "./cmd/server"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "cli-build01",
+      "exit": 0,
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "build",
+        "-o",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/multica",
+        "./cmd/multica"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "collaborationrun-full-race01",
+      "exit": 0,
+      "command": [
+        "bash",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "./internal/daemon/collaborationrun"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "daemon-build01",
+      "exit": 0,
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/daemon-test",
+        "./internal/daemon"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "daemon-full-race01",
+      "exit": 0,
+      "command": [
+        "bash",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "./internal/daemon"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "linux-controller-compile01",
+      "exit": 0,
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/collaborationrun-test-linux-amd64",
+        "./internal/daemon/collaborationrun"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "linux-daemon-compile01",
+      "exit": 0,
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/daemon-test-linux-amd64",
+        "./internal/daemon"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "memory-provider-build01",
+      "exit": 0,
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "build",
+        "-o",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/memory-provider",
+        "../e2e/fixtures/collaboration-memory-provider.go"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    },
+    {
+      "run": "order-provider-build01",
+      "exit": 0,
+      "command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "build",
+        "-o",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/multi-account-provider",
+        "../e2e/fixtures/collaboration-multi-account-provider.go"
+      ],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "source_manifest_matches": true,
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "runner_unchanged": true,
+      "go_tool_hash_matches": true
+    }
+  ],
+  "typecheck_vet": [
+    {
+      "command": [
+        "node",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/node_modules/typescript/bin/tsc",
+        "--project",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/host-fixture-tsconfig.json"
+      ],
+      "exit": 0,
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "stdout_empty": true,
+      "stderr_empty": true
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./internal/daemon",
+        "./internal/daemon/collaborationrun"
+      ],
+      "exit": 0,
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "stdout_empty": true,
+      "stderr_empty": true
+    },
+    {
+      "command": [
+        "gofmt",
+        "-l",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaboration.go",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaboration_host_router_test.go",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaboration_host_router_boundary_test.go",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaborationrun/controller.go",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaborationrun/controller_test.go"
+      ],
+      "exit": 0,
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "stdout_empty": true,
+      "stderr_empty": true
+    }
+  ],
+  "race_tests": {
+    "daemon-full-race01": {
+      "started": 2055,
+      "terminal": 2055,
+      "counts": {
+        "pass": 2053,
+        "skip": 2
+      },
+      "unfinished": [],
+      "matches_inventory": true,
+      "required_controls": {
+        "TestCollaborationHostHarnessPermitDiagnostics/canceled": "pass",
+        "TestCollaborationHostHarnessPermitDiagnostics/deadline": "pass",
+        "TestCollaborationHostHarnessPermitDiagnostics/response": "pass",
+        "TestCollaborationHostHarnessPermitDiagnostics": "pass",
+        "TestCollaborationHostTransportErrorNeverRetainsPrivateText": "pass",
+        "TestCollaborationHostInputTimelineDistinguishesReadFailure": "pass"
+      },
+      "skips": [
+        "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+        "TestIsDriveRoot"
+      ],
+      "package_terminals": [
+        "pass"
+      ]
+    },
+    "collaborationrun-full-race01": {
+      "started": 383,
+      "terminal": 383,
+      "counts": {
+        "pass": 383
+      },
+      "unfinished": [],
+      "matches_inventory": true,
+      "required_controls": {
+        "TestNamespaceProbeDiagnosticPreservesCauseWithoutPrivateText": "pass",
+        "TestNamespaceReadyFailureRetainsConcurrentCancellation/closed": "pass",
+        "TestNamespaceReadyFailureRetainsConcurrentCancellation/malformed": "pass",
+        "TestNamespaceReadyFailureRetainsConcurrentCancellation/refused": "pass",
+        "TestNamespaceReadyFailureRetainsConcurrentCancellation": "pass"
+      },
+      "skips": [],
+      "package_terminals": [
+        "pass"
+      ]
+    }
+  },
+  "namespace": {
+    "original_ledger_sha256": "12c823517b4b0ccc3dd0fd5395d1b11b3d4da936da46fe9efb862a8eed47c842",
+    "identities": [
+      {
+        "identity": "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+        "title": "collaboration-cross-client-execution.spec.ts / AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+        "file": "collaboration-cross-client-execution.spec.ts",
+        "original_lane": "runtime/cross-client-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/cross-client-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "2baf0d89c3e16f740924-57a798cb8c03ff31d703::chromium",
+        "title": "collaboration-lane-close-controls.spec.ts / Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+        "file": "collaboration-lane-close-controls.spec.ts",
+        "original_lane": "runtime/lane-close-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/lane-close-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "2baf0d89c3e16f740924-40ff4a37c718db2f022d::chromium",
+        "title": "collaboration-lane-close-controls.spec.ts / Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+        "file": "collaboration-lane-close-controls.spec.ts",
+        "original_lane": "runtime/lane-close-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/lane-close-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "2baf0d89c3e16f740924-62b228e8e2fe12d87faf::chromium",
+        "title": "collaboration-lane-close-controls.spec.ts / Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+        "file": "collaboration-lane-close-controls.spec.ts",
+        "original_lane": "runtime/lane-close-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/lane-close-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "2baf0d89c3e16f740924-d5cf28a822dcd31e5846::chromium",
+        "title": "collaboration-lane-close-controls.spec.ts / Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+        "file": "collaboration-lane-close-controls.spec.ts",
+        "original_lane": "runtime/lane-close-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/lane-close-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "c8706aeccaf441d25880-bf60502313c2edcb8554::chromium",
+        "title": "collaboration-lifecycle-controls.spec.ts / Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+        "file": "collaboration-lifecycle-controls.spec.ts",
+        "original_lane": "runtime/lifecycle-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/lifecycle-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "c8706aeccaf441d25880-6cf834f8264130a8d215::chromium",
+        "title": "collaboration-lifecycle-controls.spec.ts / Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+        "file": "collaboration-lifecycle-controls.spec.ts",
+        "original_lane": "runtime/lifecycle-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/lifecycle-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "753e160629e6e5a7052c-f7430be66c7012c9d9a6::chromium",
+        "title": "collaboration-offline-result-notifications.spec.ts / Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+        "file": "collaboration-offline-result-notifications.spec.ts",
+        "original_lane": "runtime/offline-notifications-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/offline-notifications-01/failure-classification.json",
+        "evidence_hash_matches": true
+      },
+      {
+        "identity": "753e160629e6e5a7052c-fddac4f88ef9091cfce5::chromium",
+        "title": "collaboration-offline-result-notifications.spec.ts / Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+        "file": "collaboration-offline-result-notifications.spec.ts",
+        "original_lane": "runtime/offline-notifications-01",
+        "original_status": "FAIL",
+        "new_disposition": "BLOCKED",
+        "reason": "Required privileged/unconfined canonical configuration prohibited by user; no execution under altered policy",
+        "old_cause": "UNKNOWN",
+        "classification_evidence": "runtime/offline-notifications-01/failure-classification.json",
+        "evidence_hash_matches": true
+      }
+    ],
+    "count": 9,
+    "group_counts": {
+      "runtime/cross-client-01": 1,
+      "runtime/lane-close-01": 4,
+      "runtime/lifecycle-01": 2,
+      "runtime/offline-notifications-01": 2
+    }
+  },
+  "specs": {
+    ".trellis/spec/server/collaboration-host-execution.md": "c631d0e8d8bc7f57426c9c5955e025b61fceab8383cbbada39f545b635c980ea",
+    ".trellis/spec/server/verification-environment.md": "6db2395612bf324a42d8c1843e857647c5339006304d0848af8a19c1699592f7"
+  }
+}

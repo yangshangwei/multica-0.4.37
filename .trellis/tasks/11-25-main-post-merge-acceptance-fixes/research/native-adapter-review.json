@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "reviewed_at": "2026-11-25T10:45:22.291874+00:00",
+  "accepted": false,
+  "scope": "Bounded native offline Docker timing probe; static review only, not full CLI or packaged Main acceptance",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/adapter-review-request.json",
+  "request_present": false,
+  "request_sha256": null,
+  "scripts": {
+    "timing_probe.py": "7a79c9b2d660064e24e930a4e001926c39fa6d773c87c293ca2b161ec71a3c40",
+    "cli_guard.py": "4f4b3ef399af96eb013676c02503c394d90590a9c0f5a561875d5eb81721673a",
+    "prepare_packages.py": "bfd5ed1329c7344832e00386981ab7ebde0a285d7802d28804ab8c725dd72b7b"
+  },
+  "issues": [
+    {
+      "id": "N1",
+      "severity": "blocking",
+      "file": "native/adapter-review-request.json",
+      "finding": "Request file is absent at the supplied path at review completion. No exact requested argv, source/binary digests or execution binding can be accepted.",
+      "fix": "Publish the actual request with pinned probe/guard/relay/Docker/source identities and intended exact invocation; reviewer will compare against these script hashes."
+    },
+    {
+      "id": "N2",
+      "severity": "blocking",
+      "file": "native/timing_probe.py:43-54",
+      "finding": "Cleanup aborts on its first inspect/assert/removal failure, leaving later owned containers/volumes unattempted and omitting completion.json. A failed relay read/result also leaves the spawned guard process without an explicit terminate/wait in finally.",
+      "fix": "Keep the primary result and per-resource cleanup errors separately; attempt every exact owned resource independently; always write a terminal receipt and reap the owned child with a bounded wait. Cleanup failure must keep acceptance false."
+    },
+    {
+      "id": "N3",
+      "severity": "blocking",
+      "file": "native/cli_guard.py:99-107",
+      "finding": "Resource IDs/names enter the ledger only after create returns success. If Docker creates a container or volume but the CLI times out or returns an ambiguous failure, finally only iterates the prior ledger and can miss that new resource.",
+      "fix": "Persist the exact name/owner/create intent before mutation. On a failed create, boundedly inspect that exact name and accept ownership only if label/image/identity match, then retain it for cleanup. Never broadly remove resources by name prefix."
+    }
+  ],
+  "verified_static_properties": [
+    "Timing probe fixes the old CLI image to sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104 and checks v0.6.7 plus commit9caea35808afc8d05fb6135bfc74d4bfb0b45cf1.",
+    "Guard exact argv matching preserves network-none/read-only/linux-amd64; actual relay execution also retains cap-drop ALL/no-new-privileges/bounded tmpfs/readonly relay volume. No privileged/unconfined flag is admitted.",
+    "Stage container is created for copy and never started; version uses the existing canonical version-check policy.",
+    "Normal post-create container operations resolve recorded64hex IDs and inspect label/image/name/network/read-only state; volume removal verifies owner label.",
+    "Only a synthetic token and synthetic409 reply enter the relay; this probe does not call the product API or prove the ten-operation business journey."
+  ],
+  "additional_boundary_note": "timing_probe.py:16 sets DOCKER_CONFIG to the personal Docker config directory. The concrete request should identify the intended local Docker endpoint; current command construction does not pin context/daemon. Prefer an explicit known local endpoint and a task-owned minimal config to avoid default-context drift. No personal Docker config was read by reviewer.",
+  "package_preparation": {
+    "accepted": false,
+    "status": "not cleared in this bounded review",
+    "reason": "No package preparation request supplied. prepare_packages.py was inspected at a high level only; protocol-before-preparation.json exists, but this review has not validated it, the full dependency closure, or recovery. Do not treat this timing-probe review as package-preparation clearance."
+  },
+  "execution_performed": false,
+  "write_location_note": "Researcher role permits writes only in parent research/. Parent may copy this exact review to native/adapter-review.json; accepted remains false."
+}

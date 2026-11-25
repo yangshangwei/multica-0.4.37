@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "tool",
+    "govulncheck",
+    "-scan=module",
+    "-show=verbose",
+    "./..."
+  ],
+  "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/baseline/server",
+  "source": "baseline",
+  "exit": 2,
+  "started_unix": 1795600329.996662,
+  "ended_unix": 1795600330.2524748,
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_changes": [],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "69d05631f81a33de1e585a59dcb1c9fbf3253f28c4b0b66ea520fdf46df14b08",
+  "environment_keys": [
+    "GOCACHE",
+    "GOFLAGS",
+    "GOMAXPROCS",
+    "GOMODCACHE",
+    "GOPATH",
+    "GOTELEMETRY",
+    "GOTMPDIR",
+    "GOTOOLCHAIN",
+    "HOME",
+    "LANG",
+    "PATH",
+    "TMPDIR"
+  ]
+}

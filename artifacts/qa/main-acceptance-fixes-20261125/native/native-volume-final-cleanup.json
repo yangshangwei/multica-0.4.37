@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "volumes": [
+    {
+      "name": "multica-gap-full-main-package-acceptance-fixes-4b9d3494a2",
+      "owner": "acceptance-fixes-4b9d3494a2/native/linux-package-volume01",
+      "remove_exit": 0,
+      "absent": true
+    },
+    {
+      "name": "multica-gap-full-main-package-current-acceptance-fixes-4b9d3494a2",
+      "owner": "acceptance-fixes-4b9d3494a2/native/linux-current-package-volume",
+      "remove_exit": 0,
+      "absent": true
+    },
+    {
+      "name": "multica-native-controller-acceptance-fixes-4b9d3494a2",
+      "owner": "acceptance-fixes-4b9d3494a2/native/alltransport",
+      "remove_exit": 0,
+      "absent": true
+    }
+  ],
+  "at": "2026-11-25T21:39:22.407405",
+  "preserved": "All package/controller source/readback/failed evidence remains on disk"
+}

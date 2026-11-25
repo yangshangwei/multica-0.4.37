@@ -1,0 +1,29 @@
+{
+  "status": "review_requested",
+  "files": {
+    ".omx/private/acceptance-fixes/native/build_api.py": "fa11655f6073826671bf596825901dde33886895a6eb4746917317b3ea02d0eb",
+    ".omx/private/acceptance-fixes/native/cli_guard.py": "4f4b3ef399af96eb013676c02503c394d90590a9c0f5a561875d5eb81721673a",
+    ".omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+    ".omx/private/acceptance-fixes/native/guard_test.py": "bbe203ffc7f70778c8e2a6e29e50ad7ea6ad01e933f62e11bb84a19581645693",
+    ".omx/private/acceptance-fixes/native/installed_closure.py": "2db90a51865e76206f99e060cb79bdccc47d77dad4c01c4bedd82223eb107a2c",
+    ".omx/private/acceptance-fixes/native/prepare_packages.py": "bfd5ed1329c7344832e00386981ab7ebde0a285d7802d28804ab8c725dd72b7b",
+    ".omx/private/acceptance-fixes/native/run_cli.py": "de4ec09f1d78ada87d5efc6598b65cbd0afb19817ebbf20cfb7d467db1c045c5",
+    ".omx/private/acceptance-fixes/native/timing_probe.py": "7a79c9b2d660064e24e930a4e001926c39fa6d773c87c293ca2b161ec71a3c40",
+    ".omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56"
+  },
+  "request": "Approve one offline synthetic-response timing transaction; no API, credentials or acceptance claim. New relay0755 built Go1.26.11; original command policy unchanged. Then review actual API adapter separately.",
+  "database_labels": [
+    "legacy_cli_api01",
+    "native_api01"
+  ],
+  "protocol_baseline": "artifacts/qa/main-acceptance-fixes-20261125/native/protocol-before-preparation.json",
+  "note": "Freeze source01 completed; original frontend build source hashes unchanged. mac baseline captured full set/default. Pure installed closure and ASAR verifier copied with new orchestration, no old launcher. Timing probe review remains pending.",
+  "run_cli": "Complete unchanged source01 CLI spec240s; dedicated migrated legacy_cli_api01;12/1 pool, capacity<60 check, independently audit every owned resource and preserve fallback asFAIL. API build ongoing. Please review before execution.",
+  "checks": {
+    "fixture_tests": "3 pass exit0",
+    "guard_tests": "4 pass exit0",
+    "targeted_tsc": "exit0",
+    "api_daemon_provider_builds": "exit0 all",
+    "probe_run": "NOT RUN review needed"
+  }
+}

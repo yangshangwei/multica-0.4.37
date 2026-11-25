@@ -1,0 +1,59 @@
+{
+  "source_manifest": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/source.json",
+    "sha256": "86034a670e9fdbbcc6fef643780334ef5f495167254a210a27edd29e8e34ec54"
+  },
+  "source_files": 9368,
+  "mismatches": [],
+  "runs": {
+    "daemon-full-normal01": {
+      "exit": 0,
+      "counts": {
+        "pass": 2053,
+        "skip": 2
+      },
+      "unfinished": [],
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_manifest_matches": true
+    },
+    "daemon-full-race01": {
+      "exit": 0,
+      "counts": {
+        "pass": 2053,
+        "skip": 2
+      },
+      "unfinished": [],
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_manifest_matches": true
+    },
+    "collaborationrun-full-normal01": {
+      "exit": 0,
+      "counts": {
+        "pass": 383
+      },
+      "unfinished": [],
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_manifest_matches": true
+    },
+    "collaborationrun-full-race01": {
+      "exit": 0,
+      "counts": {
+        "pass": 383
+      },
+      "unfinished": [],
+      "stdout_hash_matches": true,
+      "stderr_hash_matches": true,
+      "source_manifest_matches": true
+    }
+  },
+  "binaries": {
+    "daemon-test": true,
+    "multica": true,
+    "memory-provider": true,
+    "api": true,
+    "multi-account-provider": true
+  }
+}

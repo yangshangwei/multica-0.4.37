@@ -1,0 +1,251 @@
+{
+  "status": "completed",
+  "source_manifest_sha256": "166165df36abc489d766432416afcfbfa429b3b3b219da174aeefb56eb134843",
+  "fixture_sha256": "c456e3a89ebf1a9b0d46555cb86a26811ca1fb61b2439e00bb72ae2dce43e509",
+  "api_sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16",
+  "node_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+  "adapter_sha256": "bcbb2569f989ac479867396506e77c7e9b73ffef23efe69bd7054fcde5659d36",
+  "guard_sha256": "fe7b222f4394c76b0e768e14d016462140f52ff650581bececf491aa5e2175a9",
+  "config_sha256": "0fc5aec892910d337cebde59a739aa9dc585205702769c4ccfc03ea3d22b39da",
+  "database": "fix_legacy_cli_api02",
+  "connections_before": 8,
+  "port": 65272,
+  "command": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source02/node_modules/@playwright/test/cli.js",
+    "test",
+    "e2e/collaboration-installed-clients.spec.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli02/results"
+  ],
+  "started": 1795606758.188522,
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": 2
+  },
+  "api_pid": 84545,
+  "test_pid": 84546,
+  "exit": 1,
+  "process_cleanup": [
+    {
+      "pid": 84546,
+      "exit": 1
+    },
+    {
+      "pid": 84545,
+      "exit": 0
+    },
+    {
+      "pid": 84542,
+      "exit": 0
+    }
+  ],
+  "resources_cleanup": {
+    "resources": [
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-215b9d78-c178-40d9-95ad-87552bdbf5cd",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-215b9d78-c178-40d9-95ad-87552bdbf5cd-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-4d001107-b81a-4e9b-bfe1-ec77a8032ccd",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-4d001107-b81a-4e9b-bfe1-ec77a8032ccd-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-5a0ba494-440e-46ac-887c-52540ac7a586",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-5a0ba494-440e-46ac-887c-52540ac7a586-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-61a0568e-8e7c-4e35-88e2-85969cfa372b",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-61a0568e-8e7c-4e35-88e2-85969cfa372b-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-70b3c248-19ea-4a38-81f7-fbc2f1d5e87b",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-70b3c248-19ea-4a38-81f7-fbc2f1d5e87b-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-7369257b-9d21-49d0-a1ef-0904e4094593",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-7369257b-9d21-49d0-a1ef-0904e4094593-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-a1b67cfd-7a5e-4315-90ea-b7acc5d2e80b",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-a1b67cfd-7a5e-4315-90ea-b7acc5d2e80b-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-bf19b57c-6942-41ae-b51a-e06e315d076f",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-bf19b57c-6942-41ae-b51a-e06e315d076f-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-f50e2d78-dae3-4b97-b603-d3f655dc746d",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-f50e2d78-dae3-4b97-b603-d3f655dc746d-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-fd079d43-0ae8-45e4-af28-915c8fae9aa5-stage",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "container",
+        "name": "multica-installed-cli-version-b09afe3fef7b4ab194b4df0ae9c4b360",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-215b9d78-c178-40d9-95ad-87552bdbf5cd-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-4d001107-b81a-4e9b-bfe1-ec77a8032ccd-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-5a0ba494-440e-46ac-887c-52540ac7a586-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-61a0568e-8e7c-4e35-88e2-85969cfa372b-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-70b3c248-19ea-4a38-81f7-fbc2f1d5e87b-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-7369257b-9d21-49d0-a1ef-0904e4094593-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-a1b67cfd-7a5e-4315-90ea-b7acc5d2e80b-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-bf19b57c-6942-41ae-b51a-e06e315d076f-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-f50e2d78-dae3-4b97-b603-d3f655dc746d-relay",
+        "absent": true,
+        "removed": false
+      },
+      {
+        "kind": "volume",
+        "name": "multica-installed-cli-fd079d43-0ae8-45e4-af28-915c8fae9aa5-relay",
+        "absent": true,
+        "remove_exit": 0,
+        "removed": true
+      }
+    ],
+    "errors": [],
+    "child": null,
+    "status": "pass"
+  },
+  "cleanup_status": "fail",
+  "container_count": 20,
+  "volume_count": 10,
+  "gate_after": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": 4
+  },
+  "gate_restored": true,
+  "remaining_db_clients": 0,
+  "source_unchanged": true,
+  "listener_closed": true,
+  "ended": 1795607061.730598
+}

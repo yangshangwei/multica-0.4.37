@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "static_code_accepted": true,
+  "execution_cleared": false,
+  "verdict": "MAC_FRAMEWORK_REPAIR_STATIC_ACCEPTED_AWAIT_INPUT_BINDING",
+  "reviewed_at": "2026-11-25T12:57:38.705051+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current-mac-sign-review-request.json",
+  "request_sha256": "01e32b4bd81a66237e20c237d1285a00ca5e317119db20f1eefb0cc148d3f7cd",
+  "bindings": {
+    "scope": "CurrentMac freshcopy framework topology repair afterassembly andlocaladhocsign only; eachduplicatechecked againstVersions/A bytes/mode beforelinkrestore; resolvedcontentunchanged, ASAR/productunchanged",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_current_mac.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_current_mac.py": "323f716be02f38558e51a67d2569468a3de3a4d8aada84f43cdd5b512a25eb80",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/repair_frameworks.py": "302171f250c17650eb825e721c1ae81f8060ed4546d5a9e8c644974d35e6faaf",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/sign_mac.mjs": "5805f73c912bf995e8f556b048242c28e8f34b0b9e913fffda189061e89f9b7a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "source": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current.json",
+      "sha256": "c0ad5060e808d728a9554f103f018dfc6d1a87a2349ef859037afbf813011c98"
+    },
+    "pending": "CurrentMac assemblyinput/outputhashes will be attached oncebuilderends; no executionyet",
+    "no_policy_change": "Sameactualentitlements hardenedruntime; noGatekeeper/securitysettingchanges; no signingidentityaccount"
+  },
+  "code_blocking_findings_open": 0,
+  "hash_mismatch": [],
+  "adapters_executed_by_reviewer": false,
+  "basis": [
+    "Fresh fixed task output package-current-mac-signed; original package/cache untouched. Exact copy is verified against old tree before repairs.",
+    "repair_frameworks.py handles only direct Contents/Frameworks/*.framework,requires real Versions/A and checks fileSHA+mode equality of duplicate Current/root entries before replacing with canonical relative links. Existing symlinks must already target the prescribed paths.",
+    "finish_current_mac.py compares complete resolved file content/modes before/after repair,then invokes unchanged reviewed local ad-hoc signer with pinned entitlements,no signing account/timestamp/notarization or Gatekeeper changes. Strict deep codesign and complete ASAR/unpacked/old-source checks remain.",
+    "Exact old/current assembly input and output hashes were deliberately not needed for static review. Add them after builder terminal result; only final bindings need checking then."
+  ],
+  "pending_bindings": [
+    "Current Mac assembly terminal status,stage input manifest,assembled app/ASAR output tree and source-current identity. Final request currently marks these pending."
+  ],
+  "mac_runtime_findings": {
+    "M1": "Still open in run_mac.py129b8794: log_close_errors missing from success predicate.",
+    "M2": "Still open: uses shared X/bin/daemon-test; final audit excludes its argv. Copy hash-checked poller under per-run state/bin or independently record exact process identity.",
+    "package_reference": "run_mac.py now selects mac-package03; this is only an older-package reference update,not closure of M1/M2 or current-candidate binding."
+  },
+  "verification": {
+    "python_ast_parse": "pass",
+    "script_hashes": "pass",
+    "tests": "not_run_user_constraint",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review"
+  }
+}

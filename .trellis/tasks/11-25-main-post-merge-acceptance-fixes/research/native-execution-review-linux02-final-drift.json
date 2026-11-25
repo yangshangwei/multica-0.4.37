@@ -1,0 +1,25 @@
+{
+  "observed_at": 1795610635.562746,
+  "baseline": "source01.json",
+  "actual_entries": 149211,
+  "diff": [
+    {
+      "path": "apps/web/.source/index.ts",
+      "before": null,
+      "after": {
+        "sha256": "c766b54976ea192c5f657746c60038fee8c1ab16fa6edfb0695c2d8dcf358bc1",
+        "mode": 384,
+        "size": 680
+      }
+    },
+    {
+      "path": "apps/web/.source/source.config.mjs",
+      "before": null,
+      "after": {
+        "sha256": "f9f328e587123fca6d7ad026fcc2e264978cdc588160d7c31406a95e864dac60",
+        "mode": 384,
+        "size": 649
+      }
+    }
+  ]
+}

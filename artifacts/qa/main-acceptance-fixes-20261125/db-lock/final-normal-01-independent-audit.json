@@ -1,0 +1,33 @@
+{
+  "label": "final-normal-01",
+  "receipt_sha256": "40c3002984314224c37428a1b664f62382a1681b08892a01b00caeb028a25b9f",
+  "raw_sha256": "ddb511e92b1834108472cd24ea5043e6b7bbf06b0d97a69d003cbd04b76d44df",
+  "named": {
+    "pass": 4627,
+    "fail": 2
+  },
+  "top": {
+    "pass": 1889,
+    "fail": 1
+  },
+  "leaf": {
+    "pass": 4070,
+    "fail": 1
+  },
+  "build_events": {},
+  "inventory_errors": [],
+  "static_top_count": 1890,
+  "exit": 1,
+  "package_terminal": [
+    "fail"
+  ],
+  "no_race_warning": true,
+  "source_unchanged": true,
+  "modules_unchanged": true,
+  "remaining_clients": 0,
+  "failures": [
+    "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+    "TestBuiltinSkillsConformToTemplate"
+  ],
+  "skips": []
+}

@@ -1,0 +1,52 @@
+{
+  "label": "default-policy-probe02",
+  "claim": "Distinct safe experiment; no attribution to original namespace cause",
+  "build_command": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "build",
+    "-o",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-default-probe02/probe",
+    "./cmd/acceptance_namespace_probe"
+  ],
+  "build_exit": 0,
+  "go_version": "go version go1.26.11 darwin/arm64",
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_manifest_sha256": "006e1c73147f39639c0ca09478cd38f882900261decbf37397ff7c58a48c2d7a",
+  "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+  "architecture": "arm64",
+  "runner_sha256": "b48135be2af5c1b5ca82a66b8a74d65679777f1cb0685afd772b282f1844563c",
+  "created": 1795603145.750068,
+  "operations": [
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--name",
+        "acceptance-fixes-4b9d3494a2-runtime-probe02",
+        "--label",
+        "multica.qa.owner=acceptance-fixes-4b9d3494a2-runtime",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,mode=1777",
+        "--mount",
+        "type=bind,src=/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/runtime/default-policy-probe02.bin,dst=/fixture-probe,readonly",
+        "--entrypoint",
+        "/fixture-probe",
+        "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Error response from daemon: invalid mount config for type \"bind\": bind source path does not exist: /Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/runtime/default-policy-probe02.bin\n"
+    }
+  ],
+  "binary_sha256": "14dd72736db11d78513261e0b99b1ee2fcfbeb25786bf76805af77171bef7e44",
+  "source_unchanged": true,
+  "binary_unchanged": true,
+  "go_unchanged": true,
+  "finished": 1795603146.37923
+}

@@ -1,0 +1,373 @@
+{
+  "checked_at": "2026-11-25T13:46:58.398445+00:00",
+  "parent_record_sha256": "31550b5dc439adf021f98a2c955a69b954158ac856aab71ecbd03c3afec66657",
+  "live_containers": [
+    {
+      "id": "036f46cff5a12e20615b7acad3478d34282ea7388a97f7eb6a7aa3ed810c0d31",
+      "name": "/acceptance-fixes-4b9d3494a2-remaining-redis",
+      "owner": "acceptance-fixes-4b9d3494a2",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "running": false,
+      "record_matches": true
+    },
+    {
+      "id": "5d14fb2c8e9ac94f4a3f31bd47c270b4b295803c6b75af14c91a458d03cacf04",
+      "name": "/acceptance-fixes-4b9d3494a2-redis",
+      "owner": "acceptance-fixes-4b9d3494a2",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "running": false,
+      "record_matches": true
+    },
+    {
+      "id": "f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2",
+      "name": "/acceptance-fixes-4b9d3494a2-db-lock-redis02",
+      "owner": "acceptance-fixes-4b9d3494a2",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "running": false,
+      "record_matches": true
+    },
+    {
+      "id": "22bd321d8816f54fd23328fc2adeccc1e6e553285f041d765b41baa3adaa0961",
+      "name": "/acceptance-fixes-4b9d3494a2-pg",
+      "owner": "acceptance-fixes-4b9d3494a2",
+      "image": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+      "running": false,
+      "record_matches": true
+    }
+  ],
+  "removed_volumes": [
+    {
+      "name": "multica-gap-full-main-package-acceptance-fixes-4b9d3494a2",
+      "absent": true,
+      "parent_remove_exit": 0
+    },
+    {
+      "name": "multica-gap-full-main-package-current-acceptance-fixes-4b9d3494a2",
+      "absent": true,
+      "parent_remove_exit": 0
+    },
+    {
+      "name": "multica-native-controller-acceptance-fixes-4b9d3494a2",
+      "absent": true,
+      "parent_remove_exit": 0
+    }
+  ],
+  "retained_pg": {
+    "mount_matches": true,
+    "volume": "acceptance-fixes-4b9d3494a2-data",
+    "owner": "acceptance-fixes-4b9d3494a2",
+    "database_count_before_stop": 221,
+    "other_clients_before_stop": 0,
+    "database_names_sha256": "211712caf10bd3fd2cc0d9c984bc3bd0c606427340b57d3fc6300949ed986516",
+    "stop_exit": 0
+  },
+  "ports": {
+    "independently_reconstructed_count": 75,
+    "ports": [
+      49474,
+      49475,
+      49476,
+      50466,
+      50467,
+      50468,
+      51187,
+      51188,
+      51189,
+      51409,
+      51410,
+      51411,
+      51604,
+      51605,
+      51606,
+      54205,
+      54206,
+      54207,
+      55479,
+      55480,
+      55481,
+      56232,
+      56233,
+      56234,
+      56556,
+      56557,
+      56558,
+      56759,
+      56760,
+      56761,
+      57892,
+      57893,
+      57894,
+      58109,
+      58110,
+      58111,
+      59484,
+      59485,
+      59486,
+      59874,
+      59875,
+      59876,
+      60910,
+      60911,
+      60912,
+      61583,
+      61584,
+      61585,
+      62590,
+      62591,
+      62592,
+      62917,
+      62918,
+      62919,
+      63124,
+      63125,
+      63126,
+      63239,
+      63240,
+      63241,
+      63711,
+      63712,
+      63713,
+      64349,
+      64350,
+      64351,
+      64578,
+      64579,
+      64580,
+      64633,
+      64634,
+      64635,
+      64830,
+      64831,
+      64832
+    ],
+    "open": [],
+    "source_records": [
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current03.json",
+        "ports": [
+          64830,
+          64831,
+          64832
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux02.json",
+        "ports": [
+          50466,
+          50467,
+          50468
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current02.json",
+        "ports": [
+          63711,
+          63712,
+          63713
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current01.json",
+        "ports": [
+          59484,
+          59485,
+          59486
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current01.json",
+        "ports": [
+          61583,
+          61584,
+          61585
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/memory-runtime-01/receipt.json",
+        "ports": [
+          51409,
+          51410,
+          51411
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/order-export-01/receipt.json",
+        "ports": [
+          64578,
+          64579,
+          64580
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/memory-runtime-02/receipt.json",
+        "ports": [
+          51187,
+          51188,
+          51189
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current02/receipt.json",
+        "ports": [
+          63711,
+          63712,
+          63713
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current03/receipt.json",
+        "ports": [
+          64830,
+          64831,
+          64832
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-02/admission.json",
+        "ports": [
+          60910,
+          60911,
+          60912
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/delayed-final01/admission.json",
+        "ports": [
+          56232,
+          56233,
+          56234
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-02/admission.json",
+        "ports": [
+          56759,
+          56760,
+          56761
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/delayed-01/admission.json",
+        "ports": [
+          62917,
+          62918,
+          62919
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final01/admission.json",
+        "ports": [
+          59874,
+          59875,
+          59876
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-01/admission.json",
+        "ports": [
+          55479,
+          55480,
+          55481
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final02/admission.json",
+        "ports": [
+          64349,
+          64350,
+          64351
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final03/admission.json",
+        "ports": [
+          63239,
+          63240,
+          63241
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final02/admission.json",
+        "ports": [
+          54205,
+          54206,
+          54207
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/admission.json",
+        "ports": [
+          51604,
+          51605,
+          51606
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-01/admission.json",
+        "ports": [
+          57892,
+          57893,
+          57894
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/resource-final01/admission.json",
+        "ports": [
+          64633,
+          64634,
+          64635
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/resource-01/admission.json",
+        "ports": [
+          62590,
+          62591,
+          62592
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-01/admission.json",
+        "ports": [
+          56556,
+          56557,
+          56558
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final01/admission.json",
+        "ports": [
+          58109,
+          58110,
+          58111
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/admission.json",
+        "ports": [
+          49474,
+          49475,
+          49476
+        ]
+      },
+      {
+        "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final01/admission.json",
+        "ports": [
+          63124,
+          63125,
+          63126
+        ]
+      }
+    ],
+    "parent_recorded_count": 66
+  },
+  "live_owned_process_candidates": [],
+  "history_limit": "No live historical before-state comparison inferred from current inspection; parent states old campaign unchanged. No reviewer mutations.",
+  "protocol": {
+    "receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/integration/protocol-final-audit.json",
+    "sha256": "0aed76035ad3a4f335aaef7b24fbf6fac94b10981d42af80bc8d284025271e2f",
+    "observed_baseline_sha256": "976652e1f7c67605cdb2303e2a63f129c80773b801e699f5339a1ba8217ecedb",
+    "parent_final_getter_sha256": "976652e1f7c67605cdb2303e2a63f129c80773b801e699f5339a1ba8217ecedb",
+    "exact_new_baseline_match": true
+  }
+}

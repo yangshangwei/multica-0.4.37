@@ -1,0 +1,40 @@
+{
+  "id": "main-post-merge-acceptance-fixes",
+  "name": "main-post-merge-acceptance-fixes",
+  "title": "main 合并后验收失败定位与修复",
+  "description": "归组并修复验收阻塞，完成原旅程回归、独立复核及资源清理；用户后续授权提交并推送修复分支",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-25",
+  "completedAt": null,
+  "branch": "codex/main-post-merge-acceptance-fixes",
+  "base_branch": "main",
+  "worktree_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+  "commit": "d90d76e6bd90e9c9e2f45fef0e0efd48d359bed6",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "11-20-comment-admin-human-authority",
+    "11-25-acceptance-db-lock",
+    "11-25-acceptance-security",
+    "11-25-acceptance-runtime",
+    "11-25-acceptance-client-journeys",
+    "11-25-acceptance-native-compat"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "本轮可证实修复、回归、独立复核和资源收尾完成；D02/D11及外部/平台阻塞保留。发布HOLD；用户于2026-11-25后续授权提交并推送当前修复分支。",
+  "meta": {
+    "delivery_status": "reviewed_repairs_with_open_release_blockers",
+    "release_verdict": "HOLD",
+    "commit_authorized": true,
+    "push_authorized": true,
+    "open_defects": ["D02", "D11"],
+    "report": "report.md"
+  }
+}

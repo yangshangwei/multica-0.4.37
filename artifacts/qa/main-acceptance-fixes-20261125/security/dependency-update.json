@@ -1,0 +1,28 @@
+[
+  {
+    "argv": [
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+      "get",
+      "github.com/gorilla/websocket@v1.5.4-0.20240701034025-d67f41855da4",
+      "golang.org/x/net@v0.62.0"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+      "mod",
+      "edit",
+      "-go=1.26.11"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+      "mod",
+      "tidy"
+    ],
+    "exit": 0
+  }
+]

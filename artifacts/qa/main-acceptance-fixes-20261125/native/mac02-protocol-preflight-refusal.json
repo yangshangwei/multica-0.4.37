@@ -1,0 +1,13 @@
+{
+  "status": "preflight_refused",
+  "reason": "Current protocol registrations differ from the earlier native capture; all earlier Electron handler entries absent, Multica entries unchanged, current default Applications/Multica.app",
+  "source_of_change": "unknown",
+  "application_started": false,
+  "api_started": false,
+  "database_mutated": false,
+  "registry_mutated_by_this_attempt": false,
+  "evidence": ".omx/private/acceptance-fixes/native/mac-current02/protocol-before.json",
+  "independent_repeat": ".omx/private/acceptance-fixes/native/protocol-observed-before-mac03.json",
+  "repeat_matches": true,
+  "continuation": "New run preserves the newly observed current state; does not reconstruct removed registrations or claim restoration of an unknown task-initial state."
+}

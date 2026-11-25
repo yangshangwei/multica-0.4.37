@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_FULL_CLI02_WITH_READ_ONLY_DIAGNOSTICS",
+  "reviewed_at": "2026-11-25T11:36:36.025569+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli02-review-request.json",
+  "request_sha256": "7fbde31c80378b0cc3843be00db9a553460e1e32c22efc384b12bcf004b636db",
+  "scope": "Corrected cleanup fixture full10operations original240s; freshDB, unchanged12/1pool; querywait observer separates active/lock/blockers with SQLhash only",
+  "bindings": {
+    "scope": "Corrected cleanup fixture full10operations original240s; freshDB, unchanged12/1pool; querywait observer separates active/lock/blockers with SQLhash only",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli02.py",
+      "cli02"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli02.py": "bcbb2569f989ac479867396506e77c7e9b73ffef23efe69bd7054fcde5659d36",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/pg_monitor.py": "70961b7bb94d6307190d1225b56a8af108dfae1e6c56d20680e66aaa3e9327d7",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli_guard.py": "fe7b222f4394c76b0e768e14d016462140f52ff650581bececf491aa5e2175a9",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/timing_probe.py": "fd921860e6db2e65a6287d0f620f1081652ef2de2296209f63d5f863e006b627"
+    },
+    "source": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source02.json",
+      "sha256": "166165df36abc489d766432416afcfbfa429b3b3b219da174aeefb56eb134843"
+    },
+    "api_binary": {
+      "path": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/api",
+      "sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16"
+    },
+    "database": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/legacy_cli_api02/env.json",
+      "sha256": "5fe1b1e77262032f96e3e01b207ee19bd98e9eff6d396923fab289600d2c1957"
+    },
+    "historical_preservation": "cli01 timeout+cleanupFAIL retained; no causality attributed from lessload; command+API+PGwait timing retained",
+    "api_build_source": {
+      "receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/api-build01.json",
+      "sha256": "da17bce39699846833352cfb6c691c77bcf506d20f4dc3d0116f3cd12f4720cb",
+      "source": "source01",
+      "note": "source02 adds cleanupfixture+test and unrelated test/docs edits; actual API bytes remain explicitlybound frozen01, not rebuiltsource02 claim"
+    }
+  },
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli02.py",
+    "cli02"
+  ],
+  "basis": [
+    "Targeted delta from accepted CLI01-v2: new frozen source02 and migrated fix_legacy_cli_api02; cleanup safeguards retained.",
+    "Business spec is byte-identical source01/source02; one positive and nine refusals,240000ms,workers1,retries0,12/1pool and fixed old image unchanged.",
+    "Fixture only strengthens cleanup error propagation and separates setup cleanup; no shared relay or business-assertion deletion.",
+    "pg_monitor SELECT is limited to own database wait metadata, bounded sqlc name pattern/queryMD5, blockers and aggregate client count; no SQL text/parameters/credentials emitted. Five-second subprocess deadline and parent-owned cleanup process retained.",
+    "API is explicitly the pinned source01 binary; source02 server delta is an integration test plus built-in skill document, not a claim of rebuilding API from source02. All request digests matched."
+  ],
+  "conditions": [
+    "Preserve CLI01 timeout/cleanupFAIL. A different load observation is not proof of cause.",
+    "Raw wait samples can establish observed blockers/latency, not causality without evidence. Preserve empty/error samples and actual test/cleanup exits."
+  ],
+  "not_cleared": [
+    "Actual success not predicted",
+    "Packaged Main execution",
+    "Integrated release acceptance"
+  ]
+}

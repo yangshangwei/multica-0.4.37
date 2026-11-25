@@ -1,0 +1,125 @@
+{
+  "label": "default-policy-probe03",
+  "claim": "Distinct safe experiment; no attribution to original namespace cause",
+  "build_command": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "build",
+    "-o",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-default-probe03/probe",
+    "./cmd/acceptance_namespace_probe"
+  ],
+  "build_exit": 0,
+  "go_version": "go version go1.26.11 darwin/arm64",
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_manifest_sha256": "f51d4d64c28a0ee6695e49385dd72bfbe29b7535f2b017310d01350e6f55c6c1",
+  "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+  "architecture": "arm64",
+  "runner_sha256": "06800f88aca1ba3f366744559ac9cac00d4d26c5bacf6dabfae2f4a17ad68eab",
+  "created": 1795603353.651326,
+  "operations": [
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--interactive",
+        "--pull=never",
+        "--name",
+        "acceptance-fixes-4b9d3494a2-runtime-probe03",
+        "--label",
+        "multica.qa.owner=acceptance-fixes-4b9d3494a2-runtime",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,mode=1777",
+        "--entrypoint",
+        "/bin/sh",
+        "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+        "-c",
+        "cat > /tmp/fixture-probe && chmod 500 /tmp/fixture-probe && exec /tmp/fixture-probe"
+      ],
+      "exit": 0,
+      "stdout": "c4b61a82a2492b59e3273d9e55ad41362832750e072a4748df18d9143aeec52e\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "--interactive",
+        "c4b61a82a2492b59e3273d9e55ad41362832750e072a4748df18d9143aeec52e"
+      ],
+      "exit": 126,
+      "stdout": "",
+      "stderr": "/bin/sh: exec: line 0: /tmp/fixture-probe: Permission denied\n"
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "--volumes",
+        "c4b61a82a2492b59e3273d9e55ad41362832750e072a4748df18d9143aeec52e"
+      ],
+      "exit": 0,
+      "stdout": "c4b61a82a2492b59e3273d9e55ad41362832750e072a4748df18d9143aeec52e\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "ps",
+        "-a",
+        "--filter",
+        "id=c4b61a82a2492b59e3273d9e55ad41362832750e072a4748df18d9143aeec52e",
+        "--format",
+        "{{.ID}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "volume",
+        "ls",
+        "--filter",
+        "name=a11c202f508d8ab724315fb90da359da6a40ea01da72b4e6aa864e4c1a57f5c6",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "binary_sha256": "0ac71f7b7bfd4e33f748f2a8fdc7a9de88dd2de528d44330ed576b6546b39cce",
+  "effective_configuration": {
+    "Privileged": false,
+    "CapAdd": null,
+    "CapDrop": [
+      "ALL"
+    ],
+    "SecurityOpt": null,
+    "ReadonlyRootfs": true,
+    "NetworkMode": "none",
+    "Tmpfs": {
+      "/tmp": "rw,nosuid,nodev,mode=1777"
+    }
+  },
+  "container_id": "c4b61a82a2492b59e3273d9e55ad41362832750e072a4748df18d9143aeec52e",
+  "anonymous_volumes": [
+    "a11c202f508d8ab724315fb90da359da6a40ea01da72b4e6aa864e4c1a57f5c6"
+  ],
+  "probe_exit": 126,
+  "cleanup_exit": 0,
+  "container_absent": true,
+  "volumes_absent": true,
+  "source_unchanged": true,
+  "binary_unchanged": true,
+  "go_unchanged": true,
+  "finished": 1795603357.5031402
+}

@@ -1,0 +1,23 @@
+{
+  "exit": 0,
+  "command": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "build",
+    "-buildvcs=false",
+    "-p",
+    "4",
+    "-ldflags",
+    "-X main.commit=a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+    "-o",
+    "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/api-server-final02",
+    "./cmd/server"
+  ],
+  "source_root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+  "commit": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "binary": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/api-server-final02",
+  "binary_sha256": "8aa81f305a59e1e93e4d65e8219081daba935fcdb2f46ed31711bc81308d041f",
+  "tool_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "tool_version": "go version go1.26.11 darwin/arm64",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/clients-build-final01/home",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "./internal/handler",
+    "./cmd/server"
+  ],
+  "exit": 0,
+  "source_manifest_sha256": "a16450324872ff5956c23af0a3c107758d649c50f84054262afbfc3809c0824a",
+  "scope": "frozen router01 source; last extra router assertions will be covered in final integrated run"
+}

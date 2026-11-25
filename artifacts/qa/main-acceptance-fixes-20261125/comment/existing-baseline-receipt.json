@@ -1,0 +1,47 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-count=1",
+    "./cmd/server",
+    "-run",
+    "^(TestUpdateCommentAttachments|TestEditCommentTriggers|TestMachineCredentialTaskTokenCannotMintHumanCredentials|TestMachineCredentialHumanCallerStillMints)$"
+  ],
+  "started_at": "2026-11-25T09:49:08.561576+00:00",
+  "database": "fix_comment_red01",
+  "home": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/comment_red01/home",
+  "source_hashes": {
+    "server/internal/handler/comment.go": "eb8bf8edef6a5b5417dbb736800d616cb428342942f6da98688a11a256da4f6d",
+    "server/internal/handler/actor_guards.go": "d7444bb08db5505abcef91e6c4361acef38208ad6eb2569bb26f1f027df1a77a",
+    "server/internal/middleware/auth.go": "18392905c77f59897c63b4bc2490b20c95389bf49c88748e934643ca9b6e5dfe",
+    "server/cmd/server/router.go": "78d6f2bedcff6a4ebe476ec4618ae602990328cb563d0e71907b7186c9039076",
+    "server/cmd/server/comment_attachment_integration_test.go": "1553ec52107c2598affc46dbfe3ff94f47a67891db42da774ce13e42efc28e75",
+    "server/cmd/server/comment_edit_mention_integration_test.go": "eed310c5fb949b32814f2e06be38c3dd0dcbcbabc21f77b37596da25b5d74d4c",
+    "server/cmd/server/machine_credential_mint_test.go": "6e825367cc7265ad63531f9d58010322c9d232c39ade78f41f3c8ca4245e64de"
+  },
+  "toolchain": "go version go1.27.0 darwin/arm64",
+  "purpose": "existing regression baseline before planning acceptance",
+  "exit_code": 0,
+  "finished_at": "2026-11-25T09:49:41.535952+00:00",
+  "classification": "diagnostic baseline; development checkout, not frozen candidate acceptance",
+  "named_result_counts": {
+    "pass": 16,
+    "fail": 0,
+    "skip": 0
+  },
+  "source_end_hashes": {
+    "server/internal/handler/comment.go": "eb8bf8edef6a5b5417dbb736800d616cb428342942f6da98688a11a256da4f6d",
+    "server/internal/handler/actor_guards.go": "d7444bb08db5505abcef91e6c4361acef38208ad6eb2569bb26f1f027df1a77a",
+    "server/internal/middleware/auth.go": "18392905c77f59897c63b4bc2490b20c95389bf49c88748e934643ca9b6e5dfe",
+    "server/cmd/server/router.go": "78d6f2bedcff6a4ebe476ec4618ae602990328cb563d0e71907b7186c9039076",
+    "server/cmd/server/comment_attachment_integration_test.go": "1553ec52107c2598affc46dbfe3ff94f47a67891db42da774ce13e42efc28e75",
+    "server/cmd/server/comment_edit_mention_integration_test.go": "eed310c5fb949b32814f2e06be38c3dd0dcbcbabc21f77b37596da25b5d74d4c",
+    "server/cmd/server/machine_credential_mint_test.go": "6e825367cc7265ad63531f9d58010322c9d232c39ade78f41f3c8ca4245e64de"
+  },
+  "listed_sources_unchanged": true
+}

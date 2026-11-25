@@ -1,0 +1,64 @@
+{
+  "schema": 2,
+  "accepted": true,
+  "verdict": "ACCEPT_FULL_CLI01",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli-review-request.json",
+  "request_sha256": "12bee39797306f955d2dfa79d4c951eec113dc13f0fef65554fe5fa839383352",
+  "reviewed_at": "2026-11-25T11:16:55.525763+00:00",
+  "scope": "Full unchanged ten-operation CLI spec at original240s, fresh API binding",
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli.py",
+    "cli01"
+  ],
+  "files": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli.py": "89fcd8c9c31a5100f26faae5984598f36014afd539d66f881c875729ec182a9e",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli_guard.py": "fe7b222f4394c76b0e768e14d016462140f52ff650581bececf491aa5e2175a9",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/timing_probe.py": "fd921860e6db2e65a6287d0f620f1081652ef2de2296209f63d5f863e006b627"
+  },
+  "source_manifest": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json",
+    "sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302"
+  },
+  "build_receipts": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/api-build01.json": "da17bce39699846833352cfb6c691c77bcf506d20f4dc3d0116f3cd12f4720cb",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/relay-build.json": "a03e8d74b71a0044f24ccfdb600209fce14e9bd9a47e139672661527ea839331"
+  },
+  "database_allocation": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/legacy_cli_api01/env.json",
+    "sha256": "b6258b645a32785592c1303b95914b59738c33d08f803a9234a86bd39c21bc68",
+    "migration": {
+      "database": "fix_legacy_cli_api01",
+      "exit": 0,
+      "source_base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1"
+    }
+  },
+  "api_binary": {
+    "path": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/api",
+    "sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16"
+  },
+  "blocking_findings_open": 0,
+  "issues": [],
+  "closed_findings": {
+    "CLI1": "run_cli.py now catches errors per child, handles ProcessLookupError, bounds SIGTERM/SIGKILL waits, closes logs independently, proceeds through Docker/gate/source/listener cleanup and publishes terminal receipts in outer finally."
+  },
+  "verified_followups": [
+    "Actual API binary digest matches newly pinned request.",
+    "Initial/final gate epochs are retained; restored booleans required by final success predicate.",
+    "Request pins same accepted guard/cleanup and same frozen original ten-operation spec/control/CLI fixtures; original240s deadline and zero retries remain.",
+    "All declared file/source/build/database/API digests rechecked and matched."
+  ],
+  "conditions": [
+    "Run only the exact command and bound bytes; retain any actual business or cleanup failure.",
+    "This approves execution, not a predicted PASS. Original240s/all ten operations remain the required outcome."
+  ],
+  "not_cleared": [
+    "Packaged Main runtime",
+    "Product-wide final integration acceptance"
+  ],
+  "adapters_executed_by_reviewer": false,
+  "supersedes": "native-cli-review-cli01.json for prior request743a86ae2ad98883d3d2c1bc88efc23dec56408e233b6e39e73291a3f75c58fb only",
+  "copy_destination": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli-review.json"
+}

@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "static_review_complete": true,
+  "execution_cleared": false,
+  "verdict": "MAC_DRAFT_TWO_LOCAL_CLEANUP_FIXES",
+  "reviewed_at": "2026-11-25T12:28:34.827206+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/main-draft-review-request.json",
+  "request_sha256": "a8fef34836bebe1fd4c0b40ab3c9e4f155c5170f0e1a6d40e7bc1e287f81ac90",
+  "reviewed_mac_sha256": "2d0f257ee8166cc3d09c3a75864e0df74f9d93ef9f2a387784daaebdbbfd4232",
+  "bindings": {
+    "scope": "Draft exact Main adapters; package02 hashes must be added before actual run",
+    "commands": [
+      [
+        "/opt/homebrew/bin/python3",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_mac.py",
+        "mac01"
+      ],
+      [
+        "/opt/homebrew/bin/python3",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_linux.py",
+        "linux01"
+      ]
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_mac.py": "2d0f257ee8166cc3d09c3a75864e0df74f9d93ef9f2a387784daaebdbbfd4232",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_linux.py": "fb838f2ae1bfc4bf123e6e7c3548b600d8ecc99e1e9b610850e67df358bfae8c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux_guard.py": "3119080f024368141d3e2a1d817225f27556164951b8d6f5f2a9ed15f9778cad",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/fake_discovery.py": "df87f5a4df6522c275e8e465757c848bb69b4906652c3e163c55d340c300fc14",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/process_audit.py": "fb07b8f27db951d43ad6aa0c34589d46b71e86cc1c785e933c6d1ace86865b0d"
+    },
+    "source": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json",
+      "sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302"
+    },
+    "controller": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-controller.json",
+      "sha256": "5a281e4e0de6e28063da151e2be223369ab1030b3a7a58028e9e4fdbe0ec50e1"
+    },
+    "database": "native_api01 migrated0; Mac and Linux sequential; please allocate native_linux_api01 if fresh perjourney mandatory",
+    "limits": "Original480s Mac and originalLinux fulljourney unchanged; defaultDockersecurity; no personalaccounts/providerexecution; exactMain noIPCstubs; fullnativebusinesschecks notloginonly",
+    "protocol_scope": "restore recorded native-lane baseline only; originalpre-campaign state unknown",
+    "pending": "verified package02 outputs beforefinaladmission"
+  },
+  "blocking_findings_open": 2,
+  "issues": [
+    {
+      "id": "M1",
+      "severity": "P2",
+      "file": ".omx/private/acceptance-fixes/native/run_mac.py",
+      "line": 89,
+      "issue": "Line78 records log_close_errors, but terminal exit0 predicate does not reject them.",
+      "required_fix": "Include not record.get(log_close_errors) in terminal success, preserving all original test and cleanup failures.",
+      "fixed": false
+    },
+    {
+      "id": "M2",
+      "severity": "P2",
+      "file": ".omx/private/acceptance-fixes/native/run_mac.py",
+      "line": 79,
+      "issue": "Final process audit searches only state/,package Contents/ and electron-mac/ paths. The Host fixture launches native/bin/daemon-test with only __multica_collaboration_host_router_poller in argv (collaboration-host-runtime.ts:355); its private HOME exists only in env. That process matches none of the audit prefixes, so independent cleanup can report pass while this poller survives.",
+      "required_fix": "Give this runner a uniquely owned hash-checked copy/path of daemon-test under state/bin and use it for COLLABORATION_HOST_DAEMON, or retain and independently inspect its exact spawned PID/identity. Do not broaden kill matching to all shared native/bin processes.",
+      "fixed": false
+    }
+  ],
+  "accepted_static_subset": [
+    "Actual packaged Mac Main/preload/file renderer; explicit password login,original480000ms full Host Stop/restart/Resume/history and authority checks remain. No IPC replacement,login-only substitution,timeout increase or assertion removal.",
+    "Private task HOME/TMP/profile;26provider overrides point to task missing executables except explicit fake_discovery.py. Fake accepts version and bounded initialization/catalog control frames only; other input records failure and exits97. No personal model/account is selected.",
+    "Real Host fixture uses task-built daemon and synthetic fixture provider with isolated HOME/USERPROFILE/XDG_CONFIG_HOME/CLAUDE_CONFIG_DIR,loopback callback and copied task provider/CLI. Actual provider uses fixture protocol,not personal agent account.",
+    "API readiness checks exact child PID and frozen source base; Web readiness and exact renderer index checks precede canonical Playwright command. Host fixture owns scoped host gate enable/restore.",
+    "Exact protocol baseline/owned-app restoration code is unchanged; parent must release its current native protocol lane before Mac work. No new system security policy relaxation."
+  ],
+  "binding_todo_not_code_blockers": [
+    "run_mac.py still references mac-package02.json/source01. Actual runtime request must select the successfully signed package and bind API,daemon-test,synthetic provider,tools,source/deps and fresh native_api01 configuration. Missing future output hashes were not treated as a reason to postpone this static review.",
+    "The draft embeds the old Linux runner hash. Linux revision f0462f15a5c09a598a6c2797d4d835316f0ab5545110fc25c70cd029243c3407 is already accepted separately in native-execution-review-linux01-v2.json; do not reopen its three closed findings.",
+    "Initial Main run may cover the explicitly older frozen source01 candidate as parent directed. It does not establish latest C1/account-resume/comment acceptance; final integrated rebinding remains required."
+  ],
+  "platform_blocked": false,
+  "adapters_executed_by_reviewer": false,
+  "verification": {
+    "python_ast_parse": "pass",
+    "mac_script_and_helpers_hashes": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "write_scope": "Only parent research/native-execution-review-*.md/json; Hooke owns runner fixes."
+}

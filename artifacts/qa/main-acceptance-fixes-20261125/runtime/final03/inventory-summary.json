@@ -1,0 +1,72 @@
+{
+  "daemon-full-normal01": {
+    "counts": {
+      "pass": 2053,
+      "fail": 0,
+      "skip": 2
+    },
+    "unfinished": [],
+    "skips": [
+      "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "TestIsDriveRoot"
+    ],
+    "package_terminals": {
+      "github.com/multica-ai/multica/server/internal/daemon": "pass"
+    },
+    "exit": 0,
+    "source_unchanged": true,
+    "tool_unchanged": true,
+    "runner_unchanged": true
+  },
+  "collaborationrun-full-normal01": {
+    "counts": {
+      "pass": 383,
+      "fail": 0,
+      "skip": 0
+    },
+    "unfinished": [],
+    "skips": [],
+    "package_terminals": {
+      "github.com/multica-ai/multica/server/internal/daemon/collaborationrun": "pass"
+    },
+    "exit": 0,
+    "source_unchanged": true,
+    "tool_unchanged": true,
+    "runner_unchanged": true
+  },
+  "daemon-full-race01": {
+    "counts": {
+      "pass": 2053,
+      "fail": 0,
+      "skip": 2
+    },
+    "unfinished": [],
+    "skips": [
+      "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "TestIsDriveRoot"
+    ],
+    "package_terminals": {
+      "github.com/multica-ai/multica/server/internal/daemon": "pass"
+    },
+    "exit": 0,
+    "source_unchanged": true,
+    "tool_unchanged": true,
+    "runner_unchanged": true
+  },
+  "collaborationrun-full-race01": {
+    "counts": {
+      "pass": 383,
+      "fail": 0,
+      "skip": 0
+    },
+    "unfinished": [],
+    "skips": [],
+    "package_terminals": {
+      "github.com/multica-ai/multica/server/internal/daemon/collaborationrun": "pass"
+    },
+    "exit": 0,
+    "source_unchanged": true,
+    "tool_unchanged": true,
+    "runner_unchanged": true
+  }
+}

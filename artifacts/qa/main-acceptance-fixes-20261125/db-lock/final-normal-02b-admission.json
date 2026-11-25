@@ -1,0 +1,61 @@
+{
+  "label": "final-normal-02b",
+  "command": [
+    "/bin/bash",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-02b/source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "github.com/multica-ai/multica/server/internal/service"
+  ],
+  "database": "fix_service_normal02",
+  "scratch": "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-02b/tmp",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-02b/source",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-02b/home",
+  "toolchain_provenance_sha256": "0019f3139c73ff4b4103b960093ad33148f36b6b9ad4c20cdd304587dab17758",
+  "head": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "source_manifest_sha256": "97008c37b375a78072bd91d0e85f789a73ce7e66a389fd4478162aee03f37687",
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "go_version": "go version go1.26.11 darwin/arm64",
+  "config_sha256": "4d0b39f7f25d0eac4643ef98340b256f7c398098d40d7be14df296cd2cfd645f",
+  "allocation_sha256": "002256713e6b884c5d06655c9704eb5cd93367dad6945ef61e5523c069b49936",
+  "runner_sha256": "65900e05afdcbb3c1bad03779d6f9d8c24ecb570297d82063ca9adc030c6e661",
+  "modules_manifest_sha256": "20fd3cc71c9d7eaf8f4b970bfd66df4d44650be65bebe11754a772e8edc25e1d",
+  "dirty_patch_sha256": "7361499e1f149cff121f30e2b0f524d04046b6864e5577e3b02b106539c9e441",
+  "migration_sha256": "e59093d16db6ee42aaa9f450662fd8e0da7b0462b33d9aca376ae1a20055f7bc",
+  "monitor_sha256": "be84072c20a6511fd221c8b007d8a589ecf9e161920da6dfd309819cfbf8bf08",
+  "redis_resource": {
+    "container": "f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2",
+    "name": "acceptance-fixes-4b9d3494a2-db-lock-redis02",
+    "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "port": 51112,
+    "command": [
+      "docker",
+      "create",
+      "--name",
+      "acceptance-fixes-4b9d3494a2-db-lock-redis02",
+      "--label",
+      "multica.qa.owner=acceptance-fixes-4b9d3494a2",
+      "--label",
+      "multica.qa.lane=db-lock",
+      "-p",
+      "127.0.0.1::6379",
+      "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "redis-server",
+      "/data/redis.conf"
+    ]
+  },
+  "connections_before": {
+    "total": 18,
+    "client": 13,
+    "max": "100"
+  },
+  "started": 1795605226.218634
+}

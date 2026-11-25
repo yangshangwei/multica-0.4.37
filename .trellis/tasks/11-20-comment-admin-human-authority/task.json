@@ -3,7 +3,7 @@
   "name": "comment-admin-human-authority",
   "title": "评论管理权限：阻止机器凭据借用管理员身份修改他人评论",
   "description": "核查 UpdateComment/DeleteComment 的管理员越权分支，保留合法人类管理员操作，并阻止机器凭据改写或删除他人评论。来源 security-remediation v2 14.2。",
-  "status": "planning",
+  "status": "in_progress",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -12,20 +12,20 @@
   "assignee": "artisan",
   "createdAt": "2026-11-20",
   "completedAt": null,
-  "branch": "codex/security-remediation-v2-20261118",
+  "branch": "codex/main-post-merge-acceptance-fixes",
   "base_branch": "codex/cross-workspace-collaboration",
-  "worktree_path": null,
+  "worktree_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
   "commit": null,
   "pr_url": null,
   "subtasks": [],
   "children": [],
-  "parent": null,
+  "parent": "11-25-main-post-merge-acceptance-fixes",
   "relatedFiles": [
     ".trellis/tasks/11-18-security-remediation-v2-template/design.md"
   ],
   "notes": "",
   "meta": {
     "origin_task": "11-18-security-remediation-squad-v2",
-    "authorization": "2026-11-20 explicit user decision; planning only"
+    "authorization": "2026-11-25 parent planning review accepted; implementation authorized; fresh per-package databases and frozen run identity required"
   }
 }

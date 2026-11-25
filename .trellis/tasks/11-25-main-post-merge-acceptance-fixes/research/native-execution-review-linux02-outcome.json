@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "reviewed_at": "2026-11-25T12:49:28.402648+00:00",
+  "result": "FAIL_RETAINED_NO_MAIN_EXECUTION",
+  "accepted_functional_result": false,
+  "playwright_inventory": {
+    "failed": 1,
+    "passed": 0,
+    "skipped": 0,
+    "exit": 1
+  },
+  "container_exit": 125,
+  "diagnosis": {
+    "observation": "Original Playwright error records Docker exit125 before Main and only private-stderr byte count. Separate retained mount probe reproduces Docker invalid-bind-source-path on external-volume linux-controller.",
+    "classification": "Task transport path configuration failure, locally repairable through owned volume/local controller; not evidence Linux platform is unsupported.",
+    "caveat": "Probe stderr is a distinct observation,not retroactively the original458 stderr bytes."
+  },
+  "actual_run_binding": {
+    "adapter_sha256": "813779ef2f26b3f906f77bc37a745a56f369b9c74b500c95085cab7db3234e40",
+    "source_manifest_sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302",
+    "runner": "run_linux.py",
+    "label": "linux02",
+    "database": "fix_native_linux_api01",
+    "mode_restoration_receipt_sha256": "ece706b2821683f76f74dc61f285c755f36e721613f0e9627a56fc93f336bb22",
+    "copied_review_request_sha256": "8a33bb897b7c6d5e1c6f3671606e7d137b9997b351882c8e234bed4b2e6dbc6c",
+    "difference": "Copied clearance names run_linux02.py/postpackage manifest,while actual receipt records accepted run_linux.py/original source01 after separately parent-authorized7za0644 restoration. Preserve actual identities; this run is not exact execution of the copied Linux02 request."
+  },
+  "source_drift": {
+    "recorded_source_unchanged": false,
+    "current_independent_observation": {
+      "observed_at": 1795610635.562746,
+      "baseline": "source01.json",
+      "actual_entries": 149211,
+      "diff": [
+        {
+          "path": "apps/web/.source/index.ts",
+          "before": null,
+          "after": {
+            "sha256": "c766b54976ea192c5f657746c60038fee8c1ab16fa6edfb0695c2d8dcf358bc1",
+            "mode": 384,
+            "size": 680
+          }
+        },
+        {
+          "path": "apps/web/.source/source.config.mjs",
+          "before": null,
+          "after": {
+            "sha256": "f9f328e587123fca6d7ad026fcc2e264978cdc588160d7c31406a95e864dac60",
+            "mode": 384,
+            "size": 649
+          }
+        }
+      ]
+    },
+    "interpretation": "Only2 added apps/web/.source generated map/config files are observed now. All baseline paths/bytes/modes,including restored7za,match. Next Web log records MDX map generation; source01 next.config.ts exports createMDX wrapper. This supports runtime-generated output rather than product-code mutation.",
+    "limit": "Terminal receipt has only boolean,no terminal diff; independent diff is the explicitly timestamped later observation. Do not rewrite original failure flag or add a broad .source exclusion."
+  },
+  "cleanup": {
+    "receipt_container_cleanup": {
+      "resources": [
+        {
+          "kind": "container",
+          "name": "multica-collaboration-main-e30cd5bb-86d",
+          "absent": true,
+          "removed": false
+        }
+      ],
+      "errors": [],
+      "child": null,
+      "status": "pass"
+    },
+    "receipt_remaining_db_clients": 0,
+    "receipt_log_close_errors": [],
+    "fixture_exit": 1,
+    "logclose_success_predicate": "Both run_linux.py and run_linux02.py reject nonempty log_close_errors. No close error or fallback/error is recorded for this failure. status=completed means finished,not pass.",
+    "independent_read_only": {
+      "multica-collaboration-main-e30cd5bb-86d": {
+        "inspect_exit": 1,
+        "absent": true
+      },
+      "recorded_pids_still_present": [],
+      "observation_time": "2026-11-25T12:45:24.152790+00:00"
+    }
+  },
+  "next_action": "Use admitted volume transport/local controller and fresh native_linux_api02. Bind completed current C1/comment package/API/source for next integrated Main when available; do not silently repeat the older package as current acceptance. Inspect only changed guard/mount/configuration paths and exact hashes.",
+  "cleared_preparation": {
+    "volume_staging": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-linux-volume01.json",
+    "current_packages": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-current-packages.json"
+  },
+  "evidence_sha256": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux02/receipt.json": "1ca04346406fcd022cbbef0329f242b95ccce5aae6483c5575da7d41b8adbd94",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux02/playwright.json": "2b90ce03da9275f3bb70d5ee1c57962c7057143b89f186f379153b0954be0bb1",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux02/mount-probe.json": "8b76d3a162163f755dda6334d6b73c85cdfb0f0f5c569214a6f402deb30df1b2",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux02/web.log": "18402d2a8ae61a4d351171c1d55b987bbaa440eff09b77d79b534a36d3c8f975",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/7za-mode-restored.json": "ece706b2821683f76f74dc61f285c755f36e721613f0e9627a56fc93f336bb22"
+  },
+  "reviewer_mutations": "Only parent research files; no source/runner edits,test/service start,Docker mutation or SQL performed."
+}

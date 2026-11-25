@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_COMPLETE_ALLVOLUME_TRANSPORT_PREFLIGHT",
+  "reviewed_at": "2026-11-25T13:23:04.080552+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/alltransport-review-request.json",
+  "request_sha256": "851043e72ab9af6cafc35053a4eda8beb6fb19121a237cc75f68b00cfaffda0b",
+  "bindings": {
+    "scope": "Completealltransportadmission beforefulltest, noappstart: controller+packagereadonlyvolumes, syntheticmachine/discoverycopiedtoownedstoppedcontainer, exactruntimeflags, nodehashonlyprobe559controllerfiles+packageasar",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_transport.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_transport.py": "51f992b7760c25c58f1d4ea2dc4795ea6b0edb31641565326a02187c5b71e7d9",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/volume_runtime.py": "aae09947153ebcc883a5cd1f87616d391313302a5c47167c6a0e06a981ad182c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "package_receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-volume.json",
+    "policy": "No bindmount/nohostsharingchange/defaultsecurity; entireprerequisite inoneownedcontainer thencleanup",
+    "revision": "AT1 fixed: onlyexplicit no-such-object absence, daemon/permission errors retained; finalinspect afterfallback mandatory"
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_transport.py"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "closed_findings": [
+    {
+      "id": "AT1",
+      "fix": "Cleanup now times out failed inspection,requires exact owner/name/image before fallback removal,re-inspects after removal and accepts absence only with explicit no-such-object. Any other failure is appended to cleanup_errors and prevents exit0."
+    }
+  ],
+  "basis": [
+    "Only cleanup observation changed from reviewed alltransport request; all declared script hashes match and Python AST passes. Existing static transport review reused.",
+    "One complete probe covers machine/discovery bytes,559controller files,ASAR and Playwright1.58.2 under canonical all-volume runtime command builder/private root tmpfs/default Docker security. No host binds or file-sharing changes.",
+    "Current package receipt is staged_verified with cleanup_errors=[] and matching package manifest. Existing independently verified readback/controller/volume-owner evidence retained. No full source rehash."
+  ],
+  "additional_bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-volume.json": "33fa2b7bab8032164cf25fadea381e7aa58e1cdb0520baed1a4396f3c419ecd2",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-package.json": "8c659d4f6e0d5cd8b3ae5673b770ef060f526c681b2c486a63f37c3f875e9084",
+    "/usr/local/bin/docker": "d564bccadf2a017ffa5d81c103a950c53b697cc1b7fcf523cc4c2726b440286a"
+  },
+  "conditions": [
+    "Preflight only: no Main/API/DB/account/provider execution. Require actual probe result and final cleanup before next complete Main on dedicated native_linux_api03.",
+    "Controller/package volumes are explicitly retained owned staging outputs; probe/staging containers must be absent. Keep all failed probes.",
+    "Main must reuse this exact verified command builder/volume identities and original restrictive synthetic discovery; only changed runtime bindings need review afterward."
+  ],
+  "verification": {
+    "hashes": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "prior_review": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-alltransport.json"
+}

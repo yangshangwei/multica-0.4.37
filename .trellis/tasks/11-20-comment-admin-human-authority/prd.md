@@ -1,6 +1,6 @@
 # 评论管理权限：机器身份不得借用管理员权限
 
-状态：规划交付；产品实现未启动。2026-11-20 用户明确授权建立独立产品任务。来源：[安全漏洞修复小队 v2](../11-18-security-remediation-squad-v2/prd.md)，子任务一 design.md 14.2 平台项 A。
+状态：2026-11-25 用户授权纳入 main 验收修复；等待父任务内部规划审查通过后实施。2026-11-20 原规划授权及证据保留。来源：[安全漏洞修复小队 v2](../11-18-security-remediation-squad-v2/prd.md)，子任务一 design.md 14.2 平台项 A。
 
 ## Goal
 
@@ -22,13 +22,18 @@
 
 ## Acceptance Criteria
 
-- [ ] 完整凭据 × 角色 × 本人/他人 × 修改/删除矩阵，经真实路由和鉴权层验证。
-- [ ] owner/admin 所属机器对他人评论编辑、仅附件修改、删除均拒绝；无副作用。
-- [ ] 合法人类 owner/admin 可管理他人评论，作者字段不变、revision 与冲突语义正确。
-- [ ] 普通成员、自有智能体评论、受限审查员、过期/终结 task、跨工作空间回归通过。
-- [ ] 绕过路由直接调用处理器时不能借用管理员角色；复用既有身份判据。
-- [ ] 新鲜任务测试库上整包 handler/cmd-server、必要服务层与定向 race、go vet 通过，普通测试有 CLI 防护。
+- [x] 完整凭据 × 角色 × 本人/他人 × 修改/删除矩阵，经真实路由和鉴权层验证。
+- [x] owner/admin 所属机器对他人评论编辑、仅附件修改、删除均拒绝；无副作用。
+- [x] 合法人类 owner/admin 可管理他人评论，作者字段不变、revision 与冲突语义正确。
+- [x] 普通成员、自有智能体评论、受限审查员、过期/终结 task、跨工作空间回归通过。
+- [x] 绕过路由直接调用处理器时不能借用管理员角色；复用既有身份判据。
+- [x] 新鲜任务测试库上整包 handler/cmd-server、必要服务层与定向 race、go vet 通过，普通测试有 CLI 防护。
 
 ## 范围与交付
 
 只修改评论写权限、必要鉴权复用、测试及规范；不变更安全小队模板、不扩展评论可见性、不改数据库关系。独立分支交付。此任务不能被“指令已禁止 leader 编辑评论”替代。
+
+## 2026-11-25 acceptance-fixes execution authorization
+Parent: ../11-25-main-post-merge-acceptance-fixes. Work exclusively in the assigned worktree. No commits, pushes, deploys, new dependencies, real Agent CLI/model execution, changed deadlines/retries/skips, or altered original evidence. New public evidence: artifacts/qa/main-acceptance-fixes-20261125/comment; private resources: .omx/private/acceptance-fixes/comment.
+
+Generic upload comment_id binding is a separate product contract investigation; do not infer comment-management authorization or change it without a confirmed requirement. Full handler and relevant cmd/server normal/race plus real HTTP credential regressions are required, on unique owned databases/HOME/ports.

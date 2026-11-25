@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_CURRENT_MAC_PRISTINE_FRAMEWORK_REPAIR_AND_SIGN",
+  "reviewed_at": "2026-11-25T13:14:15.303057+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current-mac-sign02-review-request.json",
+  "request_sha256": "c6315b9f8e051f9273e9125eb6c3b2dd3095066a9bfd48c971dafdcac35a8c8d",
+  "bindings": {
+    "scope": "Freshcopycurrentproduct; replaceonlyfour *.framework directories withhash-pinnedpristineElectron distribution; exactcopymatch before14links, resolvedbyteequalrepair; adhocsign/hardenedruntime; productASAR+unpackedCLIunchanged",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_current_mac02.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/repair_frameworks.py": "302171f250c17650eb825e721c1ae81f8060ed4546d5a9e8c644974d35e6faaf",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/sign_mac.mjs": "5805f73c912bf995e8f556b048242c28e8f34b0b9e913fffda189061e89f9b7a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_current_mac02.py": "dd61bd2057d7e85b0548e75bb9223a2dd691fa4a75ddc4d8c0740cede8080053"
+    },
+    "source": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current.json",
+      "sha256": "c0ad5060e808d728a9554f103f018dfc6d1a87a2349ef859037afbf813011c98"
+    },
+    "no_policy_change": "Sameactualentitlements hardenedruntime; noGatekeeper/securitysettingchanges; no signingidentityaccount",
+    "inputs": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-preparation.json": "5af9fc50a8b06c475317388547d9255b55257b7bf022b1a5e5e04f3645854ba6",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-assembled-input.json": "cb98c2778e799bcb9a94db5020f7f866c1dfac6d5ad2354d4a7b78aae7ae6d3c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-package-inputs.json": "9fa3d4c029b1080025b4ec1cdb314fb31922c8ae1fca2a5701c501644dfdea04"
+    },
+    "condition": "Currentassembledapp andstagetrees must matchthe recordedmanifest beforefreshcopy/sign; allproductmemberschecked; original cacheunchanged"
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_current_mac02.py"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "closed_findings": [
+    {
+      "id": "MS1",
+      "fix": "New fresh signed02 copy replaces exactly4framework directories from pinned pristine Electron distribution before unchanged14link/content-equality repair. Failed partially signed original/cache remain untouched; both prior and pristine framework trees recorded."
+    }
+  ],
+  "basis": [
+    "Every request script/input/source hash matches. Four canonical framework inventories702/6/6/9entries match pinned mac-package-inputs Electron manifest. All14duplicate link candidates have identical resolved file bytes and modes in that canonical input. New signed02 output absent.",
+    "Replacement scope is only those4 *.framework directories in a new owned app copy. ASAR,current product files and unpacked CLI are untouched and validated against stage before signing and against original after signing.",
+    "Same reviewed local signer identity=-,identityValidation=false,preEmbedProvisioningProfile=false,timestamp=none,hardenedRuntime=true and actual pinned entitlements. No personal certificate/account,notarization,Gatekeeper or security-setting changes.",
+    "Strict codesign --verify --deep --strict,complete ASAR integrity,unpacked equality,original immutability and exact captured protocol restoration remain required. No whole-source closure rehash needed; prior audit reused."
+  ],
+  "conditions": [
+    "Run only the exact declared command and hashes after parent releases native protocol lane; existing preflight requires exact baseline.",
+    "Preserve partial-signature failure and4mismatch evidence. Record new repaired/signed tree,strict verification exit and exact protocol cleanup. Signing approval is not Main functional acceptance.",
+    "Mac runtime M1/M2 are independently closed in run_current_mac.py b9690270...; final runtime admission needs only signed artifact/request binding and dedicated migrated DB."
+  ],
+  "verification": {
+    "changed_hashes_and_4canonical_frameworks": "pass",
+    "14link_equality_contract": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "evidence": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-current-mac-sign02-inputs.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-current-mac-runtime-static.json"
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "status": "completed",
+  "source_manifest_sha256": "fae4c892381d2bf2816de6627ab99941a6288b273391855f6ad7f4a7e698c729",
+  "package_manifest_sha256": "8c659d4f6e0d5cd8b3ae5673b770ef060f526c681b2c486a63f37c3f875e9084",
+  "adapter_sha256": "9d592b2e2e8d54a7abf679c67b5e2b04ecd1836ecc6ffe26ccea52b0a03dc865",
+  "database": "fix_native_linux_api03",
+  "ports": [
+    63711,
+    63712,
+    63713
+  ],
+  "started": 1795613635.3007512,
+  "processes": [
+    {
+      "pid": 51456,
+      "name": "api",
+      "command": [
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin-current/api"
+      ]
+    },
+    {
+      "pid": 51457,
+      "name": "web",
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/web-server.mjs"
+      ]
+    },
+    {
+      "pid": 51462,
+      "name": "renderer",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "http.server",
+        "63713",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source-current/apps/desktop/out/renderer"
+      ]
+    },
+    {
+      "pid": 51469,
+      "name": "playwright",
+      "command": [
+        "/bin/bash",
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source-current/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source-current/node_modules/@playwright/test/cli.js",
+        "test",
+        "e2e/collaboration-installed-main.spec.ts",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux-current02/results"
+      ]
+    }
+  ],
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false
+  },
+  "exit": 0,
+  "cleanup": [
+    {
+      "pid": 51469,
+      "exit": 0
+    },
+    {
+      "pid": 51462,
+      "exit": -15
+    },
+    {
+      "pid": 51457,
+      "exit": 0
+    },
+    {
+      "pid": 51456,
+      "exit": 0
+    }
+  ],
+  "container_cleanup": {
+    "resources": [
+      {
+        "kind": "container",
+        "name": "multica-collaboration-main-2eb390f6-914",
+        "absent": true,
+        "removed": false
+      }
+    ],
+    "errors": [],
+    "child": null,
+    "status": "pass"
+  },
+  "remaining_db_clients": 0,
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "ended": 1795613897.677797
+}

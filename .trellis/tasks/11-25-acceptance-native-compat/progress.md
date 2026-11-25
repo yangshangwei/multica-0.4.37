@@ -1,0 +1,3 @@
+# Terminal native results 2026-11-25T21:43:25.392375
+
+LinuxfullMainPASS1/210.3s original600s+allcleanupPASS. MacfullMainknowledgeOFFcompatibilityPASS1/85.8s original480s+allcleanupPASS/perrunprotocolrestorePASS. Exactfinalreceipts published native/{linux-current02,mac-current03}; native-results.json/report.md updated. CLI01/02/03all240sFAIL6/9/9relaystarts; D11UNRESOLVED nofourthrun. DefaultonMacsessionassertFAIL/fullcontinuationNOTVERIFIED. EarliernativeprotocolcleanupFAIL+initialtaskstateUNPROVEN retained. All3stagingvolumesremovedexactowner, allCLI/Maincontainersabsent, taskDBsretainedparentowned. Noactiveownedapp/API. Ready independentparentfinalreview; no commits/push.

@@ -1,0 +1,583 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-count=1",
+    "./cmd/server",
+    "-run",
+    "^TestCommentManagementClaimedPasswordHTTP$"
+  ],
+  "started_at": "2026-11-25T10:39:38.434425+00:00",
+  "database": "fix_comment_probe_password01",
+  "allocation": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/comment_probe_password01",
+  "execution_env_sha256": "1cb2b88d34fa1df3581d7d4d4d684c61fd98b60adf1efdc20b3cca7c0cb7e209",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-claim-password01/source",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-claim-password01/home",
+  "tmp": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-claim-password01/tmp",
+  "base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "manifest_sha256": "e2b17927dd7444492c461ad17664392522be04e048b1d5b99afa52f67eac361c",
+  "harness_sha256": "ab776407e882964133ce26e9a7f2b267474748f08e453ec62cfc20fd7c0c5250",
+  "toolchain": "go version go1.26.11 darwin/arm64",
+  "resource_probe_sha256": "588469ae6be3bed34aa84a62023f39dabfb023c0e5024329608567e50264bd51",
+  "go_binary": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+  "go_binary_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "exit": 0,
+  "finished_at": "2026-11-25T10:39:58.982111+00:00",
+  "counts": {
+    "pass": 134
+  },
+  "inventory": [
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/jwt/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/pat/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/task/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/cross-workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/daemon-token-not-general-auth",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/expired-task-token",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/restricted-reviewer",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/revoked-pat",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/removed-membership",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner/terminal-task",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/owner",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/jwt/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/pat/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/task/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/cross-workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/daemon-token-not-general-auth",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/expired-task-token",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/restricted-reviewer",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/revoked-pat",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/removed-membership",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin/terminal-task",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/admin",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/jwt/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/pat/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/task/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/cross-workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/daemon-token-not-general-auth",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/expired-task-token",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/restricted-reviewer",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/revoked-pat",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/removed-membership",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member/terminal-task",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password/member",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP/password",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedPasswordHTTP",
+      "action": "pass"
+    }
+  ],
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "after_resources": {
+    "cluster_connections": 22,
+    "comments": 0,
+    "database": "fix_comment_probe_password01",
+    "database_connections": 1,
+    "users": 0,
+    "workspaces": 0
+  },
+  "go_binary_unchanged": true
+}

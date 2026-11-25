@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_CURRENT_LINUX_VOLUME_STAGING",
+  "reviewed_at": "2026-11-25T13:02:49.613543+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current-linux-volume-review-request.json",
+  "request_sha256": "7d6c87b9ef63f647494a967832908403c3bbe42d822806e95cf921fe28dcc27a",
+  "bindings": {
+    "scope": "SameacceptedownerlabelDocker-cp/readbacktransport; currentverifiedC1frontend/CLIpackage instead ofold02; freshvolume/stage/readback/controller names",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_current_linux_volume.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_current_linux_volume.py": "57981002b7a1b0dbcc0917af63bd651ea238fa53bd68183ee2b7b5cbe02816bc",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "package": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-package.json",
+      "sha256": "8c659d4f6e0d5cd8b3ae5673b770ef060f526c681b2c486a63f37c3f875e9084"
+    },
+    "references": {
+      "previous_stage_adapter": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_linux_volume.py",
+      "previous_review": "native-execution-review-linux-volume01.json"
+    },
+    "next": "currentfullLinuxrunner complete600s onunusednative_linux_api02"
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_current_linux_volume.py"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "basis": [
+    "Exact delta from accepted stage_linux_volume.py changes only package manifest and fresh owner/volume/state/readback/controller/output names. All creation,readback,readonly rootfs,network-none and cleanup logic unchanged.",
+    "Declared script/input hashes match. Current package manifest8c659d4f... binds ASAR921f9abd... and source-current c0ad5060.... Existing reviewed preparation and closure audits retained; no repeated full source audit.",
+    "Retains exact package file/mode verification before copy and full readback equality before staged_verified. No host Docker sharing/policy change or Main launch."
+  ],
+  "conditions": [
+    "Preserve old volume as owned evidence; current output is a distinct volume for current Main.",
+    "Bind successful staging receipt and actual readonly volume identity into Main review; this staging approval is independent of current Mac assembly."
+  ],
+  "verification": {
+    "changed_hashes_and_static_delta": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "prior_reviews": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-linux-volume01.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-current-packages.json"
+  ]
+}

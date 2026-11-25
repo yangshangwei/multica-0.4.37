@@ -1,0 +1,1186 @@
+{
+  "schema": 1,
+  "reviewed_at": "2026-11-25T12:55:52.065905+00:00",
+  "scope": "Exact21 original latest-FAIL browser/native identities only; per-run candidate outcomes, not whole final-candidate acceptance",
+  "original_ledger": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/original-skip-dispositions.json",
+    "sha256": "12c823517b4b0ccc3dd0fd5395d1b11b3d4da936da46fe9efb862a8eed47c842"
+  },
+  "immutable_original_counts": {
+    "default": {
+      "PASS": 400,
+      "SKIP": 138
+    },
+    "latest_supplement": {
+      "PASS": 117,
+      "FAIL": 21
+    },
+    "retained_history": {
+      "PASS": 114,
+      "FAIL": 24
+    }
+  },
+  "new_disposition_counts": {
+    "PASS": 9,
+    "BLOCKED": 9,
+    "PENDING": 2,
+    "FAIL": 1
+  },
+  "records": [
+    {
+      "original_identity": "8b3c43dc51139ab50b4b-44aa37df1aae596f2971::chromium",
+      "original_file": "admin-resource-publishing.spec.ts",
+      "original_title": "admin-resource-publishing.spec.ts / administrator resource publishing / real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/resource-publishing-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/resource-publishing-01/playwright.json",
+            "sha256": "ce71fa3f3898170ab3bfd24fd608ed1310be7f5db910dd1ed388f5f0cef6e052"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/resource-publishing-01/completion.json",
+            "sha256": "822e4d2ff44357b477c6206d4ba824ce571e19bb419a649711d3ccc480e95362"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "resource-final01",
+      "new_case": {
+        "id": "8b3c43dc51139ab50b4b-44aa37df1aae596f2971",
+        "file": "admin-resource-publishing.spec.ts",
+        "title": "real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 7506,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/resource-final01/playwright.json",
+          "sha256": "6e7a6ee0531ec181a4782bee5f238ece02030755f67373463db4ed63f40913ba"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/resource-final01/completion.json",
+          "sha256": "8406dceae9b0b7a1cf56282bb85326f18357e6b9adcd7a9eb8dafbe35bbb37b1"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "pre_C1",
+        "run_source": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+        "source_manifest_sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+        "test_command": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/resource-final01/test-command.json",
+          "sha256": "b4af7998c2810c08370e10452050d5e49ab62df1cfb2f5f96e97522ca0753d16"
+        },
+        "admission": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/resource-final01/admission.json",
+          "sha256": "0ee7ec6ee169278d522656c110cb1a07d51843b7c68ec625c0d0a1e735bce993"
+        },
+        "source_before": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/resource-final01/source-before.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        },
+        "source_after": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/resource-final01/source-after.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred."
+    },
+    {
+      "original_identity": "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+      "original_file": "collaboration-cross-client-execution.spec.ts",
+      "original_title": "collaboration-cross-client-execution.spec.ts / AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/cross-client-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/cross-client-01/playwright.json",
+            "sha256": "14de0b21381b53c29f99f1ebb6bf76f99791e367e6becd332f2c39e44cfb7177"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/cross-client-01/completion.json",
+            "sha256": "cc00c985c710b9fce0d58c373691a2edbd841313db4fbca395b46fea07a0932f"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "900011f45627c15b945e-e3d039a6ffb48d4184b3::chromium",
+      "original_file": "collaboration-detail-journey.spec.ts",
+      "original_title": "collaboration-detail-journey.spec.ts / Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime-supplement/manual-detail-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/manual-detail-01/playwright.json",
+            "sha256": "5c2a363c77c748c694223b02391caf2a4d22900731c5e59620fab38701bcea31"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/manual-detail-01/completion.json",
+            "sha256": "d22710f012499786decde04a91714af2e51b4dc3ea7c166dfb9c159bce9044fa"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "manual-c1-final03",
+      "new_case": {
+        "id": "900011f45627c15b945e-e3d039a6ffb48d4184b3",
+        "file": "collaboration-detail-journey.spec.ts",
+        "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 49351,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/manual-c1-final03/playwright.json",
+          "sha256": "b743c5aff30e163a9575dcb04c91a95f4a781ce9cf1593eb32398f8da7652a43"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/completion.json",
+          "sha256": "8406dceae9b0b7a1cf56282bb85326f18357e6b9adcd7a9eb8dafbe35bbb37b1"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "C1_UI",
+        "run_source": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/c2-final02",
+        "source_manifest_sha256": "116af8a860791c052deaa2becd0e743b3f1cd772b7a020834d22eb7df74cd8cc",
+        "test_command": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/test-command.json",
+          "sha256": "ad31c272b41e4bd903919fae0da37bafde2bf2186c9c577ca8cfcb791d2c1dbc"
+        },
+        "admission": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/admission.json",
+          "sha256": "cc17b0ae73ada09151395d0a6b58f02b2cc064028ef0d80e9077570cabd54e05"
+        },
+        "source_before": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/source-before.json",
+          "sha256": "6b96b8bec1e00616e34982aaf93d6257cbce51fead3e3880e414920835cf1ca2"
+        },
+        "source_after": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/source-after.json",
+          "sha256": "6b96b8bec1e00616e34982aaf93d6257cbce51fead3e3880e414920835cf1ca2"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred."
+    },
+    {
+      "original_identity": "900011f45627c15b945e-31ca666382809bfc78dc::chromium",
+      "original_file": "collaboration-detail-journey.spec.ts",
+      "original_title": "collaboration-detail-journey.spec.ts / Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime-supplement/manual-detail-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/manual-detail-01/playwright.json",
+            "sha256": "5c2a363c77c748c694223b02391caf2a4d22900731c5e59620fab38701bcea31"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/manual-detail-01/completion.json",
+            "sha256": "d22710f012499786decde04a91714af2e51b4dc3ea7c166dfb9c159bce9044fa"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "manual-c1-final03",
+      "new_case": {
+        "id": "900011f45627c15b945e-31ca666382809bfc78dc",
+        "file": "collaboration-detail-journey.spec.ts",
+        "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 61067,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/manual-c1-final03/playwright.json",
+          "sha256": "b743c5aff30e163a9575dcb04c91a95f4a781ce9cf1593eb32398f8da7652a43"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/completion.json",
+          "sha256": "8406dceae9b0b7a1cf56282bb85326f18357e6b9adcd7a9eb8dafbe35bbb37b1"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "C1_UI",
+        "run_source": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/c2-final02",
+        "source_manifest_sha256": "116af8a860791c052deaa2becd0e743b3f1cd772b7a020834d22eb7df74cd8cc",
+        "test_command": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/test-command.json",
+          "sha256": "ad31c272b41e4bd903919fae0da37bafde2bf2186c9c577ca8cfcb791d2c1dbc"
+        },
+        "admission": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/admission.json",
+          "sha256": "cc17b0ae73ada09151395d0a6b58f02b2cc064028ef0d80e9077570cabd54e05"
+        },
+        "source_before": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/source-before.json",
+          "sha256": "6b96b8bec1e00616e34982aaf93d6257cbce51fead3e3880e414920835cf1ca2"
+        },
+        "source_after": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/manual-c1-final03/source-after.json",
+          "sha256": "6b96b8bec1e00616e34982aaf93d6257cbce51fead3e3880e414920835cf1ca2"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred."
+    },
+    {
+      "original_identity": "e481c356ede738d608ed-429067c898ab68cfd473::chromium",
+      "original_file": "collaboration-host-installed.spec.ts",
+      "original_title": "collaboration-host-installed.spec.ts / Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/installed-main-02",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-main-02/playwright.json",
+            "sha256": "2af0234e7bd35ed3098a3ba9da31994be417c8f9bd5c1b034b9522de5bc80ace"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-main-02/completion.json",
+            "sha256": "96a3ed1a95c8cd761ae70a447701dfb78790c9e31752a92b15208b4a87d746c6"
+          }
+        }
+      ],
+      "disposition": "PENDING",
+      "proofs": {},
+      "limits": "Actual Main result/addendum and owned cleanup under separate checker; do not infer from package assembly or renderer cases."
+    },
+    {
+      "original_identity": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d::chromium",
+      "original_file": "collaboration-installed-clients.spec.ts",
+      "original_title": "collaboration-installed-clients.spec.ts / cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/installed-cli-02",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-02/playwright.json",
+            "sha256": "872c765d530c3e8c1dcb6fc1a8f42f247eebdd646939727a4c44a0e211195b12"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-02/completion.json",
+            "sha256": "882553f57d4889c7ea3af9ae139a447f92d33cd50d7e0272769b86cbfb970444"
+          }
+        },
+        {
+          "lane": "runtime/installed-cli-03",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-03/playwright.json",
+            "sha256": "8967caf8adbd757865131b3093c77a93e843d72931ced69638785dcef37428aa"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-03/completion.json",
+            "sha256": "6c161c0c21869fa4feae7607fbd81f5fd5878d07574deab5a16fcda30d4f3598"
+          }
+        }
+      ],
+      "disposition": "FAIL",
+      "new_attempts": [
+        {
+          "run": "cli01",
+          "raw_report": {
+            "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli01/playwright.json",
+            "sha256": "9ade083c7b0240b048a9812ae5575215aec4cf67d2a5321edc4bed6ada2adc9a"
+          },
+          "receipt": {
+            "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/cli01.json",
+            "sha256": "bb87726f4bbf890d9c4ca14174964a1e68dbe59c36a1d38a81a5bc133083c5a8"
+          },
+          "case": {
+            "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d",
+            "file": "collaboration-installed-clients.spec.ts",
+            "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+            "project": "chromium",
+            "status": "unexpected",
+            "results": [
+              {
+                "status": "timedOut",
+                "retry": 0,
+                "duration_ms": 240025,
+                "error_count": 1
+              }
+            ]
+          },
+          "exit": 1,
+          "cleanup_status": "fail",
+          "source_manifest_sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302",
+          "api_sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16",
+          "container_count": 13,
+          "volume_count": 6
+        },
+        {
+          "run": "cli02",
+          "raw_report": {
+            "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli02/playwright.json",
+            "sha256": "ea2b0d32a34729d5a46001ddd33b4b402a469129f9ea92cce8f07ee1ce543a3b"
+          },
+          "receipt": {
+            "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/cli02.json",
+            "sha256": "b22e4da7ce90edc87b0db9dda1e459832402cad3f9820e26fa53eb288e01a5cc"
+          },
+          "case": {
+            "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d",
+            "file": "collaboration-installed-clients.spec.ts",
+            "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+            "project": "chromium",
+            "status": "unexpected",
+            "results": [
+              {
+                "status": "timedOut",
+                "retry": 0,
+                "duration_ms": 240010,
+                "error_count": 1
+              }
+            ]
+          },
+          "exit": 1,
+          "cleanup_status": "fail",
+          "source_manifest_sha256": "166165df36abc489d766432416afcfbfa429b3b3b219da174aeefb56eb134843",
+          "api_sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16",
+          "container_count": 20,
+          "volume_count": 10
+        },
+        {
+          "run": "cli03",
+          "raw_report": {
+            "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli03/playwright.json",
+            "sha256": "f33953c84584defd46f92235186c74681afae4481daa6cd103560561a15f841a"
+          },
+          "receipt": {
+            "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/cli03.json",
+            "sha256": "135b2daebda5f1a6cf71ee22e5f5ce30d25074e16f28d65cc73a9951bb8a27f2"
+          },
+          "case": {
+            "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d",
+            "file": "collaboration-installed-clients.spec.ts",
+            "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+            "project": "chromium",
+            "status": "unexpected",
+            "results": [
+              {
+                "status": "timedOut",
+                "retry": 0,
+                "duration_ms": 240003,
+                "error_count": 1
+              }
+            ]
+          },
+          "exit": 1,
+          "cleanup_status": "fail",
+          "source_manifest_sha256": "890b88d1b5ce9cf3f6d1c600e0581141360ddb2c6706ede842e1fc2f06bb4e93",
+          "api_sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16",
+          "container_count": 19,
+          "volume_count": 9
+        }
+      ],
+      "historical_cause": "UNKNOWN",
+      "limits": "No complete ten-operation pass within240s; later resource absence does not erase cleanupFAIL; timing-only synthetic probe is not case success."
+    },
+    {
+      "original_identity": "6bb3c38027cdc912e0b7-7d0a58cb34e138e51c15::chromium",
+      "original_file": "collaboration-installed-main.spec.ts",
+      "original_title": "collaboration-installed-main.spec.ts / installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/linux-main-03",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-03/playwright.json",
+            "sha256": "235c78daeff3291465e7140d0cc30b34e4a55e2bf6420ed67e5b571cc3d4c02d"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-03/completion.json",
+            "sha256": "5df6923b631d43f493973ad4e6afbf54d460bab767c769cb6479cf5a126b9495"
+          }
+        },
+        {
+          "lane": "runtime/linux-main-04",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/playwright.json",
+            "sha256": "600892f40bdb54a8581aee42ef18e2878e2923f063e452f294e8f944a71d1929"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/completion.json",
+            "sha256": "ad5c6b2a5e6c984d18bd2abf73ce35511b22a2ed6783494256882440f5a2088e"
+          }
+        }
+      ],
+      "disposition": "PENDING",
+      "proofs": {},
+      "limits": "Actual Main result/addendum and owned cleanup under separate checker; do not infer from package assembly or renderer cases."
+    },
+    {
+      "original_identity": "2baf0d89c3e16f740924-57a798cb8c03ff31d703::chromium",
+      "original_file": "collaboration-lane-close-controls.spec.ts",
+      "original_title": "collaboration-lane-close-controls.spec.ts / Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/lane-close-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/playwright.json",
+            "sha256": "89d798797a1d4e1fda49b65f76061d540055329026f5b2578dd39c828aa7b706"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/completion.json",
+            "sha256": "f01b122c3712d8f63c35583cd4ad9d11a568d38a490e2728ad636ce050067c20"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "2baf0d89c3e16f740924-40ff4a37c718db2f022d::chromium",
+      "original_file": "collaboration-lane-close-controls.spec.ts",
+      "original_title": "collaboration-lane-close-controls.spec.ts / Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/lane-close-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/playwright.json",
+            "sha256": "89d798797a1d4e1fda49b65f76061d540055329026f5b2578dd39c828aa7b706"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/completion.json",
+            "sha256": "f01b122c3712d8f63c35583cd4ad9d11a568d38a490e2728ad636ce050067c20"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "2baf0d89c3e16f740924-62b228e8e2fe12d87faf::chromium",
+      "original_file": "collaboration-lane-close-controls.spec.ts",
+      "original_title": "collaboration-lane-close-controls.spec.ts / Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/lane-close-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/playwright.json",
+            "sha256": "89d798797a1d4e1fda49b65f76061d540055329026f5b2578dd39c828aa7b706"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/completion.json",
+            "sha256": "f01b122c3712d8f63c35583cd4ad9d11a568d38a490e2728ad636ce050067c20"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "2baf0d89c3e16f740924-d5cf28a822dcd31e5846::chromium",
+      "original_file": "collaboration-lane-close-controls.spec.ts",
+      "original_title": "collaboration-lane-close-controls.spec.ts / Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/lane-close-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/playwright.json",
+            "sha256": "89d798797a1d4e1fda49b65f76061d540055329026f5b2578dd39c828aa7b706"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/completion.json",
+            "sha256": "f01b122c3712d8f63c35583cd4ad9d11a568d38a490e2728ad636ce050067c20"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "c8706aeccaf441d25880-bf60502313c2edcb8554::chromium",
+      "original_file": "collaboration-lifecycle-controls.spec.ts",
+      "original_title": "collaboration-lifecycle-controls.spec.ts / Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/lifecycle-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lifecycle-01/playwright.json",
+            "sha256": "cbfa3b05957675aacc1b1a470de48ccdc369401362c46ea89fafc68e4c21f991"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lifecycle-01/completion.json",
+            "sha256": "fa94db5e94babbefc83b8666ae0937c3c4a6fbe56c2070b71fff8053e54effe5"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "c8706aeccaf441d25880-6cf834f8264130a8d215::chromium",
+      "original_file": "collaboration-lifecycle-controls.spec.ts",
+      "original_title": "collaboration-lifecycle-controls.spec.ts / Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/lifecycle-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lifecycle-01/playwright.json",
+            "sha256": "cbfa3b05957675aacc1b1a470de48ccdc369401362c46ea89fafc68e4c21f991"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lifecycle-01/completion.json",
+            "sha256": "fa94db5e94babbefc83b8666ae0937c3c4a6fbe56c2070b71fff8053e54effe5"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac::chromium",
+      "original_file": "collaboration-memory-runtime.spec.ts",
+      "original_title": "collaboration-memory-runtime.spec.ts / two native runtime profiles hand off shared context through the actual run-local CLI",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime-supplement/memory-runtime-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/memory-runtime-01/playwright.json",
+            "sha256": "c99c158c7e2dd6f57c3fa8efa92bda32df2f6a6bd0f45966b37f3a01ac8b84cb"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/memory-runtime-01/completion.json",
+            "sha256": "0a252552476944991b02a7729b18fac2b604f0145df6c658dc2943a1122a5d4d"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "memory-runtime-02",
+      "new_case": {
+        "id": "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac",
+        "file": "collaboration-memory-runtime.spec.ts",
+        "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 39159,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/memory-runtime-02/playwright.json",
+          "sha256": "abddd31648faa5086e90e97c06c010eb6092d07ecdb393f3749d8f7f766411b9"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/memory-runtime-02/receipt.json",
+          "sha256": "9a4c54913b2ffc219192d6ecf3185418a5b5562171a4e4415c3cf6adab965e91"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "pre_C1_and_final_comment_principal",
+        "source_manifest_sha256": "86034a670e9fdbbcc6fef643780334ef5f495167254a210a27edd29e8e34ec54",
+        "source_manifest": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/source.json",
+          "sha256": "86034a670e9fdbbcc6fef643780334ef5f495167254a210a27edd29e8e34ec54"
+        },
+        "toolchain": "go version go1.26.11 darwin/arm64",
+        "database": "fix_runtime_memory02",
+        "binary_hashes": {
+          "daemon-test": "37ff785052208f2a166fcfdf605679efe7ceb86095e6491242c4a8215c9f634e",
+          "multica": "727055d6b6f2c69b97f0aff17f9eb61c36dc08c9919ec6cbdd5dd21bd8685243",
+          "memory-provider": "a0b5b4e17e000640b66aa7ce598ed1216d53736a28b7ef6db42fce55c8873fd5",
+          "api": "877d240f012dd8ca531f108a29b1ff2e1e7cea77ce499a9b6a76d34ce22bfd19",
+          "multi-account-provider": "a76e17ef6b34d26c28ea89d423a7e33255fe45c22c5c976565e9dd468443779c"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred.",
+      "historical_cause": "UNKNOWN; later whole journey passed but original permit failure not reproduced; new API503/pool pressure remains"
+    },
+    {
+      "original_identity": "753e160629e6e5a7052c-f7430be66c7012c9d9a6::chromium",
+      "original_file": "collaboration-offline-result-notifications.spec.ts",
+      "original_title": "collaboration-offline-result-notifications.spec.ts / Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/offline-notifications-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/offline-notifications-01/playwright.json",
+            "sha256": "7ec0f60b6f684d987358ea3f0ababe840165e8eb4cc4432edc24cf4275425ae5"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/offline-notifications-01/completion.json",
+            "sha256": "e786eeaff806df984d562d5e05a02d24486fad8718ba7ab2d92fa12b80c63569"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "753e160629e6e5a7052c-fddac4f88ef9091cfce5::chromium",
+      "original_file": "collaboration-offline-result-notifications.spec.ts",
+      "original_title": "collaboration-offline-result-notifications.spec.ts / Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/offline-notifications-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/offline-notifications-01/playwright.json",
+            "sha256": "7ec0f60b6f684d987358ea3f0ababe840165e8eb4cc4432edc24cf4275425ae5"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/offline-notifications-01/completion.json",
+            "sha256": "e786eeaff806df984d562d5e05a02d24486fad8718ba7ab2d92fa12b80c63569"
+          }
+        }
+      ],
+      "disposition": "BLOCKED",
+      "blocker": "Original canonical execution requires privileged/unconfined Docker flags prohibited by user; no same-config new run admitted",
+      "historical_cause": "UNKNOWN",
+      "proofs": {
+        "independent_identity_review": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/runtime-findings-closure-audit.json",
+          "sha256": "d0fa49850f5f5321daf9b987f46ffc7240b878d17b84bd134f6d9f880e0c83d6"
+        },
+        "canonical_fixture": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/e2e/fixtures/collaboration-cross-client-execution.ts",
+          "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d"
+        }
+      },
+      "limits": "Separate default-policy EPERM probes are not the original cause; retain original FAIL."
+    },
+    {
+      "original_identity": "00c14b16591e46ce6a3d-c7c17b16d1e00d955492::chromium",
+      "original_file": "collaboration-order-export-20261109.spec.ts",
+      "original_title": "collaboration-order-export-20261109.spec.ts / order export: independent owner queues merge authors and preserve AI across transfer",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime-supplement/order-export-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/order-export-01/playwright.json",
+            "sha256": "a6dc05a09efac90210489722a0cbfef508058aa77bc4a9ab4bb7967cbbd1a8fa"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/order-export-01/completion.json",
+            "sha256": "bed12fb7fcc850d3244b738065b56f0951a5afd17924607b7e88b17dd1bfb13e"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "order-export-01",
+      "new_case": {
+        "id": "00c14b16591e46ce6a3d-c7c17b16d1e00d955492",
+        "file": "collaboration-order-export-20261109.spec.ts",
+        "title": "order export: independent owner queues merge authors and preserve AI across transfer",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 45550,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/order-export-01/playwright.json",
+          "sha256": "d5e20e74b8e1dcd6cf83a564bfd231904256d9e88e2cdb0577022d8f6418ea06"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/order-export-01/receipt.json",
+          "sha256": "4e0c1d33d8339c6ead97cfc603440efb348586b0ce9f80e43400b08282625012"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "pre_C1_and_final_comment_principal",
+        "source_manifest_sha256": "86034a670e9fdbbcc6fef643780334ef5f495167254a210a27edd29e8e34ec54",
+        "source_manifest": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/final03/source.json",
+          "sha256": "86034a670e9fdbbcc6fef643780334ef5f495167254a210a27edd29e8e34ec54"
+        },
+        "toolchain": "go version go1.26.11 darwin/arm64",
+        "database": "fix_runtime_order01",
+        "binary_hashes": {
+          "daemon-test": "37ff785052208f2a166fcfdf605679efe7ceb86095e6491242c4a8215c9f634e",
+          "multica": "727055d6b6f2c69b97f0aff17f9eb61c36dc08c9919ec6cbdd5dd21bd8685243",
+          "memory-provider": "a0b5b4e17e000640b66aa7ce598ed1216d53736a28b7ef6db42fce55c8873fd5",
+          "api": "877d240f012dd8ca531f108a29b1ff2e1e7cea77ce499a9b6a76d34ce22bfd19",
+          "multi-account-provider": "a76e17ef6b34d26c28ea89d423a7e33255fe45c22c5c976565e9dd468443779c"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred.",
+      "historical_cause": "UNKNOWN; later whole journey passed but original permit failure not reproduced; new API503/pool pressure remains"
+    },
+    {
+      "original_identity": "ca48d702c1e4c67aefbb-4c7e53db969d5505a370::chromium",
+      "original_file": "collaboration-pay-creation.spec.ts",
+      "original_title": "collaboration-pay-creation.spec.ts / Web creates one complete PAY issue through real controls and preserves its original creation identity",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime-supplement/pay-creation-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/pay-creation-01/playwright.json",
+            "sha256": "376af9afe7a3e812c8812376aa9dfa6f64ef1ed5e3ec4723da34a3bf46749bed"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/pay-creation-01/completion.json",
+            "sha256": "35dd78dbaf571a384a48923b0bcb01f4e21664650e10484d42056756146643d9"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "pay-final02",
+      "new_case": {
+        "id": "ca48d702c1e4c67aefbb-4c7e53db969d5505a370",
+        "file": "collaboration-pay-creation.spec.ts",
+        "title": "Web creates one complete PAY issue through real controls and preserves its original creation identity",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 9840,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/pay-final02/playwright.json",
+          "sha256": "1c9c8db2078bdb83bde0c8f38d48b6d01e3acc03cf524637d54594e056449a31"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/completion.json",
+          "sha256": "8406dceae9b0b7a1cf56282bb85326f18357e6b9adcd7a9eb8dafbe35bbb37b1"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "pre_C1",
+        "run_source": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+        "source_manifest_sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+        "test_command": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/test-command.json",
+          "sha256": "a02a788e0ee6e8351e88a631f4554b29304f54d7aebcf9fdaac6009c2fdce7c9"
+        },
+        "admission": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/admission.json",
+          "sha256": "365195cd3df1014de5f941c8c91605fd2399c28f8b35621084c62af8fb0037b5"
+        },
+        "source_before": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/source-before.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        },
+        "source_after": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/source-after.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred."
+    },
+    {
+      "original_identity": "ca48d702c1e4c67aefbb-a51ef4f8f1c2f1b77bbe::chromium",
+      "original_file": "collaboration-pay-creation.spec.ts",
+      "original_title": "collaboration-pay-creation.spec.ts / Desktop creates one complete PAY issue through real controls and preserves its original creation identity",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime-supplement/pay-creation-01",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/pay-creation-01/playwright.json",
+            "sha256": "376af9afe7a3e812c8812376aa9dfa6f64ef1ed5e3ec4723da34a3bf46749bed"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/pay-creation-01/completion.json",
+            "sha256": "35dd78dbaf571a384a48923b0bcb01f4e21664650e10484d42056756146643d9"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "pay-final02",
+      "new_case": {
+        "id": "ca48d702c1e4c67aefbb-a51ef4f8f1c2f1b77bbe",
+        "file": "collaboration-pay-creation.spec.ts",
+        "title": "Desktop creates one complete PAY issue through real controls and preserves its original creation identity",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 12208,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/pay-final02/playwright.json",
+          "sha256": "1c9c8db2078bdb83bde0c8f38d48b6d01e3acc03cf524637d54594e056449a31"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/completion.json",
+          "sha256": "8406dceae9b0b7a1cf56282bb85326f18357e6b9adcd7a9eb8dafbe35bbb37b1"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "pre_C1",
+        "run_source": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+        "source_manifest_sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+        "test_command": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/test-command.json",
+          "sha256": "a02a788e0ee6e8351e88a631f4554b29304f54d7aebcf9fdaac6009c2fdce7c9"
+        },
+        "admission": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/admission.json",
+          "sha256": "365195cd3df1014de5f941c8c91605fd2399c28f8b35621084c62af8fb0037b5"
+        },
+        "source_before": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/source-before.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        },
+        "source_after": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/pay-final02/source-after.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred."
+    },
+    {
+      "original_identity": "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2::chromium",
+      "original_file": "collaboration-recovery-extras.spec.ts",
+      "original_title": "collaboration-recovery-extras.spec.ts / Desktop recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime/recovery-extras-delayed-02",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/recovery-extras-delayed-02/playwright.json",
+            "sha256": "5f99e897303f307b7445a9464cbf9116bd9cc614815baf7958017badcc21ec75"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/recovery-extras-delayed-02/completion.json",
+            "sha256": "457f9d35a54d36b15c38bf5a299269cee41e9811371162d4adfae669a4e6a6a6"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "delayed-final01",
+      "new_case": {
+        "id": "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2",
+        "file": "collaboration-recovery-extras.spec.ts",
+        "title": "Desktop recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 43704,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/delayed-final01/playwright.json",
+          "sha256": "94d2897f106168a79a9d2cf2255f2f046b94e6985f45f9759871cc36185a4f04"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/delayed-final01/completion.json",
+          "sha256": "8406dceae9b0b7a1cf56282bb85326f18357e6b9adcd7a9eb8dafbe35bbb37b1"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "pre_C1",
+        "run_source": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+        "source_manifest_sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+        "test_command": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/delayed-final01/test-command.json",
+          "sha256": "d821b1eb782cee70bad2b51552617a94f8297531586f25acf30e05c11b22dc53"
+        },
+        "admission": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/delayed-final01/admission.json",
+          "sha256": "44496252d2bf217062a4d336027537a918e10fcf156756c6eaed8053ba2ea61c"
+        },
+        "source_before": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/delayed-final01/source-before.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        },
+        "source_after": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/delayed-final01/source-after.json",
+          "sha256": "298d6ed7c4cfca7480c504edcd8417c21db3f7e878b097df47b332712c1816d5"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred."
+    },
+    {
+      "original_identity": "2965b1f5e7ed7b139948-939020715d6b657e1918::chromium",
+      "original_file": "inbox-snooze.spec.ts",
+      "original_title": "inbox-snooze.spec.ts / Inbox snooze on owned production clients / Web ordinary and group mentions stay snoozed; personal mentions and assignment wake across devices while another workspace is active",
+      "project": "chromium",
+      "original_status": "FAIL",
+      "original_observations": [
+        {
+          "lane": "runtime-supplement/inbox-snooze-02",
+          "status": "FAIL",
+          "evidence": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/inbox-snooze-02/playwright.json",
+            "sha256": "36ee52b7a95431928de05e4583f84cc509c325f15467083843ba13e913ffc85d"
+          },
+          "completion": {
+            "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/inbox-snooze-02/completion.json",
+            "sha256": "d587cde2b35c819f9cf8ab4e95009f11b1bf674887bfd37bac64fb8abb24353f"
+          }
+        }
+      ],
+      "disposition": "PASS",
+      "mapping_basis": "Exact original file + complete leaf title + project; no sibling aggregation",
+      "new_run": "snooze-final03",
+      "new_case": {
+        "id": "2965b1f5e7ed7b139948-939020715d6b657e1918",
+        "file": "inbox-snooze.spec.ts",
+        "title": "Web ordinary and group mentions stay snoozed; personal mentions and assignment wake across devices while another workspace is active",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "duration_ms": 7008,
+            "error_count": 0
+          }
+        ]
+      },
+      "proofs": {
+        "raw_report": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/snooze-final03/playwright.json",
+          "sha256": "b0c2523cf2a65ea02de8cbcd303f6afc9290fd96d669db1c1ed949594053e0c1"
+        },
+        "receipt": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final03/completion.json",
+          "sha256": "8406dceae9b0b7a1cf56282bb85326f18357e6b9adcd7a9eb8dafbe35bbb37b1"
+        }
+      },
+      "source_binding": {
+        "candidate_scope": "C1_UI_and_C2",
+        "run_source": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/c2-final01",
+        "source_manifest_sha256": "14c498d038e2e635f48b35a5a4eae60717b1eb79c6ef4cbbf1510960485cd004",
+        "test_command": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final03/test-command.json",
+          "sha256": "0b7c21c7871726fec484d37d42eb0d226fa1bd914841be5e6de53918902260a1"
+        },
+        "admission": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final03/admission.json",
+          "sha256": "530a4e9c94b1dacf222f5560af2968d8a6ce52e4195a0a850bee63be2de16381"
+        },
+        "source_before": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final03/source-before.json",
+          "sha256": "94ece3912d5b61ca508d631a53dc14305f3f7b5f146aec9018d89f1f3941159f"
+        },
+        "source_after": {
+          "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/clients/snooze-final03/source-after.json",
+          "sha256": "94ece3912d5b61ca508d631a53dc14305f3f7b5f146aec9018d89f1f3941159f"
+        }
+      },
+      "limits": "Complete case passed only on this recorded candidate; earlier PASS counts and newer artifact claims are not inferred."
+    }
+  ],
+  "separate_defects": {
+    "D01": "Comment authority: final independent closure in comment-final-closure.md, outside these21 identities",
+    "D02": "HOLD/UNKNOWN: service full normal/race incomplete; wrong_consumer passing does not identify original lock competitor",
+    "D03": "Pinned supported-toolchain/dependency scan scope accepted; final-checkout scan supplemental, not new cross-target binary matrix",
+    "D10": "Public import externalFAIL/new quota evidence; historical403 causeUNKNOWN"
+  },
+  "prohibited_interpretations": [
+    "No517PASS or full538 identity green claim on final candidate",
+    "No rewriting original400/138,117/21 or114/24",
+    "No counting passing siblings in15 client executions as15 formerly failed identities",
+    "No combining substeps from different failing runs to mark a whole casePASS"
+  ],
+  "main_addendum_pending": true
+}

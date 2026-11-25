@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_CURRENT_CANDIDATE_PACKAGE_PREPARATION",
+  "reviewed_at": "2026-11-25T12:41:03.389286+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current-package-review-request.json",
+  "request_sha256": "283e738b610e549db1d53fbd7e273d49c69099a5a2aeb3e64b7447b301cced57",
+  "scope": "Current C1frontend+latestcommentAPI source; build packagesusingverifiedexistingdependencyclosure andactualPNPMinventory; Linuxnow Macdeferredclientrelease",
+  "bindings": {
+    "scope": "Current C1frontend+latestcommentAPI source; build packagesusingverifiedexistingdependencyclosure andactualPNPMinventory; Linuxnow Macdeferredclientrelease",
+    "commands": [
+      [
+        "/opt/homebrew/bin/python3",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current_packages.py",
+        "linux"
+      ],
+      [
+        "/opt/homebrew/bin/python3",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current_packages.py",
+        "mac"
+      ]
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current_packages.py": "197458e110655378b5a10535b04f5123eeb84c21d6eb52d177776f1af1deead0",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/inventory.py": "a5e9101247935ef40c86625214442d144217dde2c25ef7eddb2dcbbf53373742",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "inputs": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current.json": "c0ad5060e808d728a9554f103f018dfc6d1a87a2349ef859037afbf813011c98",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/current-binary-builds.json": "5894b03a58a414b07e8d8d9b3656dbfd05b1cd2bb397fbab53f64e530614d970",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-package-inputs.json": "5b4ce9178613ccee907040a04093bef5827310b7699880f7668ede3cbe80d1d3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-package-inputs.json": "9fa3d4c029b1080025b4ec1cdb314fb31922c8ae1fca2a5701c501644dfdea04",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-dependencies.json": "b1b3acfe380c635ac3b072c591bc39b9e0d6f17678d89bfa6f3e4ea1ac8fd09e",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-dependencies.json": "deaa824b14f07497744d2e02c61389ea65ab8b7e511d025bf9552fac52e7cb37"
+    },
+    "notes": "CSC_LINK absent (notempty) tofixsignimport; outputnewpackage-current-*; beforeafterASARproduct+sameprotocolrestore; oldfailedpackages retained"
+  },
+  "allowed_commands": [
+    [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current_packages.py",
+      "linux"
+    ],
+    [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current_packages.py",
+      "mac"
+    ]
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "additional_bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/pnpm-inventory01.json": "8bdbef89a2399e1448dbeb869961ae6c1932d2b40dabadc5a4fc879cf1272841",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/protocol-before-preparation.json": "c7bdfcd5990eafdcdca7ae95f673f430d43230b4df99435c348c84f4a0b196ee"
+  },
+  "basis": [
+    "All exact declared request hashes match. Current149216-entry source manifest and both62496-entry retained stages match actual files. New stage/output paths absent at audit. Electron Linux74/Mac743 entries match retained input hashes.",
+    "Current source matches all selected C1 reviewed frontend receipt files; all5 rebuilt binary hashes match successful build receipts. Desktop package/config and shared package declarations are byte-identical to previous selected closure; lockfile unchanged. Shared core/ui have no byte changes; views has the4 intended sidebar/localization files; no shared source deletions.",
+    "Existing installed dependency closure/inventory is rebound into a fresh stage without install. Current out/resources and rebuilt target CLI replace old outputs; current shared runtime source overlays same package edges. Existing inventory rejects unknown commands and graph/path/closure mismatches.",
+    "Every ASAR member hash/bounds plus exact out/resources comparison and immutable staged input check remain required. Old failed/successful packages are preserved.",
+    "CSC_LINK is absent; no inherited certificate environment,identity auto-discovery disabled,publish never,notarize false. Linux branch makes no protocol calls. Mac branch requires exact captured baseline and restores only new owned package/current Electron registrations."
+  ],
+  "conditions": [
+    "Linux package command can run now. Mac package command remains parent-scheduled after concurrent client native protocol work releases,as explicitly requested; execute only when its existing baseline preflight passes. This is scheduling,not a new approval request.",
+    "Bind actual package/ASAR/signature/CLI outputs and source/tool/config identities to a later Main runtime request. Packaging acceptance does not clear Main execution or predict success.",
+    "Preserve current-source raw mode changes,if any packaging tool modifies its own executable mode,as a separately recorded post-packaging state; do not normalize historical manifest or rewrite prior outcomes.",
+    "Exact input hashes and reviewed Electron/inventory bindings must remain unchanged at execution. Preserve each failure and all final protocol cleanup evidence.",
+    "Mac runtime draft M1/M2 remain outside this packaging request; apply those small cleanup fixes before runtime clearance. Whole-task initial macOS protocol state remains unproven; only captured native baseline restoration is admitted."
+  ],
+  "verification": {
+    "declared_hashes_full_source_and_stages": "pass",
+    "C1_receipt_and_binary_hashes": "pass",
+    "electron_input_hashes": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "evidence": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-current-packages-audit.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-current-electron-audit.json"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "manual-c1-final03": {
+    "tests": [
+      {
+        "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+        "status": "passed",
+        "duration": 49351,
+        "retry": 0
+      },
+      {
+        "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+        "status": "passed",
+        "duration": 61067,
+        "retry": 0
+      }
+    ],
+    "top_errors": [],
+    "completion": {
+      "exit": 0,
+      "freeze_unchanged": true,
+      "cleanup_errors": [],
+      "original_gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false
+      },
+      "final_gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false
+      }
+    }
+  },
+  "snooze-final03": {
+    "tests": [
+      {
+        "title": "Web group snooze survives reload, changes time, undoes and reminds the original unread group",
+        "status": "passed",
+        "duration": 10491,
+        "retry": 0
+      },
+      {
+        "title": "Web failed save retains selection and custom input; another device invalidates the visible undo",
+        "status": "passed",
+        "duration": 5276,
+        "retry": 0
+      },
+      {
+        "title": "Web ordinary and group mentions stay snoozed; personal mentions and assignment wake across devices while another workspace is active",
+        "status": "passed",
+        "duration": 7008,
+        "retry": 0
+      },
+      {
+        "title": "Web server expiry returns original unread notifications near the top and never revives an archived plan",
+        "status": "passed",
+        "duration": 15605,
+        "retry": 0
+      },
+      {
+        "title": "Web Chinese touch controls preserve keyboard focus, custom time and narrow layouts in both themes",
+        "status": "passed",
+        "duration": 5631,
+        "retry": 0
+      },
+      {
+        "title": "Native Electron uses the shared snooze journey and keeps main, Snoozed and Archived tabs independent",
+        "status": "passed",
+        "duration": 13790,
+        "retry": 0
+      }
+    ],
+    "top_errors": [],
+    "completion": {
+      "exit": 0,
+      "freeze_unchanged": true,
+      "cleanup_errors": [],
+      "original_gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false
+      },
+      "final_gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false
+      }
+    }
+  },
+  "snooze_strict_observation": {
+    "sessions": 9,
+    "sealed": 9,
+    "final_checked": 9,
+    "failures": 0,
+    "excluded_requests_after_seal": 0
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "reviewed_at": "2026-11-25T12:09:07.216488+00:00",
+  "files": {
+    "packages/views/layout/app-sidebar.tsx": "0c12d3fd0dcef4bb119875e3b1a0d0f538d6304c718adcf7359a75ca599ae36e",
+    "packages/views/layout/app-sidebar.test.tsx": "cec1c31887f39bd27eb90b2e25ea2c23fe8a8b27b5381918569dbc3af62784e9",
+    "apps/web/platform/scope-shell.tsx": "45fc762edb064c3defac8ce24a6121a155762725c44dc20477b29cd7e00cb239",
+    "apps/web/platform/scope-shell.test.tsx": "82291761d2b811929355a4bf63cdbe046cd8f9d6eb86eba55e6a4f6d3289a4d8",
+    "apps/desktop/src/renderer/src/components/desktop-layout.tsx": "5b9ba54c8f6f18df483011b3ccdfc0630c05903400052d26fa0277ae398b21e6",
+    "apps/desktop/src/renderer/src/components/desktop-layout.workspace-gate.test.tsx": "a5c1bc10f9e38f6560d95c96045667ec69f91ffe5b5d55754a706b2f6e0eb038",
+    "packages/views/locales/en/collaboration.json": "25451ac93f53865696ed640ccd14eb8f0a8c1ce5b5c1aa38f4bc50422834a2d6",
+    "packages/views/locales/zh-Hans/collaboration.json": "24a1c4be9b8fa07e24f1accbc9c1d563d5c7d32efc904e0e024fad08a6e2688b",
+    "e2e/fixtures/collaboration-detail-journey.ts": "b130d632ca0b1f94d6f37eaa448d23df826e8e1382bc9cc2ab350fc5912d1051",
+    ".trellis/spec/core/frontend/global-scope-navigation.md": "28fac55bef5f1c824dbf4477f0c492daeec41d3a7e1171c5b3d5bd7b7c72c64b"
+  },
+  "logs": {
+    "c1-views-final.log": {
+      "sha256": "4da35eef3fe8e7ffdf2ef6497740ef69f1621da112cef6e9b2d3ad6dd66f2b09",
+      "summary": [
+        "Test Files  3 passed (3)",
+        "Tests  88 passed (88)",
+        "Duration  7.84s (transform 2.56s, setup 338ms, import 5.01s, tests 4.65s, environment 2.11s)"
+      ]
+    },
+    "c1-web02.log": {
+      "sha256": "648483eae66395144430a2b7f86c8b8c96aaa8445e0b5d11d2b37228a68152da",
+      "summary": [
+        "Test Files  3 passed (3)",
+        "Tests  46 passed (46)",
+        "Duration  2.38s (transform 2.28s, setup 220ms, import 3.84s, tests 459ms, environment 1.46s)"
+      ]
+    },
+    "c1-desktop.log": {
+      "sha256": "b0a9cfd9cfd7b378c2c7e11f30f09baaf5c95cec4f381cb1cdb9c3c64a515806",
+      "summary": [
+        "Test Files  3 passed (3)",
+        "Tests  51 passed (51)",
+        "Duration  3.49s (transform 3.13s, setup 207ms, import 5.87s, tests 1.11s, environment 2.04s)"
+      ]
+    },
+    "c1-scroll-tests.log": {
+      "sha256": "83737fc84f6d02551f9f271524900c3dca66bd9ed9a5cd6a64812210e8ef0859",
+      "summary": [
+        "Test Files  1 passed (1)",
+        "Tests  7 passed (7)",
+        "Duration  3.58s (transform 241ms, setup 472ms, import 523ms, tests 66ms, environment 2.23s)"
+      ]
+    },
+    "c1-web-race-red02.log": {
+      "sha256": "d5d45620cf225a1a648e5e7d5da877deeaec2385ba97873e3dc0bd7a1eeea781",
+      "summary": [
+        "\u00d7 cancels a pending workspace lookup immediately when account resume is requested 9ms",
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "FAIL  platform/scope-shell.test.tsx > cancels a pending workspace lookup immediately when account resume is requested",
+        "Test Files  1 failed (1)",
+        "Tests  1 failed | 11 passed (12)",
+        "Duration  1.67s (transform 456ms, setup 72ms, import 784ms, tests 194ms, environment 513ms)"
+      ]
+    }
+  },
+  "verdict": "Source semantics accepted; final original two complete manual journeys and new artifact binding pending"
+}

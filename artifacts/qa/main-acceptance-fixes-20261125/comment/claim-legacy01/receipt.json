@@ -1,0 +1,583 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-count=1",
+    "./cmd/server",
+    "-run",
+    "^TestCommentManagementClaimedLegacyHTTP$"
+  ],
+  "started_at": "2026-11-25T10:37:39.719210+00:00",
+  "database": "fix_comment_probe_legacy01",
+  "allocation": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/comment_probe_legacy01",
+  "execution_env_sha256": "a7dfb06d2236640b66ef42d786584e3851391acc8543cfb9349007b6950db960",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-claim-legacy01/source",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-claim-legacy01/home",
+  "tmp": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-claim-legacy01/tmp",
+  "base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "manifest_sha256": "e2b17927dd7444492c461ad17664392522be04e048b1d5b99afa52f67eac361c",
+  "harness_sha256": "ab776407e882964133ce26e9a7f2b267474748f08e453ec62cfc20fd7c0c5250",
+  "toolchain": "go version go1.26.11 darwin/arm64",
+  "resource_probe_sha256": "588469ae6be3bed34aa84a62023f39dabfb023c0e5024329608567e50264bd51",
+  "go_binary": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+  "go_binary_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "exit": 0,
+  "finished_at": "2026-11-25T10:38:04.380995+00:00",
+  "counts": {
+    "pass": 134
+  },
+  "inventory": [
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/jwt/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/pat/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/task/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/cross-workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/daemon-token-not-general-auth",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/expired-task-token",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/restricted-reviewer",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/revoked-pat",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/removed-membership",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner/terminal-task",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/owner",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/jwt/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/pat/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/task/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/cross-workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/daemon-token-not-general-auth",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/expired-task-token",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/restricted-reviewer",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/revoked-pat",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/removed-membership",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin/terminal-task",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/admin",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/jwt/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/pat/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/self/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/self/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/self/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/self/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-human/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-agent/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-agent/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-agent/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/task/other-agent/spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/cross-workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/daemon-token-not-general-auth",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/expired-task-token",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/restricted-reviewer",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/revoked-pat",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/removed-membership",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member/terminal-task",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy/member",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP/legacy",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementClaimedLegacyHTTP",
+      "action": "pass"
+    }
+  ],
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "after_resources": {
+    "cluster_connections": 22,
+    "comments": 0,
+    "database": "fix_comment_probe_legacy01",
+    "database_connections": 1,
+    "users": 0,
+    "workspaces": 0
+  },
+  "go_binary_unchanged": true
+}

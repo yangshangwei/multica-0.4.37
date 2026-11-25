@@ -1,0 +1,143 @@
+{
+  "label": "default-policy-probe04",
+  "claim": "Distinct safe experiment; no attribution to original namespace cause",
+  "build_command": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "build",
+    "-o",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-default-probe04/probe",
+    "./cmd/acceptance_namespace_probe"
+  ],
+  "build_exit": 0,
+  "go_version": "go version go1.26.11 darwin/arm64",
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_manifest_sha256": "006e1c73147f39639c0ca09478cd38f882900261decbf37397ff7c58a48c2d7a",
+  "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+  "architecture": "arm64",
+  "runner_sha256": "474bd3c001c4c0081a14015ae1ae818dd2866ef3fd7988b56bb941e187f5e361",
+  "created": 1795603511.5486588,
+  "operations": [
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--name",
+        "acceptance-fixes-4b9d3494a2-runtime-probe04",
+        "--label",
+        "multica.qa.owner=acceptance-fixes-4b9d3494a2-runtime",
+        "--network",
+        "none",
+        "--cap-drop",
+        "ALL",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,mode=1777",
+        "--entrypoint",
+        "/fixture-probe",
+        "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6"
+      ],
+      "exit": 0,
+      "stdout": "63fe2f7534c9b710446f96c9e42277cb7ab6fa613c5b12623f85c9b9ed759fab\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-default-probe04/probe",
+        "63fe2f7534c9b710446f96c9e42277cb7ab6fa613c5b12623f85c9b9ed759fab:/fixture-probe"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "63fe2f7534c9b710446f96c9e42277cb7ab6fa613c5b12623f85c9b9ed759fab"
+      ],
+      "exit": 2,
+      "stdout": "{\"available\":false,\"code\":\"unavailable\",\"context\":\"none\",\"elapsed_ms\":46,\"errno\":1,\"exit_code\":-1,\"experiment\":\"default-policy-only-not-original-configuration\",\"stage\":\"helper_start\",\"unsupported\":true}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "--volumes",
+        "63fe2f7534c9b710446f96c9e42277cb7ab6fa613c5b12623f85c9b9ed759fab"
+      ],
+      "exit": 0,
+      "stdout": "63fe2f7534c9b710446f96c9e42277cb7ab6fa613c5b12623f85c9b9ed759fab\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "ps",
+        "-a",
+        "--filter",
+        "id=63fe2f7534c9b710446f96c9e42277cb7ab6fa613c5b12623f85c9b9ed759fab",
+        "--format",
+        "{{.ID}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "docker",
+        "volume",
+        "ls",
+        "--filter",
+        "name=56e781cc0d8e71875d7d901b4f8feedb52e6d3bfb22cc9a9b29d95f1276e9d16",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "binary_sha256": "83a9614f7b383175c910ce2f2166832e100e86ed5e1ea19c579f24b012491ecf",
+  "effective_configuration": {
+    "Privileged": false,
+    "CapAdd": null,
+    "CapDrop": [
+      "ALL"
+    ],
+    "SecurityOpt": null,
+    "ReadonlyRootfs": false,
+    "NetworkMode": "none",
+    "Tmpfs": {
+      "/tmp": "rw,nosuid,nodev,mode=1777"
+    }
+  },
+  "container_id": "63fe2f7534c9b710446f96c9e42277cb7ab6fa613c5b12623f85c9b9ed759fab",
+  "anonymous_volumes": [
+    "56e781cc0d8e71875d7d901b4f8feedb52e6d3bfb22cc9a9b29d95f1276e9d16"
+  ],
+  "probe_exit": 2,
+  "probe_observation": {
+    "available": false,
+    "code": "unavailable",
+    "context": "none",
+    "elapsed_ms": 46,
+    "errno": 1,
+    "exit_code": -1,
+    "experiment": "default-policy-only-not-original-configuration",
+    "stage": "helper_start",
+    "unsupported": true
+  },
+  "state": "completed",
+  "cleanup_exit": 0,
+  "container_absent": true,
+  "volumes_absent": true,
+  "source_unchanged": true,
+  "binary_unchanged": true,
+  "go_unchanged": true,
+  "finished": 1795603515.511214
+}

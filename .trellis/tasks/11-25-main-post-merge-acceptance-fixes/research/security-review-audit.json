@@ -1,0 +1,1275 @@
+{
+  "reviewed_at": "2026-11-25T10:25:52.106884+00:00",
+  "manifest": {
+    "count": 201,
+    "mismatches": []
+  },
+  "original_evidence": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-24-main-post-merge-e2e-acceptance/defects.md",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/backend-continuation-results.md",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-vulnerability.log",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/skills-public-01/test.jsonl",
+      "matches": true
+    }
+  ],
+  "receipts": [
+    {
+      "run": "api-binary-build",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "baseline-modules",
+      "exit": 0,
+      "source": "baseline",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "baseline-scanner-version",
+      "exit": 0,
+      "source": "baseline",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "baseline-vuln",
+      "exit": 3,
+      "source": "baseline",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "baseline-vuln-details",
+      "exit": 3,
+      "source": "baseline",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "baseline-vuln-modules",
+      "exit": 2,
+      "source": "baseline",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "binary-scan-security-api",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-api"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-darwin-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-amd64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-darwin-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-arm64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-linux-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-amd64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-linux-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-arm64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-windows-386.exe",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-386.exe"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-windows-amd64.exe",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-amd64.exe"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-windows-arm64.exe",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-arm64.exe"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "build-darwin-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build-darwin-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build2-darwin-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build2-darwin-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build2-linux-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build2-linux-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build2-windows-386",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build2-windows-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "build2-windows-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "diagnostics-green",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "diagnostics-race",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "diagnostics-red",
+      "exit": 1,
+      "source": "red",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "github-go-headers",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "module-verify",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "native-build",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "native-vet",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "native2-build",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "native2-vet",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "public-import",
+      "exit": 1,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "repaired-graph",
+      "exit": 0,
+      "source": "red",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "repaired-modules",
+      "exit": 0,
+      "source": "red",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan-darwin-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan-darwin-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan-linux-amd64",
+      "exit": 1,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan-linux-arm64",
+      "exit": 1,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan-windows-386",
+      "exit": 1,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan-windows-amd64",
+      "exit": 1,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan-windows-arm64",
+      "exit": 1,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "run": "scan2-darwin-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-darwin-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-linux-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-linux-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-windows-386",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-windows-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-windows-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scanner-build",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true
+    }
+  ],
+  "source_scans": [
+    {
+      "run": "scan2-darwin-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-darwin-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-linux-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-linux-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-windows-386",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-windows-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    },
+    {
+      "run": "scan2-windows-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-show=verbose",
+        "./..."
+      ],
+      "package_count": [
+        "86"
+      ]
+    }
+  ],
+  "binary_scans": [
+    {
+      "run": "binary-scan-security-api",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-api"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-darwin-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-amd64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-darwin-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-arm64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-linux-amd64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-amd64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-linux-arm64",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-arm64"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-windows-386.exe",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-386.exe"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-windows-amd64.exe",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-amd64.exe"
+      ],
+      "package_count": []
+    },
+    {
+      "run": "binary-scan-security2-multica-windows-arm64.exe",
+      "exit": 0,
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+      "source_changes": [],
+      "stdout_matches": true,
+      "stderr_matches": true,
+      "no_vulnerabilities": true,
+      "advisory_ids": [],
+      "stderr_empty": true,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+        "-mode=binary",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-arm64.exe"
+      ],
+      "package_count": []
+    }
+  ],
+  "test_inventories": {
+    "diagnostics-red": {
+      "started": 13,
+      "terminals": 13,
+      "counts": {
+        "fail": 13
+      },
+      "complete": true,
+      "matches_inventory": true,
+      "package_terminals": [
+        "fail"
+      ]
+    },
+    "diagnostics-green": {
+      "started": 16,
+      "terminals": 16,
+      "counts": {
+        "pass": 16
+      },
+      "complete": true,
+      "matches_inventory": true,
+      "package_terminals": [
+        "pass"
+      ]
+    },
+    "diagnostics-race": {
+      "started": 16,
+      "terminals": 16,
+      "counts": {
+        "pass": 16
+      },
+      "complete": true,
+      "matches_inventory": true,
+      "package_terminals": [
+        "pass"
+      ]
+    },
+    "public-import": {
+      "started": 1,
+      "terminals": 1,
+      "counts": {
+        "fail": 1
+      },
+      "complete": true,
+      "matches_inventory": true,
+      "package_terminals": [
+        "fail"
+      ]
+    }
+  },
+  "frozen_source": {
+    "root": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green02",
+    "files": 5368,
+    "mismatches": [],
+    "unlisted_files": []
+  },
+  "owned_source": {
+    "server/go.mod": {
+      "worktree_matches": true,
+      "frozen_matches": true
+    },
+    "server/go.sum": {
+      "worktree_matches": true,
+      "frozen_matches": true
+    },
+    "server/internal/handler/skill.go": {
+      "worktree_matches": true,
+      "frozen_matches": true
+    },
+    "server/internal/handler/skill_github_error_test.go": {
+      "worktree_matches": true,
+      "frozen_matches": true
+    }
+  },
+  "binary_provenance": [
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security-api",
+      "size": 111635570,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=1",
+        "GOARCH=arm64",
+        "GOOS=darwin"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-amd64",
+      "size": 38609680,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=0",
+        "GOARCH=amd64",
+        "GOOS=darwin"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-arm64",
+      "size": 36370450,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=0",
+        "GOARCH=arm64",
+        "GOOS=darwin"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-amd64",
+      "size": 37814423,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=0",
+        "GOARCH=amd64",
+        "GOOS=linux"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-arm64",
+      "size": 35310125,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=0",
+        "GOARCH=arm64",
+        "GOOS=linux"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-386.exe",
+      "size": 36801536,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=0",
+        "GOARCH=386",
+        "GOOS=windows"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-amd64.exe",
+      "size": 38391808,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=0",
+        "GOARCH=amd64",
+        "GOOS=windows"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-arm64.exe",
+      "size": 35455488,
+      "size_matches": true,
+      "sha256_matches": true,
+      "go12611": true,
+      "target": [
+        "CGO_ENABLED=0",
+        "GOARCH=arm64",
+        "GOOS=windows"
+      ],
+      "websocket_fixed": true,
+      "xnet_fixed": true
+    }
+  ],
+  "tools": {
+    "scanner-provenance.json": {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security-govulncheck",
+      "sha256_matches": true
+    },
+    "go-provenance.json": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+      "sha256_matches": true
+    }
+  },
+  "tool_archive": {
+    "sha256_matches": true,
+    "size_matches": true,
+    "go_binary_matches_archive_member": true
+  },
+  "green01_to_green02": {
+    "changed_files": [
+      "server/internal/handler/skill.go"
+    ],
+    "skill_diff": [
+      "--- \n",
+      "+++ \n",
+      "@@ -1866,8 +1866,6 @@\n",
+      " // fall back to the optimistic URL split rather than aborting the import.",
+      " var errGitHubAPIBlocked = errors.New(\"github API blocked (rate limit or auth)\")",
+      " ",
+      "-// gitHubAPIResponseError classifies refusals without disclosing upstream bodies",
+      "-// or arbitrary headers. A bare 403 does not establish a rate-limit failure.",
+      " func gitHubAPIResponseError(resp *http.Response) error {",
+      " \treason := \"request failed\"",
+      " \tswitch resp.StatusCode {"
+    ]
+  },
+  "resource_receipt": {
+    "database_other_clients_handler_workspaces": "fix_security_handler01|0|0",
+    "source_green02_unchanged": true,
+    "no_lane_service_started": true,
+    "source_audit_paths": 5368
+  },
+  "independent_binary_buildinfo": [
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security-api",
+      "exit": 0,
+      "matches_retained": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-amd64",
+      "exit": 0,
+      "matches_retained": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-darwin-arm64",
+      "exit": 0,
+      "matches_retained": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-amd64",
+      "exit": 0,
+      "matches_retained": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-linux-arm64",
+      "exit": 0,
+      "matches_retained": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-386.exe",
+      "exit": 0,
+      "matches_retained": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-amd64.exe",
+      "exit": 0,
+      "matches_retained": true
+    },
+    {
+      "path": "/private/tmp/acceptance-fixes-4b9d3494a2/security2-multica-windows-arm64.exe",
+      "exit": 0,
+      "matches_retained": true
+    }
+  ],
+  "independent_scanner_buildinfo": {
+    "exit": 0,
+    "matches_retained": true
+  },
+  "target_environment_bindings": [
+    {
+      "run": "scan2-darwin-amd64",
+      "target": {
+        "GOOS": "darwin",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "matches_recorded_digest": true
+    },
+    {
+      "run": "scan2-darwin-arm64",
+      "target": {
+        "GOOS": "darwin",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "matches_recorded_digest": true
+    },
+    {
+      "run": "scan2-linux-amd64",
+      "target": {
+        "GOOS": "linux",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "matches_recorded_digest": true
+    },
+    {
+      "run": "scan2-linux-arm64",
+      "target": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "matches_recorded_digest": true
+    },
+    {
+      "run": "scan2-windows-386",
+      "target": {
+        "GOOS": "windows",
+        "GOARCH": "386",
+        "CGO_ENABLED": "0"
+      },
+      "matches_recorded_digest": true
+    },
+    {
+      "run": "scan2-windows-amd64",
+      "target": {
+        "GOOS": "windows",
+        "GOARCH": "amd64",
+        "CGO_ENABLED": "0"
+      },
+      "matches_recorded_digest": true
+    },
+    {
+      "run": "scan2-windows-arm64",
+      "target": {
+        "GOOS": "windows",
+        "GOARCH": "arm64",
+        "CGO_ENABLED": "0"
+      },
+      "matches_recorded_digest": true
+    }
+  ],
+  "module_inventory": {
+    "before_run": "baseline-modules",
+    "after_run": "repaired-modules",
+    "before_count": 123,
+    "after_count": 123,
+    "delta": {
+      "added_modules": [],
+      "removed_modules": [],
+      "updated": {
+        "golang.org/x/text": [
+          "v0.41.0",
+          "v0.43.0"
+        ],
+        "golang.org/x/telemetry": [
+          "v0.0.0-20260708182218-49f421fb7959",
+          "v0.0.0-20260924152758-ed294f943157"
+        ],
+        "golang.org/x/sync": [
+          "v0.22.0",
+          "v0.24.0"
+        ],
+        "golang.org/x/mod": [
+          "v0.38.0",
+          "v0.41.0"
+        ],
+        "golang.org/x/term": [
+          "v0.45.0",
+          "v0.47.0"
+        ],
+        "golang.org/x/crypto": [
+          "v0.54.0",
+          "v0.58.0"
+        ],
+        "golang.org/x/tools": [
+          "v0.48.0",
+          "v0.51.0"
+        ],
+        "golang.org/x/net": [
+          "v0.57.0",
+          "v0.62.0"
+        ],
+        "golang.org/x/sys": [
+          "v0.47.0",
+          "v0.49.0"
+        ],
+        "github.com/gorilla/websocket": [
+          "v1.5.3",
+          "v1.5.4-0.20240701034025-d67f41855da4"
+        ]
+      }
+    },
+    "matches_report": true
+  },
+  "baseline_scan": {
+    "baseline-vuln": {
+      "ids": [
+        "GO-2026-6278"
+      ],
+      "summary_lines": [
+        "Your code is affected by 1 vulnerability from 1 module.",
+        "vulnerabilities in modules you require, but your code doesn't appear to call"
+      ]
+    },
+    "baseline-vuln-details": {
+      "ids": [
+        "GO-2026-6278",
+        "GO-2026-6603",
+        "GO-2026-6610",
+        "GO-2026-6611",
+        "GO-2026-6612",
+        "GO-2026-6617",
+        "GO-2026-6860",
+        "GO-2026-6866"
+      ],
+      "summary_lines": [
+        "Your code is affected by 1 vulnerability from 1 module.",
+        "vulnerabilities in modules you require, but your code doesn't appear to call"
+      ]
+    }
+  },
+  "github_fresh": {
+    "observed_at": "2026-11-25T10:11:26.987361Z",
+    "status": 403,
+    "authentication": "none",
+    "remaining": "0",
+    "limit": "60",
+    "separate_probe_not_historical": true
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "state": "completed",
+  "started": 1795601559.3271391,
+  "source_manifest_sha256": "1544b34ef6e7096b960e4c8d1e345c08c48eeaadc7a60456a81722b2c81a5a5f",
+  "runner_sha256": "1c9b692af6e7949dba0cf2741c04b7eea72a7daeffecd9cdda686ae3543cd782",
+  "config_sha256": "768611bd058803b91f933225e238cf3d27269be5e281a7ec0a1ed23cb0adcbe5",
+  "database": "fix_runtime_api01",
+  "database_container": "22bd321d8816f54fd23328fc2adeccc1e6e553285f041d765b41baa3adaa0961",
+  "ports": [
+    51409,
+    51410,
+    51411
+  ],
+  "edges": {
+    "apps/web/node_modules/@multica/core": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source/packages/core",
+    "apps/desktop/node_modules/@multica/views": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source/packages/views",
+    "node_modules/@playwright/test": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test"
+  },
+  "binaries": {
+    "daemon-test": "864b1ec1cd011e5ef475dd069e0a2bedc2f8e9c83e205ab703f1efb1387904ec",
+    "multica": "4f910a5102fb45c54bdea5ee82fbd74231a5a44295ac2947693d1900a19bbbdf",
+    "memory-provider": "be2b253046177bc5fd39a971c7776c14a0e7de83ac125b5f1c7dbe7e1b37e23f",
+    "api": "e046f79a39acfeecd4c43ac7b6013137b12d492e9ee13e1340ef9ba80c6181f1",
+    "multi-account-provider": "478d9b75d46c6e937f46714452d4209f5c78bb17a13a436747f868d45c747f5b"
+  },
+  "build_manifest_sha256": "7217035ebecf0e107fbabcd874ad0d58a36c3db95d338dfd36ba105b43cae560",
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": 2
+  },
+  "connections_before": {
+    "all": 8,
+    "max": "100"
+  },
+  "processes": [
+    {
+      "name": "api",
+      "pid": 91622,
+      "argv": [
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/bin/api"
+      ],
+      "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source"
+    },
+    {
+      "name": "web",
+      "pid": 91798,
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "node_modules/next/dist/bin/next",
+        "start",
+        "--port",
+        "51410",
+        "--hostname",
+        "127.0.0.1"
+      ],
+      "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source/apps/web"
+    },
+    {
+      "name": "renderer",
+      "pid": 91972,
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "scripts/check-desktop-renderer.mjs",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source/apps/desktop/out/renderer",
+        "51411",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/memory-runtime-01/renderer.json"
+      ],
+      "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source"
+    },
+    {
+      "name": "playwright",
+      "pid": 92023,
+      "argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source/node_modules/@playwright/test/cli.js",
+        "test",
+        "e2e/collaboration-memory-runtime.spec.ts",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/runtime/memory-runtime-01/results"
+      ],
+      "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen01/source"
+    }
+  ],
+  "exit": 0,
+  "cleanup": [
+    {
+      "name": "playwright",
+      "exit": 0
+    },
+    {
+      "name": "renderer",
+      "exit": 0
+    },
+    {
+      "name": "web",
+      "exit": 143
+    },
+    {
+      "name": "api",
+      "exit": 0
+    }
+  ],
+  "ended": 1795601596.196278,
+  "listeners_closed": [
+    true,
+    true,
+    true
+  ],
+  "source_unchanged": true,
+  "build_unchanged": true,
+  "gate_after": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": 4
+  },
+  "remaining_db_clients": 0,
+  "log_hashes": {
+    "api.log": "1a9fadb96fc3f95462d6f0da90e28b0fc08d78aee8a7438696a32b08fb788318",
+    "playwright.log": "e5d66d6c2b83be28431fee1165b18b6a119b97a87276320a61111c2ea6c9af99",
+    "web.log": "aa892dc139b836a2c03e884e9d1b71a0b50e8d3aa43067d957520282dfd5b722",
+    "renderer.log": "8c12d057616c5a39e4e6889a6b6e8371fadb71f07f96df7649855cc4b1c0a893"
+  }
+}

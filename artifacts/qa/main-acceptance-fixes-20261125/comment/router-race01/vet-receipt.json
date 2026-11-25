@@ -1,0 +1,15 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "./internal/handler",
+    "./cmd/server"
+  ],
+  "exit": 0,
+  "source_manifest_sha256": "622dba315bc4383b0dbe7d12e3787f6c916ff84a3f3a0caf4631e9392f8f65f9",
+  "go_binary_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133"
+}

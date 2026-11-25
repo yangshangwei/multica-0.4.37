@@ -1,0 +1,27 @@
+{
+  "processes": [
+    {
+      "service": "api",
+      "pid": 62578,
+      "original_process_absent": true
+    },
+    {
+      "service": "web",
+      "pid": 62579,
+      "original_process_absent": true
+    },
+    {
+      "service": "renderer",
+      "pid": 62580,
+      "original_process_absent": true
+    }
+  ],
+  "ports_closed": {
+    "api": true,
+    "web": true,
+    "renderer": true
+  },
+  "other_database_clients": 0,
+  "database_check_exit": 0,
+  "database_retained": true
+}

@@ -1,0 +1,284 @@
+{
+  "verdict": "HOLD",
+  "D02": "not_reproduced_original_holder_unknown_not_fixed",
+  "product_files_changed_by_db_lock_lane": [],
+  "runs": [
+    {
+      "label": "baseline-race-01",
+      "exit": 0,
+      "named": {
+        "pass": 4611,
+        "fail": 0,
+        "skip": 18
+      },
+      "top": {
+        "pass": 1872,
+        "skip": 18
+      },
+      "leaf": {
+        "pass": 4053,
+        "skip": 18
+      },
+      "unfinished_started": [],
+      "unreached_top_count": 0,
+      "source_manifest_sha256": "71fb1568b38c4a735a0c45b159d87613e3d39f48587ee8ba7a11843e76247707",
+      "raw_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/db-lock/baseline-race-01/test.jsonl",
+      "raw_sha256": "7c5ea4b44165e4d6cf3a722cc1944c6189ea2ed7e22f9529863b9441069adc4b",
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "modules_unchanged": null,
+      "remaining_clients": 0,
+      "started_utc": "2026-11-25T09:57:29.530669+00:00",
+      "finished_utc": "2026-11-25T10:34:41.230058+00:00",
+      "wall_seconds": 2231.7,
+      "continuous_lock_monitor": true,
+      "failures": []
+    },
+    {
+      "label": "final-normal-01",
+      "exit": 1,
+      "named": {
+        "pass": 4627,
+        "fail": 2,
+        "skip": 0
+      },
+      "top": {
+        "pass": 1889,
+        "fail": 1
+      },
+      "leaf": {
+        "pass": 4070,
+        "fail": 1
+      },
+      "unfinished_started": [],
+      "unreached_top_count": 0,
+      "source_manifest_sha256": "31625facb733494323e0f7836e34ea8e98637879347333ea45f965f1cca5a0dc",
+      "raw_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/db-lock/final-normal-01/test.jsonl",
+      "raw_sha256": "ddb511e92b1834108472cd24ea5043e6b7bbf06b0d97a69d003cbd04b76d44df",
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "modules_unchanged": true,
+      "remaining_clients": 0,
+      "started_utc": "2026-11-25T10:41:52.778827+00:00",
+      "finished_utc": "2026-11-25T11:11:31.909204+00:00",
+      "wall_seconds": 1779.13,
+      "continuous_lock_monitor": true,
+      "failures": [
+        "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+        "TestBuiltinSkillsConformToTemplate"
+      ]
+    },
+    {
+      "label": "final-normal-02b",
+      "exit": 1,
+      "named": {
+        "pass": 3293,
+        "fail": 6,
+        "skip": 0
+      },
+      "top": {
+        "pass": 1282,
+        "fail": 2
+      },
+      "leaf": {
+        "pass": 2868,
+        "fail": 4
+      },
+      "unfinished_started": [
+        "TestIssueBudgetLifecycleRoundFindsExactlyWhatAReconciliationCloses",
+        "TestParseChatQuickActionsOutputAppliesSanitizeContract",
+        "TestParseChatQuickActionsOutputBareArray",
+        "TestParseChatQuickActionsOutputDegradesToNone",
+        "TestParseChatQuickActionsOutputHandlesBracketsInProse",
+        "TestParseChatQuickActionsOutputToleratesFencesAndProse",
+        "TestRuntimeLookupClassifiesResult",
+        "TestRuntimeLookupKeepsTransactionConnectionAndCollector",
+        "TestRuntimeLookupNilMetricsIsSafe",
+        "TestSplitChatQuickActions",
+        "TestSplitChatQuickActionsLeavesMidResponseFenceVisible",
+        "TestSplitChatQuickActionsLeavesMidResponseFenceWhenLaterFenceEndsReply",
+        "TestSplitChatQuickActionsPromotesFirstAndSupportsActionsOnly",
+        "TestSplitChatQuickActionsStripsMalformedTrailingProtocol",
+        "TestSplitChatQuickActionsTruncatesByRune",
+        "TestTruncateFallbackCommentBody"
+      ],
+      "unreached_top_count": 590,
+      "source_manifest_sha256": "97008c37b375a78072bd91d0e85f789a73ce7e66a389fd4478162aee03f37687",
+      "raw_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/db-lock/final-normal-02b/test.jsonl",
+      "raw_sha256": "0595f0a6b3bae182b07ed06b435833b7cca2e0fe3d97f684718194ff34fced54",
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "modules_unchanged": true,
+      "remaining_clients": 0,
+      "started_utc": "2026-11-25T11:13:46.218634+00:00",
+      "finished_utc": "2026-11-25T11:54:23.667168+00:00",
+      "wall_seconds": 2437.45,
+      "continuous_lock_monitor": true,
+      "failures": [
+        "TestCollaborationCheckpointAuthorityTransactionOrder/revoke_grant/checkpoint_first",
+        "TestCollaborationCheckpointAuthorityTransactionOrder/revoke_grant/authority_first",
+        "TestCollaborationCheckpointAuthorityTransactionOrder",
+        "TestStageCompletionSourceRevocationBothCommitOrders/revocation_first",
+        "TestStageCompletionSourceRevocationBothCommitOrders/completion_first",
+        "TestStageCompletionSourceRevocationBothCommitOrders"
+      ]
+    },
+    {
+      "label": "final-race-01",
+      "exit": 1,
+      "named": {
+        "pass": 2620,
+        "fail": 4,
+        "skip": 0
+      },
+      "top": {
+        "pass": 998,
+        "fail": 2
+      },
+      "leaf": {
+        "pass": 2281,
+        "fail": 3
+      },
+      "unfinished_started": [
+        "TestParseChatQuickActionsOutputAppliesSanitizeContract",
+        "TestParseChatQuickActionsOutputBareArray",
+        "TestParseChatQuickActionsOutputDegradesToNone",
+        "TestParseChatQuickActionsOutputHandlesBracketsInProse",
+        "TestParseChatQuickActionsOutputToleratesFencesAndProse",
+        "TestRuntimeLookupClassifiesResult",
+        "TestRuntimeLookupKeepsTransactionConnectionAndCollector",
+        "TestRuntimeLookupNilMetricsIsSafe",
+        "TestSplitChatQuickActions",
+        "TestSplitChatQuickActionsLeavesMidResponseFenceVisible",
+        "TestSplitChatQuickActionsLeavesMidResponseFenceWhenLaterFenceEndsReply",
+        "TestSplitChatQuickActionsPromotesFirstAndSupportsActionsOnly",
+        "TestSplitChatQuickActionsStripsMalformedTrailingProtocol",
+        "TestSplitChatQuickActionsTruncatesByRune",
+        "TestStageCompletionAllM1ModesAndActualWriters",
+        "TestStageCompletionAllM1ModesAndActualWriters/enforce",
+        "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission",
+        "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified"
+      ],
+      "unreached_top_count": 875,
+      "source_manifest_sha256": "97008c37b375a78072bd91d0e85f789a73ce7e66a389fd4478162aee03f37687",
+      "raw_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/db-lock/final-race-01/test.jsonl",
+      "raw_sha256": "a0ab1f93d618ea4fc69de2cf65e75c10ca610b2b51c34b24d81e449a4b2e0716",
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "tool_unchanged": true,
+      "modules_unchanged": true,
+      "remaining_clients": 0,
+      "started_utc": "2026-11-25T11:54:31.892245+00:00",
+      "finished_utc": "2026-11-25T12:36:44.434027+00:00",
+      "wall_seconds": 2532.54,
+      "continuous_lock_monitor": false,
+      "failures": [
+        "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human",
+        "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+        "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+        "TestKnowledgeFanoutNeverWaitsOnSourceWriter"
+      ]
+    }
+  ],
+  "original_evidence_unchanged": true,
+  "normal03_started": false,
+  "remaining_root_cause": "new deadline/expiry failures and complete-suite slowdown remain unproved; no pg_lock failure correlated with those errors",
+  "lock_safety_preserved": true,
+  "redis_cleanup": {
+    "at": 1795610256.494817,
+    "command": [
+      "docker",
+      "stop",
+      "f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2"
+    ],
+    "exit": 0,
+    "container": "f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2",
+    "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "labels": {
+      "multica.qa.lane": "db-lock",
+      "multica.qa.owner": "acceptance-fixes-4b9d3494a2"
+    },
+    "was_running": true,
+    "running": false,
+    "container_retained": true,
+    "reason": "both planned full runs terminal; normal03 not authorized to start yet",
+    "secret_config": "retained only in private task file and stopped container"
+  },
+  "final_resources": {
+    "at": 1795610363.306155,
+    "databases": [
+      {
+        "database": "fix_service_diag01",
+        "clients": 0,
+        "issues": 0,
+        "workspaces": 0,
+        "schema_migrations": 877
+      },
+      {
+        "database": "fix_service_normal01",
+        "clients": 0,
+        "issues": 0,
+        "workspaces": 0,
+        "schema_migrations": 877
+      },
+      {
+        "database": "fix_service_normal02",
+        "clients": 0,
+        "issues": 2,
+        "workspaces": 1,
+        "schema_migrations": 877
+      },
+      {
+        "database": "fix_service_race01",
+        "clients": 0,
+        "issues": 2,
+        "workspaces": 2,
+        "schema_migrations": 877
+      },
+      {
+        "database": "fix_service_normal03",
+        "clients": 0,
+        "issues": 0,
+        "workspaces": 0,
+        "schema_migrations": 877
+      }
+    ],
+    "normal03_started": false,
+    "cleanup": "no data removed; failures retained; shared PG remains parent-owned"
+  },
+  "late_source_delta": {
+    "at": 1795608421.8753889,
+    "frozen_manifest_sha256": "97008c37b375a78072bd91d0e85f789a73ce7e66a389fd4478162aee03f37687",
+    "server_delta": [
+      {
+        "path": "server/internal/handler/autopilot_mention_authority_test.go",
+        "frozen_sha256": "5e1c76686d29aa5611b0612dd7d1bc5352f11c888bdaa1c54dd9d29b46729692",
+        "current_sha256": "17695c44af6542d78a53c0e231a8d18d0c59d9f0f2632e078c2933172c03f28c"
+      },
+      {
+        "path": "server/internal/handler/comment.go",
+        "frozen_sha256": "e718ace5960d9db486ce407916a59ceb405d6299ecbdb7b1214f4f0e7ed639dd",
+        "current_sha256": "4a5577ec1acdd6697bc3591ccdcdf7184f8c8a11910c2749e9ccf039f5480fee"
+      },
+      {
+        "path": "server/internal/handler/comment_authority_test.go",
+        "frozen_sha256": "2590689ba5c24b4a665b99246df51ec9c2ac82873066dd732b5238e5059df607",
+        "current_sha256": "0f339da42c8d6881819772fc31b6aabac11a3473bb53633cd2b0445130440242"
+      },
+      {
+        "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+        "frozen_sha256": "27a875cdfba54f31f78f23be509aaca30b10b8ab37344e86eb9d14289a314d9a",
+        "current_sha256": "4672524ae3e708e2c5cf3bb8d55a3bae5668fce84eab82788cbd3d1a8932bb48"
+      },
+      {
+        "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+        "frozen_sha256": "654fdd9c75c20cad3ec4fbbd90aca0a65711b73ed886fe37c079f2eeb623876f",
+        "current_sha256": "834d24795ecfcd2b912fd241a6c19619807172591ce2f72baa7a29531933ffd7"
+      }
+    ],
+    "classification": "parent coordinated late comment/skill changes; owning service run remains bound to frozen snapshot; parent focused validation required"
+  }
+}

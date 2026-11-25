@@ -1,0 +1,122 @@
+{
+  "checked_at": "2026-11-25T11:35:38.238319+00:00",
+  "audits": {
+    "handler-normal02": {
+      "source_manifest_matches": true,
+      "files": 9211,
+      "changed": [],
+      "config_matches": true,
+      "go_binary_matches": true
+    },
+    "handler-race02": {
+      "source_manifest_matches": true,
+      "files": 9211,
+      "changed": [],
+      "config_matches": true,
+      "go_binary_matches": true
+    },
+    "router-normal01": {
+      "source_manifest_matches": true,
+      "files": 9211,
+      "changed": [],
+      "config_matches": true,
+      "go_binary_matches": true
+    },
+    "router-race01": {
+      "source_manifest_matches": true,
+      "files": 9211,
+      "changed": [],
+      "config_matches": true,
+      "go_binary_matches": true
+    },
+    "original_evidence_unchanged": true
+  },
+  "inventory": {
+    "handler-normal02": {
+      "started": 6207,
+      "terminal": 6207,
+      "incomplete": [],
+      "counts": {
+        "pass": 6200,
+        "skip": 7
+      },
+      "comment_tests": [
+        {
+          "test": "TestCommentManagementMachineHandlerBackstop",
+          "result": "pass"
+        }
+      ]
+    },
+    "handler-race02": {
+      "started": 6207,
+      "terminal": 6207,
+      "incomplete": [],
+      "counts": {
+        "pass": 6200,
+        "skip": 7
+      },
+      "comment_tests": [
+        {
+          "test": "TestCommentManagementMachineHandlerBackstop",
+          "result": "pass"
+        }
+      ]
+    },
+    "router-normal01": {
+      "started": 1759,
+      "terminal": 1759,
+      "incomplete": [],
+      "counts": {
+        "pass": 1751,
+        "skip": 8
+      },
+      "comment_tests": [
+        {
+          "test": "TestCommentManagementAuthorityHTTP",
+          "result": "pass"
+        },
+        {
+          "test": "TestCommentManagementClaimedLegacyHTTP",
+          "result": "pass"
+        },
+        {
+          "test": "TestCommentManagementClaimedPasswordHTTP",
+          "result": "pass"
+        },
+        {
+          "test": "TestCommentManagementCloudPrincipalHTTP",
+          "result": "pass"
+        }
+      ]
+    },
+    "router-race01": {
+      "started": 1759,
+      "terminal": 1759,
+      "incomplete": [],
+      "counts": {
+        "pass": 1751,
+        "skip": 8
+      },
+      "comment_tests": [
+        {
+          "test": "TestCommentManagementAuthorityHTTP",
+          "result": "pass"
+        },
+        {
+          "test": "TestCommentManagementClaimedLegacyHTTP",
+          "result": "pass"
+        },
+        {
+          "test": "TestCommentManagementClaimedPasswordHTTP",
+          "result": "pass"
+        },
+        {
+          "test": "TestCommentManagementCloudPrincipalHTTP",
+          "result": "pass"
+        }
+      ]
+    }
+  },
+  "all_required_runs_exit0": true,
+  "claim_limit": "separate mechanical audit by implementer; parent independent code review remains separate"
+}

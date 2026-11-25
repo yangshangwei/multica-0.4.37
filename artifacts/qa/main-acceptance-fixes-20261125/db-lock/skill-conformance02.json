@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/bin/bash",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-integrated02/source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^TestBuiltinSkillsConformToTemplate$",
+    "./internal/service"
+  ],
+  "source_manifest_sha256": "97008c37b375a78072bd91d0e85f789a73ce7e66a389fd4478162aee03f37687",
+  "exit": 0,
+  "started": 1795604685.7590752,
+  "finished": 1795604716.2870378,
+  "raw_sha256": "16af2e99814ddc25f87a23d9191d4608377e3fd65ac276af6f2a1bacbb62ec8b",
+  "database_access": "none; pure selected conformance test"
+}

@@ -1,0 +1,21 @@
+{
+  "readiness_sha256": "87c1e5e3a4a95c4943f94cc7f3cf7ecee11599116bf056421e199e2b88fe93a6",
+  "actions": [
+    {
+      "command": [
+        "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
+        "-u",
+        "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
+        "-u",
+        "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-02/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app"
+      ],
+      "exit": 0
+    }
+  ]
+}

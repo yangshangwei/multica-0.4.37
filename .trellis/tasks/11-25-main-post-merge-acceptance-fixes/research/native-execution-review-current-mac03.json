@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "execution_cleared": true,
+  "verdict": "ACCEPT_MAC03_CURRENT_OBSERVED_PROTOCOL_BASELINE",
+  "reviewed_at": "2026-11-25T13:37:19.346717+00:00",
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_current_mac03.py",
+    "mac-current03"
+  ],
+  "bindings": {
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/process_audit.py": "fb07b8f27db951d43ad6aa0c34589d46b71e86cc1c785e933c6d1ace86865b0d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/fake_discovery.py": "df87f5a4df6522c275e8e465757c848bb69b4906652c3e163c55d340c300fc14",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/web-server.mjs": "ac98ea0fe949cedad4f2f45249cfdd6a5d5be4bcada9be4410f7d72e61650bc4",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_current_mac03.py": "fbfb041191aee86f4862f62151bb1b6955cba5e68ddf4253893eab21d3d30e58"
+    },
+    "inputs": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current-postpackage.json": "fae4c892381d2bf2816de6627ab99941a6288b273391855f6ad7f4a7e698c729",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/current-binary-builds.json": "5894b03a58a414b07e8d8d9b3656dbfd05b1cd2bb397fbab53f64e530614d970",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-signed-package.json": "906c8ae16f7891806b71b194f06fdc3bb988998df1068adda3799802f3cb3c47",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-signed-asar.json": "de3eeabb8127820732fe5a686630325b9344f349170c0d7ec3a043793a69e689",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-sign-terminal02.json": "0d3dfe93182291a55af18a01988d5cf408ac29b85fe2a8bcf24ec4c7c1ed876e",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol-observed-before-mac03.json": "976652e1f7c67605cdb2303e2a63f129c80773b801e699f5339a1ba8217ecedb"
+    },
+    "database": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_api02/env.json",
+      "sha256": "ff7f05199e639cde0eb4f6f97656451cc066a2373572a6a1641c8a9586c89441",
+      "migration_sha256": "da9b188524d5af78d2ebb79a3787464abb6c5d661faad15bba113a0bd189e1fd",
+      "exit": 0
+    }
+  },
+  "binding_sha256": "7c65c53b30ce9b371b861d45b780a61cfbc63cf316caecb914e85a35c21bc72f",
+  "prior_request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current-main02-review-request.json",
+  "prior_request_sha256": "9222b9eca17c79a39937d129c29a2efbc1c65a71e86fd32b4f84343899f86e05",
+  "blocking_findings_open": 0,
+  "issues": [],
+  "basis": [
+    "Exact runner delta is only original baseline reference from historical artifact to protocol-observed-before-mac03.json. KnowledgeOFF/current artifacts/newnative_api02/original480s business assertions/M1M2cleanup/compiledWebconfig unchanged.",
+    "Independent snapshot-only Swift getter exited0 and exactly matches newbaseline976652e1f7c67605cdb2303e2a63f129c80773b801e699f5339a1ba8217ecedb: ApplicationsMultica default,ai.multica.desktop handler,9registeredMulticaURLs,noElectron handler. Error paths throw; no silent error-to-empty evidence observed.",
+    "Mac02 refused at protocol plan before API/Main/SQL; unused same native_api02 is valid for fresh mac-current03 label. Parent explicitly authorized preserving the newly observed state.",
+    "Existing recovery helper removes only enumerated owned additions and restores exact baseline default/set. No reconstruction or registration of removed historical external paths."
+  ],
+  "scope_limits": [
+    "Preserve current observed state for this run only. No claim of whole-task initial-state restoration; cause/time of earlier24Electron registration disappearance/defaultchange remains unknown.",
+    "Retain Mac01 behaviorFAIL/protocolFAIL and Mac02 preflightrefusal,oldbaseline and all prior reviews. KnowledgeOFF success cannot establish defaultON behavior.",
+    "Require actual fulljourney outcome,source/package identity and exact newly observed baseline restoration plus independent process/DB/listener cleanup before acceptance."
+  ],
+  "evidence": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-protocol-before-mac03.json",
+  "verification": {
+    "baseline_only_diff": "pass",
+    "independent_getter": "exit0_exact_match",
+    "script_input_hashes": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "reviewer_system_mutations": false
+}

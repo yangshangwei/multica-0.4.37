@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_BOUNDED_CLI03_EXECUTION",
+  "reviewed_at": "2026-11-25T12:11:19.742304+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli03-review-request.json",
+  "request_sha256": "8f7aa519ef94dd440ad681927814ada9b2f578531d6dff7f890e2d2d97bda07e",
+  "scope": "Full tenoperation corrected fixture under240s with allfive snapshotreads awaited inparallel; sameassertions, nooperation reorder; APIslowrootcause unresolved",
+  "bindings": {
+    "scope": "Full tenoperation corrected fixture under240s with allfive snapshotreads awaited inparallel; sameassertions, nooperation reorder; APIslowrootcause unresolved",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli03.py",
+      "cli03"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/pg_monitor.py": "70961b7bb94d6307190d1225b56a8af108dfae1e6c56d20680e66aaa3e9327d7",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli_guard.py": "fe7b222f4394c76b0e768e14d016462140f52ff650581bececf491aa5e2175a9",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/timing_probe.py": "fd921860e6db2e65a6287d0f620f1081652ef2de2296209f63d5f863e006b627",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli03.py": "43750da08cb8d744cf8e60251ce9d1b625524a40d07e1080e4e84feb238c928a"
+    },
+    "source": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source03.json",
+      "sha256": "890b88d1b5ce9cf3f6d1c600e0581141360ddb2c6706ede842e1fc2f06bb4e93"
+    },
+    "api_binary": {
+      "path": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/api",
+      "sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16"
+    },
+    "database": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/legacy_cli_api03/env.json",
+      "sha256": "2e91c533ac39145feb1b5d1418840badc1598086721d1da15d839f8e182578fc",
+      "migration": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/legacy_cli_api03/migration.json",
+      "migration_sha256": "b5abf124bba81b7eb9efd08090efbbe2d98c655329cce54147b5c1821316d1f1",
+      "exit": 0
+    },
+    "historical_preservation": "cli01 timeout+cleanupFAIL retained; no causality attributed from lessload; command+API+PGwait timing retained",
+    "api_build_source": {
+      "receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/api-build01.json",
+      "sha256": "da17bce39699846833352cfb6c691c77bcf506d20f4dc3d0116f3cd12f4720cb",
+      "source": "source01",
+      "note": "source02 adds cleanupfixture+test and unrelated test/docs edits; actual API bytes remain explicitlybound frozen01, not rebuiltsource02 claim"
+    },
+    "fixture_spec": {
+      "path": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source03/e2e/collaboration-installed-clients.spec.ts",
+      "sha256": "02b235aeb88de2f9af6f6d1aae001ecb4da9606554867e10e662bb9ff7c1a5af"
+    }
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli03.py",
+    "cli03"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "tools": {
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node": {
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "realpath": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "mode": "0o755"
+    },
+    "/opt/homebrew/bin/python3": {
+      "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+      "realpath": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "mode": "0o755"
+    },
+    "/usr/local/bin/docker": {
+      "sha256": "d564bccadf2a017ffa5d81c103a950c53b697cc1b7fcf523cc4c2726b440286a",
+      "realpath": "/Applications/Docker.app/Contents/Resources/bin/docker",
+      "mode": "0o755"
+    },
+    "/opt/homebrew/opt/libpq/bin/psql": {
+      "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+      "realpath": "/opt/homebrew/Cellar/libpq/18.6/bin/psql",
+      "mode": "0o555"
+    },
+    "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/relay": {
+      "sha256": "b0231b754c1117c599eb60359e24e28ca2f462e48fecd625fa3572e40e7fae7b",
+      "realpath": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/relay",
+      "mode": "0o755"
+    }
+  },
+  "basis": [
+    "CLI03 runner differs from accepted CLI02 only in source03/legacy_cli_api03 selection and matching receipt reference. All declared hashes match.",
+    "Only source02-to-source03 manifest difference is collaboration-installed-clients.spec.ts: five independent snapshot reads awaited with Promise.all. Positive plus nine refusal operations, all state/authority/history assertions,240000ms deadline,workers1,retries0 and12/1pool are unchanged.",
+    "Full source03 audit:149210 entries,zero byte/mode/path drift,zero escaping symlinks.",
+    "Recorded legacy_cli_api03 migration exit0; credential-free checks confirm its selected DB/loopback/port. Live read-only PG container owner/image/port/volume inspection matches parent allocation; exact cached CLI image exists. No SQL/test/service mutation by reviewer.",
+    "Accepted cleanup/guard/monitor bytes unchanged; durable creation intents retained, every owned resource audited and fallback removals retain FAIL."
+  ],
+  "conditions": [
+    "Execution admission only: preserve exact request/scripts/config/tool hashes before launch; refuse drift. Parent copies this JSON; this reviewer did not run the command.",
+    "Require full ten-operation report,actual exit,source/tool/config after-bindings and independently absent owned resources. Preserve earlier CLI01/CLI02 failures and raw timing.",
+    "API remains explicitly source01 build; source03 is the fixture/dependency snapshot. Excludes later UI/account-resume and local comment-principal changes. Fresh final integrated binding and regression remain required."
+  ],
+  "not_cleared": [
+    "Linux or macOS Main execution",
+    "Latest-candidate or release acceptance",
+    "Any timeout/retry/assertion/security-policy change"
+  ],
+  "verification": {
+    "read_only_hash_and_metadata": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_user_read_only_constraint",
+    "typecheck": "not_run_user_read_only_constraint",
+    "tests": "not_run_user_constraint"
+  },
+  "evidence": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-cli03-audit.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-resource-audit.json"
+  ]
+}

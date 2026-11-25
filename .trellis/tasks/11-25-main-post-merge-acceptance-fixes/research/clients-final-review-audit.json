@@ -1,0 +1,1097 @@
+{
+  "reviewed_at": "2026-11-25T11:23:08.808753+00:00",
+  "runs": {
+    "pay-final02": {
+      "evidence_count": 26,
+      "hash_mismatches": [],
+      "cases": [
+        {
+          "file": "collaboration-pay-creation.spec.ts",
+          "title": "Web creates one complete PAY issue through real controls and preserves its original creation identity",
+          "id": "ca48d702c1e4c67aefbb-4c7e53db969d5505a370",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 9840
+            }
+          ]
+        },
+        {
+          "file": "collaboration-pay-creation.spec.ts",
+          "title": "Desktop creates one complete PAY issue through real controls and preserves its original creation identity",
+          "id": "ca48d702c1e4c67aefbb-a51ef4f8f1c2f1b77bbe",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 12208
+            }
+          ]
+        }
+      ],
+      "stats": {
+        "startTime": "2026-11-25T11:05:04.133Z",
+        "duration": 28579.084000000003,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "top_level_errors": 0,
+      "completion": {
+        "exit": 0,
+        "freeze_unchanged": true,
+        "cleanup_errors": [],
+        "original_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        },
+        "final_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        }
+      },
+      "before_after_equal": true,
+      "before_after_no_changes": true,
+      "frozen_manifest_sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+      "allocation": {
+        "task": ".trellis/tasks/11-25-acceptance-client-journeys",
+        "source_root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+        "database": "fix_clients_pay_final02",
+        "api_origin": "http://127.0.0.1:49474",
+        "web_origin": "http://127.0.0.1:49475",
+        "renderer_origin": "http://127.0.0.1:49476"
+      },
+      "cleanup_receipt": {
+        "processes": [
+          {
+            "service": "api",
+            "pid": 51494,
+            "original_process_absent": true
+          },
+          {
+            "service": "web",
+            "pid": 51495,
+            "original_process_absent": true
+          },
+          {
+            "service": "renderer",
+            "pid": 51496,
+            "original_process_absent": true
+          }
+        ],
+        "ports_closed": {
+          "api": true,
+          "web": true,
+          "renderer": true
+        },
+        "other_database_clients": 0,
+        "database_check_exit": 0,
+        "database_retained": true
+      },
+      "command": {
+        "command": [
+          "node",
+          "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01/node_modules/@playwright/test/cli.js",
+          "test",
+          "e2e/collaboration-pay-creation.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=json",
+          "--output=/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/pay-final02/results"
+        ],
+        "home": "/private/tmp/acceptance-fixes-4b9d3494a2/clients-pay-final02/home",
+        "cwd": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01"
+      }
+    },
+    "resource-final01": {
+      "evidence_count": 61,
+      "hash_mismatches": [],
+      "cases": [
+        {
+          "file": "admin-resource-publishing.spec.ts",
+          "title": "first resource page screenshot",
+          "id": "8b3c43dc51139ab50b4b-7875d1978ba1d8d8dc82",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 758
+            }
+          ]
+        },
+        {
+          "file": "admin-resource-publishing.spec.ts",
+          "title": "localized responsive states and deployment-disabled feedback",
+          "id": "8b3c43dc51139ab50b4b-25b8f5b6b77d2062a0f7",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 2260
+            }
+          ]
+        },
+        {
+          "file": "admin-resource-publishing.spec.ts",
+          "title": "real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+          "id": "8b3c43dc51139ab50b4b-44aa37df1aae596f2971",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 7506
+            }
+          ]
+        }
+      ],
+      "stats": {
+        "startTime": "2026-11-25T11:00:59.050Z",
+        "duration": 11887.24,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "top_level_errors": 0,
+      "completion": {
+        "exit": 0,
+        "freeze_unchanged": true,
+        "cleanup_errors": [],
+        "original_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        },
+        "final_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        }
+      },
+      "before_after_equal": true,
+      "before_after_no_changes": true,
+      "frozen_manifest_sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+      "allocation": {
+        "task": ".trellis/tasks/11-25-acceptance-client-journeys",
+        "source_root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+        "database": "fix_clients_resource_final01",
+        "api_origin": "http://127.0.0.1:64633",
+        "web_origin": "http://127.0.0.1:64634",
+        "renderer_origin": "http://127.0.0.1:64635"
+      },
+      "cleanup_receipt": {
+        "processes": [
+          {
+            "service": "api",
+            "pid": 46240,
+            "original_process_absent": true
+          },
+          {
+            "service": "web",
+            "pid": 46241,
+            "original_process_absent": true
+          },
+          {
+            "service": "renderer",
+            "pid": 46242,
+            "original_process_absent": true
+          }
+        ],
+        "ports_closed": {
+          "api": true,
+          "web": true,
+          "renderer": true
+        },
+        "other_database_clients": 0,
+        "database_check_exit": 0,
+        "database_retained": true
+      },
+      "command": {
+        "command": [
+          "node",
+          "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01/node_modules/@playwright/test/cli.js",
+          "test",
+          "e2e/admin-resource-publishing.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=json",
+          "--output=/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/resource-final01/results"
+        ],
+        "home": "/private/tmp/acceptance-fixes-4b9d3494a2/clients-resource-final01/home",
+        "cwd": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01"
+      }
+    },
+    "snooze-final02": {
+      "evidence_count": 152,
+      "hash_mismatches": [],
+      "cases": [
+        {
+          "file": "inbox-snooze.spec.ts",
+          "title": "Web group snooze survives reload, changes time, undoes and reminds the original unread group",
+          "id": "2965b1f5e7ed7b139948-cd8e9283e9bd9483caf8",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 7468
+            }
+          ]
+        },
+        {
+          "file": "inbox-snooze.spec.ts",
+          "title": "Web failed save retains selection and custom input; another device invalidates the visible undo",
+          "id": "2965b1f5e7ed7b139948-82b9a5d528fd18060683",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 4789
+            }
+          ]
+        },
+        {
+          "file": "inbox-snooze.spec.ts",
+          "title": "Web ordinary and group mentions stay snoozed; personal mentions and assignment wake across devices while another workspace is active",
+          "id": "2965b1f5e7ed7b139948-939020715d6b657e1918",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 4892
+            }
+          ]
+        },
+        {
+          "file": "inbox-snooze.spec.ts",
+          "title": "Web server expiry returns original unread notifications near the top and never revives an archived plan",
+          "id": "2965b1f5e7ed7b139948-a68672c7710c8a10774c",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 10223
+            }
+          ]
+        },
+        {
+          "file": "inbox-snooze.spec.ts",
+          "title": "Web Chinese touch controls preserve keyboard focus, custom time and narrow layouts in both themes",
+          "id": "2965b1f5e7ed7b139948-6d6e7627e024ce7028ed",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 5170
+            }
+          ]
+        },
+        {
+          "file": "inbox-snooze.spec.ts",
+          "title": "Native Electron uses the shared snooze journey and keeps main, Snoozed and Archived tabs independent",
+          "id": "2965b1f5e7ed7b139948-7629ef8a1d24452be878",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 13370
+            }
+          ]
+        }
+      ],
+      "stats": {
+        "startTime": "2026-11-25T11:09:09.302Z",
+        "duration": 48296.679,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "top_level_errors": 0,
+      "completion": {
+        "exit": 0,
+        "freeze_unchanged": true,
+        "cleanup_errors": [],
+        "original_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        },
+        "final_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        }
+      },
+      "before_after_equal": true,
+      "before_after_no_changes": true,
+      "frozen_manifest_sha256": "7401aac1f76ec4693178bf071c3421d564da192cab4e3cd9c7f02cee756aba0b",
+      "allocation": {
+        "task": ".trellis/tasks/11-25-acceptance-client-journeys",
+        "source_root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-02",
+        "database": "fix_clients_snooze_final02",
+        "api_origin": "http://127.0.0.1:54205",
+        "web_origin": "http://127.0.0.1:54206",
+        "renderer_origin": "http://127.0.0.1:54207"
+      },
+      "cleanup_receipt": {
+        "processes": [
+          {
+            "service": "api",
+            "pid": 62578,
+            "original_process_absent": true
+          },
+          {
+            "service": "web",
+            "pid": 62579,
+            "original_process_absent": true
+          },
+          {
+            "service": "renderer",
+            "pid": 62580,
+            "original_process_absent": true
+          }
+        ],
+        "ports_closed": {
+          "api": true,
+          "web": true,
+          "renderer": true
+        },
+        "other_database_clients": 0,
+        "database_check_exit": 0,
+        "database_retained": true
+      },
+      "command": {
+        "command": [
+          "node",
+          "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-02/node_modules/@playwright/test/cli.js",
+          "test",
+          "e2e/inbox-snooze.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=json",
+          "--output=/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/snooze-final02/results"
+        ],
+        "home": "/private/tmp/acceptance-fixes-4b9d3494a2/clients-snooze-final02/home",
+        "cwd": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-02"
+      }
+    },
+    "delayed-final01": {
+      "evidence_count": 28,
+      "hash_mismatches": [],
+      "cases": [
+        {
+          "file": "collaboration-recovery-extras.spec.ts",
+          "title": "Web recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+          "id": "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 41581
+            }
+          ]
+        },
+        {
+          "file": "collaboration-recovery-extras.spec.ts",
+          "title": "Desktop recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+          "id": "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2",
+          "project": "chromium",
+          "expected": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "errors": 0,
+              "duration": 43704
+            }
+          ]
+        }
+      ],
+      "stats": {
+        "startTime": "2026-11-25T11:15:22.521Z",
+        "duration": 93684.977,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "top_level_errors": 0,
+      "completion": {
+        "exit": 0,
+        "freeze_unchanged": true,
+        "cleanup_errors": [],
+        "original_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        },
+        "final_gate": {
+          "enabled": false,
+          "creation_enabled": true,
+          "host_execution_enabled": false
+        }
+      },
+      "before_after_equal": true,
+      "before_after_no_changes": true,
+      "frozen_manifest_sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+      "allocation": {
+        "task": ".trellis/tasks/11-25-acceptance-client-journeys",
+        "source_root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+        "database": "fix_clients_delayed_final01",
+        "api_origin": "http://127.0.0.1:56232",
+        "web_origin": "http://127.0.0.1:56233",
+        "renderer_origin": "http://127.0.0.1:56234"
+      },
+      "cleanup_receipt": {
+        "processes": [
+          {
+            "service": "api",
+            "pid": 64763,
+            "original_process_absent": true
+          },
+          {
+            "service": "web",
+            "pid": 64764,
+            "original_process_absent": true
+          },
+          {
+            "service": "renderer",
+            "pid": 64765,
+            "original_process_absent": true
+          }
+        ],
+        "ports_closed": {
+          "api": true,
+          "web": true,
+          "renderer": true
+        },
+        "other_database_clients": 0,
+        "database_retained": true,
+        "remaining_clone_electron": [],
+        "all_client_native_sessions_stopped": true
+      },
+      "command": {
+        "command": [
+          "node",
+          "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01/node_modules/@playwright/test/cli.js",
+          "test",
+          "e2e/collaboration-recovery-extras.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=json",
+          "--output=/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/delayed-final01/results",
+          "--grep",
+          "offline and delayed protected reads"
+        ],
+        "home": "/private/tmp/acceptance-fixes-4b9d3494a2/clients-delayed-final01/home",
+        "cwd": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01"
+      }
+    }
+  },
+  "snooze_evidence": [
+    {
+      "file": "results/inbox-snooze-Inbox-snooze--7b001-rrow-layouts-in-both-themes-chromium/inbox-snooze-evidence.json",
+      "fact_count": 42,
+      "phases": {
+        "run_identity": 1,
+        "registered_onboarded_actors_and_public_workspaces": 1,
+        "public_comment_source": 1,
+        "original_group_sources": 1,
+        "actual_inbox_response": 17,
+        "actual_socket_opened": 4,
+        "touch_target_geometry": 5,
+        "actual_product_screenshot": 5,
+        "theme_command_focus": 1,
+        "theme_before_product_command": 1,
+        "theme_after_product_command": 1,
+        "actual_UI_write": 1,
+        "actual_personal_event": 1,
+        "touch_and_keyboard_confirmed": 1,
+        "client_cleanup": 1
+      },
+      "observation_failures": [],
+      "screenshots": 5
+    },
+    {
+      "file": "results/inbox-snooze-Inbox-snooze--8d562-er-revives-an-archived-plan-chromium/inbox-snooze-evidence.json",
+      "fact_count": 91,
+      "phases": {
+        "run_identity": 1,
+        "registered_onboarded_actors_and_public_workspaces": 1,
+        "public_comment_source": 4,
+        "original_group_sources": 3,
+        "actual_inbox_response": 60,
+        "actual_socket_opened": 4,
+        "actual_personal_event": 8,
+        "actual_UI_write": 4,
+        "owned_persisted_plan_projection": 2,
+        "owned_exact_plan_time_control": 1,
+        "server_expiry_and_archive_confirmed": 1,
+        "actual_product_screenshot": 1,
+        "client_cleanup": 1
+      },
+      "observation_failures": [],
+      "screenshots": 1
+    },
+    {
+      "file": "results/inbox-snooze-Inbox-snooze--f9391-another-workspace-is-active-chromium/inbox-snooze-evidence.json",
+      "fact_count": 127,
+      "phases": {
+        "run_identity": 1,
+        "registered_onboarded_actors_and_public_workspaces": 1,
+        "public_comment_source": 4,
+        "original_group_sources": 1,
+        "actual_inbox_response": 88,
+        "actual_socket_opened": 6,
+        "actual_UI_write": 3,
+        "actual_personal_event": 20,
+        "public_description_mention_source": 1,
+        "source_workspace_and_cross_device_delivery_confirmed": 1,
+        "client_cleanup": 1
+      },
+      "observation_failures": [],
+      "screenshots": 0
+    },
+    {
+      "file": "results/inbox-snooze-Inbox-snooze--e7241-nvalidates-the-visible-undo-chromium/inbox-snooze-evidence.json",
+      "fact_count": 87,
+      "phases": {
+        "run_identity": 1,
+        "registered_onboarded_actors_and_public_workspaces": 1,
+        "public_comment_source": 2,
+        "original_group_sources": 2,
+        "actual_inbox_response": 60,
+        "actual_socket_opened": 4,
+        "actual_personal_event": 8,
+        "actual_UI_write": 5,
+        "injected_save_response_failure": 1,
+        "actual_product_screenshot": 1,
+        "failure_and_stale_undo_confirmed": 1,
+        "client_cleanup": 1
+      },
+      "observation_failures": [],
+      "screenshots": 1
+    },
+    {
+      "file": "results/inbox-snooze-Inbox-snooze--cf74e-s-the-original-unread-group-chromium/inbox-snooze-evidence.json",
+      "fact_count": 113,
+      "phases": {
+        "run_identity": 1,
+        "registered_onboarded_actors_and_public_workspaces": 1,
+        "public_comment_source": 3,
+        "original_group_sources": 2,
+        "actual_inbox_response": 77,
+        "actual_socket_opened": 4,
+        "actual_personal_event": 8,
+        "actual_UI_write": 7,
+        "actual_product_screenshot": 4,
+        "theme_command_focus": 1,
+        "theme_before_product_command": 1,
+        "theme_after_product_command": 1,
+        "group_lifecycle_confirmed": 1,
+        "traffic_observation_failed": 1,
+        "client_cleanup": 1
+      },
+      "observation_failures": [
+        {
+          "at": "2026-11-25T11:09:19.056Z",
+          "phase": "traffic_observation_failed",
+          "client": "web-8171ebb0",
+          "path": "/api/inbox/unread-summary",
+          "status": 200,
+          "method": "GET",
+          "reason": "client_closed",
+          "error_type": "Error",
+          "message_sha256": "201a94047e320c7111050bb95e6533de0f0a28670e55e6a7cad207a4999a3ac9"
+        }
+      ],
+      "screenshots": 4
+    },
+    {
+      "file": "results/inbox-snooze-Inbox-snooze--923df-d-Archived-tabs-independent-chromium/inbox-snooze-evidence.json",
+      "fact_count": 161,
+      "phases": {
+        "run_identity": 1,
+        "registered_onboarded_actors_and_public_workspaces": 1,
+        "public_comment_source": 2,
+        "original_group_sources": 2,
+        "native_profile_identity": 1,
+        "actual_inbox_response": 98,
+        "actual_socket_opened": 9,
+        "actual_UI_write": 6,
+        "actual_personal_event": 14,
+        "actual_product_screenshot": 8,
+        "actual_native_persisted_tabs": 8,
+        "theme_command_focus": 2,
+        "theme_before_product_command": 2,
+        "theme_after_product_command": 2,
+        "native_pointer_capability": 1,
+        "native_dark_custom_input_theme": 1,
+        "native_shared_journey_and_tab_identities_confirmed": 1,
+        "native_runtime_final": 1,
+        "client_cleanup": 1
+      },
+      "observation_failures": [],
+      "screenshots": 8
+    }
+  ],
+  "delayed_subcases": [
+    {
+      "file": "results/collaboration-recovery-ext-bfae1--and-source-membership-loss-chromium/desktop-extras-revocations.json",
+      "status": "PASSED",
+      "planned_subcases": 3,
+      "actual_started_subcases": 3,
+      "business_case_count": null,
+      "retries": 0,
+      "provider_processes": 0,
+      "installed_main_execution": false,
+      "all_sessions_cleanup": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ]
+    },
+    {
+      "file": "results/collaboration-recovery-ext-1a0be--and-source-membership-loss-chromium/web-extras-revocations.json",
+      "status": "PASSED",
+      "planned_subcases": 3,
+      "actual_started_subcases": 3,
+      "business_case_count": null,
+      "retries": 0,
+      "provider_processes": 0,
+      "installed_main_execution": false,
+      "all_sessions_cleanup": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ]
+    }
+  ],
+  "delayed_probe": {
+    "review": {
+      "accepted": true,
+      "probe_sha256": "ff95fbd1a5ff714b0de92eaa486241fa25faa880ce5abe05da8d71911e14425b",
+      "script_sha256": "c89f05f020c42fd33e2df3d9c2bfc583c61cae8e32efe0d46c48390ee8a22766",
+      "admission_sha256": "44496252d2bf217062a4d336027537a918e10fcf156756c6eaed8053ba2ea61c",
+      "reviewer": "parent-independent-of-client-implementer",
+      "scope": "Fresh final native natural-response pause prerequisite only; full journey and final source/resource acceptance remain separate",
+      "basis": "Exact reviewed probe code unchanged; independent rehash of source/request/admission, exit0, real response-stage pause with matching normal/held/delivered bytes, JS unresolved while held, no replacement or daemon starts, cleanup errors empty."
+    },
+    "probe_hash_matches": true,
+    "admission_hash_matches": true,
+    "script_hash_matches": true
+  },
+  "freeze_bindings": {
+    "final-freeze-02.json": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/final-freeze-02.json",
+      "sha256": "d9cbbd54db31fd3cafbd9ee08b618afbdd65f3bf15950b549deeb3ab5029b898",
+      "root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+      "file_count": 142828,
+      "symlink_count": 7272,
+      "build_linkage": {
+        "web-build-01": {
+          "receipt_sha256": "168e87dcc4c75cb0e721c6e9ad678d10701721151e13ac9c0da143a7ab357267",
+          "source_manifest_sha256": "fabb175a1cd9d1839120f40e5f23a98f7f5b03dee87ab3f59c220aba7afd029a",
+          "mismatches": []
+        },
+        "desktop-build-01": {
+          "receipt_sha256": "9d753d2365f016801940bf622ba509caca11fdee0f1c08b04c94f45d81075276",
+          "source_manifest_sha256": "fabb175a1cd9d1839120f40e5f23a98f7f5b03dee87ab3f59c220aba7afd029a",
+          "mismatches": []
+        }
+      }
+    },
+    "final-freeze-03.json": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/clients/final-freeze-03.json",
+      "sha256": "7401aac1f76ec4693178bf071c3421d564da192cab4e3cd9c7f02cee756aba0b",
+      "root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-02",
+      "file_count": 142828,
+      "symlink_count": 7272,
+      "build_linkage": {
+        "web-build-01": {
+          "receipt_sha256": "168e87dcc4c75cb0e721c6e9ad678d10701721151e13ac9c0da143a7ab357267",
+          "source_manifest_sha256": "fabb175a1cd9d1839120f40e5f23a98f7f5b03dee87ab3f59c220aba7afd029a",
+          "mismatches": []
+        },
+        "desktop-build-01": {
+          "receipt_sha256": "9d753d2365f016801940bf622ba509caca11fdee0f1c08b04c94f45d81075276",
+          "source_manifest_sha256": "fabb175a1cd9d1839120f40e5f23a98f7f5b03dee87ab3f59c220aba7afd029a",
+          "mismatches": []
+        }
+      }
+    }
+  },
+  "freeze_manifest_hashes_match": {
+    "final-freeze-02.json": true,
+    "final-freeze-03.json": true
+  },
+  "api_build": {
+    "exit": 0,
+    "command": [
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+      "build",
+      "-buildvcs=false",
+      "-p",
+      "4",
+      "-ldflags",
+      "-X main.commit=a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+      "-o",
+      "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/api-server-final02",
+      "./cmd/server"
+    ],
+    "source_root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+    "commit": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+    "binary": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/api-server-final02",
+    "binary_sha256": "8aa81f305a59e1e93e4d65e8219081daba935fcdb2f46ed31711bc81308d041f",
+    "tool_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+    "tool_version": "go version go1.26.11 darwin/arm64",
+    "home": "/private/tmp/acceptance-fixes-4b9d3494a2/clients-build-final01/home",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "api_binary_matches": true,
+  "api_tool_matches": true,
+  "runner_bindings": {
+    "run-final.py": "4adb932ba732b4cd4311cd771a119ef4d5565718017ff59e3224ddb38bf759f9",
+    "run-snooze-final.py": "96de61a10b74561262da7b7eeabfc155acffc5bbfc885c468a202f8cb717c8af",
+    "web-server.mjs": "ac98ea0fe949cedad4f2f45249cfdd6a5d5be4bcada9be4410f7d72e61650bc4",
+    "response-probe.mjs": "c89f05f020c42fd33e2df3d9c2bfc583c61cae8e32efe0d46c48390ee8a22766"
+  },
+  "fixture_files": {
+    "e2e/fixtures/collaboration-pay-creation.ts": "73af2c30ccaddcb28db99bc2d142249e49f4c744484568ea1426105e70841c3a",
+    "e2e/admin-resource-publishing.spec.ts": "d16e4b6caa1cdc919eb0750a23f709453a9f31304003d82a99c89d79080cbe97",
+    "e2e/inbox-snooze.spec.ts": "4d8ccc6c539a41fe549f3682a17b128a269a60e8106f36638c1caa3e0615d217",
+    "e2e/fixtures/inbox-snooze.ts": "225f41272a604f06f5fc03f7a565fd721d05d68e346a334e18850ad1d1cac2d6",
+    "e2e/fixtures/collaboration-recovery-extras.ts": "132ce3e63b21bfe706b32b2014a867c50daa095e8a1c946b0883e8526be90faf",
+    "e2e/fixtures/collaboration-installed-main.mjs": "1dfaa8d95e4b4ddf3d5758b647a34595feb6b7be8cf51674fd05cffd56480d68",
+    "e2e/fixtures/collaboration-detail-journey.ts": "7dcd2caf691aca2c0daf016f68adb2feb3e8c4de4808df5e6f143648b42455bd",
+    "e2e/collaboration-detail-journey.spec.ts": "e6fc57b4ffca18b930e523588416faca6468c35a4ee92f16416e4abb96717f67"
+  },
+  "lint": {
+    "main": [
+      {
+        "file": "e2e/admin-resource-publishing.spec.ts",
+        "baseline_exit": 0,
+        "current_exit": 0,
+        "same_diagnostics": true,
+        "baseline_diagnostics": [],
+        "current_diagnostics": []
+      },
+      {
+        "file": "e2e/collaboration-detail-journey.spec.ts",
+        "baseline_exit": 1,
+        "current_exit": 1,
+        "same_diagnostics": true,
+        "baseline_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "no-unsafe-finally",
+            "Unsafe usage of ThrowStatement."
+          ]
+        ],
+        "current_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "no-unsafe-finally",
+            "Unsafe usage of ThrowStatement."
+          ]
+        ]
+      },
+      {
+        "file": "e2e/fixtures/collaboration-detail-journey.ts",
+        "baseline_exit": 1,
+        "current_exit": 1,
+        "same_diagnostics": true,
+        "baseline_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'pg' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ]
+        ],
+        "current_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'pg' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ],
+          [
+            "no-useless-escape",
+            "Unnecessary escape character: \\\"."
+          ]
+        ]
+      },
+      {
+        "file": "e2e/fixtures/collaboration-pay-creation.ts",
+        "baseline_exit": 1,
+        "current_exit": 1,
+        "same_diagnostics": true,
+        "baseline_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'pg' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'zod' should be listed in the project's dependencies. Run 'npm i zod' to add it"
+          ]
+        ],
+        "current_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'pg' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'zod' should be listed in the project's dependencies. Run 'npm i zod' to add it"
+          ]
+        ]
+      },
+      {
+        "file": "e2e/fixtures/collaboration-recovery-extras.ts",
+        "baseline_exit": 1,
+        "current_exit": 1,
+        "same_diagnostics": true,
+        "baseline_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'zod' should be listed in the project's dependencies. Run 'npm i zod' to add it"
+          ]
+        ],
+        "current_diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'zod' should be listed in the project's dependencies. Run 'npm i zod' to add it"
+          ]
+        ]
+      },
+      {
+        "file": "e2e/inbox-snooze.spec.ts",
+        "baseline_exit": 0,
+        "current_exit": 0,
+        "same_diagnostics": true,
+        "baseline_diagnostics": [],
+        "current_diagnostics": []
+      }
+    ],
+    "snooze": {
+      "baseline": {
+        "exit": 1,
+        "diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'pg' should be listed in the project's dependencies, not devDependencies."
+          ]
+        ]
+      },
+      "current": {
+        "exit": 1,
+        "diagnostics": [
+          [
+            "import-x/no-extraneous-dependencies",
+            "'@playwright/test' should be listed in the project's dependencies, not devDependencies."
+          ],
+          [
+            "import-x/no-extraneous-dependencies",
+            "'pg' should be listed in the project's dependencies, not devDependencies."
+          ]
+        ]
+      },
+      "same": true
+    }
+  },
+  "independent_frozen_audits": {
+    "final-freeze-02.json": {
+      "root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01",
+      "file_count": 142828,
+      "hash_mismatches": [],
+      "symlink_count": 7272,
+      "invalid_symlinks": [],
+      "role_excluded_context_manifests": []
+    },
+    "final-freeze-03.json": {
+      "root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-02",
+      "file_count": 142828,
+      "hash_mismatches": [],
+      "symlink_count": 7272,
+      "invalid_symlinks": [],
+      "role_excluded_context_manifests": []
+    }
+  },
+  "audited_at": "2026-11-25T11:25:05.548523+00:00",
+  "review_verdict": {
+    "recorded_playwright_passes_verified": 13,
+    "accepted_groups": [
+      "pay-final02",
+      "resource-final01",
+      "delayed-final01"
+    ],
+    "snooze": "Six genuine PASS terminals; zero-error observation acceptance qualified by C2 late client_closed response read",
+    "open_findings": [
+      "C1",
+      "C2"
+    ]
+  }
+}
