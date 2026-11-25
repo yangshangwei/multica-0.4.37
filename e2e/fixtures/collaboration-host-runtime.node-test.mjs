@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import vm from "node:vm";
 import test from "node:test";
 
-const source = readFileSync(new URL("./collaboration-host-runtime.ts", import.meta.url), "utf8");
+const source = readFileSync(new URL("./collaboration-host-runtime.ts", import.meta.url), "utf8").replace(/\r\n/g, "\n");
 
 function closeFixture(platform, forceFallback = false) {
   const start = source.indexOf("  const close = async () => {");
@@ -11,6 +11,8 @@ function closeFixture(platform, forceFallback = false) {
   assert(start > 0 && end > start, "Read the actual native Host close function");
   const closeSource = source.slice(start, end).replaceAll("new Promise<void>", "new Promise");
   const signals = [], actions = [], messages = [], ledger = [{ phase: "proof_acknowledged", proof_state: "host_exit_observed" }];
+  const timeline = [];
+  const mark = event => { assert.equal(actions.length, 0, "Close marks its timeline before EOF"); timeline.push(event); };
   let exited;
   const exit = new Promise(resolve => { exited = resolve; });
   const child = { exitCode: null,
@@ -31,13 +33,13 @@ function closeFixture(platform, forceFallback = false) {
   let fallback;
   const timer = { callback: null, cleared: false };
   const factory = vm.compileFunction(`let closed = false; ${closeSource}; return close;`,
-    ["process", "child", "exit", "sockets", "server", "directory", "runtime", "messages", "errors", "stderr", "hostLedgerEvidence", "rmSync", "join", "setTimeout", "clearTimeout"]);
+    ["process", "child", "exit", "sockets", "server", "directory", "runtime", "messages", "errors", "stderr", "hostLedgerEvidence", "rmSync", "join", "setTimeout", "clearTimeout", "mark", "timeline"]);
   const close = factory({ platform }, child, exit, new Set([{ destroy() { actions.push("socket_closed"); } }]),
     { close(done) { actions.push("callback_closed"); done(); } }, "/fixture", { deploymentId: "deployment", installationId: "installation" }, messages, [], "",
     () => ledger, () => actions.push("private_directory_removed"), (...parts) => parts.join("/"),
     (callback, milliseconds) => { assert.equal(milliseconds, 20_000); fallback = callback; return timer; },
-    value => { assert.equal(value, timer); timer.cleared = true; });
-  return { close, signals, actions, messages, ledger, timer, fireFallback: () => fallback() };
+    value => { assert.equal(value, timer); timer.cleared = true; }, mark, timeline);
+  return { close, signals, actions, messages, ledger, timer, timeline, fireFallback: () => fallback() };
 }
 
 test("Windows Host close delivers EOF and retains the graceful final summary without POSIX signals", async () => {
@@ -48,6 +50,8 @@ test("Windows Host close delivers EOF and retains the graceful final summary wit
   assert.equal(result.exit_code, 0);
   assert.deepEqual(result.messages, [{ claims: 3, invalid_capacity: false, available_slots: 1, active_tasks: 0 }]);
   assert.equal(result.ledger, f.ledger);
+  assert.deepEqual(result.timeline, ["stdin_end_requested"]);
+  assert.equal(result.timeline, f.timeline);
   assert.deepEqual(result.errors, []);
   assert.equal(f.timer.cleared, true);
   await assert.rejects(f.close(), /cleanup was invoked twice/);

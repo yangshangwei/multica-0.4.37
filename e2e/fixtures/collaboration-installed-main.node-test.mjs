@@ -41,6 +41,7 @@ test("container machine identities are unique private read-only mounts with owne
     assert.match(readFileSync(one, "utf8"), /^[a-f0-9]{32}\n$/);
     assert.match(readFileSync(two, "utf8"), /^[a-f0-9]{32}\n$/);
     assert.notEqual(readFileSync(one, "utf8"), readFileSync(two, "utf8"));
+    // Windows reports its read-only attribute through these mode bits, not POSIX ACLs.
     assert.equal(statSync(one).mode & 0o777, 0o444);
     first.cleanup(); first.cleanup();
     assert.equal(existsSync(dirname(one)), false);
@@ -52,19 +53,45 @@ test("container machine identities are unique private read-only mounts with owne
 
 
 test("container discovery CLI reports its version but refuses and records every task invocation", () => {
-  const root = mkdtempSync(join(tmpdir(), "installed-discovery-contract-"));
+  const root = mkdtempSync(join(tmpdir(), "installed-discovery contract-"));
   const identity = createInstalledMachineIdentity(root);
   try {
     assert(identity.discoveryMount.endsWith(":/acceptance/discovery/claude:ro"));
     const executable = identity.discoveryMount.slice(0, -":/acceptance/discovery/claude:ro".length);
     const marker = join(root, "unexpected-invocation");
     const env = { PATH: process.env.PATH, MULTICA_INSTALLED_DISCOVERY_MARKER: marker };
-    const version = spawnSync(executable, ["--version"], { env, encoding: "utf8" });
-    assert.equal(version.status, 0);
+    let command = executable;
+    const prefix = [];
+    if (process.platform === "win32") {
+      // Use Git's POSIX runtime explicitly; PATH bash may resolve to WSL.
+      assert.ok(process.env.ProgramFiles, "Windows fixture requires ProgramFiles for Git for Windows");
+      const gitBin = join(process.env.ProgramFiles, "Git", "usr", "bin");
+      command = join(gitBin, "sh.exe");
+      const cygpath = join(gitBin, "cygpath.exe");
+      for (const tool of [command, cygpath]) assert.ok(existsSync(tool), `Required Git for Windows fixture tool missing: ${tool}`);
+      env.SystemRoot = process.env.SystemRoot;
+      const posixPath = path => {
+        const converted = spawnSync(cygpath, ["-u", path], { env, encoding: "utf8" });
+        assert.ifError(converted.error);
+        assert.equal(converted.status, 0, converted.stderr);
+        const value = converted.stdout.trimEnd();
+        assert.ok(value.startsWith("/") && !/[\r\n]/.test(value), "cygpath must return one absolute POSIX path");
+        return value;
+      };
+      prefix.push(posixPath(executable));
+      env.MULTICA_INSTALLED_DISCOVERY_MARKER = posixPath(marker);
+    } else {
+      assert.equal(statSync(executable).mode & 0o777, 0o555);
+    }
+    const invoke = args => spawnSync(command, [...prefix, ...args], { env, encoding: "utf8" });
+    const version = invoke(["--version"]);
+    assert.ifError(version.error);
+    assert.equal(version.status, 0, version.stderr);
     assert.equal(version.stdout, "2.1.5 (Claude Code)\n");
     assert.equal(existsSync(marker), false);
-    const execution = spawnSync(executable, ["--print", "sensitive-test-input"], { env, encoding: "utf8" });
-    assert.equal(execution.status, 97);
+    const execution = invoke(["--print", "sensitive-test-input"]);
+    assert.ifError(execution.error);
+    assert.equal(execution.status, 97, execution.stderr);
     assert.equal(readFileSync(marker, "utf8"), "unexpected agent execution\n");
     assert(!readFileSync(marker, "utf8").includes("sensitive-test-input"));
     identity.cleanup();

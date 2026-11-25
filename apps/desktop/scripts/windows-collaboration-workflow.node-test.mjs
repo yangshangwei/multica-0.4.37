@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const workflow = readFileSync(new URL("../../../.github/workflows/desktop-smoke.yml", import.meta.url), "utf8");
+const workflow = readFileSync(new URL("../../../.github/workflows/desktop-smoke.yml", import.meta.url), "utf8").replace(/\r\n/g, "\n");
 const lifecycle = readFileSync(new URL("./accept-windows-installer.ps1", import.meta.url), "utf8");
 const server = readFileSync(new URL("./windows-collaboration-server.ps1", import.meta.url), "utf8");
 const backend = readFileSync(new URL("./windows-business-server.ps1", import.meta.url), "utf8");
