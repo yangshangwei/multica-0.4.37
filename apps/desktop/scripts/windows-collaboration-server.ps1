@@ -9,6 +9,11 @@ $tempRoot = [IO.Path]::GetFullPath($env:RUNNER_TEMP).TrimEnd('\') + '\'
 if (-not $state.StartsWith($tempRoot, [StringComparison]::OrdinalIgnoreCase)) { throw 'State must be below RUNNER_TEMP' }
 $webRecord = Join-Path $state 'web-private.json'
 $apiState = Join-Path $state 'api'
+function Get-NodeApplication {
+    $path = (Get-Command node -CommandType Application -All -ErrorAction Stop | Select-Object -First 1).Source
+    if ($path -isnot [string] -or -not [IO.Path]::IsPathFullyQualified($path) -or -not (Test-Path -LiteralPath $path -PathType Leaf)) { throw 'Node application must resolve to one absolute executable file' }
+    return $path
+}
 function Stop-OwnedWeb {
     param($Record)
     if (-not $Record.pid) { return }
@@ -61,7 +66,7 @@ try {
     pnpm --filter @multica/web build
     if ($LASTEXITCODE -ne 0) { throw 'Production Web build failed' }
 } finally { Pop-Location }
-$node = (Get-Command node -CommandType Application).Source
+$node = Get-NodeApplication
 $next = Join-Path $RepoRoot 'apps/web/node_modules/next/dist/bin/next'
 $arguments = @(('"' + $next + '"'), 'start', '--hostname', '127.0.0.1', '--port', "$webPort")
 $web = Start-Process -FilePath $node -ArgumentList $arguments -WorkingDirectory (Join-Path $RepoRoot 'apps/web') -PassThru -RedirectStandardOutput (Join-Path $state 'web.stdout.log') -RedirectStandardError (Join-Path $state 'web.stderr.log')

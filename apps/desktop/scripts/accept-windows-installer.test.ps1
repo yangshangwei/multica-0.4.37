@@ -13,6 +13,13 @@ foreach ($name in @('Assert-X64Binary', 'Get-InstallerEvidence', 'Assert-Disposa
     . ([scriptblock]::Create($definition.Extent.Text))
 }
 
+$servicePath = Join-Path $PSScriptRoot 'windows-collaboration-server.ps1'
+$serviceAst = [Management.Automation.Language.Parser]::ParseFile($servicePath, [ref]$tokens, [ref]$errors)
+if ($errors.Count -gt 0) { throw ($errors | Out-String) }
+$resolver = $serviceAst.Find({ param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Get-NodeApplication' }, $false)
+if ($null -eq $resolver) { throw 'Missing Node application resolver' }
+. ([scriptblock]::Create($resolver.Extent.Text))
+
 function Assert-Throws {
     param([scriptblock]$Action, [string]$Expected)
     try { & $Action } catch {
@@ -25,6 +32,7 @@ function Assert-Throws {
 $fixtureRoot = Join-Path ([IO.Path]::GetTempPath()) ('multica-acceptance-test-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $fixtureRoot | Out-Null
 $originalRunnerEnvironment = $env:RUNNER_ENVIRONMENT
+$originalPath = $env:PATH
 try {
     $env:RUNNER_ENVIRONMENT = 'self-hosted'
     Assert-Throws { Assert-DisposableRunner } 'Native Windows x64|Only disposable'
@@ -45,8 +53,29 @@ try {
     [IO.File]::WriteAllBytes($path, $bytes)
     Assert-Throws { Assert-X64Binary $path } 'Missing DOS header'
     Assert-Throws { Get-InstallerEvidence $path '0.5.2' } 'Expected exact versioned'
-    Write-Host 'PASS: PowerShell parse, persistent-runner rejection, x64 PE and malformed PE fixtures, filename mismatch (7 checks)'
+    $firstBin = Join-Path $fixtureRoot 'first node'
+    $secondBin = Join-Path $fixtureRoot 'second node'
+    New-Item -ItemType Directory -Path $firstBin, $secondBin | Out-Null
+    $firstNode = Join-Path $firstBin 'node.exe'
+    $secondNode = Join-Path $secondBin 'node.exe'
+    # Real application files make command discovery exercise PATH ordering.
+    Copy-Item -LiteralPath (Join-Path $PSHOME 'pwsh.exe') -Destination $firstNode
+    Copy-Item -LiteralPath (Join-Path $PSHOME 'pwsh.exe') -Destination $secondNode
+    $env:PATH = $firstBin + [IO.Path]::PathSeparator + $secondBin
+    $nodeCandidates = @(Get-Command node -CommandType Application -All -ErrorAction Stop)
+    if ($nodeCandidates.Count -ne 2) { throw 'Expected two fixture Node applications' }
+    $resolved = Get-NodeApplication
+    if ($resolved -isnot [string] -or $resolved -cne $firstNode) { throw 'Node resolver did not preserve the first PATH application' }
+    $env:PATH = $secondBin + [IO.Path]::PathSeparator + $firstBin
+    if ((Get-NodeApplication) -cne $secondNode) { throw 'Node resolver ignored reordered PATH' }
+    $env:PATH = $fixtureRoot
+    try {
+        $null = Get-NodeApplication
+        throw 'Expected missing Node resolution to fail'
+    } catch [System.Management.Automation.CommandNotFoundException] { }
+    Write-Host 'PASS: PowerShell parse, persistent-runner rejection, PE/filename fixtures, and Node multi-PATH ordering/missing-command checks'
 } finally {
     $env:RUNNER_ENVIRONMENT = $originalRunnerEnvironment
+    $env:PATH = $originalPath
     Remove-Item -LiteralPath $fixtureRoot -Recurse -Force
 }
