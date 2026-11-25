@@ -1,3 +1,8 @@
+import { constants as cryptoConstants, createDecipheriv, generateKeyPairSync, privateDecrypt } from "node:crypto";
+import { mkdtemp, mkdir, writeFile, rm, realpath, symlink } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { encryptedCollaborationDiagnostic } from "./windows-collaboration-encrypted-diagnostic.mjs";
 import { readFileSync } from "node:fs";
 import { daemonStartupDiagnostic, projectDaemonStartupDiagnostic } from "../../../e2e/fixtures/collaboration-daemon-startup-diagnostics.mjs";
 import assert from "node:assert/strict";
@@ -300,4 +305,68 @@ test("startup IO classification uses only exact path components before the error
     ["rename C:/one/config.json C:/two/config.json: private OS message", "rename", "other"],
     ["open C:/fixture/config.json", "open", "other"],
   ]) assert.deepEqual(daemonStartupDiagnostic(line).io, [{ operation, target }]);
+});
+
+
+test("encrypted failure evidence authenticates source/phase and never publishes private material", async () => {
+  const { publicKey, privateKey } = generateKeyPairSync("rsa", { modulusLength: 3072 });
+  const encodedKey = publicKey.export({ type: "spki", format: "der" }).toString("base64");
+  const root = await realpath(await mkdtemp(join(tmpdir(), "encrypted-collaboration-")));
+  const home = join(root, "owned home");
+  const profile = join(home, ".multica", "profiles", "desktop-127.0.0.1-18081");
+  await mkdir(profile, { recursive: true });
+  const secret = "private-daemon-token";
+  const log = Buffer.from("x".repeat(70 * 1024) + secret);
+  await writeFile(join(profile, "daemon.err.log"), log);
+  const options = { publicKey: encodedKey, phaseRoot: root, home, apiUrl: "http://127.0.0.1:18081", sourceCommit: "a".repeat(40), phase: "upgrade_candidate",
+    stdout: JSON.stringify({ business: "excluded-business-payload", suites: [{ specs: [{ tests: [{ results: [{ error: { message: secret, stack: `Error: ${secret}` } }] }] }] }] }),
+    stderr: "z".repeat(20 * 1024) + secret };
+  const decrypt = (envelope, recipient = privateKey) => {
+    const key = privateDecrypt({ key: recipient, oaepHash: "sha256", padding: cryptoConstants.RSA_PKCS1_OAEP_PADDING }, Buffer.from(envelope.wrapped_key, "base64"));
+    const decipher = createDecipheriv("aes-256-gcm", key, Buffer.from(envelope.iv, "base64"));
+    decipher.setAAD(Buffer.from(JSON.stringify(envelope.aad))); decipher.setAuthTag(Buffer.from(envelope.tag, "base64"));
+    return JSON.parse(Buffer.concat([decipher.update(Buffer.from(envelope.ciphertext, "base64")), decipher.final()]).toString("utf8"));
+  };
+  try {
+    const envelope = await encryptedCollaborationDiagnostic(options);
+    assert.equal(envelope.status, "sealed");
+    assert(!JSON.stringify(envelope).includes(secret)); assert(!JSON.stringify(envelope).includes(home));
+    const plaintext = decrypt(envelope);
+    assert.equal(plaintext.daemon_error_log.status, "captured"); assert.equal(plaintext.daemon_error_log.truncated, true);
+    assert.deepEqual(Buffer.from(plaintext.daemon_error_log.data, "base64"), log.subarray(-65536));
+    assert(plaintext.controller_failure.includes(secret)); assert(Buffer.byteLength(plaintext.subprocess_stderr) <= 16384);
+    assert(!JSON.stringify(plaintext).includes("excluded-business-payload"));
+    for (const unicode of ["汉".repeat(10000), "🙂".repeat(5000) + "汉"]) {
+      const unicodeEnvelope = await encryptedCollaborationDiagnostic({ ...options, stderr: unicode,
+        stdout: JSON.stringify({ suites: [{ specs: [{ tests: [{ results: [{ error: { message: unicode, stack: unicode } }] }] }] }] }) });
+      const unicodePlaintext = decrypt(unicodeEnvelope);
+      for (const field of ["controller_failure", "subprocess_stderr"]) {
+        assert(Buffer.byteLength(unicodePlaintext[field], "utf8") <= 16384);
+        assert(!unicodePlaintext[field].includes("\uFFFD"), "The bounded tail must not split a Unicode code point");
+      }
+    }
+    for (const field of ["ciphertext", "tag"]) {
+      const changed = Buffer.from(envelope[field], "base64"); changed[0] ^= 1;
+      assert.throws(() => decrypt({ ...envelope, [field]: changed.toString("base64") }));
+    }
+    for (const aad of [{ ...envelope.aad, source_commit: "b".repeat(40) }, { ...envelope.aad, phase: "reinstall_candidate" }]) {
+      assert.throws(() => decrypt({ ...envelope, aad }));
+    }
+    const wrong = generateKeyPairSync("rsa", { modulusLength: 3072 });
+    assert.throws(() => decrypt(envelope, wrong.privateKey));
+    const second = await encryptedCollaborationDiagnostic(options);
+    assert.notEqual(second.iv, envelope.iv); assert.notEqual(second.ciphertext, envelope.ciphertext);
+    assert.equal(await encryptedCollaborationDiagnostic({}), undefined);
+    assert.deepEqual(await encryptedCollaborationDiagnostic({ publicKey: "not-key" }), { status: "invalid_key" });
+    assert.deepEqual(await encryptedCollaborationDiagnostic({ publicKey: privateKey.export({ type: "pkcs8", format: "der" }).toString("base64") }), { status: "invalid_key" });
+    const weak = generateKeyPairSync("rsa", { modulusLength: 2048 });
+    assert.deepEqual(await encryptedCollaborationDiagnostic({ publicKey: weak.publicKey.export({ type: "spki", format: "der" }).toString("base64") }), { status: "invalid_key" });
+    assert.deepEqual(await encryptedCollaborationDiagnostic({ ...options, sourceCommit: "invalid" }), { status: "invalid_context" });
+    assert.equal(decrypt(await encryptedCollaborationDiagnostic({ ...options, home: join(root, "missing") })).daemon_error_log.status, "unavailable");
+    assert.equal(decrypt(await encryptedCollaborationDiagnostic({ ...options, home: tmpdir() })).daemon_error_log.status, "rejected");
+    const alias = join(root, "alias");
+    await symlink(home, alias, process.platform === "win32" ? "junction" : "dir");
+    assert.equal(decrypt(await encryptedCollaborationDiagnostic({ ...options, home: alias })).daemon_error_log.status, "rejected");
+    assert.equal(decrypt(await encryptedCollaborationDiagnostic({ ...options, apiUrl: "https://external.example" })).daemon_error_log.status, "rejected");
+  } finally { await rm(root, { recursive: true, force: true }); }
 });

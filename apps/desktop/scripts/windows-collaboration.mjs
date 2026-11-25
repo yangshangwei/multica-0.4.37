@@ -10,6 +10,8 @@ import { collaborationDiagnostic, collaborationResults, parseCollaborationReport
 
 import { collaborationProcessEvidence, probeCollaborationApi } from "./windows-collaboration-services.mjs";
 
+import { encryptedCollaborationDiagnostic } from "./windows-collaboration-encrypted-diagnostic.mjs";
+
 const execute = promisify(execFile);
 const argumentsList = process.argv.slice(2);
 assert.equal(argumentsList.length, 8, "Expected phase, installed-directory, state-dir and report");
@@ -118,6 +120,9 @@ try {
   } catch { attachmentStatus = "rejected"; }
   report.diagnostic = { ...collaborationDiagnostic({ stage, error, stdout: privateStdout, stderr: privateStderr, repo: plan.repo, journey }),
     journey_attachment: attachmentStatus };
+  report.encryptedDiagnostic = await encryptedCollaborationDiagnostic({ publicKey: process.env.MULTICA_DIAGNOSTIC_PUBLIC_KEY,
+    phaseRoot: plan.phaseRoot, home: plan.home, apiUrl: plan.apiUrl, sourceCommit: plan.sourceCommit, phase: args["--phase"],
+    stdout: privateStdout, stderr: privateStderr });
   report.error = "Installed collaboration acceptance failed; see diagnostic; private details retained";
   process.exitCode = 1;
 } finally {

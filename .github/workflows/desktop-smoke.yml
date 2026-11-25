@@ -19,6 +19,10 @@ on:
         description: Windows acceptance version (optional SemVer; empty keeps the unique RC default)
         type: string
         default: ""
+      diagnostic_public_key:
+        description: Optional base64 DER SPKI RSA public key for encrypted failure-only daemon evidence
+        type: string
+        default: ""
       previous_tag:
         description: Same-repository stable release used for the Windows x64 upgrade test
         type: string
@@ -131,6 +135,7 @@ jobs:
       REQUIRE_SIGNED: ${{ inputs.require_signed }}
       BUSINESS_ACCEPTANCE: ${{ inputs.windows_business_acceptance }}
       COLLABORATION_ACCEPTANCE: ${{ inputs.windows_collaboration_acceptance }}
+      MULTICA_DIAGNOSTIC_PUBLIC_KEY: ${{ inputs.diagnostic_public_key }}
     steps:
       - name: Enable long checkout paths on Windows
         if: runner.os == 'Windows'
