@@ -47,6 +47,9 @@ jobs:
             architectures: --x64 --ia32 --arm64
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Enable long checkout paths on Windows
+        if: runner.os == 'Windows'
+        run: git config --global core.longpaths true
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -129,6 +132,9 @@ jobs:
       BUSINESS_ACCEPTANCE: ${{ inputs.windows_business_acceptance }}
       COLLABORATION_ACCEPTANCE: ${{ inputs.windows_collaboration_acceptance }}
     steps:
+      - name: Enable long checkout paths on Windows
+        if: runner.os == 'Windows'
+        run: git config --global core.longpaths true
       - name: Checkout candidate source
         uses: actions/checkout@v4
         with:

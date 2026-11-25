@@ -78,12 +78,18 @@ test("evidence upload always runs and excludes private configuration/registry", 
 });
 
 test("Windows CI enables long paths before checking out retained evidence", () => {
-  const ci = parse(readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8"));
-  for (const name of ["collaboration-host-native", "windows-execenv", "installer"]) {
-    const steps = ci.jobs[name].steps;
-    const prepare = steps.findIndex((step) => step.run === "git config --global core.longpaths true");
-    const checkout = steps.findIndex((step) => step.uses?.startsWith("actions/checkout@"));
-    assert.ok(prepare >= 0 && prepare < checkout, name);
-    assert.equal(steps[prepare].if, "runner.os == 'Windows'", name);
+  for (const [file, names] of [
+    ["ci.yml", ["collaboration-host-native", "windows-execenv", "installer"]],
+    ["desktop-smoke.yml", ["desktop", "windows-acceptance"]],
+    ["release.yml", ["desktop"]],
+  ]) {
+    const ci = parse(readFileSync(new URL(`../.github/workflows/${file}`, import.meta.url), "utf8"));
+    for (const name of names) {
+      const steps = ci.jobs[name].steps;
+      const prepare = steps.findIndex((step) => step.run === "git config --global core.longpaths true");
+      const checkout = steps.findIndex((step) => step.uses?.startsWith("actions/checkout@"));
+      assert.ok(prepare >= 0 && prepare < checkout, `${file}: ${name}`);
+      assert.equal(steps[prepare].if, "runner.os == 'Windows'", `${file}: ${name}`);
+    }
   }
 });

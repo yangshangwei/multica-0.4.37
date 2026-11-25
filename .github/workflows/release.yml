@@ -561,6 +561,9 @@ jobs:
             target: win
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Enable long checkout paths on Windows
+        if: runner.os == 'Windows'
+        run: git config --global core.longpaths true
       - name: Checkout
         uses: actions/checkout@v4
         with:
