@@ -156,7 +156,7 @@ test("daemon failure marker projects only fixed state and ownership booleans", (
   const result = daemonFailureProjection([{ message: `${secret}\nInstalled daemon diagnostic: ${JSON.stringify(value)}\n${secret}` }]);
   assert.equal(result.status, "parsed"); assert.equal(result.expected_state, "running"); assert.equal(result.actual_state, "stopped");
   assert.equal(result.profile_matches, false); assert.equal(result.installation_user_matches, true);
-  assert.deepEqual(result.files.config, { exists: true, outside_home: false, read_failed: false });
+  assert.deepEqual(result.files.config, { exists: true, outside_home: false, read_failed: false, server_matches: null, deployment_matches: null, deployment_present: null, credential_present: null });
   assert.deepEqual(result.files.pid, { exists: null, outside_home: null, read_failed: true });
   assert(!JSON.stringify(result).includes(secret)); assert(!JSON.stringify(result).includes("12345"));
   const publicReport = collaborationDiagnostic({ stage: "playwright", repo: "D:/repo", stdout: JSON.stringify({
@@ -187,4 +187,54 @@ test("daemon failure projection rejects malformed and oversized markers and igno
   const result = collaborationDiagnostic({ stage: "playwright", repo: "D:/repo", stdout: 'Installed daemon diagnostic: {"authenticated":true}',
     stderr: 'Installed daemon diagnostic: {"authenticated":true}' });
   assert.deepEqual(result.daemon, { status: "unavailable" });
+});
+
+
+test("daemon log diagnostics retain only controller allowlisted codes and markers", () => {
+  const secret = "mct_private-fixture-token";
+  const diagnostic = { mainErrorCodes: ["EPERM", secret, "EPERM", { code: "ENOENT" }], profileFiles: {
+    "daemon.err.log": { exists: true, text: secret, tail_sha256: secret, errorCodes: ["ENOENT", secret, "ERR_PRIVATE", "ENOENT"],
+      markers: ["not logged in", secret, "permission denied", "not logged in", { text: "address already in use" }] },
+    "daemon.log": { errorCodes: secret, markers: { secret } },
+    "config.json": { errorCodes: ["EPERM"], markers: ["not logged in"], token: secret },
+  } };
+  const result = daemonFailureProjection([{ message: `Installed daemon diagnostic: ${JSON.stringify(diagnostic)}` }]);
+  assert.deepEqual(result.main_error_codes, ["EPERM"]);
+  assert.deepEqual(result.files.err_log.error_codes, ["ENOENT"]);
+  assert.deepEqual(result.files.err_log.markers, ["not logged in", "permission denied"]);
+  assert.deepEqual(result.files.log.error_codes, []); assert.deepEqual(result.files.log.markers, []);
+  assert.equal(result.files.config.error_codes, undefined);
+  for (const forbidden of [secret, "ERR_PRIVATE", "tail_sha256", "text", "token"]) assert(!JSON.stringify(result).includes(forbidden));
+});
+
+
+test("daemon setup diagnostics project fixed stages/status and configuration comparisons", () => {
+  const secret = "private-password";
+  const value = { actual: { diagnostics: {
+    cli: { code: "cli_validation_failed", stage: "cli_setup", httpStatus: 503, message: secret },
+    connection: { code: secret, stage: secret, httpStatus: secret, secret },
+  } }, profileFiles: {
+    "config.json": { serverMatches: false, deploymentMatches: true, deploymentPresent: true, credentialPresent: true, token: secret },
+    ".desktop-user-id": { userMatches: true, text: secret },
+  } };
+  const result = daemonFailureProjection([{ message: `Installed daemon diagnostic: ${JSON.stringify(value)}` }]);
+  assert.deepEqual(result.connection_diagnostics, {
+    cli: { code: "cli_validation_failed", stage: "cli_setup", http_status: 503 }, connection: { code: "unknown", stage: "unknown", http_status: null },
+  });
+  assert.equal(result.files.config.server_matches, false); assert.equal(result.files.config.deployment_matches, true);
+  assert.equal(result.files.config.deployment_present, true); assert.equal(result.files.config.credential_present, true);
+  assert.equal(result.files.owner.user_matches, true);
+  assert(!JSON.stringify(result).includes(secret)); assert(!JSON.stringify(result).includes("token"));
+});
+
+
+test("Main-derived startup codes remain public without broadening log vocabulary", () => {
+  const derived = ["managed_setup_failed", "pat_mint_failed", "cli_auto_install_failed", "credential_restart_failed"];
+  const secret = "private-startup-text";
+  const result = daemonFailureProjection([{ message: `Installed daemon diagnostic: ${JSON.stringify({
+    mainErrorCodes: [...derived, "EPERM", secret], profileFiles: { "daemon.err.log": { errorCodes: [...derived, "EPERM", secret] } },
+  })}` }]);
+  assert.deepEqual(result.main_error_codes, [...derived, "EPERM"]);
+  assert.deepEqual(result.files.err_log.error_codes, ["EPERM"]);
+  assert(!JSON.stringify(result).includes(secret));
 });

@@ -41,6 +41,21 @@ export function collaborationResults(report) {
 
 const daemonStates = new Set(["stopped", "starting", "running", "stopping", "installing_cli", "cli_not_found", "recovery_paused", "auth_expired"]);
 const boolean = value => typeof value === "boolean" ? value : null;
+// Exact intersection with the controller's already-public diagnostic vocabulary.
+const daemonCodes = new Set(["challenge_expired", "challenge_time_window", "challenge_scope_mismatch", "challenge_invalid",
+  "cli_unavailable", "cli_download_failed", "cli_checksum_failed", "cli_extract_failed", "cli_install_failed", "cli_validation_failed",
+  "request_failed", "operation_failed", "EACCES", "EPERM", "ENOENT", "ENOEXEC", "EROFS", "EADDRINUSE", "ECONNREFUSED", "ETIMEDOUT"]);
+const mainDaemonCodes = new Set([...daemonCodes, "managed_setup_failed", "pat_mint_failed", "cli_auto_install_failed", "credential_restart_failed"]);
+const daemonMarkers = new Set(["no agent runtimes could be registered", "not logged in", "permission denied", "read-only file system",
+  "exec format error", "address already in use", "no such file or directory", "daemon-managed task"]);
+const daemonStages = new Set(["cli_setup", "registration", "binding", "credentials", "restart"]);
+const connectionDiagnostic = value => value && typeof value === "object" && !Array.isArray(value) ? {
+  code: daemonCodes.has(value.code) ? value.code : "unknown",
+  stage: daemonStages.has(value.stage) ? value.stage : "unknown",
+  http_status: Number.isInteger(value.httpStatus) && value.httpStatus >= 100 && value.httpStatus <= 599 ? value.httpStatus : null,
+} : null;
+const allowedValues = (value, allowed) => Array.isArray(value) ? [...new Set(value.filter(item => allowed.has(item)))].slice(0, allowed.size) : [];
+
 
 export function daemonFailureProjection(failures) {
   const marker = "Installed daemon diagnostic: ";
@@ -64,10 +79,16 @@ export function daemonFailureProjection(failures) {
           installation_present: boolean(actual?.installation?.present),
           installation_server_matches: boolean(actual?.installation?.serverMatches), installation_user_matches: boolean(actual?.installation?.userMatches),
           capture_failed: boolean(value.capture_failed), capture_timed_out: boolean(value.capture_timed_out),
+          main_error_codes: allowedValues(value.mainErrorCodes, mainDaemonCodes),
+          connection_diagnostics: { cli: connectionDiagnostic(actual?.diagnostics?.cli), connection: connectionDiagnostic(actual?.diagnostics?.connection) },
           files: Object.fromEntries([["config", "config.json"], ["owner", ".desktop-user-id"], ["pid", "daemon.pid"], ["log", "daemon.log"], ["err_log", "daemon.err.log"]]
             .map(([key, name]) => {
               const file = value.profileFiles?.[name];
-              return [key, { exists: boolean(file?.exists), outside_home: boolean(file?.outside_expected_home), read_failed: boolean(file?.diagnostic_read_failed) }];
+              return [key, { exists: boolean(file?.exists), outside_home: boolean(file?.outside_expected_home), read_failed: boolean(file?.diagnostic_read_failed),
+                ...(key === "config" ? { server_matches: boolean(file?.serverMatches), deployment_matches: boolean(file?.deploymentMatches),
+                  deployment_present: boolean(file?.deploymentPresent), credential_present: boolean(file?.credentialPresent) } : {}),
+                ...(key === "owner" ? { user_matches: boolean(file?.userMatches) } : {}),
+                ...(["log", "err_log"].includes(key) ? { error_codes: allowedValues(file?.errorCodes, daemonCodes), markers: allowedValues(file?.markers, daemonMarkers) } : {}) }];
             })),
         };
       }
