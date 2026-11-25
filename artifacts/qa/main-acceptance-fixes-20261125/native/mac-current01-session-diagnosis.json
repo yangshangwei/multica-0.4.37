@@ -1,0 +1,35 @@
+{
+  "classification": "fresh adapter omitted original knowledge=off; default-on intentionally disables provider session persistence",
+  "configured": "ABSENT(default true)",
+  "visits": [
+    {
+      "run_id": "2221372d-a4b4-4448-9318-44d92c6d3d9b",
+      "logical_session_id": "adb4dc54-3cc5-4dd4-8952-4f5ab7ddce04",
+      "provider_session_hash": "137b6717155a408f8a3c85399296d5be083923408f9012120dc9329a6903edf2",
+      "resumed": false,
+      "knowledge": {
+        "prompt_sha256": "f69ea327a54cd31ebb66273239e7d7a363fa79df9121615198835a25e8fb5137",
+        "section_present": true,
+        "contributions": [],
+        "no_session_persistence": true
+      },
+      "workdir_hash": "8655231467b8362e7b378483d30be934da15ffac3f6f794c7f6002e72bc4db8c"
+    },
+    {
+      "run_id": "0e4d2826-1bb4-419f-a26a-c03979fef8d1",
+      "logical_session_id": "adb4dc54-3cc5-4dd4-8952-4f5ab7ddce04",
+      "provider_session_hash": "2b949897f8ca8bcfbf5c99b2150a879bf76a208872bc75591f59c4388969dc64",
+      "resumed": false,
+      "knowledge": {
+        "prompt_sha256": "e0c5e2e86182324216f53f6623947f38e08031fc2099ca79ccee3c381925140f",
+        "section_present": true,
+        "contributions": [],
+        "no_session_persistence": true
+      },
+      "workdir_hash": "8a43bb829bb4693b66b8622ecd97c43310e858068f1da908445892289c4a4c05"
+    }
+  ],
+  "original_runner": "fixed_options knowledge=off -> run_runtime MULTICA_KNOWLEDGE_CONTEXT_ENABLED=false",
+  "product_contract": "host_runner.go133-141 clears resume when KnowledgeContext present;195-203 adds --no-session-persistence",
+  "repair": "Restore exact original explicitknowledgefalse innew privateadapter; preserve session equality and all480s assertions; freshDBlabel required"
+}

@@ -273,10 +273,8 @@ multica issue comment update <comment-id> --content-file comment.md --expected-r
 ```
 
 Read the complete body before replacing it; do not edit from a `--summary`
-preview. Only the author or a workspace owner/admin may edit. A revision
-conflict returns an error without retrying: read the newest body, merge your
-change into it, then use its revision. Merely resending with the newer number
-would overwrite another editor's work.
+preview. Authors may edit their own comments; agent authors require a verified task credential, never agent/task header hints. Managing another author's comment requires a human JWT/session or personal access token and a current workspace owner/admin role; task and Cloud credentials cannot borrow that role for edits, attachment replacement or deletion.
+A revision conflict returns an error without retrying: read the newest body and merge your change before using its revision. Merely resending with the newer number would overwrite another editor's work.
 
 Changing a dispatch-eligible comment cancels its old in-flight runs and
 re-evaluates triggers under the editor's current invocation permissions. Use

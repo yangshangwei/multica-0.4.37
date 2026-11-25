@@ -1,0 +1,30 @@
+{
+  "files": {
+    "server/internal/handler/comment.go": {
+      "tested": "e718ace5960d9db486ce407916a59ceb405d6299ecbdb7b1214f4f0e7ed639dd",
+      "current": "e718ace5960d9db486ce407916a59ceb405d6299ecbdb7b1214f4f0e7ed639dd"
+    },
+    "server/internal/handler/comment_authority_test.go": {
+      "tested": "2590689ba5c24b4a665b99246df51ec9c2ac82873066dd732b5238e5059df607",
+      "current": "2590689ba5c24b4a665b99246df51ec9c2ac82873066dd732b5238e5059df607"
+    },
+    "server/internal/handler/skill.go": {
+      "tested": "1fa125efadfaabce7ce98b2281cec4540183d4dfd764babfbecb189ab53c0233",
+      "current": "1fa125efadfaabce7ce98b2281cec4540183d4dfd764babfbecb189ab53c0233"
+    },
+    "server/internal/handler/skill_github_error_test.go": {
+      "tested": "b2a42acc1ff6ca15e975ceae5ef0923e864dbafec8c9dbeeae6f264cea2d3a4c",
+      "current": "b2a42acc1ff6ca15e975ceae5ef0923e864dbafec8c9dbeeae6f264cea2d3a4c"
+    },
+    "server/go.mod": {
+      "tested": "bc194d10f4b4ef93978ea796372ea95cac4e6a46c3629860634e00d984f3f4c6",
+      "current": "bc194d10f4b4ef93978ea796372ea95cac4e6a46c3629860634e00d984f3f4c6"
+    },
+    "server/go.sum": {
+      "tested": "40702c08bdf859c563bdae0709e75e05b4381de72ed657a87da583a9586fd8b0",
+      "current": "40702c08bdf859c563bdae0709e75e05b4381de72ed657a87da583a9586fd8b0"
+    }
+  },
+  "all_match": true,
+  "note": "Builtin skill prose was shortened after this freeze; focused template conformance passed separately. Handler Go implementation/tests and dependency bytes unchanged."
+}

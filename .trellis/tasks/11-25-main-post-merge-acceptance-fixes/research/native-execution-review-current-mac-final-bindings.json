@@ -1,0 +1,47 @@
+{
+  "observed_at": "2026-11-25T13:20:42.761112+00:00",
+  "package_entries": 286,
+  "package_manifest_match": true,
+  "package_manifest_sha256": "906c8ae16f7891806b71b194f06fdc3bb988998df1068adda3799802f3cb3c47",
+  "asar_actual_sha256": "ffcb1660a4fa7639caa2f0e62f32facffe45201c05e70f6b76eb80d9466bba8b",
+  "terminal": "signed_verified",
+  "bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_current_mac.py": "b96902703a71ce499371cf0e57cb63488359fa4ab0c7509548802eb0d11c87d0",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/web-server.mjs": "ac98ea0fe949cedad4f2f45249cfdd6a5d5be4bcada9be4410f7d72e61650bc4",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/fake_discovery.py": "df87f5a4df6522c275e8e465757c848bb69b4906652c3e163c55d340c300fc14",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/process_audit.py": "fb07b8f27db951d43ad6aa0c34589d46b71e86cc1c785e933c6d1ace86865b0d",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-sign-terminal02.json": "0d3dfe93182291a55af18a01988d5cf408ac29b85fe2a8bcf24ec4c7c1ed876e",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-signed-package.json": "906c8ae16f7891806b71b194f06fdc3bb988998df1068adda3799802f3cb3c47",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-signed-asar.json": "de3eeabb8127820732fe5a686630325b9344f349170c0d7ec3a043793a69e689",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current-postpackage.json": "fae4c892381d2bf2816de6627ab99941a6288b273391855f6ad7f4a7e698c729",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/current-binary-builds.json": "5894b03a58a414b07e8d8d9b3656dbfd05b1cd2bb397fbab53f64e530614d970",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_api01/env.json": "dd3c8dad69b8a68597a61fca57dd3b05b334808335ee3b24723026891d34a773",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_api01/migration.json": "01df60a242424c211971c0be39eb2845ff8da8fe55f1df69f7d4dc5ae55d86d0"
+  },
+  "database": "fix_native_api01",
+  "migration": {
+    "database": "fix_native_api01",
+    "exit": 0,
+    "source_base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1"
+  },
+  "independent_codesign_verification": {
+    "command": [
+      "/usr/bin/codesign",
+      "--verify",
+      "--deep",
+      "--strict",
+      "--verbose=2",
+      "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/package-current-mac-signed02/mac-arm64/Multica.app"
+    ],
+    "exit": 0,
+    "terminal": [
+      "valid on disk",
+      "satisfies its Designated Requirement"
+    ]
+  },
+  "parent_runtime_clearance_preserved": true
+}

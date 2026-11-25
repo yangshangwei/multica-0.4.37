@@ -1,0 +1,38 @@
+[
+  {
+    "label": "default-policy-probe01",
+    "description": "setup failed: copy rejected by explicitly read-only root; probe NOT_RUN",
+    "receipt_sha256": "8c093ab9238c2b3833e0aa814ebf1a8b04b7ab9062d8d3a23a23d617717a4dfd",
+    "probe_exit": null,
+    "container_absent": true,
+    "volumes_absent": true,
+    "same_as_original_configuration": false
+  },
+  {
+    "label": "default-policy-probe02",
+    "description": "setup failed: bind source unavailable to engine; probe NOT_RUN",
+    "receipt_sha256": "c73c08a905a8d0cf440e849f31fae7bb9f12dee5a2794d8d1694db74373feca3",
+    "probe_exit": null,
+    "container_absent": true,
+    "volumes_absent": true,
+    "same_as_original_configuration": false
+  },
+  {
+    "label": "default-policy-probe03",
+    "description": "setup failed: tmpfs execution refused, exit126; actual Probe NOT_RUN",
+    "receipt_sha256": "bf9247f823ba004ae6747592203b07bcbac53afaabd5c81a5df3849540f6473f",
+    "probe_exit": 126,
+    "container_absent": true,
+    "volumes_absent": true,
+    "same_as_original_configuration": false
+  },
+  {
+    "label": "default-policy-probe04",
+    "description": "actual default-policy Probe executed; exit2 helper_start errno1; original cause not attributed",
+    "receipt_sha256": "026095e30c76f65cc112eb61bcbc4e6b996a5ec25f21911067d22cecb427cce6",
+    "probe_exit": 2,
+    "container_absent": true,
+    "volumes_absent": true,
+    "same_as_original_configuration": false
+  }
+]

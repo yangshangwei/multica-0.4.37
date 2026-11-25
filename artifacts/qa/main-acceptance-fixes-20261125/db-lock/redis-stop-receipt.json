@@ -1,0 +1,20 @@
+{
+  "at": 1795610256.494817,
+  "command": [
+    "docker",
+    "stop",
+    "f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2"
+  ],
+  "exit": 0,
+  "container": "f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2",
+  "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+  "labels": {
+    "multica.qa.lane": "db-lock",
+    "multica.qa.owner": "acceptance-fixes-4b9d3494a2"
+  },
+  "was_running": true,
+  "running": false,
+  "container_retained": true,
+  "reason": "both planned full runs terminal; normal03 not authorized to start yet",
+  "secret_config": "retained only in private task file and stopped container"
+}

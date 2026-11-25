@@ -1,0 +1,28 @@
+{
+  "command": [
+    "bash",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+    "test",
+    "-race",
+    "-json",
+    "-count=1",
+    "./internal/daemon"
+  ],
+  "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server",
+  "source_manifest_sha256": "692a51bd1549039f67c139b70f2135d721eef8d80152c1871f5c563239fc4db6",
+  "tool_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+  "node_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+  "runner_sha256": "2ca1962461669fd0e59e14cfde2c326b801305b75b1d19b58433913d674baea3",
+  "started": 1795602255.646657,
+  "config_sha256": "cef91b419d5096c23f2009ecc57447ddf59ca56fcc033262f716678cafed6bb3",
+  "exit": 0,
+  "ended": 1795602377.962548,
+  "stdout_sha256": "8e234c217581669ae3ff3342557d6317bf2ef89ef858218d310eadc9f01b3607",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "tool_unchanged": true,
+  "runner_unchanged": true
+}

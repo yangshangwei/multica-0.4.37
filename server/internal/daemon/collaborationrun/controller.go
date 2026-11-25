@@ -13,7 +13,10 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strconv"
+	"strings"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -104,9 +107,95 @@ func (b *limitedOutput) Write(p []byte) (int, error) {
 	return n, nil
 }
 
+// NamespaceProbeError preserves the refusal boundary without exposing paths,
+// helper output or credential-bearing configuration in daemon diagnostics.
+type NamespaceProbeError struct {
+	Stage    string
+	Code     string
+	Errno    int
+	ExitCode int
+	Context  string
+	cause    error
+}
+
+func (e *NamespaceProbeError) Error() string {
+	return fmt.Sprintf("namespace probe refused: stage=%s code=%s errno=%d exit=%d context=%s", e.Stage, e.Code, e.Errno, e.ExitCode, e.Context)
+}
+func (e *NamespaceProbeError) Unwrap() []error {
+	if e.cause == nil {
+		return []error{ErrUnsupported}
+	}
+	return []error{ErrUnsupported, e.cause}
+}
+
+func namespaceProbeFailure(stage string, cause error) *NamespaceProbeError {
+	e := &NamespaceProbeError{Stage: stage, Code: "unavailable", ExitCode: -1, Context: "none", cause: cause}
+	var errno syscall.Errno
+	if errors.As(cause, &errno) {
+		e.Errno = int(errno)
+	}
+	switch {
+	case errors.Is(cause, context.DeadlineExceeded):
+		e.Code, e.Context = "deadline", "deadline"
+	case errors.Is(cause, context.Canceled):
+		e.Code, e.Context = "canceled", "canceled"
+	}
+	return e
+}
+
+func namespaceProbeHelperCode(code string) string {
+	stage, number, hasErrno := strings.Cut(code, "_errno_")
+	switch stage {
+	case "invalid_helper_request", "invalid_preparation", "namespace_identity", "protect_supervisor",
+		"private_mount", "bind_root", "bind_null", "mount_proc", "pivot_root", "root_chdir", "unmount_old_root", "remove_old_root",
+		"create_work", "create_tmp", "create_home", "mount_work", "mount_tmp", "mount_home", "readonly_root", "bind_urandom", "entropy_device", "isolate_root":
+		if !hasErrno {
+			return stage
+		}
+		if n, err := strconv.ParseUint(number, 10, 12); err == nil && n > 0 && strconv.FormatUint(n, 10) == number {
+			return code
+		}
+	}
+	return "invalid_helper_response"
+}
+
+type namespaceReadyResult struct {
+	response namespaceReady
+	err      error
+	code     string
+}
+
+func readNamespaceReady(reader io.Reader) namespaceReadyResult {
+	var result namespaceReadyResult
+	raw, err := io.ReadAll(io.LimitReader(reader, 4097))
+	switch {
+	case err != nil:
+		result.err, result.code = err, "helper_read_failed"
+	case len(raw) == 0:
+		result.err, result.code = io.EOF, "no_helper_response"
+	case len(raw) > 4096:
+		result.err, result.code = ErrUnsupported, "malformed_helper_response"
+	default:
+		result.err = decodeStrict(raw, &result.response)
+		if result.err != nil {
+			result.code = "malformed_helper_response"
+		} else if result.response.NamespaceID == "" {
+			result.err = ErrUnsupported
+			result.code = namespaceProbeHelperCode(result.response.ErrorCode)
+		}
+	}
+	return result
+}
+
+func namespaceReadyFailure(result namespaceReadyResult, contextErr error) *NamespaceProbeError {
+	failure := namespaceProbeFailure("helper_ready", errors.Join(result.err, contextErr))
+	failure.Code = result.code
+	return failure
+}
+
 func (c *NamespaceController) Probe(ctx context.Context) error {
 	if !namespaceSupported() {
-		return ErrUnsupported
+		return namespaceProbeFailure("platform", ErrUnsupported)
 	}
 	probeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -116,7 +205,9 @@ func (c *NamespaceController) Probe(ctx context.Context) error {
 	}
 	result, err := p.Wait()
 	if err != nil || result.ExitCode != 0 {
-		return ErrUnsupported
+		failure := namespaceProbeFailure("helper_wait", errors.Join(err, probeCtx.Err()))
+		failure.ExitCode = result.ExitCode
+		return failure
 	}
 	return nil
 }
@@ -128,7 +219,16 @@ func (c *NamespaceController) Start(ctx context.Context, input ProviderInput) (*
 	return c.start(ctx, input, false)
 }
 
-func (c *NamespaceController) start(ctx context.Context, input ProviderInput, probe bool) (*Process, error) {
+func (c *NamespaceController) start(ctx context.Context, input ProviderInput, probe bool) (_ *Process, failure error) {
+	stage := "prepare_root"
+	if probe {
+		defer func() {
+			var diagnosed *NamespaceProbeError
+			if failure != nil && !errors.As(failure, &diagnosed) {
+				failure = namespaceProbeFailure(stage, failure)
+			}
+		}()
+	}
 	var root string
 	var execution *preparedExecution
 	var err error
@@ -156,6 +256,7 @@ func (c *NamespaceController) start(ctx context.Context, input ProviderInput, pr
 			_ = os.RemoveAll(root)
 		}
 	}()
+	stage = "helper_lookup"
 	helper := c.HelperExecutable
 	if helper == "" {
 		helper, err = os.Executable()
@@ -182,6 +283,7 @@ func (c *NamespaceController) start(ctx context.Context, input ProviderInput, pr
 	if err != nil || len(request) > 2*1024*1024 {
 		return nil, errors.New("collaboration batch exceeds local input limit")
 	}
+	stage = "helper_pipes"
 	configR, configW, err := os.Pipe()
 	if err != nil {
 		return nil, err
@@ -220,7 +322,11 @@ func (c *NamespaceController) start(ctx context.Context, input ProviderInput, pr
 	cmd.ExtraFiles = []*os.File{configR, readyW, liveR, factsW}
 	cmd.Stdout, cmd.Stderr = output, io.Discard
 	configureNamespace(cmd)
+	stage = "helper_start"
 	if err := cmd.Start(); err != nil {
+		if probe {
+			return nil, err
+		}
 		return nil, ErrUnsupported
 	}
 	forked = true
@@ -235,27 +341,18 @@ func (c *NamespaceController) start(ctx context.Context, input ProviderInput, pr
 	_ = readyW.Close()
 	_ = liveR.Close()
 	go func() { _, _ = configW.Write(request); _ = configW.Close() }()
-	type readyResult struct {
-		response namespaceReady
-		err      error
-	}
-	ready := make(chan readyResult, 1)
-	go func() {
-		var response namespaceReady
-		raw, err := io.ReadAll(io.LimitReader(readyR, 4097))
-		if err == nil && len(raw) <= 4096 {
-			err = decodeStrict(raw, &response)
-		}
-		if err == nil && response.NamespaceID == "" {
-			err = fmt.Errorf("%w: %s", ErrUnsupported, response.ErrorCode)
-		}
-		ready <- readyResult{response: response, err: err}
-	}()
+	ready := make(chan namespaceReadyResult, 1)
+	go func() { ready <- readNamespaceReady(readyR) }()
+	stage = "helper_ready"
 	select {
 	case result := <-ready:
 		if result.err != nil {
+			contextErr := ctx.Err()
 			_ = p.Stop()
 			_, _ = p.Wait()
+			if probe {
+				return nil, namespaceReadyFailure(result, contextErr)
+			}
 			return nil, result.err
 		}
 		p.namespaceID = result.response.NamespaceID
@@ -266,6 +363,9 @@ func (c *NamespaceController) start(ctx context.Context, input ProviderInput, pr
 	case <-time.After(10 * time.Second):
 		_ = p.Stop()
 		_, _ = p.Wait()
+		if probe {
+			return nil, context.DeadlineExceeded
+		}
 		return nil, ErrUnsupported
 	}
 	ok = true

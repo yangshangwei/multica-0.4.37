@@ -1,0 +1,111 @@
+{
+  "accepted": true,
+  "verdict": "PASS_BOUNDED_CURRENT_MAC_MAIN_KNOWLEDGE_OFF",
+  "reviewed_at": "2026-11-25T13:45:36.125418+00:00",
+  "stats": {
+    "startTime": "2026-11-25T13:39:02.676Z",
+    "duration": 85756.803,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "case_duration_ms": 82974,
+  "deadline_ms": 480000,
+  "retry": 0,
+  "launcher_exit": 0,
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "database_clients_after": 0,
+  "knowledge_context_enabled": false,
+  "actual_main": {
+    "packaged": true,
+    "appPath": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/package-current-mac-signed02/mac-arm64/Multica.app/Contents/Resources/app.asar",
+    "name": "Multica",
+    "version": "0.6.7-891-ga7bf6ba70-dirty",
+    "executable": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/package-current-mac-signed02/mac-arm64/Multica.app/Contents/MacOS/Multica",
+    "home": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/mac-current03/home",
+    "userData": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/mac-current03/home/.config/Multica",
+    "platform": "darwin",
+    "arch": "arm64",
+    "electron": "39.8.7"
+  },
+  "renderer_url": "file:///Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/package-current-mac-signed02/mac-arm64/Multica.app/Contents/Resources/app.asar/out/renderer/index.html",
+  "asar_sha256": "ffcb1660a4fa7639caa2f0e62f32facffe45201c05e70f6b76eb80d9466bba8b",
+  "bundled_cli_sha256": "da3acfae4affa7ae2e76e1c6831df786a2dda5de5d661b19c45d8cd0f441362c",
+  "provider_evidence": {
+    "visits": 3,
+    "same_session_and_workdir": true,
+    "resumed": [
+      false,
+      true,
+      true
+    ],
+    "second_stopped_without_release": true,
+    "sealed_proof_acknowledged_host_exit_observed": 3,
+    "daemon_exit": 0
+  },
+  "business_timeline": {
+    "entries": 84,
+    "completed_commands": {
+      "init": 1,
+      "login": 1,
+      "navigate": 1,
+      "read": 2,
+      "comment": 2,
+      "control": 2,
+      "host-records": 2,
+      "capture": 2,
+      "restart": 1,
+      "history": 4,
+      "status": 1
+    },
+    "truncated": false,
+    "failed_events": 0,
+    "close_capture_note": "Fixture serializes transport evidence before native.close; receipt/process/protocol audits independently establish terminal cleanup."
+  },
+  "independent_cleanup": {
+    "recorded_process_pids_present": [],
+    "listeners_closed": {
+      "64830": true,
+      "64831": true,
+      "64832": true
+    },
+    "protocol_matches_new_observed_baseline": true
+  },
+  "receipt_cleanup": {
+    "processes": [
+      {
+        "pid": 52445,
+        "exit": 0
+      },
+      {
+        "pid": 52444,
+        "exit": -15
+      },
+      {
+        "pid": 52443,
+        "exit": 0
+      },
+      {
+        "pid": 52442,
+        "exit": 0
+      }
+    ],
+    "descendants": {
+      "status": "pass",
+      "fallback": [],
+      "remaining": [],
+      "initial": []
+    },
+    "protocol_status": "pass"
+  },
+  "evidence_sha256": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/mac-current03/receipt.json": "e7b5e711e38ed6648e1de3aed91fb48f6e0b51cd69bcf2413bc6438a3a0fe911",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/mac-current03/playwright.json": "df45812d8287d7db24039844489d2b6469d5d7c1a0b2a874953bb2a4f686e928",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/mac-current03/results/collaboration-host-install-7dc38-ly-resumes-the-shared-Agent-chromium/installed-host-evidence.json": "f90f7ecdd201364cf5a92d4c1e5143961ee2f099093d00aa5e90cb3acfcbf693",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-signed-package.json": "906c8ae16f7891806b71b194f06fdc3bb988998df1068adda3799802f3cb3c47",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-protocol-after-mac03.json": "50b0089fcfd5385b172cc04b5f41e2c23727684bd21f10094af2242396dc754e"
+  },
+  "scope_limit": "Supported explicit knowledgeOFF compatibility run; no claim defaultON success or original whole-task protocol restoration."
+}

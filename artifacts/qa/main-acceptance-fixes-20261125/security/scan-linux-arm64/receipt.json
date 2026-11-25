@@ -1,0 +1,39 @@
+{
+  "argv": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "tool",
+    "govulncheck",
+    "-show=verbose",
+    "./..."
+  ],
+  "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01/server",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+  "exit": 1,
+  "started_unix": 1795601134.450515,
+  "ended_unix": 1795601146.0407412,
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_changes": [],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "0c48c23c5b8dd757702a7e4654c8dc9f38f962b89ae255a748836d14bda4b536",
+  "environment_keys": [
+    "CGO_ENABLED",
+    "GOARCH",
+    "GOCACHE",
+    "GOFLAGS",
+    "GOMAXPROCS",
+    "GOMODCACHE",
+    "GOOS",
+    "GOPATH",
+    "GOTELEMETRY",
+    "GOTMPDIR",
+    "GOTOOLCHAIN",
+    "HOME",
+    "LANG",
+    "PATH",
+    "TMPDIR"
+  ],
+  "environment_sha256": "749c0ded19303831105b19978e96e991c86f8c24ffd2bb8ab55bf039ea98392f",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/security-scan-linux-arm64/home",
+  "tmpdir": "/private/tmp/acceptance-fixes-4b9d3494a2/security-scan-linux-arm64/tmp",
+  "config_keys_not_inherited": true
+}

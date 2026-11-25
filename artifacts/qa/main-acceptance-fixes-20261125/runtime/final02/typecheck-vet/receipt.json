@@ -1,0 +1,40 @@
+[
+  {
+    "command": [
+      "node",
+      "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/node_modules/typescript/bin/tsc",
+      "--project",
+      "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/host-fixture-tsconfig.json"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./internal/daemon",
+      "./internal/daemon/collaborationrun"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gofmt",
+      "-l",
+      "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaboration.go",
+      "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaboration_host_router_test.go",
+      "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaboration_host_router_boundary_test.go",
+      "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaborationrun/controller.go",
+      "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server/internal/daemon/collaborationrun/controller_test.go"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

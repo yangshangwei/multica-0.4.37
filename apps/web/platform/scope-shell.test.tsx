@@ -26,11 +26,12 @@ function location(path: string) {
 // Shared sidebar tests own its links and controls. This probe owns only the
 // platform's selected workspace and restoration callbacks.
 function SidebarProbe() {
-  const { navigationWorkspace, onWorkspaceSelect, workspaceListUnavailable, onRetryWorkspaces } = useWebSidebarNavigation();
+  const { navigationWorkspace, onWorkspaceSelect, onAccountResume, workspaceListUnavailable, onRetryWorkspaces } = useWebSidebarNavigation();
   return <>
     <output data-testid="workspace">{navigationWorkspace?.slug ?? "none"}</output>
     <button onClick={() => onWorkspaceSelect(navigationWorkspace?.slug)}>Workspaces</button>
     <button onClick={() => onWorkspaceSelect("first")}>Select first</button>
+    <button onClick={onAccountResume}>Return to previous collaboration</button>
     {workspaceListUnavailable && <button onClick={onRetryWorkspaces}>Refresh</button>}
   </>;
 }
@@ -190,4 +191,34 @@ describe("WebScopeShell", () => {
     expect(mounts).toHaveBeenCalledTimes(1);
     expect(screen.getByText("Content")).toBe(content);
   });
+});
+
+it("resumes the remembered full account location without disturbing current account input", () => {
+  const account = "/account?view=participating&issue=00000000-0000-4000-8000-000000000001#memory";
+  location(account);
+  const view = render(page());
+  fireEvent.click(screen.getByRole("button", { name: "Return to previous collaboration" }));
+  expect(state.resume).not.toHaveBeenCalled();
+  location("/second/issues"); view.rerender(page());
+  fireEvent.click(screen.getByRole("button", { name: "Return to previous collaboration" }));
+  expect(state.resume).toHaveBeenCalledExactlyOnceWith(account);
+  expect(state.navigation.push).not.toHaveBeenCalled();
+  state.owner = "server:another-viewer"; view.rerender(page());
+  fireEvent.click(screen.getByRole("button", { name: "Return to previous collaboration" }));
+  expect(state.resume).toHaveBeenLastCalledWith("/account?view=current");
+});
+
+it("cancels a pending workspace lookup immediately when account resume is requested", async () => {
+  location("/account?view=participating&issue=00000000-0000-4000-8000-000000000001#memory");
+  state.list.ready = false;
+  state.list.workspaces = [];
+  let finish!: (value: { data: Workspace[] }) => void;
+  state.list.refetch.mockReturnValue(new Promise((resolve) => { finish = resolve; }));
+  render(page());
+  fireEvent.click(screen.getByRole("button", { name: "Workspaces" }));
+  expect(state.list.refetch).toHaveBeenCalledOnce();
+  fireEvent.click(screen.getByRole("button", { name: "Return to previous collaboration" }));
+  await act(async () => { finish({ data: [{ slug: "first" } as Workspace] }); });
+  expect(state.resume).not.toHaveBeenCalled();
+  expect(state.navigation.push).not.toHaveBeenCalled();
 });

@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_LINUX_PREPARATION_ONLY",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux-package-review-request.json",
+  "request_sha256": "27e6f02466642e28c5bbef124da376f065d81cfaf380399d5bdba7f7abfc5b6e",
+  "reviewed_at": "2026-11-25T11:16:56.211691+00:00",
+  "scope": "Linux-only offline current frontend packaging; no Mac.app preparation or protocol changes",
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/prepare_linux.py",
+    "source01"
+  ],
+  "files": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/prepare_linux.py": "a6afa891e923bc9f5e18bc9a91899d75cc5deecac70747337c7da09d965f1986",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/prepare_packages.py": "42139a51618993a616aacf4dce491dc54cb2558861401d2692d0bc8253a00175",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/installed_closure.py": "2db90a51865e76206f99e060cb79bdccc47d77dad4c01c4bedd82223eb107a2c",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+  },
+  "source_manifest": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json",
+    "sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302"
+  },
+  "linux_electron": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/electron-linux-arm64",
+    "version": "39.8.7",
+    "executable_sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043"
+  },
+  "go": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133"
+  },
+  "blocking_findings_open": 0,
+  "issues": [],
+  "review_basis": "Targeted wrapper review; build implementation unchanged from accepted package request35b990f6722fa661c6ff1a1a09f50ce4d4311e673080c444771de82b5c4b8944. Linux-only wrapper directly invokes build(...,linux), records terminal outcome through finally and does not invoke macOS protocol APIs.",
+  "verification": [
+    "All declared hashes match; cached Linux Electron executable hash and39.8.7 version verified.",
+    "Existing product/ASAR/source binding checks retained. No dependency installation or Main launch."
+  ],
+  "not_cleared": [
+    "Linux Main runtime",
+    "macOS launch/preparation through this wrapper",
+    "Installer/release acceptance"
+  ],
+  "adapters_executed_by_reviewer": false,
+  "copy_destination": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux-package-review.json"
+}

@@ -1,0 +1,39 @@
+{
+  "allocation_sha256": "002256713e6b884c5d06655c9704eb5cd93367dad6945ef61e5523c069b49936",
+  "owner": "acceptance-fixes-4b9d3494a2",
+  "container_matches": true,
+  "port_matches": true,
+  "volume_matches": true,
+  "legacy_cli_api03": {
+    "db_matches": true,
+    "loopback": true,
+    "port_matches": true,
+    "jwt_nonempty_nonpublic": true,
+    "migration_exit": 0
+  },
+  "native_linux_api01": {
+    "db_matches": true,
+    "loopback": true,
+    "port_matches": true,
+    "jwt_nonempty_nonpublic": true,
+    "migration_exit": 0
+  },
+  "images": [
+    {
+      "expected": "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+      "actual": "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+      "architecture": "amd64",
+      "os": "linux"
+    },
+    {
+      "expected": "sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4",
+      "actual": "sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4",
+      "architecture": "arm64",
+      "os": "linux"
+    }
+  ],
+  "python_ast_parse": "pass",
+  "lint": "not_run_read_only_review",
+  "typecheck": "not_run_read_only_review",
+  "tests": "not_run_user_constraint"
+}

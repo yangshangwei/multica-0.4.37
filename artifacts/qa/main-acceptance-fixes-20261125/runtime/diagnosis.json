@@ -1,0 +1,46 @@
+{
+  "historical_host_outcomes": {
+    "memory-runtime-01": "FAIL",
+    "order-export-01": "FAIL"
+  },
+  "historical_namespace_outcome": "9 FAIL before ready; original underlying Probe cause UNKNOWN",
+  "new_memory_outcome": "PASS complete original journey on frozen01; no retries or budget changes",
+  "diagnostic_scope": "Test harness and bounded namespace refusal reporting only; no scheduling/permission/capability policy fix",
+  "host_cause_status": "Original availability/cancellation ordering still UNKNOWN: fresh memory run did not reproduce 503/transport0; new diagnostics distinguish them for future failing runs",
+  "memory_permit_observations": [
+    {
+      "daemon": "first_daemon",
+      "run_id": "05af97c9-a9b7-499e-8452-10d6db1e833f",
+      "status": 200,
+      "duration_ms": 343.92695900000035,
+      "transport_error": "none",
+      "request_context": "none"
+    },
+    {
+      "daemon": "first_daemon",
+      "run_id": "05af97c9-a9b7-499e-8452-10d6db1e833f",
+      "status": 200,
+      "duration_ms": 93.97595899999942,
+      "transport_error": "none",
+      "request_context": "none"
+    },
+    {
+      "daemon": "second_daemon",
+      "run_id": "15a842dd-55bd-4d53-919f-7f0318afb95d",
+      "status": 200,
+      "duration_ms": 117.378791000001,
+      "transport_error": "none",
+      "request_context": "none"
+    },
+    {
+      "daemon": "second_daemon",
+      "run_id": "15a842dd-55bd-4d53-919f-7f0318afb95d",
+      "status": 200,
+      "duration_ms": 133.4183749999993,
+      "transport_error": "none",
+      "request_context": "none"
+    }
+  ],
+  "cross_process_clock_rule": "Separate process monotonic origins; parent spawn and ready receipt bound offset, not exact clock synchronization",
+  "namespace_status": "NOT_RUN pending original privileged/seccomp=unconfined/apparmor=unconfined configuration admission; backend EPERM not imported"
+}

@@ -1,0 +1,36 @@
+{
+  "reviewed_at": "2026-11-25T12:09:07.220596+00:00",
+  "files": {
+    "server/internal/handler/comment.go": "4a5577ec1acdd6697bc3591ccdcdf7184f8c8a11910c2749e9ccf039f5480fee",
+    "server/internal/handler/comment_authority_test.go": "0f339da42c8d6881819772fc31b6aabac11a3473bb53633cd2b0445130440242",
+    "server/cmd/server/comment_authority_spoof_test.go": "a7a75e2477b58e8f04ba550af9e1a8bed034e11d5e0ac8912c9266d1ec344209",
+    "server/internal/handler/autopilot_mention_authority_test.go": "17695c44af6542d78a53c0e231a8d18d0c59d9f0f2632e078c2933172c03f28c"
+  },
+  "runs": {
+    "valid-principal-red01": {
+      "exit": 1,
+      "counts": {
+        "fail": 477,
+        "pass": 56
+      },
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-valid-principal-red01/source",
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "go_binary_unchanged": true,
+      "receipt_sha256": "21f76f054365995f686debd0e622c30f2420c94631c90210e8f3411ea7f427c3",
+      "raw_sha256": "069313354b11bcc1fd5049ea0be15be89e854028a032ce8df0b6c1d2368e2aed"
+    },
+    "valid-principal-green01": {
+      "exit": 0,
+      "counts": {
+        "pass": 1081
+      },
+      "source": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-valid-principal-green01/source",
+      "source_unchanged": true,
+      "config_unchanged": true,
+      "go_binary_unchanged": true,
+      "receipt_sha256": "e097b3402dc0dccb13fd11d92dbded2c28ba2ccb19478ca1260b3868be20b6df",
+      "raw_sha256": "d9b1bd3ca1f3caeccff80617c5740fe5b8515f1af2966fadbf965da8cc87ce82"
+    }
+  }
+}

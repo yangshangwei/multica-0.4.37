@@ -1,0 +1,420 @@
+{
+  "reviewed_at": "2026-11-25T10:25:55.941811+00:00",
+  "official_records": [
+    {
+      "id": "GO-2026-6278",
+      "url": "https://vuln.go.dev/ID/GO-2026-6278.json",
+      "live_record_matches_retained": true,
+      "live_sha256": "a8b42c39176d5b32651c9d07285a469305b66644d391a18ce26b4d1b13db8cf2",
+      "affected": [
+        {
+          "module": "github.com/gorilla/websocket",
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "1.5.1"
+                },
+                {
+                  "introduced": "1.5.3"
+                },
+                {
+                  "fixed": "1.5.4-0.20240701034025-d67f41855da4"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "imports": [
+              {
+                "path": "github.com/gorilla/websocket",
+                "symbols": [
+                  "Conn.Close",
+                  "Conn.NextReader",
+                  "Conn.NextWriter",
+                  "Conn.ReadJSON",
+                  "Conn.ReadMessage",
+                  "Conn.WriteControl",
+                  "Conn.WriteJSON",
+                  "Conn.WriteMessage",
+                  "Conn.WritePreparedMessage",
+                  "Dialer.Dial",
+                  "Dialer.DialContext",
+                  "NewClient",
+                  "NewPreparedMessage",
+                  "ReadJSON",
+                  "Subprotocols",
+                  "Upgrade",
+                  "Upgrader.Upgrade",
+                  "WriteJSON",
+                  "flateReadWrapper.Read",
+                  "flateWriteWrapper.Close",
+                  "flateWriteWrapper.Write",
+                  "httpProxyDialer.Dial",
+                  "joinReader.Read",
+                  "messageReader.Read",
+                  "messageWriter.Close",
+                  "messageWriter.ReadFrom",
+                  "messageWriter.Write",
+                  "messageWriter.WriteString",
+                  "netDialerFunc.Dial",
+                  "newMaskKey",
+                  "proxy_direct.Dial",
+                  "proxy_envOnce.Get",
+                  "proxy_socks5.Dial",
+                  "truncWriter.Write"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "GO-2026-6866",
+      "url": "https://vuln.go.dev/ID/GO-2026-6866.json",
+      "live_record_matches_retained": true,
+      "live_sha256": "c0d687be9779f000941b6c847646075598b659cdd51476951559208956bd0f82",
+      "affected": [
+        {
+          "module": "golang.org/x/net",
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "0.62.0"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "imports": [
+              {
+                "path": "golang.org/x/net/html",
+                "symbols": [
+                  "Render",
+                  "childTextNodesAreLiteral"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "GO-2026-6860",
+      "url": "https://vuln.go.dev/ID/GO-2026-6860.json",
+      "live_record_matches_retained": true,
+      "live_sha256": "443304c129b9540dc46d28392b973a136db90644019dc20c3e25941833d49df3",
+      "affected": [
+        {
+          "module": "golang.org/x/net",
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "0.62.0"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "imports": [
+              {
+                "path": "golang.org/x/net/html",
+                "symbols": [
+                  "Parse",
+                  "ParseFragment",
+                  "ParseFragmentWithOptions",
+                  "ParseWithOptions",
+                  "parser.addText",
+                  "parser.fosterParent",
+                  "parser.parse"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "GO-2026-6859",
+      "url": "https://vuln.go.dev/ID/GO-2026-6859.json",
+      "live_record_matches_retained": true,
+      "live_sha256": "9eb1590c57233fd8a63e8ad737d12cbdef5572eed86ffee05897291fff12a9ce",
+      "affected": [
+        {
+          "module": "stdlib",
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "1.26.11"
+                },
+                {
+                  "introduced": "1.27.0-0"
+                },
+                {
+                  "fixed": "1.27.4"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "imports": [
+              {
+                "path": "net/http",
+                "symbols": [
+                  "CanonicalHeaderKey",
+                  "Client.CloseIdleConnections",
+                  "Client.Do",
+                  "Client.Get",
+                  "Client.Head",
+                  "Client.Post",
+                  "Client.PostForm",
+                  "ClientConn.Close",
+                  "ClientConn.RoundTrip",
+                  "Cookie.String",
+                  "Cookie.Valid",
+                  "CrossOriginProtection.AddInsecureBypassPattern",
+                  "CrossOriginProtection.AddTrustedOrigin",
+                  "CrossOriginProtection.Check",
+                  "Dir.Open",
+                  "Error",
+                  "Get",
+                  "Handle",
+                  "HandleFunc",
+                  "HandlerFunc.ServeHTTP",
+                  "Head",
+                  "Header.Add",
+                  "Header.Del",
+                  "Header.Get",
+                  "Header.Set",
+                  "Header.Values",
+                  "Header.Write",
+                  "Header.WriteSubset",
+                  "ListenAndServe",
+                  "ListenAndServeTLS",
+                  "NewRequest",
+                  "NewRequestWithContext",
+                  "NotFound",
+                  "ParseCookie",
+                  "ParseSetCookie",
+                  "ParseTime",
+                  "Post",
+                  "PostForm",
+                  "ProxyFromEnvironment",
+                  "ReadRequest",
+                  "ReadResponse",
+                  "Redirect",
+                  "Request.AddCookie",
+                  "Request.BasicAuth",
+                  "Request.Cookie",
+                  "Request.Cookies",
+                  "Request.CookiesNamed",
+                  "Request.FormFile",
+                  "Request.FormValue",
+                  "Request.MultipartReader",
+                  "Request.ParseForm",
+                  "Request.ParseMultipartForm",
+                  "Request.PostFormValue",
+                  "Request.Referer",
+                  "Request.SetBasicAuth",
+                  "Request.UserAgent",
+                  "Request.Write",
+                  "Request.WriteProxy",
+                  "Response.Cookies",
+                  "Response.Location",
+                  "Response.Write",
+                  "ResponseController.EnableFullDuplex",
+                  "ResponseController.Flush",
+                  "ResponseController.Hijack",
+                  "ResponseController.SetReadDeadline",
+                  "ResponseController.SetWriteDeadline",
+                  "Serve",
+                  "ServeContent",
+                  "ServeFile",
+                  "ServeFileFS",
+                  "ServeMux.Handle",
+                  "ServeMux.HandleFunc",
+                  "ServeMux.ServeHTTP",
+                  "ServeTLS",
+                  "Server.Close",
+                  "Server.ListenAndServe",
+                  "Server.ListenAndServeTLS",
+                  "Server.Serve",
+                  "Server.ServeTLS",
+                  "Server.SetKeepAlivesEnabled",
+                  "Server.Shutdown",
+                  "SetCookie",
+                  "Transport.CancelRequest",
+                  "Transport.Clone",
+                  "Transport.CloseIdleConnections",
+                  "Transport.NewClientConn",
+                  "Transport.RoundTrip",
+                  "body.Close",
+                  "body.Read",
+                  "bodyEOFSignal.Close",
+                  "bodyEOFSignal.Read",
+                  "bodyLocked.Read",
+                  "bufioFlushWriter.Write",
+                  "cancelTimerBody.Close",
+                  "cancelTimerBody.Read",
+                  "checkConnErrorWriter.Write",
+                  "chunkWriter.Write",
+                  "connReader.Read",
+                  "connectMethodKey.String",
+                  "expectContinueReader.Close",
+                  "expectContinueReader.Read",
+                  "extraHeader.Write",
+                  "fileHandler.ServeHTTP",
+                  "fileTransport.RoundTrip",
+                  "globalOptionsHandler.ServeHTTP",
+                  "gzipReader.Close",
+                  "gzipReader.Read",
+                  "http1ClientConn.Close",
+                  "http1ClientConn.RoundTrip",
+                  "http2ClientConn.RoundTrip",
+                  "http2Handler.ServeHTTP",
+                  "http2ResponseWriter.Flush",
+                  "http2ResponseWriter.FlushError",
+                  "http2ResponseWriter.Push",
+                  "http2RoundTripper.RoundTrip",
+                  "http3ServerHandler.ServeHTTP",
+                  "initALPNRequest.ServeHTTP",
+                  "loggingConn.Close",
+                  "loggingConn.Read",
+                  "loggingConn.Write",
+                  "maxBytesReader.Close",
+                  "maxBytesReader.Read",
+                  "onceCloseListener.Close",
+                  "persistConn.Read",
+                  "persistConnWriter.ReadFrom",
+                  "persistConnWriter.Write",
+                  "populateResponse.Write",
+                  "populateResponse.WriteHeader",
+                  "readTrackingBody.Close",
+                  "readTrackingBody.Read",
+                  "readWriteCloserBody.CloseWrite",
+                  "readWriteCloserBody.Read",
+                  "redirectHandler.ServeHTTP",
+                  "response.Flush",
+                  "response.FlushError",
+                  "response.Hijack",
+                  "response.ReadFrom",
+                  "response.Write",
+                  "response.WriteHeader",
+                  "response.WriteString",
+                  "serverHandler.ServeHTTP",
+                  "socksDialer.DialWithConn",
+                  "socksUsernamePassword.Authenticate",
+                  "stringWriter.WriteString",
+                  "timeoutHandler.ServeHTTP",
+                  "timeoutWriter.Write",
+                  "timeoutWriter.WriteHeader",
+                  "transportReadFromServerError.Error",
+                  "unencryptedHTTP2Request.ServeHTTP"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "GO-2026-6604",
+      "url": "https://vuln.go.dev/ID/GO-2026-6604.json",
+      "live_record_matches_retained": true,
+      "live_sha256": "8b5ef99e9faea517629d07377cb0a47b29980cfa4d6d37fb75038ef893ea16f9",
+      "affected": [
+        {
+          "module": "stdlib",
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "1.26.9"
+                },
+                {
+                  "introduced": "1.27.0-0"
+                },
+                {
+                  "fixed": "1.27.2"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "imports": [
+              {
+                "path": "os",
+                "goos": [
+                  "windows"
+                ],
+                "symbols": [
+                  "Root.Chmod",
+                  "Root.Chown",
+                  "Root.Chtimes",
+                  "Root.Lchown",
+                  "Root.Link",
+                  "Root.Mkdir",
+                  "Root.MkdirAll",
+                  "Root.Remove",
+                  "Root.RemoveAll",
+                  "Root.Rename",
+                  "Root.Symlink",
+                  "doInRoot",
+                  "rootMkdirAll"
+                ]
+              },
+              {
+                "path": "internal/syscall/windows",
+                "goos": [
+                  "windows"
+                ],
+                "symbols": [
+                  "Mkdirat"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "download_url": "https://go.dev/dl/?mode=json",
+  "archive_metadata": {
+    "filename": "go1.26.11.darwin-arm64.tar.gz",
+    "os": "darwin",
+    "arch": "arm64",
+    "version": "go1.26.11",
+    "sha256": "e3a42e67a7a8acf450ebada2b074c7ca863000ca514907b7185b45e8f5cdff57",
+    "size": 64730001,
+    "kind": "archive"
+  },
+  "metadata_matches_retained": true,
+  "github_rate_limit_docs": {
+    "url": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+    "observed_primary_403_or_429_remaining0": true
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "verdict": "MAC_CURRENT_REPAIR_INPUT_EQUALITY_FAILS",
+  "reviewed_at": "2026-11-25T13:07:24.021270+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/current-mac-sign-review-request.json",
+  "request_sha256": "b400553a57d764fe12637d8fc5ab3a2070a5a72a9cae3859d3276410a1131c93",
+  "bindings": {
+    "scope": "CurrentMac freshcopy framework topology repair afterassembly andlocaladhocsign only; eachduplicatechecked againstVersions/A bytes/mode beforelinkrestore; resolvedcontentunchanged, ASAR/productunchanged",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_current_mac.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_current_mac.py": "8d359f0ba61c9e8480fcad6351f6887f69f498a796b865d8b545024b3e1080b0",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/repair_frameworks.py": "302171f250c17650eb825e721c1ae81f8060ed4546d5a9e8c644974d35e6faaf",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/sign_mac.mjs": "5805f73c912bf995e8f556b048242c28e8f34b0b9e913fffda189061e89f9b7a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "source": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current.json",
+      "sha256": "c0ad5060e808d728a9554f103f018dfc6d1a87a2349ef859037afbf813011c98"
+    },
+    "no_policy_change": "Sameactualentitlements hardenedruntime; noGatekeeper/securitysettingchanges; no signingidentityaccount",
+    "inputs": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-preparation.json": "5af9fc50a8b06c475317388547d9255b55257b7bf022b1a5e5e04f3645854ba6",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-current-assembled-input.json": "cb98c2778e799bcb9a94db5020f7f866c1dfac6d5ad2354d4a7b78aae7ae6d3c"
+    },
+    "condition": "Currentassembledapp andstagetrees must matchthe recordedmanifest beforefreshcopy/sign; allproductmemberschecked; original cacheunchanged"
+  },
+  "blocking_findings_open": 1,
+  "issues": [
+    {
+      "id": "MS1",
+      "file": ".omx/private/acceptance-fixes/native/repair_frameworks.py",
+      "line": 16,
+      "issue": "Concrete bound assembled app has4 top-level framework binaries with SHA different from Versions/A. content(path)==content(reference) will fail. Prior static safety review assumed this explicitly checked equality; actual inputs do not satisfy it.",
+      "evidence": [
+        {
+          "framework": "Electron Framework",
+          "assembled_top_sha256": "0a85572e116a6fd83549c6669d72e4ff65d86bdf6e69952db882b609d92f808f",
+          "assembled_versionA_sha256": "095285a7856fb658f3fcf5a128880993bc1425e1fc6f32f4938af1316926d748",
+          "cached_top_sha256": "0a85572e116a6fd83549c6669d72e4ff65d86bdf6e69952db882b609d92f808f",
+          "cached_versionA_sha256": "0a85572e116a6fd83549c6669d72e4ff65d86bdf6e69952db882b609d92f808f",
+          "assembled_mode": "0o755",
+          "versionA_mode": "0o755"
+        },
+        {
+          "framework": "Mantle",
+          "assembled_top_sha256": "9cd22bf3b06581ae81d8db44f10f93c385d95d2d69d6b95ea12af3d828f930a5",
+          "assembled_versionA_sha256": "f5d3cb5167b65e63070fd17ec31790e13ae0cc559e963f31037824fb6c779879",
+          "cached_top_sha256": "9cd22bf3b06581ae81d8db44f10f93c385d95d2d69d6b95ea12af3d828f930a5",
+          "cached_versionA_sha256": "9cd22bf3b06581ae81d8db44f10f93c385d95d2d69d6b95ea12af3d828f930a5",
+          "assembled_mode": "0o755",
+          "versionA_mode": "0o755"
+        },
+        {
+          "framework": "ReactiveObjC",
+          "assembled_top_sha256": "446bb62ae060cb5a7c0e1dc6c3430ff29ee3f48c25edcf9caee075ad70b97e93",
+          "assembled_versionA_sha256": "6f2ac1c1fad0231f9c6790efda6dae1e501c0ee2d54ecefad0365290d5a60fae",
+          "cached_top_sha256": "446bb62ae060cb5a7c0e1dc6c3430ff29ee3f48c25edcf9caee075ad70b97e93",
+          "cached_versionA_sha256": "446bb62ae060cb5a7c0e1dc6c3430ff29ee3f48c25edcf9caee075ad70b97e93",
+          "assembled_mode": "0o755",
+          "versionA_mode": "0o755"
+        },
+        {
+          "framework": "Squirrel",
+          "assembled_top_sha256": "c42adb500a5117293efd4b66fd0d19231b0cb2253651855f9b5aa66363e0a099",
+          "assembled_versionA_sha256": "c0f0e55ceec6e38019990d976242768fac56069755efca8f4d9290a0ade7d1f3",
+          "cached_top_sha256": "c42adb500a5117293efd4b66fd0d19231b0cb2253651855f9b5aa66363e0a099",
+          "cached_versionA_sha256": "c42adb500a5117293efd4b66fd0d19231b0cb2253651855f9b5aa66363e0a099",
+          "assembled_mode": "0o755",
+          "versionA_mode": "0o755"
+        }
+      ],
+      "required_fix": "Preserve failed app and exact mismatches. Reconstruct framework topology/content on a new task copy from the pinned known original Electron distribution,or explicitly verify and handle signature-only differences before relinking; do not simply drop equality or claim bytes unchanged. Bind the chosen canonical input and actual transformation,then local ad-hoc sign and retain strict codesign/product integrity checks.",
+      "fixed": false,
+      "reason": "Runner and repair code belong to Hooke; reviewer read-only."
+    }
+  ],
+  "accepted_subset": [
+    "Actual stage still matches recorded input. ASAR integrity and out/resources comparison passed before framework input equality check.",
+    "Static repair/signing boundary remains narrow/no personal signing identity; actual current input prevents the proposed unchanged-content repair."
+  ],
+  "adapters_executed_by_reviewer": false,
+  "verification": {
+    "read_only_framework_comparison": "4_concrete_mismatches",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  }
+}

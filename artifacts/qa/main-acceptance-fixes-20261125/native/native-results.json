@@ -1,0 +1,41 @@
+{
+  "linux": {
+    "test": "PASS",
+    "duration_seconds": 210.327942,
+    "original_timeout_seconds": 600,
+    "cleanup": "PASS",
+    "source": "currentC1frontend+currentAPI"
+  },
+  "mac": {
+    "test": "PASS",
+    "duration_seconds": 85.756803,
+    "original_timeout_seconds": 480,
+    "configuration": "MULTICA_KNOWLEDGE_CONTEXT_ENABLED=false",
+    "cleanup": "PASS",
+    "protocol_scope": "exactnewperrunbaseline only"
+  },
+  "legacy_cli": {
+    "test": "FAIL",
+    "timeout_seconds": 240,
+    "runs": [
+      {
+        "label": "cli01",
+        "relays": 6
+      },
+      {
+        "label": "cli02",
+        "relays": 9
+      },
+      {
+        "label": "cli03",
+        "relays": 9
+      }
+    ],
+    "cleanup": "eventualabsencePASS; fallbackcleanupFAIL preserved",
+    "root_cause": "UNKNOWN; query/clientroundtrip amplification observed, no captured lockblockers"
+  },
+  "default_knowledge_mac": "FAIL atsessioncontinuity assertion; fullStop/restart/Resume defaulton NOTVERIFIED",
+  "whole_task_initial_protocol": "UNPROVEN; earlierbaselinecleanupFAIL retained",
+  "release": "HOLD",
+  "at": "2026-11-25T21:43:25.392300"
+}

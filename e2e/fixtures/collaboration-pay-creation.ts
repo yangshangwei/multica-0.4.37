@@ -98,7 +98,7 @@ async function seed(platform: RecoveryPlatform, evidence: RecoveryEvidence): Pro
     occupational_roles_configured: false, description: paragraphs.join("\n\n") });
   return { actors, workspace, project, title: `PAY-241 scenario: payment succeeds but order awaits payment ${suffix}`,
     paragraphs, description: paragraphs.join("\n\n"), start, due,
-    surface: { apiUrl, issueId: "", title: "Collaboration", accountPath: "/account?view=participating" } };
+    surface: { apiUrl, issueId: "", title: "Participating", accountPath: "/account?view=participating" } };
 }
 
 interface WriteFact { at: string; path: string; method: string; request_id: string | null; body: unknown }

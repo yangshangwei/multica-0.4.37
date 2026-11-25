@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "static_transport_accepted": true,
+  "verdict": "ALLTRANSPORT_ONE_CLEANUP_OBSERVATION_FIX",
+  "reviewed_at": "2026-11-25T13:19:19.221727+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/alltransport-review-request.json",
+  "request_sha256": "1f29da026ec037d197095bb8960bfd211cb692efbe7ee224460e6f5071abf8c5",
+  "bindings": {
+    "scope": "Completealltransportadmission beforefulltest, noappstart: controller+packagereadonlyvolumes, syntheticmachine/discoverycopiedtoownedstoppedcontainer, exactruntimeflags, nodehashonlyprobe559controllerfiles+packageasar",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_transport.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_transport.py": "746036cec89b3dc93bd5f9156bae74499eb1a6a58c925b05c50e98a8a97fa12d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/volume_runtime.py": "aae09947153ebcc883a5cd1f87616d391313302a5c47167c6a0e06a981ad182c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "package_receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-volume.json",
+    "policy": "No bindmount/nohostsharingchange/defaultsecurity; entireprerequisite inoneownedcontainer thencleanup"
+  },
+  "blocking_findings_open": 1,
+  "issues": [
+    {
+      "id": "AT1",
+      "file": ".omx/private/acceptance-fixes/native/stage_transport.py",
+      "line": 38,
+      "issue": "Final cleanup loop ignores every nonzero docker inspect,without distinguishing no-such-object from Docker daemon/permission/transport errors. A successful hash probe followed by failed cleanup observation can claim status pass and cleanup_errors=[] without absence evidence.",
+      "required_fix": "Classify only explicit no-such-object as absent; append all other inspect failures to cleanup_errors. Keep owner/image checks before removal and require final absence observation after any fallback removal. This is a local cleanup-only correction; do not change canonical runtime policy or probe assertions.",
+      "fixed": false,
+      "reason": "Owner edits runner; reviewer only writes research artifacts."
+    }
+  ],
+  "accepted_subset": [
+    "No host binds remain; same default runtime network/capabilities/seccomp,private root tmpfs,readonly package/controller volumes and26provider isolation.",
+    "One actual probe container checks copied machine/discovery bytes,all559controller file hashes,packageASAR and Playwright versions1.58.2; no Main/API/account/model execution.",
+    "Volume creation/copy/readback path reuses accepted task-owned approach; package volume owner checked and staging receipt pins current candidate.",
+    "Request hashes and Python AST parsing pass. Only cleanup observation classification needs delta recheck."
+  ],
+  "scope_limits": [
+    "This is prerequisite execution only. Probe uses synthetic discovery bytes and does not execute agents; future Main guard must retain the real discovery refusal script and use the same reviewed command builder/mount policy.",
+    "Retained controller/package volumes are deliberate staging outputs,not claimed absent. Original failures and previous volumes remain preserved."
+  ],
+  "verification": {
+    "changed_hashes": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "adapters_executed_by_reviewer": false
+}

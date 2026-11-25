@@ -1,0 +1,2187 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "./cmd/server",
+    "-run",
+    "^TestCommentManagementValidActorHintsHTTP$"
+  ],
+  "started_at": "2026-11-25T11:57:38.162427+00:00",
+  "database": "fix_comment_spoof_red01",
+  "allocation": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/comment_spoof_red01",
+  "execution_env_sha256": "04f9104ee2c4bb34c5fc51e65ac34a5724b3933c99f2198edc6a671fd785a763",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-valid-principal-red01/source",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-valid-principal-red01/home",
+  "tmp": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-valid-principal-red01/tmp",
+  "base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "manifest_sha256": "08e1bdf5ef88aac76bdd7b6266a33ceefabb882d29ca1b29292f99fda90a1c92",
+  "harness_sha256": "286ec619adedf0daad77034ef5b5bd0f4338917ba8f31dd5ab1c61b5bc93f1c5",
+  "toolchain": "go version go1.26.11 darwin/arm64",
+  "redis_allocation": null,
+  "redis_index": null,
+  "resource_probe_sha256": "588469ae6be3bed34aa84a62023f39dabfb023c0e5024329608567e50264bd51",
+  "go_binary": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+  "go_binary_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "exit": 1,
+  "finished_at": "2026-11-25T11:58:44.054335+00:00",
+  "counts": {
+    "fail": 477,
+    "pass": 56
+  },
+  "inventory": [
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/member",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/owner",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt/admin",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/jwt",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/member",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/owner",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat/admin",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/pat",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/member",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/owner",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud/admin",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy/cloud",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/legacy",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/member",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/owner",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt/admin",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/jwt",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/other-human/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/other-human/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/other-human/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed/other-human",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/member",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/owner",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/running",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/unrelated-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/unrelated-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/unrelated-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/unrelated-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/owned-agent/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/owned-agent/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/owned-agent/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/owned-agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/human-self/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/human-self/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/human-self/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/human-self",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/other-human/body",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/other-human/attachments",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/other-human/delete",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed/other-human",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin/completed",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat/admin",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password/pat",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP/password",
+      "action": "fail"
+    },
+    {
+      "test": "TestCommentManagementValidActorHintsHTTP",
+      "action": "fail"
+    }
+  ],
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "after_resources": {
+    "cluster_connections": 7,
+    "comments": 0,
+    "database": "fix_comment_spoof_red01",
+    "database_connections": 1,
+    "users": 0,
+    "workspaces": 0
+  },
+  "go_binary_unchanged": true
+}

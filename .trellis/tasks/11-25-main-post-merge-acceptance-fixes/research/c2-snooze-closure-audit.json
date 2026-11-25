@@ -1,0 +1,400 @@
+{
+  "reviewed_at": "2026-11-25T12:33:38.825249+00:00",
+  "evidence_count": 153,
+  "evidence_hash_mismatches": [],
+  "playwright": {
+    "stats": {
+      "startTime": "2026-11-25T12:25:48.605Z",
+      "duration": 62206.123,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": [],
+    "cases": [
+      {
+        "file": "inbox-snooze.spec.ts",
+        "title": "Web group snooze survives reload, changes time, undoes and reminds the original unread group",
+        "id": "2965b1f5e7ed7b139948-cd8e9283e9bd9483caf8",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "errors": [],
+            "duration": 10491
+          }
+        ]
+      },
+      {
+        "file": "inbox-snooze.spec.ts",
+        "title": "Web failed save retains selection and custom input; another device invalidates the visible undo",
+        "id": "2965b1f5e7ed7b139948-82b9a5d528fd18060683",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "errors": [],
+            "duration": 5276
+          }
+        ]
+      },
+      {
+        "file": "inbox-snooze.spec.ts",
+        "title": "Web ordinary and group mentions stay snoozed; personal mentions and assignment wake across devices while another workspace is active",
+        "id": "2965b1f5e7ed7b139948-939020715d6b657e1918",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "errors": [],
+            "duration": 7008
+          }
+        ]
+      },
+      {
+        "file": "inbox-snooze.spec.ts",
+        "title": "Web server expiry returns original unread notifications near the top and never revives an archived plan",
+        "id": "2965b1f5e7ed7b139948-a68672c7710c8a10774c",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "errors": [],
+            "duration": 15605
+          }
+        ]
+      },
+      {
+        "file": "inbox-snooze.spec.ts",
+        "title": "Web Chinese touch controls preserve keyboard focus, custom time and narrow layouts in both themes",
+        "id": "2965b1f5e7ed7b139948-6d6e7627e024ce7028ed",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "errors": [],
+            "duration": 5631
+          }
+        ]
+      },
+      {
+        "file": "inbox-snooze.spec.ts",
+        "title": "Native Electron uses the shared snooze journey and keeps main, Snoozed and Archived tabs independent",
+        "id": "2965b1f5e7ed7b139948-7629ef8a1d24452be878",
+        "project": "chromium",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "errors": [],
+            "duration": 13790
+          }
+        ]
+      }
+    ]
+  },
+  "completion": {
+    "exit": 0,
+    "freeze_unchanged": true,
+    "cleanup_errors": [],
+    "original_gate": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false
+    },
+    "final_gate": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false
+    }
+  },
+  "observation": {
+    "case_evidence": [
+      {
+        "file": "results/inbox-snooze-Inbox-snooze--7b001-rrow-layouts-in-both-themes-chromium/inbox-snooze-evidence.json",
+        "fact_count": 44,
+        "sha256": "668e9ecb5a4d77afeb33bf0cd8e8ff31ecbd1ab2267f40fac1899f22071b0ded"
+      },
+      {
+        "file": "results/inbox-snooze-Inbox-snooze--8d562-er-revives-an-archived-plan-chromium/inbox-snooze-evidence.json",
+        "fact_count": 97,
+        "sha256": "fdae94f9f7e2b2f50c2e529ef42ac32eaf6ec8b04f563723d393314abd3973d1"
+      },
+      {
+        "file": "results/inbox-snooze-Inbox-snooze--f9391-another-workspace-is-active-chromium/inbox-snooze-evidence.json",
+        "fact_count": 136,
+        "sha256": "f122f7ec6332a4d965dd5f525898d4f16aec321385fb84b3b6831b4c3cd95c8e"
+      },
+      {
+        "file": "results/inbox-snooze-Inbox-snooze--e7241-nvalidates-the-visible-undo-chromium/inbox-snooze-evidence.json",
+        "fact_count": 114,
+        "sha256": "4bdba1c32adb6041e34a8b04110d48ab5241a333e30ff9eecea340b8fc08ae56"
+      },
+      {
+        "file": "results/inbox-snooze-Inbox-snooze--cf74e-s-the-original-unread-group-chromium/inbox-snooze-evidence.json",
+        "fact_count": 121,
+        "sha256": "91b9eb053673730c6c8a0049b9ff7245ba8f6f2eddcb512f6c95a3d2995dc486"
+      },
+      {
+        "file": "results/inbox-snooze-Inbox-snooze--923df-d-Archived-tabs-independent-chromium/inbox-snooze-evidence.json",
+        "fact_count": 165,
+        "sha256": "366788e03d1c54d8168dd2f38f852c71aa61620eb26c9676eac3aeab07d8456f"
+      }
+    ],
+    "facts": 677,
+    "failures": [],
+    "sealed": [
+      {
+        "at": "2026-11-25T12:26:36.921Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-249c32df"
+      },
+      {
+        "at": "2026-11-25T12:26:31.260Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-dbe7dc44"
+      },
+      {
+        "at": "2026-11-25T12:26:15.608Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-83f0b824"
+      },
+      {
+        "at": "2026-11-25T12:26:15.609Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-955b012d"
+      },
+      {
+        "at": "2026-11-25T12:26:08.586Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-139e20a1"
+      },
+      {
+        "at": "2026-11-25T12:26:08.586Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-cca3fdb0"
+      },
+      {
+        "at": "2026-11-25T12:26:03.299Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-2e39465d"
+      },
+      {
+        "at": "2026-11-25T12:26:50.545Z",
+        "phase": "traffic_admission_sealed",
+        "client": "desktop-fd584bfa"
+      },
+      {
+        "at": "2026-11-25T12:26:50.545Z",
+        "phase": "traffic_admission_sealed",
+        "client": "web-a30b90f2"
+      }
+    ],
+    "closed": [
+      {
+        "at": "2026-11-25T12:26:36.933Z",
+        "phase": "traffic_closed",
+        "client": "web-249c32df",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:31.295Z",
+        "phase": "traffic_closed",
+        "client": "web-dbe7dc44",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:15.669Z",
+        "phase": "traffic_closed",
+        "client": "web-955b012d",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:15.675Z",
+        "phase": "traffic_closed",
+        "client": "web-83f0b824",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:08.661Z",
+        "phase": "traffic_closed",
+        "client": "web-cca3fdb0",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:08.667Z",
+        "phase": "traffic_closed",
+        "client": "web-139e20a1",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:03.380Z",
+        "phase": "traffic_closed",
+        "client": "web-2e39465d",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:50.599Z",
+        "phase": "traffic_closed",
+        "client": "web-a30b90f2",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      },
+      {
+        "at": "2026-11-25T12:26:50.725Z",
+        "phase": "traffic_closed",
+        "client": "desktop-fd584bfa",
+        "excluded_requests_after_seal": 0,
+        "observation_errors": []
+      }
+    ],
+    "sessions_match": true,
+    "every_seal_before_close": true,
+    "excluded_requests_total": 0,
+    "closed_errors": [],
+    "cleanup": [
+      {
+        "at": "2026-11-25T12:26:36.933Z",
+        "phase": "client_cleanup",
+        "outcomes": [
+          {
+            "status": "fulfilled",
+            "error_type": null
+          }
+        ]
+      },
+      {
+        "at": "2026-11-25T12:26:31.296Z",
+        "phase": "client_cleanup",
+        "outcomes": [
+          {
+            "status": "fulfilled",
+            "error_type": null
+          }
+        ]
+      },
+      {
+        "at": "2026-11-25T12:26:15.676Z",
+        "phase": "client_cleanup",
+        "outcomes": [
+          {
+            "status": "fulfilled",
+            "error_type": null
+          },
+          {
+            "status": "fulfilled",
+            "error_type": null
+          }
+        ]
+      },
+      {
+        "at": "2026-11-25T12:26:08.668Z",
+        "phase": "client_cleanup",
+        "outcomes": [
+          {
+            "status": "fulfilled",
+            "error_type": null
+          },
+          {
+            "status": "fulfilled",
+            "error_type": null
+          }
+        ]
+      },
+      {
+        "at": "2026-11-25T12:26:03.381Z",
+        "phase": "client_cleanup",
+        "outcomes": [
+          {
+            "status": "fulfilled",
+            "error_type": null
+          }
+        ]
+      },
+      {
+        "at": "2026-11-25T12:26:50.725Z",
+        "phase": "client_cleanup",
+        "outcomes": [
+          {
+            "status": "fulfilled",
+            "error_type": null
+          },
+          {
+            "status": "fulfilled",
+            "error_type": null
+          }
+        ]
+      }
+    ]
+  },
+  "manifest_hash_matches_before_after": true,
+  "before_after_equal": true,
+  "source_check": {
+    "root": "/Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/c2-final01",
+    "file_count": 142785,
+    "symlink_count": 7272,
+    "file_mismatches": [],
+    "link_escapes": [],
+    "role_exclusions": []
+  },
+  "files": {
+    "e2e/fixtures/inbox-snooze.ts": {
+      "worktree_sha256": "85e23e821291da9b00b0a2b35048bf8a2c08b4a0f8f08dd52539c6d28fb30516",
+      "frozen_sha256": "85e23e821291da9b00b0a2b35048bf8a2c08b4a0f8f08dd52539c6d28fb30516",
+      "matches": true
+    },
+    "e2e/fixtures/observed-request-lifecycle.ts": {
+      "worktree_sha256": "856b8a9a06de147790dee346567d56f3a6902b9ed0ab5619280ab6b8a93b10de",
+      "frozen_sha256": "856b8a9a06de147790dee346567d56f3a6902b9ed0ab5619280ab6b8a93b10de",
+      "matches": true
+    },
+    "e2e/fixtures/observed-request-lifecycle.node-test.mjs": {
+      "worktree_sha256": "d14c77cc78b06308575b6c37e5a980971a3b3f042661d6692799ccd2f608ad4c",
+      "frozen_sha256": "6de9e64269d9fc0e0dc66920a14ca0d034c9ad6b2f359a3deda3215db5471509",
+      "matches": false
+    },
+    "e2e/inbox-snooze.spec.ts": {
+      "worktree_sha256": "4d8ccc6c539a41fe549f3682a17b128a269a60e8106f36638c1caa3e0615d217",
+      "frozen_sha256": "4d8ccc6c539a41fe549f3682a17b128a269a60e8106f36638c1caa3e0615d217",
+      "matches": true
+    }
+  },
+  "build_linkage": {
+    "web": {
+      "expected": "7e68a095cd325137ca9ff2f6b5ac0cbb0c14d02e9f43551f84a461d82025842e",
+      "current_sha256": "7e68a095cd325137ca9ff2f6b5ac0cbb0c14d02e9f43551f84a461d82025842e",
+      "matches": true
+    },
+    "desktop": {
+      "expected": "44aba9429c242260cf127692201da83210e993a63ff8ebb92eaffddb381059b6",
+      "current_sha256": "44aba9429c242260cf127692201da83210e993a63ff8ebb92eaffddb381059b6",
+      "matches": true
+    }
+  },
+  "deterministic_controls": {
+    "log": ".omx/private/acceptance-fixes/clients/c2-observer-node-final.log",
+    "sha256": "543aef20192966e5733bb73066cb57e7a08612d28b253403b236f554e4fe812a",
+    "raw_log": "TAP version 13\n# Subtest: drains an admitted response reader that starts after sealing and propagates its late failure\nok 1 - drains an admitted response reader that starts after sealing and propagates its late failure\n  ---\n  duration_ms: 2.258\n  type: 'test'\n  ...\n# Subtest: records post-boundary exclusions without discarding an earlier reader\nok 2 - records post-boundary exclusions without discarding an earlier reader\n  ---\n  duration_ms: 0.13875\n  type: 'test'\n  ...\n# Subtest: fails the real snooze final check for an admitted200 body reader arriving after the seal\nok 3 - fails the real snooze final check for an admitted200 body reader arriving after the seal\n  ---\n  duration_ms: 55.484333\n  type: 'test'\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 3\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1026.54325\n"
+  },
+  "verdict": "C2_CLOSED_FOR_SNOOZE_FINAL03",
+  "test_file_delta": "Only explicit import { URL } from node:url added in current Node control; observer/lifecycle/business spec unchanged."
+}

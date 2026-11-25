@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_CURRENT_LINUX_ALLVOLUME_MAIN",
+  "reviewed_at": "2026-11-25T13:32:24.549977+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/allvolume-main-review-request.json",
+  "request_sha256": "7122bf11b345cf6708c776d1b00dbebebad4226148b43b91900a851c356f960b",
+  "bindings": {
+    "scope": "CurrentC1frontend+latestcommentAPI completeoriginalLinuxMain600s onownedpackagevolume; samepreviousreviewedrunner with exactcurrentbindings",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_allvolume_linux.py",
+      "linux-current02"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/web-server.mjs": "ac98ea0fe949cedad4f2f45249cfdd6a5d5be4bcada9be4410f7d72e61650bc4",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_allvolume_linux.py": "9d592b2e2e8d54a7abf679c67b5e2b04ecd1836ecc6ffe26ccea52b0a03dc865",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/allvolume_guard.py": "671652479820efb05d603d9f187734875c9e3348ce4a6c76fc2e065f5830a235",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/volume_runtime.py": "b1584a2c110732b33cd34ff072f4ca2bbbedd304e0bbb06f6896938593c78123"
+    },
+    "inputs": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-package.json": "8c659d4f6e0d5cd8b3ae5673b770ef060f526c681b2c486a63f37c3f875e9084",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-asar.json": "176ea13c1cee10f90bac8d0ab235497f248e7affd81a4eee94bf5da1467818bd",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current-postpackage.json": "fae4c892381d2bf2816de6627ab99941a6288b273391855f6ad7f4a7e698c729",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/current-binary-builds.json": "5894b03a58a414b07e8d8d9b3656dbfd05b1cd2bb397fbab53f64e530614d970",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-volume.json": "33fa2b7bab8032164cf25fadea381e7aa58e1cdb0520baed1a4396f3c419ecd2",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/alltransport-probe.json": "3aa812aa59a6abcd645d39a70031546f65516a068e7342657c063a26b19c2e43"
+    },
+    "database": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_linux_api03/env.json",
+      "sha256": "0711feefa7483b6ba778ec04aab77e5987a972e06823bdc02bd18d30cee65f1f"
+    },
+    "notes": "Onlycurrentcandidateexecution; WebusesprovencompiledNextconfiglauncher soMDXsource remainsimmutable. Oldsource01 diagnosticrequests superseded; nooldMain runplanned.",
+    "volume_verified": true,
+    "transport": "zero hostbind mounts; readonlynamedpackage/controller; syntheticfilescopied stoppedcontainer, actualdiscoveryrefusalscript unchanged; exactCIDreaped",
+    "complete_transport_probe_pass": true,
+    "revision": "AV1canonicalcreate--rm restored; AV2 durableIDfirst optionalcidfilechecked, intentretained oncreate/copyfailure; noassertionpolicychange"
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_allvolume_linux.py",
+    "linux-current02"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "closed_findings": [
+    {
+      "id": "AV1",
+      "fix": "volume_runtime.command restores Docker create --rm,matching canonical normal cleanup; installed Docker supports this flag. Only lifetime removal flag changed after complete probe; transport,mounts,identity copy and safety policy unchanged."
+    },
+    {
+      "id": "AV2",
+      "fix": "Runner reads durable row.id first and cross-checks optional existing cidfile. Missing cidfile no longer aborts cleanup; name/owner intents preserved for partial creates."
+    }
+  ],
+  "basis": [
+    "All current request/script/input/config hashes match. Python parsing passes. Exact fresh native_linux_api03 migration exit0.",
+    "Previously reviewed complete preflight passed562checks,Playwright versions,private/root andcleanup[]. No host binds; readonly current package/controller volumes and restrictive discovery script preserved.",
+    "New request is current source/API/C1signed-or-packaged frontend candidate; compiled production Web config avoids known MDXsource-generation path. Full600s original journey and all assertions unchanged.",
+    "Strict source/package/final cleanup predicates retained; fallback removals still count as failure. No repeated full source/closure/package audit."
+  ],
+  "additional_bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_linux_api03/migration.json": "0da1e7e31ac29c0078116932c634ec94b928ea23198d9ea7320c835d0d456a4b",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/alltransport-probe.json": "3aa812aa59a6abcd645d39a70031546f65516a068e7342657c063a26b19c2e43"
+  },
+  "conditions": [
+    "Only exact allowed command on fresh linux-current02 paths; parent handles scheduling. No default Docker/security weakening.",
+    "Preserve preflight and previous failure receipts. Require actual full journey exit/inventory and independent final cleanup/source/package evidence before PASS."
+  ],
+  "verification": {
+    "changed_hashes": "pass",
+    "python_ast_parse": "pass",
+    "preflight_receipt": "pass562",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "adapters_executed_by_reviewer": false
+}

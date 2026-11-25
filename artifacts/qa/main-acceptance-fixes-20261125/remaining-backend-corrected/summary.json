@@ -1,0 +1,136 @@
+{
+  "results": [
+    {
+      "package": "artifact",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 78
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "52bf16908c290b686fedbfffee4675dfb80a57f4eb901a08f493013315bd9896",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605160.6034188
+    },
+    {
+      "package": "storage",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 99
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "85ad9a43bb5a7aa7150efaf449e71afa3a6668e37f7dbdf526209bef51c60265",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605163.0108259
+    },
+    {
+      "package": "auth",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 117
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "4783373ddbe8b92f42f5056ab89d99431296cae6f1c29ba78770985fbedf716b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605165.2949739
+    },
+    {
+      "package": "middleware",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 138
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7f13308f2eb67425e1c02d0db539c2dc5fad399496fb144831ffe0eb8674fe53",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605168.89995
+    },
+    {
+      "package": "integrations/wecom",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 616
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "3a15463b52a52dc8be7eddc2b3a01672e9dc901e777f937cc5cc312e4ca32087",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605227.1217039
+    },
+    {
+      "package": "artifact",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 78
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "b196d603e3d1c1e32dc5594c061f8826d46f408382ca2117a913ab13dc91e2b6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605230.1954
+    },
+    {
+      "package": "storage",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 99
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "57c34e7e575e5321133a9dc39520f1db278bc7ac9bdb5887f86be9dc86abad56",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605233.286604
+    },
+    {
+      "package": "auth",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 117
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "692067fd003780a2f2cbf62b83155fa6a03e0b8ef4ce41fe45021f71ff9713a1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605240.2561228
+    },
+    {
+      "package": "middleware",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 138
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "43853c2ec7a2e401b27fa7e975ad6fbada6fc5c4b73458e5e13d9a5a35890db0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605244.330699
+    },
+    {
+      "package": "integrations/wecom",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 616
+      },
+      "failures": [],
+      "remaining_database_clients": 0,
+      "stdout_sha256": "3af50b52d4ed04cae04494547c58aa19d14ce15c56beafd351202168bbe7f354",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605308.678315
+    }
+  ],
+  "source_unchanged": true,
+  "execution_complete": true
+}

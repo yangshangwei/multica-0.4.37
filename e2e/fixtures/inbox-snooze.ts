@@ -1,8 +1,9 @@
+import { ObservedRequestLifecycle } from "./observed-request-lifecycle";
 import assert from "node:assert/strict";
 import { createHash, randomUUID } from "node:crypto";
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { isAbsolute, join, relative, resolve } from "node:path";
-import { expect, type Browser, type BrowserContext, type Page, type Response, type TestInfo } from "@playwright/test";
+import { expect, type Browser, type BrowserContext, type Page, type Request, type Response, type TestInfo } from "@playwright/test";
 import pg from "pg";
 import { CommentSchema, CreateIssueResponseSchema, InboxItemListSchema, InboxSnoozeReceiptSchema } from "../../packages/core/api/schemas";
 import { TestApiClient } from "../fixtures";
@@ -226,11 +227,18 @@ export class SnoozeTraffic {
   readonly events: ObjectValue[] = [];
   readonly errors: string[] = [];
   readonly principalIds: string[] = [];
-  private pending = new Set<Promise<void>>();
+  private lifecycle = new ObservedRequestLifecycle<Request>();
   constructor(readonly page: Page, readonly evidence: SnoozeEvidence, readonly client: string) {
+    page.on("request", (request) => {
+      const path = new URL(request.url()).pathname;
+      if (path.startsWith("/api/inbox") || path === "/api/me") this.lifecycle.admit(request);
+    });
+    page.on("requestfinished", (request) => { this.lifecycle.finish(request); });
+    page.on("requestfailed", (request) => { this.lifecycle.finish(request); });
     page.on("response", (response) => {
       const path = new URL(response.url()).pathname;
       if (!path.startsWith("/api/inbox") && path !== "/api/me") return;
+      if (!this.lifecycle.includes(response.request())) return;
       const read = (async () => {
         const fact: ObjectValue = { client, at: stamp(), path, method: response.request().method(), status: response.status() };
         const headers = await response.request().allHeaders();
@@ -253,7 +261,7 @@ export class SnoozeTraffic {
         evidence.record("traffic_observation_failed", { client, path, status: response.status(), method: response.request().method(),
           reason, error_type: error instanceof Error ? error.name : "unknown", message_sha256: digest(message) });
       });
-      this.pending.add(read); void read.finally(() => this.pending.delete(read));
+      this.lifecycle.observe(read);
     });
     page.on("websocket", (socket) => {
       const url = new URL(socket.url());
@@ -273,7 +281,18 @@ export class SnoozeTraffic {
     });
     page.on("pageerror", (error) => { this.errors.push(`pageerror:${digest(error.message)}`); });
   }
-  async settle() { await Promise.all([...this.pending]); expect(this.errors).toEqual([]); }
+  seal() {
+    this.lifecycle.seal();
+    this.evidence.record("traffic_admission_sealed", { client: this.client });
+  }
+  async finalCheck() {
+    await this.settle();
+    this.evidence.record("traffic_closed", { client: this.client, excluded_requests_after_seal: this.lifecycle.excludedRequests, observation_errors: this.errors });
+  }
+  async settle() {
+    await this.lifecycle.drain();
+    expect(this.errors).toEqual([]);
+  }
 }
 
 export interface SnoozeSession {
@@ -344,6 +363,7 @@ export async function openSnoozeSession(browser: Browser, fixture: SnoozeFixture
         viewport: await page.evaluate(() => ({ width: innerWidth, height: innerHeight, devicePixelRatio })) });
     },
     async close() {
+      traffic.seal();
       try {
         await traffic.settle();
         if (native) {
@@ -351,7 +371,10 @@ export async function openSnoozeSession(browser: Browser, fixture: SnoozeFixture
           evidence.record("native_runtime_final", { daemon_starts: state.daemonStarts, native_issue_requests: state.nativeIssueRequests });
           expect(state.daemonStarts).toBe(0); expect(native.errors).toEqual([]);
         }
-      } finally { if (native) await native.app.close(); else await context.close(); }
+      } finally {
+        try { if (native) await native.app.close(); else await context.close(); }
+        finally { await traffic.finalCheck(); }
+      }
     } };
 }
 

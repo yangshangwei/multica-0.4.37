@@ -1,0 +1,28 @@
+{
+  "processes": [
+    {
+      "service": "api",
+      "pid": 64763,
+      "original_process_absent": true
+    },
+    {
+      "service": "web",
+      "pid": 64764,
+      "original_process_absent": true
+    },
+    {
+      "service": "renderer",
+      "pid": 64765,
+      "original_process_absent": true
+    }
+  ],
+  "ports_closed": {
+    "api": true,
+    "web": true,
+    "renderer": true
+  },
+  "other_database_clients": 0,
+  "database_retained": true,
+  "remaining_clone_electron": [],
+  "all_client_native_sessions_stopped": true
+}

@@ -1,0 +1,49 @@
+{
+  "label": "baseline-race-01",
+  "receipt_sha256": "b9b99e6b97fb01357bcaa26e6a0bcbdde5e823fb74f363096550cd000a24438e",
+  "raw_sha256": "7c5ea4b44165e4d6cf3a722cc1944c6189ea2ed7e22f9529863b9441069adc4b",
+  "named": {
+    "pass": 4611,
+    "skip": 18
+  },
+  "top": {
+    "pass": 1872,
+    "skip": 18
+  },
+  "leaf": {
+    "pass": 4053,
+    "skip": 18
+  },
+  "build_events": {},
+  "inventory_errors": [],
+  "static_top_count": null,
+  "exit": 0,
+  "package_terminal": [
+    "pass"
+  ],
+  "no_race_warning": true,
+  "source_unchanged": true,
+  "modules_unchanged": null,
+  "remaining_clients": 0,
+  "failures": [],
+  "skips": [
+    "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+    "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+    "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+    "TestEmptyClaimCache_StaleMarkRejected",
+    "TestEmptyClaimCache_TTL",
+    "TestEmptyClaimCache_RuntimeIsolation",
+    "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+    "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+    "TestReclaimCheckCache_TrackLaterAndForget",
+    "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+    "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+    "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+    "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+    "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+    "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+    "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+    "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+    "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict"
+  ]
+}

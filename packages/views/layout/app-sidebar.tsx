@@ -34,6 +34,7 @@ import { Layers,
   Inbox,
   RefreshCw,
   MoreHorizontal,
+  Undo2,
   X,
 } from "lucide-react";
 import { WorkspaceAvatar } from "../workspace/workspace-avatar";
@@ -540,12 +541,13 @@ interface AppSidebarProps {
   /** A navigation preview only; never installs a workspace route/provider. */
   navigationWorkspace?: Workspace | null;
   onWorkspaceSelect?: (slug: string) => void;
+  onAccountResume?: () => void;
   workspaceListUnavailable?: boolean;
   onRetryWorkspaces?: () => void;
 }
 
 export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, headerStyle,
-  navigationWorkspace, onWorkspaceSelect, workspaceListUnavailable = false, onRetryWorkspaces }: AppSidebarProps = {}) {
+  navigationWorkspace, onWorkspaceSelect, onAccountResume, workspaceListUnavailable = false, onRetryWorkspaces }: AppSidebarProps = {}) {
   const { t } = useT("layout");
   const { t: ui } = useT("ui");
   const navigation = useNavigation();
@@ -604,7 +606,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
     </SidebarHeader>
   );
   const directory = <>
-    <CollaborationNavigation workspaceActive={activeWorkspace} />
+    <CollaborationNavigation workspaceActive={activeWorkspace} onAccountResume={onAccountResume} />
     <div data-sidebar-scope="workspace" className="min-w-0">
       {activeWorkspace && workspace ? <WorkspaceNavigation workspace={workspace} pickerProps={pickerProps} overflow={overflow} /> : <>
         <WorkspacePicker {...pickerProps} />
@@ -812,7 +814,7 @@ function WorkspaceNotificationRealtime({ scope }: { scope: CollaborationScope })
   return null;
 }
 
-function CollaborationNavigation({ workspaceActive }: { workspaceActive: boolean }) {
+function CollaborationNavigation({ workspaceActive, onAccountResume }: { workspaceActive: boolean; onAccountResume?: () => void }) {
   const { t } = useT("layout");
   const { t: collaboration } = useT("collaboration");
   const navigation = useNavigation();
@@ -856,6 +858,13 @@ function CollaborationNavigation({ workspaceActive }: { workspaceActive: boolean
       {notificationLink}
       </SidebarMenu></SidebarGroupContent></CollapsibleContent>}
     </Collapsible>}
+    {onAccountResume && <SidebarGroupContent><SidebarMenu><SidebarMenuItem>
+      <SidebarMenuButton onClick={() => onAccountResume()} disabled={destination !== null}
+        aria-label={collaboration(($) => $.page.resume)} tooltip={iconCollapsed ? collaboration(($) => $.page.resume) : undefined}
+        className={cn("text-muted-foreground pointer-coarse:min-h-11", iconCollapsed && "mx-auto")}>
+        <Undo2 aria-hidden />{!iconCollapsed && <span>{collaboration(($) => $.page.resume)}</span>}
+      </SidebarMenuButton>
+    </SidebarMenuItem></SidebarMenu></SidebarGroupContent>}
   </SidebarGroup>;
 }
 

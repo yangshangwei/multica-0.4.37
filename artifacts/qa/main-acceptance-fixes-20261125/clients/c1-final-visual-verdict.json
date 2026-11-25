@@ -1,0 +1,23 @@
+{
+  "score": 95,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "A single secondary return action has been added below collaboration destinations; it is disabled while already in account scope.",
+    "English label truncates within the existing sidebar width while the full accessible name remains; Chinese label fits."
+  ],
+  "suggestions": [],
+  "reasoning": "Final actual native Chinese wide/narrow captures retain readable delivery, comment and sidebar hierarchy with no horizontal overflow. All38 final Web/native captures passed exact geometry/containment before and after screenshot.",
+  "next_actions": [],
+  "threshold": 90,
+  "reference_images": [
+    ".omx/private/acceptance-fixes/clients/manual-02/results/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/attachments/desktop-failure-session-1-6fcfb904aabba4bdca48341c3204f93fc6632999.png"
+  ],
+  "generated_screenshots": [
+    ".omx/private/acceptance-fixes/clients/manual-c1-final01/results/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/attachments/desktop-failure-session-1-d55331a10dd3444ad96f3cf5fcd572d80410b451.png",
+    ".omx/private/acceptance-fixes/clients/manual-c1-final02/results/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/web-accepted-zh-Hans-wide.png",
+    ".omx/private/acceptance-fixes/clients/manual-c1-final02/results/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/web-accepted-zh-Hans-narrow.png",
+    ".omx/private/acceptance-fixes/clients/manual-c1-final03/results/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/desktop-accepted-zh-Hans-wide.png",
+    ".omx/private/acceptance-fixes/clients/manual-c1-final03/results/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/desktop-accepted-zh-Hans-narrow.png"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "argv": [
+    "/bin/bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^(TestFetchGitHubTreeErrorDiagnostics|TestFetchFromSkillsShForbiddenDoesNotAssumeRateLimit|TestFetchFromSkillsSh_TreeFetchFailureReturnsRetryableError|TestFetchFromGitHub_FallsBackOnAPIBlocked|TestFetchFromGitHub_SendsAuthHeaderWhenTokenSet)$",
+    "./internal/handler"
+  ],
+  "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01/server",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/security-source-green01",
+  "exit": 0,
+  "started_unix": 1795601007.6501288,
+  "ended_unix": 1795601036.046788,
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_changes": [],
+  "stdout_sha256": "c452cb746902524573a9764d17b176b8e7e08e08cf826a5ec2c3c0f7f3ffa273",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "environment_keys": [
+    "DATABASE_URL",
+    "GOCACHE",
+    "GOFLAGS",
+    "GOMAXPROCS",
+    "GOMODCACHE",
+    "GOPATH",
+    "GOTELEMETRY",
+    "GOTMPDIR",
+    "GOTOOLCHAIN",
+    "HOME",
+    "JWT_SECRET",
+    "LANG",
+    "PATH",
+    "TMPDIR"
+  ],
+  "environment_sha256": "33280590c18516c90a70aad1d956b7d6be01cbb0002111f402a2aa89526854a8",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/security-diagnostics-green/home",
+  "tmpdir": "/private/tmp/acceptance-fixes-4b9d3494a2/security-diagnostics-green/tmp",
+  "config_keys_not_inherited": true
+}

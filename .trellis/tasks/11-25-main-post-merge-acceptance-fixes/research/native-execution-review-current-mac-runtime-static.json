@@ -1,0 +1,14 @@
+{
+  "reviewed_at": "2026-11-25T13:13:07.652174+00:00",
+  "static_code_accepted": true,
+  "execution_cleared": false,
+  "script_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_current_mac.py",
+  "script_sha256": "b96902703a71ce499371cf0e57cb63488359fa4ab0c7509548802eb0d11c87d0",
+  "closed_findings": {
+    "M1": "Success predicate explicitly requires no log_close_errors.",
+    "M2": "Host daemon copied from bin-current/daemon-test into state/bin/daemon-test with hash equality; fixture receives that per-run path and existing process_audit(state/) covers it."
+  },
+  "current_binding": "Source-current-postpackage,current signed package,current API/provider,and identical compiled-config Web launcher selected. Original480s Main journey unchanged.",
+  "pending": "Exact runtime request with signed package/output,source/tool/config/binary hashes and dedicated migrated Mac DB; only final binding review remains unless code changes.",
+  "tests": "not_run_read_only_review"
+}

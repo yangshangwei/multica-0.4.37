@@ -1,0 +1,15 @@
+{
+  "result": "DIAGNOSTIC_PASS",
+  "execution": "actual pinned old CLI and actual Docker policy; synthetic409, no productAPI",
+  "relay_seconds": 0.6384948329941835,
+  "staging_seconds": 0.8141102490044432,
+  "version_seconds": 1.3172894999952405,
+  "cleanup_status": "pass",
+  "interpretation": "No measured evidence of per-operation staging near original24s/operation budget. Keep fresh runtime+volume peroperation; do not infer historical rootcause. Fullten-operation run pending independent review.",
+  "inputs": {
+    "review_request": "7abe85ffe2a1fe6f47a5f66fc8b0e2d109448490da7ec196eddae7a2217d3ab0",
+    "review": "3a4a95b1004b0cf4fc7fa1508545b72993d34693c81746c90d4984962bf1df2d",
+    "relay_build": "a03e8d74b71a0044f24ccfdb600209fce14e9bd9a47e139672661527ea839331"
+  },
+  "history": "Original240s timeout after9 starts and cleanupFAIL remain unchanged."
+}

@@ -1,0 +1,295 @@
+{
+  "base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "branch": "codex/main-post-merge-acceptance-fixes",
+  "committed": false,
+  "files": [
+    {
+      "path": ".trellis/spec/core/frontend/global-scope-navigation.md",
+      "sha256": "28fac55bef5f1c824dbf4477f0c492daeec41d3a7e1171c5b3d5bd7b7c72c64b",
+      "bytes": 30590,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-host-execution.md",
+      "sha256": "c631d0e8d8bc7f57426c9c5955e025b61fceab8383cbbada39f545b635c980ea",
+      "bytes": 44953,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/security-boundaries.md",
+      "sha256": "48aa29b5337286e6856361a56d28ae25713f88206e5b8ce55c1a54e4f647ebea",
+      "bytes": 23596,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/verification-environment.md",
+      "sha256": "6db2395612bf324a42d8c1843e857647c5339006304d0848af8a19c1699592f7",
+      "bytes": 21673,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-20-comment-admin-human-authority/check.jsonl",
+      "sha256": "ec145174c1cf3a609603d3ac11ad50a7fd1575738174018c70d9ba3d363ab3c4",
+      "bytes": 786,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-20-comment-admin-human-authority/design.md",
+      "sha256": "691e32d5574f7c7a6922db8cfeff07c36f73af44b2a262647d39368aa018f0ba",
+      "bytes": 6209,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-20-comment-admin-human-authority/implement.jsonl",
+      "sha256": "ec145174c1cf3a609603d3ac11ad50a7fd1575738174018c70d9ba3d363ab3c4",
+      "bytes": 786,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-20-comment-admin-human-authority/implement.md",
+      "sha256": "d4047176802190ab68f6cf98a1c218cd91bff315e5a6ad0518f7c7641507cc5a",
+      "bytes": 2167,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-20-comment-admin-human-authority/prd.md",
+      "sha256": "039ac00ebcb592c74950527316f1fdc65bda7ce44da4350f4afab8fa8c420297",
+      "bytes": 3886,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-20-comment-admin-human-authority/task.json",
+      "sha256": "d6d823c43f4d41a213126a39c3b17ccd35e3cfba200f26d066a59bae242b313f",
+      "bytes": 1259,
+      "mode": "0o600"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/components/desktop-layout.tsx",
+      "sha256": "5b9ba54c8f6f18df483011b3ccdfc0630c05903400052d26fa0277ae398b21e6",
+      "bytes": 16042,
+      "mode": "0o755"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/components/desktop-layout.workspace-gate.test.tsx",
+      "sha256": "a5c1bc10f9e38f6560d95c96045667ec69f91ffe5b5d55754a706b2f6e0eb038",
+      "bytes": 12836,
+      "mode": "0o755"
+    },
+    {
+      "path": "apps/web/platform/scope-shell.test.tsx",
+      "sha256": "82291761d2b811929355a4bf63cdbe046cd8f9d6eb86eba55e6a4f6d3289a4d8",
+      "bytes": 10899,
+      "mode": "0o644"
+    },
+    {
+      "path": "apps/web/platform/scope-shell.tsx",
+      "sha256": "45fc762edb064c3defac8ce24a6121a155762725c44dc20477b29cd7e00cb239",
+      "bytes": 5067,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/admin-resource-publishing.spec.ts",
+      "sha256": "d16e4b6caa1cdc919eb0750a23f709453a9f31304003d82a99c89d79080cbe97",
+      "bytes": 30467,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/collaboration-detail-journey.spec.ts",
+      "sha256": "e6fc57b4ffca18b930e523588416faca6468c35a4ee92f16416e4abb96717f67",
+      "bytes": 32451,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/collaboration-installed-clients.spec.ts",
+      "sha256": "02b235aeb88de2f9af6f6d1aae001ecb4da9606554867e10e662bb9ff7c1a5af",
+      "bytes": 12077,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-detail-journey.ts",
+      "sha256": "345cb6348a46afd9739dc8dbf182ca712dcaaad60ca5045b4224eb681cc96b51",
+      "bytes": 55132,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "bfb9d552cafcddfaa9914511513030bc1ffc0a77d4da25f8a27afc0b1c57f760",
+      "bytes": 60691,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-clients.node-test.mjs",
+      "sha256": "e8b8ea5a920aaa5cf41a953deb7f30b133934c7c52258e8120d79eab022ffc59",
+      "bytes": 3613,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-clients.ts",
+      "sha256": "c456e3a89ebf1a9b0d46555cb86a26811ca1fb61b2439e00bb72ae2dce43e509",
+      "bytes": 10191,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-main.mjs",
+      "sha256": "1dfaa8d95e4b4ddf3d5758b647a34595feb6b7be8cf51674fd05cffd56480d68",
+      "bytes": 47252,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-pay-creation.ts",
+      "sha256": "73af2c30ccaddcb28db99bc2d142249e49f4c744484568ea1426105e70841c3a",
+      "bytes": 33296,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "sha256": "132ce3e63b21bfe706b32b2014a867c50daa095e8a1c946b0883e8526be90faf",
+      "bytes": 77821,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/inbox-snooze.ts",
+      "sha256": "85e23e821291da9b00b0a2b35048bf8a2c08b4a0f8f08dd52539c6d28fb30516",
+      "bytes": 33709,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/observed-request-lifecycle.ts",
+      "sha256": "856b8a9a06de147790dee346567d56f3a6902b9ed0ab5619280ab6b8a93b10de",
+      "bytes": 1369,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/inbox-snooze.spec.ts",
+      "sha256": "4d8ccc6c539a41fe549f3682a17b128a269a60e8106f36638c1caa3e0615d217",
+      "bytes": 39735,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/test/observed-request-lifecycle.node-test.mjs",
+      "sha256": "296452d99c64949866ec3e3779ed2aa442cc9fae8be5adb1e1c921a31608f705",
+      "bytes": 3541,
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/views/layout/app-sidebar.test.tsx",
+      "sha256": "cec1c31887f39bd27eb90b2e25ea2c23fe8a8b27b5381918569dbc3af62784e9",
+      "bytes": 68379,
+      "mode": "0o755"
+    },
+    {
+      "path": "packages/views/layout/app-sidebar.tsx",
+      "sha256": "0c12d3fd0dcef4bb119875e3b1a0d0f538d6304c718adcf7359a75ca599ae36e",
+      "bytes": 63210,
+      "mode": "0o755"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "sha256": "25451ac93f53865696ed640ccd14eb8f0a8c1ce5b5c1aa38f4bc50422834a2d6",
+      "bytes": 93550,
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "sha256": "24a1c4be9b8fa07e24f1accbc9c1d563d5c7d32efc904e0e024fad08a6e2688b",
+      "bytes": 87757,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/cmd/server/comment_authority_integration_test.go",
+      "sha256": "ef2993ba3ee5febe28cc2c8fcd73713df85589c4e6d1c94a69ed199a12a13ee2",
+      "bytes": 16889,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/cmd/server/comment_authority_spoof_test.go",
+      "sha256": "a7a75e2477b58e8f04ba550af9e1a8bed034e11d5e0ac8912c9266d1ec344209",
+      "bytes": 8200,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/go.mod",
+      "sha256": "bc194d10f4b4ef93978ea796372ea95cac4e6a46c3629860634e00d984f3f4c6",
+      "bytes": 3617,
+      "mode": "0o755"
+    },
+    {
+      "path": "server/go.sum",
+      "sha256": "40702c08bdf859c563bdae0709e75e05b4381de72ed657a87da583a9586fd8b0",
+      "bytes": 18985,
+      "mode": "0o755"
+    },
+    {
+      "path": "server/internal/daemon/collaboration.go",
+      "sha256": "ae9baeec447ab099c98b433879898e107b27008434ed8a6932f08a9d00cc7138",
+      "bytes": 15548,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_boundary_test.go",
+      "sha256": "c78adbe2cf57c0fc086bb46f89ef55a2069b892a7b790a2f9d957738d8725a3c",
+      "bytes": 11060,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_test.go",
+      "sha256": "ebfbfa126b7a56c47d64f8b59cdeaa2287d2d7b2b56d4e44d00fdbd3912fe4a9",
+      "bytes": 15852,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller.go",
+      "sha256": "a5fe8148d9b889b175c0473e0b2cb4d4dd8364c822d5ccc3603e98131a7d44b9",
+      "bytes": 15180,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller_test.go",
+      "sha256": "c8734ff1c21351e8dd82bd206ee214b0a2706175a090333a187bd4c6efe5fd4f",
+      "bytes": 3898,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/handler/autopilot_mention_authority_test.go",
+      "sha256": "17695c44af6542d78a53c0e231a8d18d0c59d9f0f2632e078c2933172c03f28c",
+      "bytes": 31193,
+      "mode": "0o755"
+    },
+    {
+      "path": "server/internal/handler/comment.go",
+      "sha256": "5930a43d3001a5755b64fe00ba7f4aeb8b67b7ea61f1a197ba69d15fd47f9ee8",
+      "bytes": 164417,
+      "mode": "0o755"
+    },
+    {
+      "path": "server/internal/handler/comment_authority_test.go",
+      "sha256": "0f339da42c8d6881819772fc31b6aabac11a3473bb53633cd2b0445130440242",
+      "bytes": 5303,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/handler/skill.go",
+      "sha256": "1fa125efadfaabce7ce98b2281cec4540183d4dfd764babfbecb189ab53c0233",
+      "bytes": 102254,
+      "mode": "0o755"
+    },
+    {
+      "path": "server/internal/handler/skill_github_error_test.go",
+      "sha256": "b2a42acc1ff6ca15e975ceae5ef0923e864dbafec8c9dbeeae6f264cea2d3a4c",
+      "bytes": 3196,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "sha256": "4672524ae3e708e2c5cf3bb8d55a3bae5668fce84eab82788cbd3d1a8932bb48",
+      "bytes": 30297,
+      "mode": "0o755"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "sha256": "834d24795ecfcd2b912fd241a6c19619807172591ce2f72baa7a29531933ffd7",
+      "bytes": 70457,
+      "mode": "0o755"
+    }
+  ]
+}

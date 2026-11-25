@@ -1,0 +1,76 @@
+{
+  "commands": [
+    {
+      "command": "views Vitest app-sidebar.test.tsx",
+      "exit": 0,
+      "passed": 79,
+      "log": "c1-views02.log"
+    },
+    {
+      "command": "Web Vitest scope-shell/navigation/account-shell",
+      "exit": 0,
+      "passed": 45,
+      "log": "c1-web.log"
+    },
+    {
+      "command": "Desktop Vitest layout/workspace-gate/navigation",
+      "exit": 0,
+      "passed": 51,
+      "log": "c1-desktop.log"
+    },
+    {
+      "command": "views tsc --noEmit",
+      "exit": 0,
+      "log": "c1-views-typecheck02.log"
+    },
+    {
+      "command": "web tsc --noEmit",
+      "exit": 0,
+      "log": "c1-web-typecheck.log"
+    },
+    {
+      "command": "desktop tsc --noEmit -p tsconfig.web.json --composite false",
+      "exit": 0,
+      "log": "c1-desktop-typecheck.log"
+    },
+    {
+      "command": "views eslint app-sidebar.tsx/test",
+      "exit": 0,
+      "log": "c1-views-lint.log"
+    },
+    {
+      "command": "web eslint scope-shell.tsx/test",
+      "exit": 0,
+      "log": "c1-web-lint02.log"
+    },
+    {
+      "command": "desktop eslint layout.tsx/workspace-gate.test.tsx",
+      "exit": 0,
+      "log": "c1-desktop-lint02.log"
+    }
+  ],
+  "review_followup": {
+    "web_tests": {
+      "passed": 46,
+      "exit": 0,
+      "log": "c1-web02.log"
+    },
+    "shared_tests": {
+      "passed": 88,
+      "exit": 0,
+      "log": "c1-views-final.log"
+    },
+    "web_typecheck": {
+      "exit": 0,
+      "log": "c1-web-typecheck02.log"
+    },
+    "web_lint": {
+      "exit": 0,
+      "log": "c1-web-lint03.log"
+    },
+    "e2e_typecheck": {
+      "exit": 0,
+      "log": "c1-e2e-typecheck.log"
+    }
+  }
+}

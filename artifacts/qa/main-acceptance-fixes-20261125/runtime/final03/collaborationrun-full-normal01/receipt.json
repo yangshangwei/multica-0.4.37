@@ -1,0 +1,28 @@
+{
+  "command": [
+    "bash",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen03/source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "./internal/daemon/collaborationrun"
+  ],
+  "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen03/source/server",
+  "source_manifest_sha256": "86034a670e9fdbbcc6fef643780334ef5f495167254a210a27edd29e8e34ec54",
+  "tool_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "go_version": "go version go1.26.11 darwin/arm64",
+  "node_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+  "runner_sha256": "620dc714c6793ff634b37fc414d2ff3ae8b8b0510d18502d3d2e7c90106a67ef",
+  "started": 1795603190.7610219,
+  "config_sha256": "44ee2a4172e6089e33d04a5ad3251ea7a1abc14e56b2b30d7837ce1be2a97896",
+  "exit": 0,
+  "ended": 1795603234.3742652,
+  "stdout_sha256": "89653371a5c71ddcb4aa75cad28ce414f33870178d0b51186b9f427ffc388da9",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "tool_unchanged": true,
+  "runner_unchanged": true
+}

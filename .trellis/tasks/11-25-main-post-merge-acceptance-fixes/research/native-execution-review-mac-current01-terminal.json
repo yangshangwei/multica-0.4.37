@@ -1,0 +1,124 @@
+{
+  "reviewed_at": "2026-11-25T13:26:41.289641+00:00",
+  "receipt_sha256": "3bbbb5c6f7676cceba1f0eb4f34ff18118fe5daaf29a36a12d8a9a02f3d69655",
+  "functional_exit": 1,
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "descendant_cleanup": "pass",
+  "remaining_db_clients": 0,
+  "log_close_errors": [],
+  "protocol_cleanup": {
+    "status": "fail",
+    "error": "AssertionError",
+    "steps": [],
+    "default_before": "file:///Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+    "default_after": "file:///Applications/Multica.app/",
+    "added": [
+      [
+        "ai.multica.desktop",
+        "file:///Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/package-current-mac-signed02/mac-arm64/Multica.app/"
+      ]
+    ],
+    "removed": [
+      [
+        "com.github.Electron",
+        "file:///Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/.qa-worktrees/release-acceptance-20261123-222705/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-check-20261026/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-core-e2e-20261108/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-core-qa-20261108/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/mc-s1-agent-identity-20261113-01/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.artifacts/e2e-20261118-203130/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/core-20261121.kV2VvV/src/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/src/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-acceptance-current-20261026/collaboration-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source-password/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source-password/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/password-source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-e2e-build-1118-203130-s60orm/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/multica-e2e-fix-20261119-002358-fc3f5ec4/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ],
+      [
+        "com.github.Electron",
+        "file:///Volumes/artisan/code/2026/qa-private-collaboration-20261109-bff677f2/source/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+      ]
+    ]
+  },
+  "interpretation": "Restore helper refused because captured pre-existing registrations disappeared; steps=[] shows it performed no unregister/default action. Current own signed app remains added. Cause/timing of disappearance and default change is not established by this receipt; parent must reconcile concurrent protocol work before any further restoration. Do not reconstruct unrelated historical entries or claim exact cleanup pass.",
+  "functional_scope": "Parent reports actual second Host visit session_hash mismatch before Stop/restart/Resume; full journey remains FAIL. This note classifies retained terminal cleanup and identity evidence only.",
+  "reviewer_system_mutations": false
+}

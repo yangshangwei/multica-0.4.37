@@ -1,0 +1,178 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "./internal/handler",
+    "-run",
+    "^Test(CommentMutationActorVerifiedIdentity|CommentManagementMachineHandlerBackstop|UpdateComment_AutopilotAuthorityReStampedToEditingTask)$"
+  ],
+  "started_at": "2026-11-25T12:00:50.547670+00:00",
+  "database": "fix_comment_principal_handler01",
+  "allocation": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/comment_principal_handler01",
+  "execution_env_sha256": "ea67ad2f6bc8643a7c9f25bd3f128f31704b7d3f2088f069d209c9cacce89909",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-principal-handler-focused01/source",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-principal-handler-focused01/home",
+  "tmp": "/private/tmp/acceptance-fixes-4b9d3494a2/comment-principal-handler-focused01/tmp",
+  "base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "manifest_sha256": "a49eaf15c1e7944323ba51829612ea4677953f05ca30cab7407ffe558432a9f0",
+  "harness_sha256": "286ec619adedf0daad77034ef5b5bd0f4338917ba8f31dd5ab1c61b5bc93f1c5",
+  "toolchain": "go version go1.26.11 darwin/arm64",
+  "redis_allocation": null,
+  "redis_index": null,
+  "resource_probe_sha256": "588469ae6be3bed34aa84a62023f39dabfb023c0e5024329608567e50264bd51",
+  "go_binary": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+  "go_binary_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "exit": 0,
+  "finished_at": "2026-11-25T12:01:29.084273+00:00",
+  "counts": {
+    "pass": 31
+  },
+  "inventory": [
+    {
+      "test": "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask/same-issue_edit_keeps_creator_authority_and_triggers",
+      "action": "pass"
+    },
+    {
+      "test": "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask/cross-issue_edit_re-stamps_source_task_to_the_editing_task_and_fails_closed",
+      "action": "pass"
+    },
+    {
+      "test": "TestUpdateComment_AutopilotAuthorityReStampedToEditingTask",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/human_ignores_agent_hints",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/PAT_ignores_agent_hints",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/cloud_retains_member_identity",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/verified_task_retains_agent",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/task_without_verified_binding",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/stamped_task_without_context",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/binding_for_other_user",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/binding_for_other_workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/binding_lacks_agent",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity/task_binding_contradicts_human_credential",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentMutationActorVerifiedIdentity",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/owner/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/owner/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/owner/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/owner",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/admin/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/admin/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/admin/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/task_token/admin",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/owner/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/owner/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/owner/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/owner",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/admin/body",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/admin/attachments",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/admin/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop/cloud_pat/admin",
+      "action": "pass"
+    },
+    {
+      "test": "TestCommentManagementMachineHandlerBackstop",
+      "action": "pass"
+    }
+  ],
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "after_resources": {
+    "cluster_connections": 7,
+    "comments": 0,
+    "database": "fix_comment_principal_handler01",
+    "database_connections": 1,
+    "users": 0,
+    "workspaces": 0
+  },
+  "go_binary_unchanged": true
+}

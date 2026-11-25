@@ -312,7 +312,7 @@ export function journeyCopy(locale: DetailJourneyLocale) {
     ai: read("execution", "title"), external: read("detail", "external"), handler: read("detail", "handler"),
     context: read("detail", "context"), permissionContext: read("participants", "permissionContext"),
     navigation: textField(object(layout.global_navigation), "label"), workspaces: textField(object(layout.sidebar), "workspaces_label"),
-    collaboration: read("page", "title"), participants: read("participants", "title"), refresh: read("page", "refresh"),
+    collaboration: read("page", "title"), participating: read("page", "participating"), resume: read("page", "resume"), participants: read("participants", "title"), refresh: read("page", "refresh"),
   };
 }
 
@@ -453,7 +453,7 @@ export async function refreshJourneyIssueInApp(session: DetailJourneySession, id
   } finally { page.off("request", observe); }
 }
 
-type JourneyAction = Exclude<CollaborationStatusAction, "cancel">;
+type JourneyAction = Exclude<CollaborationStatusAction, "cancel" | "repair_information">;
 export interface JourneyActionForm {
   session: DetailJourneySession;
   baseline: CollaborationIssue;
@@ -714,6 +714,8 @@ export async function switchJourneyLocale(session: DetailJourneySession, actor: 
   // Wait for Web's comment focus before capture chooses its own scroll position.
   if (destination?.commentId) await expect(session.page.locator(`[id="comment-${destination.commentId}"]`)).toBeFocused();
   await expect(session.page.getByRole("heading", { name: journeyCopy(locale).delivery, exact: true })).toBeVisible();
+  await expect(session.page.locator("[data-comment-total]")).toHaveCount(1);
+  await session.page.evaluate(() => new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done()))));
 }
 
 export interface JourneyCaptureTarget {
@@ -774,6 +776,14 @@ export async function captureJourney(session: DetailJourneySession, info: TestIn
     return { ...viewport, target: { description: target.description, anchors,
       bounds: { left, top, right, bottom, width: right - left, height: bottom - top } } };
   };
+  let previousGeometry = "";
+  let stableFrames = 0;
+  await expect.poll(async () => {
+    const current = JSON.stringify(await readGeometry());
+    stableFrames = current === previousGeometry ? stableFrames + 1 : 0;
+    previousGeometry = current;
+    return stableFrames;
+  }, { message: `Settled layout before capture: ${target.description}` }).toBeGreaterThanOrEqual(2);
   const initial = await readGeometry();
   const margin = 16;
   expect(initial.target.bounds.height, target.description).toBeLessThanOrEqual(initial.contentViewport.height - margin * 2);
@@ -809,7 +819,7 @@ export async function captureJourney(session: DetailJourneySession, info: TestIn
     targetContainedBefore: true, targetContainedAfter: true };
 }
 
-export async function assertJourneyScopeRestoration(session: DetailJourneySession, id: string, title: string) {
+export async function assertJourneyScopeRestoration(session: DetailJourneySession, id: string, title: string, workspaceName: string) {
   const copy = journeyCopy(session.locale);
   const detail = session.page.locator('[data-tab-scroll-root="account-detail"]');
   await expect.poll(() => detail.evaluate((element) => element.scrollHeight - element.clientHeight)).toBeGreaterThan(700);
@@ -817,11 +827,13 @@ export async function assertJourneyScopeRestoration(session: DetailJourneySessio
   await session.page.evaluate(() => new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done()))));
   const saved = await detail.evaluate((element) => element.scrollTop);
   const nav = session.page.getByRole("navigation", { name: copy.navigation, exact: true });
-  await nav.getByRole("button", { name: copy.workspaces, exact: true }).click();
-  await expect(nav.getByRole("button", { name: copy.workspaces, exact: true })).toHaveAttribute("aria-current", "page");
+  await nav.getByRole("button", { name: workspaceName, exact: true }).click();
+  if (session.native) await expect.poll(() => session.page.evaluate(() =>
+    JSON.parse(localStorage.getItem("multica_tabs") ?? "null")?.state?.activeScope)).toBe("workspace");
+  else await expect(session.page).not.toHaveURL(/\/account(?:\?|$)/);
   await expect(session.page.getByRole("heading", { name: title, exact: true })).toBeVisible();
-  await nav.getByRole("button", { name: copy.collaboration, exact: true }).click();
-  await expect(nav.getByRole("button", { name: copy.collaboration, exact: true })).toHaveAttribute("aria-current", "page");
+  await nav.getByRole("button", { name: copy.resume, exact: true }).click();
+  await expect(nav.getByRole("link", { name: copy.participating, exact: true })).toHaveAttribute("aria-current", "location");
   await expect(session.page.getByRole("heading", { name: title, exact: true })).toBeVisible();
   await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(saved);
   if (session.native) {
@@ -830,7 +842,7 @@ export async function assertJourneyScopeRestoration(session: DetailJourneySessio
       return state?.accountGroup?.tabs.length;
     })).toBe(1);
   } else expect(new URL(session.page.url()).searchParams.get("issue")).toBe(id);
-  return { issue_id: id, saved, restored: await detail.evaluate((element) => element.scrollTop), used: "application scope switches" };
+  return { issue_id: id, saved, restored: await detail.evaluate((element) => element.scrollTop), used: "application scope resume buttons" };
 }
 
 export async function nativeJourneyEvidence(session: DetailJourneySession) {

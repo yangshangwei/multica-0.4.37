@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+    "build",
+    "-o",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/bin/api",
+    "./cmd/server"
+  ],
+  "cwd": "/private/tmp/acceptance-fixes-4b9d3494a2/runtime-frozen02/source/server",
+  "source_manifest_sha256": "692a51bd1549039f67c139b70f2135d721eef8d80152c1871f5c563239fc4db6",
+  "tool_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+  "node_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+  "runner_sha256": "2ca1962461669fd0e59e14cfde2c326b801305b75b1d19b58433913d674baea3",
+  "started": 1795602203.7631261,
+  "config_sha256": "49265e5d4343a0b90af0593b54153612ef3d0ea113a1edab1c85b652b197abda",
+  "exit": 0,
+  "ended": 1795602213.874757,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "tool_unchanged": true,
+  "runner_unchanged": true
+}

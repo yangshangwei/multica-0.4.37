@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -1271,7 +1272,7 @@ func fetchFromSkillsSh(ctx context.Context, httpClient *http.Client, rawURL stri
 		// with a retryable error instead so nothing incorrect is saved.
 		slog.Warn("skills.sh import: repository tree fetch failed",
 			"owner", owner, "repo", repo, "error", treeErr)
-		return nil, fmt.Errorf("%w: could not read the %s/%s repository tree (usually GitHub API rate limiting — set GITHUB_TOKEN on the server or retry): %v",
+		return nil, fmt.Errorf("%w: could not read the %s/%s repository tree: %v",
 			errImportSourceUnavailable, owner, repo, treeErr)
 	}
 
@@ -1406,7 +1407,7 @@ func fetchGitHubTree(ctx context.Context, httpClient *http.Client, owner, repo, 
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, false, fmt.Errorf("HTTP %d", resp.StatusCode)
+		return nil, false, gitHubAPIResponseError(resp)
 	}
 	var tree githubTreeResponse
 	if err := json.NewDecoder(resp.Body).Decode(&tree); err != nil {
@@ -1864,6 +1865,28 @@ func skillNameHints(skillName string) []string {
 // genuinely does not exist. Resolvers treat this as "indeterminate" and may
 // fall back to the optimistic URL split rather than aborting the import.
 var errGitHubAPIBlocked = errors.New("github API blocked (rate limit or auth)")
+
+func gitHubAPIResponseError(resp *http.Response) error {
+	reason := "request failed"
+	switch resp.StatusCode {
+	case http.StatusUnauthorized:
+		reason = "authentication rejected"
+	case http.StatusForbidden:
+		reason = "access forbidden; reason unconfirmed"
+		if strings.TrimSpace(resp.Header.Get("X-RateLimit-Remaining")) == "0" {
+			reason = "primary rate limit exceeded"
+		} else if retryAfter := strings.TrimSpace(resp.Header.Get("Retry-After")); retryAfter != "" {
+			_, secondsErr := strconv.ParseUint(retryAfter, 10, 64)
+			_, dateErr := http.ParseTime(retryAfter)
+			if secondsErr == nil || dateErr == nil {
+				reason = "request throttled"
+			}
+		}
+	case http.StatusTooManyRequests:
+		reason = "rate limit exceeded"
+	}
+	return fmt.Errorf("GitHub API HTTP %d %s (%s)", resp.StatusCode, http.StatusText(resp.StatusCode), reason)
+}
 
 // doGitHubAPIGet performs a GET against an api.github.com URL, attaching the
 // GITHUB_TOKEN bearer header when the env var is set. Unauthenticated GitHub

@@ -1,0 +1,22 @@
+{
+  "package": "github.com/multica-ai/multica/server/pkg/agent",
+  "mode": "race",
+  "exit": 0,
+  "counts": {
+    "pass": 1997,
+    "skip": 4
+  },
+  "failures": [],
+  "skipped": [
+    "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+    "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+    "TestPiExecuteAttachesStdinPipe",
+    "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+  ],
+  "unfinished": [],
+  "parse_errors": 0,
+  "remaining_database_clients": 0,
+  "stdout_sha256": "7db449f00e6d0bcdb12658f3d01c82918a5055030a41ee6593249351344efb3c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "ended": 1795605554.9279559
+}

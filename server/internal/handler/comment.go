@@ -27,6 +27,23 @@ import (
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
+func commentMutationActor(r *http.Request, userID, workspaceID string) (string, string, bool) {
+	principal, hasPrincipal := auth.AuthenticatedPrincipalFromContext(r.Context())
+	if userID == "" || (hasPrincipal && principal.UserID != userID) {
+		return "", "", false
+	}
+	if token, verified := auth.VerifiedTaskTokenFromContext(r.Context()); verified {
+		if !token.AgentID.Valid || !token.TaskID.Valid || uuidToString(token.UserID) != userID || uuidToString(token.WorkspaceID) != workspaceID || (hasPrincipal && principal.Kind != auth.CredentialTask) {
+			return "", "", false
+		}
+		return "agent", uuidToString(token.AgentID), true
+	}
+	if r.Header.Get("X-Actor-Source") == "task_token" || (hasPrincipal && principal.Kind == auth.CredentialTask) {
+		return "", "", false
+	}
+	return "member", userID, true
+}
+
 type CommentResponse struct {
 	ID             string  `json:"id"`
 	IssueID        string  `json:"issue_id"`
@@ -3328,9 +3345,13 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	actorType, actorID := h.resolveActor(r, userID, workspaceID)
+	actorType, actorID, actorOK := commentMutationActor(r, userID, workspaceID)
+	if !actorOK {
+		writeError(w, http.StatusForbidden, "comment mutation authority unavailable")
+		return
+	}
 	isAuthor := existing.AuthorType == actorType && uuidToString(existing.AuthorID) == actorID
-	isAdmin := roleAllowed(member.Role, "owner", "admin")
+	isAdmin := !isMachineCredentialActor(r) && roleAllowed(member.Role, "owner", "admin")
 	if !isAuthor && !isAdmin {
 		writeError(w, http.StatusForbidden, "only comment author or admin can edit")
 		return
@@ -3405,7 +3426,7 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 		triggerIssue = &issue
 		// A content edit is a NEW action, so its delegation lineage must key on THIS
 		// edit. Only the AGENT author re-editing its OWN comment carries the lineage
-		// forward (commentSourceTaskID re-stamps the current editing task) — so
+		// forward (the verified token identifies the current editing task) — so
 		// preview, save, and the deferred completion-reconcile all resolve the
 		// authority from this one action. Any OTHER editor — a workspace owner/admin
 		// editing an AGENT's comment, or a member editing their own — CLEARS the
@@ -3414,7 +3435,8 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 		// over the comment, not invoke rights over the author's private agents (Elon
 		// must-fix, round 3).
 		if actorType == "agent" && isAuthor {
-			sourceTaskID = h.commentSourceTaskID(r)
+			token, _ := auth.VerifiedTaskTokenFromContext(r.Context())
+			sourceTaskID = token.TaskID
 		} else {
 			sourceTaskID = pgtype.UUID{}
 		}
@@ -3589,9 +3611,13 @@ func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	actorType, actorID := h.resolveActor(r, userID, workspaceID)
+	actorType, actorID, actorOK := commentMutationActor(r, userID, workspaceID)
+	if !actorOK {
+		writeError(w, http.StatusForbidden, "comment mutation authority unavailable")
+		return
+	}
 	isAuthor := comment.AuthorType == actorType && uuidToString(comment.AuthorID) == actorID
-	isAdmin := roleAllowed(member.Role, "owner", "admin")
+	isAdmin := !isMachineCredentialActor(r) && roleAllowed(member.Role, "owner", "admin")
 	if !isAuthor && !isAdmin {
 		writeError(w, http.StatusForbidden, "only comment author or admin can delete")
 		return

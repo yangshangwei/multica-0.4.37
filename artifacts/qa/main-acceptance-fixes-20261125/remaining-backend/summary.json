@@ -1,0 +1,2673 @@
+{
+  "results": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 11
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "79eca65de0aa061a8dc31729284a6d6f8ce399ea8538ec54e0a083774043204d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603840.137114
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "2fd1fd712a3fdd93582255bfe99b9a5a01939c6dba7c9dd721b82ba4f00df274",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603844.004386
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a822208876397a9c127182f459add3ebac59583d3a95941293396e9699b7b4f0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603845.3768609
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 169,
+        "skip": 1
+      },
+      "failures": [],
+      "skipped": [
+        "TestCommentContentBigramRequirementMatchesRealPGBigm"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "48b4750306bbea4d6c5d7a9bd16b8a65bc3eba47dfa1886c5d5f06889346a581",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603881.904304
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 2171
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "0da356d8a4d2805acbc2cfdf134a12ff10bf1b84f24fa7461fab19bfd24be285",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603916.140727
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "37d7ef6ecd71324382eae4ca3407f24d026f42764545bc280899be900e1ff130",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603917.3398662
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "102147608a21792dd5e294906ef00db83a3a81a81c33c483e3d18c19562fc907",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603917.979796
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "419305b0a16723b479b636bbde1a0d490e44f02112e88bc838eb566929f8a338",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603929.279118
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/artifact",
+      "mode": "normal",
+      "exit": 1,
+      "counts": {
+        "fail": 35,
+        "pass": 43
+      },
+      "failures": [
+        "TestArtifactPackageDeterministic",
+        "TestArtifactPackageInputBoundaries/leaf_symlink",
+        "TestArtifactPackageInputBoundaries/parent_symlink",
+        "TestArtifactPackageInputBoundaries/hardlink",
+        "TestArtifactPackageInputBoundaries/fifo",
+        "TestArtifactPackageInputBoundaries/input_changed",
+        "TestArtifactPackageInputBoundaries/oversize",
+        "TestArtifactPackageInputBoundaries/writable_file",
+        "TestArtifactPackageInputBoundaries/writable_directory",
+        "TestArtifactPackageInputBoundaries/manifest_changed",
+        "TestArtifactPackageInputBoundaries/manifest_unknown",
+        "TestArtifactPackageInputBoundaries/manifest_missing_generation",
+        "TestArtifactPackageInputBoundaries",
+        "TestArtifactPackageMutationDuringCapture",
+        "TestArtifactPackageRootAndOutputBoundary/stage_replaced",
+        "TestArtifactPackageRootAndOutputBoundary/output_replaced",
+        "TestArtifactPackageRootAndOutputBoundary/output_symlink",
+        "TestArtifactPackageRootAndOutputBoundary/output_collision",
+        "TestArtifactPackageRootAndOutputBoundary/stage_symlink",
+        "TestArtifactPackageRootAndOutputBoundary/nested_output",
+        "TestArtifactPackageRootAndOutputBoundary/missing_config",
+        "TestArtifactPackageRootAndOutputBoundary",
+        "TestArtifactPackageIOUncertainty/write",
+        "TestArtifactPackageIOUncertainty/cleanup",
+        "TestArtifactPackageIOUncertainty/sync_partial",
+        "TestArtifactPackageIOUncertainty/publish",
+        "TestArtifactPackageIOUncertainty/sync_final",
+        "TestArtifactPackageIOUncertainty/panic",
+        "TestArtifactPackageIOUncertainty/deadline",
+        "TestArtifactPackageIOUncertainty",
+        "TestArtifactPackageFrozenBinding",
+        "TestArtifactPackageRejectsReplacedOutputWithSameBytes",
+        "TestArtifactPackageConcurrentOutputCreation",
+        "TestArtifactPackageParentReplacedWhileReading",
+        "TestArtifactPackageCleanupDoesNotDeleteReplacedPartial"
+      ],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "69a57a5d191b22fd364970c30e95693f90463d6f1f2d3841fbe6625051349ab6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603931.09565
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 31
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "0554c0922c914873ce7c2339dd31cbc8ab7c904434b3eda984bdae371dd54f51",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603932.435751
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 4
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "4328ff29d53cefd78262c259ad81d024ef3cd4dcd4c0a573accdc2766afb3f38",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603934.562552
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 116,
+        "skip": 1
+      },
+      "failures": [],
+      "skipped": [
+        "TestPasswordLimiterSharedAtomicAdmission"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1e76471241c1b628ac054341fa8259fcb2012b6ef152a43b5d374a2500fcdf1c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603936.990394
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/budget",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 112
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "33adf4f08a036a3ad1ccae254a56e2021f3aa1b598b457d057b66a5cab41daed",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603940.516163
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 56
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "f852ff848962a4733512309098ec602b2630d6643b61bf77d2789be7bd3431f3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603941.952072
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 3
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e8c4c1c43318d37c44a85b52f5b9f772ca97326bba7793315edf63f4b4f58c94",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603943.10567
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d1d42c3fc96adc0acef2f398375cb9e4ec120c0c8530d65bbbf5d06c70c07966",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603943.9960341
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "369a16732e3eb1d8e7bc0cf92fe8e112322038a7061d33e36cdb96e073c40f7c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603944.699253
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 375,
+        "skip": 1
+      },
+      "failures": [],
+      "skipped": [
+        "TestCLIConfig_UnknownFieldsArePreserved"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "60bfeaeb4951208245d40b600eab22b5ca19767d104dbefda5bf9288473bc85a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603948.944001
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 3
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "49067ecfa30cf7c85e5981e5ef4d2f46da73d70afe7a87bdff71148feb5b11e0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603950.340512
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 16
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "f123a2edbb4fc8443c9a6c43dee2f1d1f75e1f60762eb7239ef5f4e88d96c29c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795603953.4201002
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 1349
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1abb97a0f124f3f8f627f690701a8411ea5a848495a2a88724cca175651976c6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604017.143448
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "8dd81c9c7f91d2258bd3a22d8fd2a59585b9cb4a28b6d30bc677d2a8b72d5d0d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604020.104949
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 61
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "854f1f5934cd72072674897abfa90139c205428110ee33154c54fbdc705ae544",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604028.887889
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 30
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "095279699939514baf83657034205b5a5d88f20f11eb000ae59064b716de5379",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604033.586209
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 33
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7571a0f7466cc54d75d667387b78556d2205bfed005daa5b907c5f693955395c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604036.19809
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a04d0472eff8e96e556fb5c7c0bea6e84edefe108e59c1ba9be42706e13308fd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604036.751295
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 16
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "987be089abe3cfad7d36c7a0b4332ad2a5cb8e11479b48d3be1ef3d7733a7058",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604038.828577
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 33
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "3a0f72b65a8a59e417c50ad2608adf8372efb18856075393ab4717b0db0a9b0e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604040.249932
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a6b3d1c242918d83d2b32c85203c0e3e033255d5ed68a64507096ed421703654",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604041.22421
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "5ac3b7d34ff62ed6eb2306fd29b506fdb391eea11ce6016166187cee31c7b7fc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604042.199767
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 7
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e267491b0d2e5c150df52c6a4d73eb6b4dcf822163067e76a1fdb89fac99e9ed",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604043.55819
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/inboxstate",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 22
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "56de900b7ac8c256d3e485dcce5ae298b9eba0da0ae640dd1a0ceb323dd47c84",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604048.112224
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "95d9e4bda0c9455dc0de16a50219b053153cc930c6de4db1600a3815c0adc67f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604049.019559
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 22
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "9a770b4aa51a4c2feb276ce2470e148fc6392d8d52cb86a62e2adfe37ed08489",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604050.255208
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 211
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "68e5aa4e8353ff99b41ecdb8f6def1525c887f5379466c35c816e28422c8a429",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604060.8673348
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 42
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "500e228cc6ebbbf6ecf7b3cd6b98ee7774ccdf365108b15a463f8a66ad6c84fd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604063.440714
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 212
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d781c577175eed108411a3fd0c6e67dd234d86237c637c05834c17f9e52c0707",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604071.0889442
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 42
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "3725ab2bd79d59c983a4b7d35d3ab6eea62179361452dfc3de58f28a6eed443c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604073.7741618
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 426
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "9443ac6188f0ec2d41abd17884c6b34b2ee5be539c1ca117c11207640c35f549",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604081.097663
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 188
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "56dd855ee689e95541d1d7289382086d4e70609f5ec54bc5b341642ca3f01dfa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604085.859207
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 114
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "868f27b77d7557c2ba819c41b8a00c9d0fe40a81e26daf91d1d128cb90320e90",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604094.807195
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 15
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a4d99570c689a29b3cf390716bd6e81ec49c1e2e6f5860aa91091a3ce87a3fca",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604095.962131
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 616
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "adba99e3f49c0c7b2de2a1a829399ddc3a33bf5aa548c2cebc4a750cabcd271c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604152.3699598
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d44c65d233b192f1876bd02e4b0307cd5b7a6687d0570c103eb5dbec7029b9f8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604155.084973
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "0bb240805f587d863138f49db8fc37132c2e46698bf98624593ac7075b2d36f3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604156.2760909
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "587dc0f4a1175df7aaa0f9558e461c55b5b4662710ad5bf6956eede3850bc31e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604156.7509508
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 26
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "2660a65cc0932ccdbf529b21831b17e74d7c0b99acf1bc7dbc479f1d51dcc2b9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604157.9089642
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 122
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "5fe390ef7f461f29e973eb74b43c393365b8c8c5d032242ace4fe3599b4702c4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604159.378099
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "9f89bcfb33ec42086a27700eb33e92e66126a638b448fd9b0d1f72dced88d22b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604161.0827332
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 88
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "ccfbb1a8b38e5977b258e133e2c011a4697ddd6978589b20ee288f3b432c32e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604164.096426
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 138
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e9647d97f1031b72e608e98d16e089eff09b8cd6f8f991fc6f686ea8a8ae55b9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604166.5725849
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 578
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "9d60410b87b0632f0fe8f8621a8d11dbb42ca2cf76e825ca0ca4b279a14d7aac",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604205.218933
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a3a26ff36bad3a840d1c7e2008fbc1b9ad528fa4a30d08e3f592b1b584f94f10",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604206.230123
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 25
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1cfaa61eea5b2f11d95feaac57c136faa21fb03a2253bd37d09e003f7d85b5ee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604207.905278
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 87
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "6d33ac042d6e57148fb37ae9e204d12b3bf835aa2fac472f26dd554f3db963a3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604211.644277
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/reportsnapshot",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 28
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "ff5b48cc5f70aa6397049b82bbb89555fdc20825cb1039900f9746625080c869",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604213.063849
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "390de85c90e666910711f700ca2a99eada2385bca9bfea36496f149b95f5949c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604213.5026171
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 31
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "f5e2e36b978bd3f2596d5d751d6cac2adaac7628db529ff76fc1969d70b6ea4d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604219.981526
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 23
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "efc497f4270a6b9aaca3a6789e4be59ae686fb72a0a4a404b8e01b6861d946dc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604221.985007
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 10
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "8df963945f3c295a2785e888e5cc33cf1f099f76779245dd430aec3a633c0145",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604223.217757
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 66
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "5366890269836fc98192fc817a6b7778b82d4bfd61afd8365dd8c71d6cbf7ca2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604225.005077
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "mode": "normal",
+      "exit": 1,
+      "counts": {
+        "pass": 98,
+        "fail": 1
+      },
+      "failures": [
+        "TestLocalStorageUploadsAreWorldReadable"
+      ],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "0763114512e7b6d516d960b65873641095dc0c258ebc9ade27d54b8e7b024021",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604226.628117
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d0c6c7c202cf644d81517c381608e7b72a919f7826f6cb0c9ce397bc89a2ac4a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604252.29197
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 18
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "b43db28517e201eb20e048c5d8e521b6f47288b1a721f9e648399c90efdd432b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604254.9549298
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 15
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "ac37e8b5311669556e680fd8cacf1d84c7f8e9c120771ae0e185037df609d437",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604256.7347589
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 115
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e7eba41afdc5a33ed333629bbf552e2867f04dc217a2b244d64db1c2b67b319e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604258.413145
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 10
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a3de6ad4a13d2a7d284eff4f0d62b3bf0f7523bdb04423b5d025c042526d152a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604259.4157782
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 1997,
+        "skip": 4
+      },
+      "failures": [],
+      "skipped": [
+        "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+        "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "TestPiExecuteAttachesStdinPipe",
+        "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "69c9d7f761143164ec6aa8c21c4eb0cbc42721a81bb399436a35ec374dc12f74",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604531.633503
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 39
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e3c81dc6e218a6c53d4508110c2fccd663990018f460a0f51b2db921ada93517",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604534.560707
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 13
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "8665cf0ba3cdd5ef4d326f99f06300e54a46b790fea409460071053d8de28f1b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604537.174925
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 35
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "4c3b22a778d7cabd25c46ce318d019683156b5b8acefa6a50802c9027b05e53f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604538.881263
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 51
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "821f0d6826396dcf27926c7bd069af85c3e9ccc14d4b4b3fe8e16870db3ab737",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604539.953502
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 56
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "52bb036b488c8e98ea02023a17a20c5a75ec046787b2e35ebcb8cea04477c7f3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604543.4973419
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 99
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "07ba408f2be2bcaf64395c3eac01180896a32e845277abfdd4bdce213cb3f627",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604544.8781161
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 451
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7070df5fb920c8f207348ba3055f6067c3ce7ef1604b969610f326e5a1a40d43",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604546.570186
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 5
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "ae64f4a410866edf6183575218d1d5d2ab15a2c458e718a273c9e8eddc5da29f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604547.814765
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 77
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e76961c80eeacf9a6d64b46ab6dc1b20d2593082b432d1bbcfa3ae87386d5d20",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604550.118865
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d5c25ef54ce4c57497124ea886b5030f7087488ce019e87626265ac9b428532c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604551.3012311
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d155f36be667a782a14d705bf696e78076de86c9982871d80f345189729cbe11",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604552.46403
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "f61a46795675dadda7bd37630ce5263edd415687bda7140fdd7454fe0b5c85da",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604553.403491
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "mode": "normal",
+      "exit": 0,
+      "counts": {
+        "pass": 222
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "0d052c8f60aa3cc4bee62ce4c305350e86fc7a49f0582709018c7d1107169a5b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604554.524501
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 11
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "8ede8cc5aaaf0954c9b8da2fcb4eb05dbc97135536588b90fda84a2c162eae8d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604597.356388
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "97e8fd77a31d9bccee3f6d2647f9e205fe375d1c01c5951fa5b7d6137b6fbc16",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604602.475133
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "305de062f783ef4711f8a1d088f81d7037ad3614d68e4fe997fe5ca0e3f0dc88",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604603.2720718
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 169,
+        "skip": 1
+      },
+      "failures": [],
+      "skipped": [
+        "TestCommentContentBigramRequirementMatchesRealPGBigm"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "04aee6fea04364bfcaff32367c3c181acf59985175491faa13ac31cc7d1f15ce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604637.0812721
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 2171
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e7362e99836f55bf7bc01928c33a6befb7ff31c9436c063aee1d45d3a86087ed",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604712.9218402
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "17e018c02a01058f971645875d649e5da3c93d1d20d2965bb999c734f1af9db1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604715.243396
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "ecdadbbfa2e27a3d77645114687a9a1580dba7a0ed1594bdb996551c22d4ee8b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604716.13443
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "71780ba922874c1789f03a8bad74484c748012c3496c0e7426dace81530394ab",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604730.4646242
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/artifact",
+      "mode": "race",
+      "exit": 1,
+      "counts": {
+        "fail": 35,
+        "pass": 43
+      },
+      "failures": [
+        "TestArtifactPackageDeterministic",
+        "TestArtifactPackageInputBoundaries/leaf_symlink",
+        "TestArtifactPackageInputBoundaries/parent_symlink",
+        "TestArtifactPackageInputBoundaries/hardlink",
+        "TestArtifactPackageInputBoundaries/fifo",
+        "TestArtifactPackageInputBoundaries/input_changed",
+        "TestArtifactPackageInputBoundaries/oversize",
+        "TestArtifactPackageInputBoundaries/writable_file",
+        "TestArtifactPackageInputBoundaries/writable_directory",
+        "TestArtifactPackageInputBoundaries/manifest_changed",
+        "TestArtifactPackageInputBoundaries/manifest_unknown",
+        "TestArtifactPackageInputBoundaries/manifest_missing_generation",
+        "TestArtifactPackageInputBoundaries",
+        "TestArtifactPackageMutationDuringCapture",
+        "TestArtifactPackageRootAndOutputBoundary/stage_replaced",
+        "TestArtifactPackageRootAndOutputBoundary/output_replaced",
+        "TestArtifactPackageRootAndOutputBoundary/output_symlink",
+        "TestArtifactPackageRootAndOutputBoundary/output_collision",
+        "TestArtifactPackageRootAndOutputBoundary/stage_symlink",
+        "TestArtifactPackageRootAndOutputBoundary/nested_output",
+        "TestArtifactPackageRootAndOutputBoundary/missing_config",
+        "TestArtifactPackageRootAndOutputBoundary",
+        "TestArtifactPackageIOUncertainty/write",
+        "TestArtifactPackageIOUncertainty/cleanup",
+        "TestArtifactPackageIOUncertainty/sync_partial",
+        "TestArtifactPackageIOUncertainty/publish",
+        "TestArtifactPackageIOUncertainty/sync_final",
+        "TestArtifactPackageIOUncertainty/panic",
+        "TestArtifactPackageIOUncertainty/deadline",
+        "TestArtifactPackageIOUncertainty",
+        "TestArtifactPackageFrozenBinding",
+        "TestArtifactPackageRejectsReplacedOutputWithSameBytes",
+        "TestArtifactPackageConcurrentOutputCreation",
+        "TestArtifactPackageParentReplacedWhileReading",
+        "TestArtifactPackageCleanupDoesNotDeleteReplacedPartial"
+      ],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "aadbd03341229a4d667e2925672d074a0f1e8794d78a8154b87abed74b1b90cc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604734.3611069
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 31
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "c11d6a2b766fdb3a646c14811b8ddcd2d57075da8eb100632365f43c4f2108c2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604736.664675
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 4
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "40deb7d97c13f25592cb6adb78799507404db8e87409c5577fa5870443589e8e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604740.030786
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 116,
+        "skip": 1
+      },
+      "failures": [],
+      "skipped": [
+        "TestPasswordLimiterSharedAtomicAdmission"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "eadc0811ac7e0da9378c22fca33bb93e239a8df6583f6df168b0b075db07f1f3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604748.102098
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/budget",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 112
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "760721220358b67ee809890f37f003ffe1508b5c476387a1951ffd9c3da45f82",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604771.916903
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 56
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "465b60b921f3d04ac6044c2b05fa4dcaf792cfd676bb3c849a6e311bf34dc764",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604775.483934
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 3
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "660e25286a6cd52b40e61c1810b010847411a13492325ebd87e8bb7a53dae725",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604777.940052
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7e4195056bb767deed91a52037680be53e79ebbb429370a48a31bb2991cdfea9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604778.967906
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "be866defd29b9c51956281fb652d6d207d17537cc399da82a8dc1d1a31cc3cb9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604779.586069
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 375,
+        "skip": 1
+      },
+      "failures": [],
+      "skipped": [
+        "TestCLIConfig_UnknownFieldsArePreserved"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "08d349ed24ac4f9f7cc5888c49670b32cfc22ff48495332c60fa28bcc77cee1c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604785.488462
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 3
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "09f55c64c1a5f3f04a45dd6ea9ce93fec26a886b78fc4ff28202e164af047e68",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604788.110394
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 16
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d6250b90ad3d8ba8f870c0395ef45437e5006f06924fa240fae4c6ba82681ef4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604791.906699
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 1349
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "0bfa2d415a794a19e821ea1391a80c454b5955ce43218cd92277f3e87968f20e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604863.6326342
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "88f44b4807e238ee60f7ce51ae7b8bbdc1726ef2712f8d4fccf2d9bf7f06424f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604867.149656
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 61
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "f716170ea5705d6f8f8e388aa498c32327791f669509b77aa4a8615ef86ece0b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604876.2376819
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 30
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7a5dfe8bb1c7e852096b5ed69634912ec77856d6e720e5dc7d1af301cc7d222c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604881.4586701
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 33
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1c0f5d44b2ee7bea3d24b4a73183e8fbecf35a952fdf60040f8351a7f37556a4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604884.886453
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "9acfa836db6a4b64cc975c50d7e361fecfd0e0fb36a6b4f36ebfd7af52ad5c5d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604885.357166
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 16
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "830d6d14927effee6125078af227f7c2478ab005bf58476c6093d76c2920c336",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604888.020416
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 33
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1d6a8dba036593668c68da34960946c8872885604556c8d1d9b5557d25864774",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604890.4809449
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e567c96802fb8ff874809f2f11bda6ca32e5198bf4b01b52246c843cc0626270",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604892.607274
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "34417cfee2a2b9f2efbf21d8aa7a2fb0ba91edad4573876ecf9f66e1a087099e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604894.616062
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 7
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "c492d21ba6adcadfc93afa8897c973b7dc9e563e47da86d5790874c6d5ddbda5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604896.660699
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/inboxstate",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 22
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1e55018d0083a629b41c63f8afdbc5e0e50f1eca7302cf5c70f8364bcbf84dad",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604902.7027042
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "b0a6653f46cd8e5b0ead164e889e877836428cc4ba098ba961058388e03ef3c4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604904.7457228
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 22
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "6078cb7fdc3ed53048c70f5bd78ea59b60947625a883255bac3de3759633b67f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604906.756144
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 211
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "df8efd750b3f33eb754db244ef801bfacbd961f4a0e7abf57e055b9138c55e2f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604919.926788
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 42
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "8f564f30070ca2f7d0924cc007a48b7ad59e2d7fed66d60904ab6cf9ceabdb89",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604923.6501188
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 212
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1b93ce355556099cb17e32a44e0834f6f0bb8f8917af3d7061de2af517c93fb5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604936.905376
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 42
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "8c89c0fa865a28214faea282f91131d30649db42c077fb394f1df9e48d656ed6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604942.61302
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 426
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a6a591a23fc4e6c2d80a6ccf17632cd56b0af612d5de07cd443b24e5625b7f8a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604956.143683
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 188
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "fde0c632cb4ba4a87d71769c9336b857b229c27eb8ee4fa7e911ddbc2106c1bd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604967.487178
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 114
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "45883b8d125616148052eb34b1b51e02f425c168bf2ecdd353eba7f892c1624c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604981.570766
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 15
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "2b776b3ae46cc55fbd996b86670fdc2f6f26b42caee0f887a7b8b811770539ad",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795604984.9450219
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 616
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "c0cd975fd02e6ec900ca0604e9facfaaacb04bc7d0ba5138a628b4a82066d7ee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605055.2412229
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7c8e7f8143f077565f5f68754e0fb6d1bd71590e829687695848dab15426cbd0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605058.8446348
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "5f43fefb29289ab2994e62a145ee9be1fcd641cc9304822515c4322df8e9e5fc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605061.082761
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a271d991b25a3b0f9b7f072a242abd2f8a1641e905c13e40347ab708e9556b35",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605061.57374
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 26
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1c6b0d95fb117d81647bcfed3154c570ccdc6ff29ebdbb3de91fbe76f3250c5b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605063.707673
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 122
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7f73ba83d6837f1dd65ab465048de16f58525104863491a62370992d94a465af",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605066.538264
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "30939272f27f53ccdae539d04ced091b27be3f0415bdfbd69512226371f8c57b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605070.1285021
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 88
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "0de799e878fd4f37668a45b5726dd832c952cd8db194281b1d663bfd1754e5e7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605079.583731
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 138
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "f47b027ad43bdb0c53936af6549e40d351043e45a4625c223939159984d4b44b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605088.081764
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 578
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "79db51f715cb7953df9077d0beef4064f379bbf3dba2eb4d1a724530fe382f20",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605146.19631
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7e184e3d3e76e0e8f33002705d5b35adf799d0baf4416b9761bc8c671b34bd50",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605147.131489
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 25
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "93b98a942f7d53fc0a1cad5c73fd5cb5bc3f49641e9ddd131f2224406bd5868d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605150.401334
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 87
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "e1900be53c891929b4a9505e141379e69820b8b88a06f47be2116ddb6b4c0b38",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605155.737165
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/reportsnapshot",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 28
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "36986811cac1fa1176d3f90f0cf1119410e5a91849b2b33fb6603accad8d3ee0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605160.603668
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "mode": "race",
+      "exit": 0,
+      "counts": {},
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "a8013f609aeb413bf3ad5c616340961861cd6cd50641972f80f4edf06ce22726",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605161.289078
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 31
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "cbffca8656fa7c15e101d1156796b3112965645f19dbe61e58a517a853404aad",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605170.699601
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 23
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "77367db37c8b468014764a796df74b73d9e9074d1b71e090524be0d02809e95d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605174.1010602
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 10
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "cff1e9d5f70260c6d4753f8b99ed207c81292b36eea37d64c7e04121a28292ab",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605176.353826
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 66
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7b1c2bbd2ca4a7f591715b59fef5f98133436d8d8b75c618d268e3c661c6e5d7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605178.4917939
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "mode": "race",
+      "exit": 1,
+      "counts": {
+        "pass": 98,
+        "fail": 1
+      },
+      "failures": [
+        "TestLocalStorageUploadsAreWorldReadable"
+      ],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "95c9133924bdc21d03abc551e49a9233657c555c69f1a74ad1ba100ad2e2e4ac",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605180.7695842
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "6c0dc52f246aae059b4a0d1fc30f0f297c5b061a01a55c6c8e82bda4f81d8a2f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605188.2954612
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 18
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "10d339074c0ccad8a1d9a2109845b9b9683faf8152c4e9d6b939f056152bd00d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605191.0366101
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 15
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "b07ae6f410a2781f7a6b07ec5db93d2e0343865b1847e9ff2148968d2b255777",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605193.0642262
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 115
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "181d5d3a5ec162062521297b71afeb1c6008632a9448e4fc03e42fd8b0379eee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605195.350687
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 10
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "00d1415863236ff8f150eae7aae578d1ae0a7706cdeed873c26251b3e15ce276",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605197.425678
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 1997,
+        "skip": 4
+      },
+      "failures": [],
+      "skipped": [
+        "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+        "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "TestPiExecuteAttachesStdinPipe",
+        "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+      ],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "7db449f00e6d0bcdb12658f3d01c82918a5055030a41ee6593249351344efb3c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605554.9279559
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 39
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "c37e16f4a262beb5352f54ffd404cfe2066aff6c2b4c0834134b9a5c614bf2e1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605561.8768141
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 13
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "ee42c1f859097745fe1e64ab57b29cf127c693224c92984c20bff2369b91d4ca",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605587.351499
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 35
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "f6f8fb98547b56cb6c4efbb06b7153a922cd5e201c93cd32168f6a32baa00317",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605601.322581
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 51
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "673769652155fe226f37b5d9d77b4edac43e96c558cc27f0e112a94ac31ce78f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605608.835603
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 56
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "d30ee22619c20d7595d8a64692b133c2260fc6270147510e9722d25228a12fe9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605649.876734
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 99
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "c8bf7438485aaad6ef5dacbcfd5106333482e90f1a8e8f239490a334cbc91872",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605684.227062
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 451
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "3476f1f93e7d4b82ee24372d64a8d5e2da70aae92cd83caf4d2fa481879f16d0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605708.6470242
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 5
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "9ca5c515d39695e331a4962ad30d6e4fc131525e7013fcb36f07263a1e9f01a4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605716.497848
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 77
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "c4cc0612f6d8d466581a3dac5890fa8497815ce03798355f74a9bf39c71c8c73",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605843.19952
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 8
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "fe75025f96dbfd54e3feb574b7fedccf108ecced0d2e64dfef5dff26a1b6dcc1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605848.4023721
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 1
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "1ddcf7a311e2182220d89485bbbce110f94493a3d00ed82ab9a64d2fb69f18e9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605853.036127
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 2
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "21fe1ff173a96da8bae336b5767c604817278b6ec805aa8f78dd69a90429c47c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605858.291913
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "mode": "race",
+      "exit": 0,
+      "counts": {
+        "pass": 222
+      },
+      "failures": [],
+      "skipped": [],
+      "unfinished": [],
+      "parse_errors": 0,
+      "remaining_database_clients": 0,
+      "stdout_sha256": "3d74f5d4bcf8c56ed9c0d3995cf548bb06bf745d95fd9fa9074654d3a51e82cc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": 1795605864.154711
+    }
+  ],
+  "source_matches": true,
+  "source_after_sha256": "42f1de69ffb07bce6c8246b2c4ca7b17e731f6f409512bec4826c56f186aba30",
+  "complete": true
+}

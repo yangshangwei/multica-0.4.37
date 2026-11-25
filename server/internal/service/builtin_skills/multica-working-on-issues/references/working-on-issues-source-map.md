@@ -512,3 +512,7 @@ a durable whole-batch receipt.
 | Authenticated immutable operation facts; unknown/not-started are not deployment success | `internal/service/collaboration_stage_execution_observations.go` |
 | Native-order metric ambiguity and current anomaly consumption | `internal/service/collaboration_stage_execution_metrics.go` |
 | Protected target/operation/metric projections; production missing-source unavailability | `internal/service/collaboration_stage_execution_view.go`, `internal/handler/collaboration_stage.go` |
+
+## Ordinary comment management principal
+
+`handler/comment.go` (`UpdateComment`, `DeleteComment`) combines current owner/admin membership with `!isMachineCredentialActor` for management of another author's comment. Its independent author path uses `commentMutationActor`: agent authors and source-task lineage require the matching verified task context; client agent/task hints cannot grant authority. `handler/actor_guards.go` classifies verified task/Cloud provenance stamped by authentication middleware. `handler/comment_authority_test.go`, `cmd/server/comment_authority_integration_test.go` and `cmd/server/comment_authority_spoof_test.go` cover direct-handler and real HTTP authentication, valid hint pairs, positive self/human controls, attachment replacement, revision conflicts and side-effect-free refusals. Generic upload association has a separate existing contract.

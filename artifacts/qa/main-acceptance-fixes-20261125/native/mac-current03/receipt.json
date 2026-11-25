@@ -1,0 +1,131 @@
+{
+  "knowledge_context_enabled": false,
+  "original_policy": "knowledge=off",
+  "status": "completed",
+  "source_manifest_sha256": "fae4c892381d2bf2816de6627ab99941a6288b273391855f6ad7f4a7e698c729",
+  "package_manifest_sha256": "906c8ae16f7891806b71b194f06fdc3bb988998df1068adda3799802f3cb3c47",
+  "adapter_sha256": "fbfb041191aee86f4862f62151bb1b6955cba5e68ddf4253893eab21d3d30e58",
+  "database": "fix_native_api02",
+  "ports": [
+    64830,
+    64831,
+    64832
+  ],
+  "started": 1795613939.23701,
+  "processes": [
+    {
+      "pid": 52442,
+      "name": "api",
+      "command": [
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin-current/api"
+      ]
+    },
+    {
+      "pid": 52443,
+      "name": "web",
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/web-server.mjs"
+      ]
+    },
+    {
+      "pid": 52444,
+      "name": "renderer",
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "http.server",
+        "64832",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source-current/apps/desktop/out/renderer"
+      ]
+    },
+    {
+      "pid": 52445,
+      "name": "playwright",
+      "command": [
+        "/bin/bash",
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source-current/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source-current/node_modules/@playwright/test/cli.js",
+        "test",
+        "e2e/collaboration-host-installed.spec.ts",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/mac-current03/results"
+      ]
+    }
+  ],
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false
+  },
+  "exit": 0,
+  "cleanup": [
+    {
+      "pid": 52445,
+      "exit": 0
+    },
+    {
+      "pid": 52444,
+      "exit": -15
+    },
+    {
+      "pid": 52443,
+      "exit": 0
+    },
+    {
+      "pid": 52442,
+      "exit": 0
+    }
+  ],
+  "descendant_cleanup": {
+    "status": "pass",
+    "fallback": [],
+    "remaining": [],
+    "initial": []
+  },
+  "protocol_cleanup": {
+    "status": "pass",
+    "steps": [
+      {
+        "operation": "unregister_owned",
+        "path": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/package-current-mac-signed02/mac-arm64/Multica.app",
+        "exit": 0
+      }
+    ],
+    "error": null,
+    "final": {
+      "scheme": "multica",
+      "default_application_url": "file:///Applications/Multica.app/",
+      "handlers": [
+        "ai.multica.desktop"
+      ],
+      "registrations": {
+        "ai.multica.desktop": [
+          "file:///Applications/Multica.app/",
+          "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r2/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app/",
+          "file:///Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app/"
+        ]
+      }
+    }
+  },
+  "remaining_db_clients": 0,
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "unexpected_provider_execution": false,
+  "ended": 1795614077.434782
+}

@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "verdict": "BLOCK_LINUX_MAIN_EXECUTION_PENDING_LOCAL_RUNNER_FIXES",
+  "reviewed_at": "2026-11-25T12:13:46.743619+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux-main-review-request.json",
+  "request_sha256": "9feb8ffe380fbf0eb70f0ae7d38a417e9f315fffef205786b31b9c3fe7396d1e",
+  "scope": "Actual original Linux full Main handoff/control/history/permissions journey600s unchanged; noIPCstubs",
+  "bindings": {
+    "scope": "Actual original Linux full Main handoff/control/history/permissions journey600s unchanged; noIPCstubs",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_linux.py",
+      "linux01"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_linux.py": "fb838f2ae1bfc4bf123e6e7c3548b600d8ecc99e1e9b610850e67df358bfae8c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux_guard.py": "3119080f024368141d3e2a1d817225f27556164951b8d6f5f2a9ed15f9778cad",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "artifacts": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-package02.json": "d744b5ce34733408616685a81b2c27c9289ea716c8d008b08977919cff77b251",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-asar-verification02.json": "ea4c8ec65016de0bca10698915bee77162d6d69a81e4c2bc47fd2a6920e69f25",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-controller.json": "5a281e4e0de6e28063da151e2be223369ab1030b3a7a58028e9e4fdbe0ec50e1",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302"
+    },
+    "binaries": {
+      "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/api": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16"
+    },
+    "database": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_linux_api01/env.json",
+      "sha256": "af4d5bec9ed67c9d74283c8b71321bd21d35cd0ba62e68fe77d6a9de8955f69d",
+      "migration": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_linux_api01/migration.json",
+      "migration_sha256": "02b613e264e367593a1c68abf057a710bb0031587935a02bc25ae20c54b33896",
+      "exit": 0
+    },
+    "policy": "Canonical Docker default security unchanged; task-only root tmpfs+all26provider overrides+synthetic machineID/discovery; readonlyfrozencontroller+package mounts; exactcontainerintent registry and ID/owner checks; full independentcleanup",
+    "limitations": "Frozenfrontend precedes newlyapprovedaccountresume change; actualoriginal journey diagnostic for this candidate, not finalupdatedUIacceptance"
+  },
+  "allowed_commands": [],
+  "blocking_findings_open": 3,
+  "issues": [
+    {
+      "id": "L1",
+      "severity": "P1",
+      "file": ".omx/private/acceptance-fixes/native/run_linux.py",
+      "line": 16,
+      "issue": "Runner consumes native_api01/env.json and migration.json, but this request binds native_linux_api01/env.json and migration.json. The actual selected DB is fix_native_api01 rather than the newly assigned fix_native_linux_api01.",
+      "required_fix": "Select the exact parent-assigned native_linux_api01 configuration and migration, retain explicit DB identity check, regenerate runner/request hashes. Do not execute or reuse the differently allocated database.",
+      "fixed": false,
+      "reason": "Runner write ownership belongs to Hooke; reviewer explicitly read-only."
+    },
+    {
+      "id": "L2",
+      "severity": "P2",
+      "file": ".omx/private/acceptance-fixes/native/run_linux.py",
+      "line": 83,
+      "issue": "Final cleanup rebuilds linux-cleanup-registry.json with an empty containers map and name-only intents, dropping IDs available in linux-resources.json row.cidfile. cleanup.py consequently takes known=None and cannot reject an ID replacement even when creation recorded a CID.",
+      "required_fix": "Carry valid known CID values into the cleanup containers map and preserve name/owner intents for creations without a CID. Let missing/invalid expected CID evidence remain an observable failure; retain exact owner/image checks before removal.",
+      "fixed": false,
+      "reason": "Private runner ownership is outside reviewer write scope."
+    },
+    {
+      "id": "L3",
+      "severity": "P2",
+      "file": ".omx/private/acceptance-fixes/native/run_linux.py",
+      "line": 95,
+      "issue": "Log close exceptions are captured in log_close_errors at line81 but omitted from the exit predicate, allowing exit0 after a recorded cleanup/evidence flush failure.",
+      "required_fix": "Make any log_close_errors fail the terminal cleanup status/exit while preserving the original test result and all failure receipts.",
+      "fixed": false,
+      "reason": "Private runner ownership is outside reviewer write scope."
+    }
+  ],
+  "adapters_executed_by_reviewer": false,
+  "accepted_review_subset": [
+    "All current declared request file/config/artifact hashes match. Package80 entries and controller559 entries independently rehashed with zero drift; source01 source-file hashes match.",
+    "Host and controller @playwright/test,playwright,playwright-core all1.58.2. Controller fixture bytes match frozen source01.",
+    "Original600000ms Linux full Main journey remains complete: actual packaged executable,app.isPackaged,file renderer,password login,handoff,stop/restart/resume/history/permissions; no IPC replacement.",
+    "Private/root tmpfs,all26provider overrides and synthetic discovery are present; Docker daemon seccomp/capability/network defaults are not relaxed. The existing Chromium --no-sandbox argument is unchanged from the canonical Linux controller. No macOS LaunchServices/protocol operation is reached.",
+    "Fresh native_linux_api01 configuration and migration exit0 exist, and parent PG owner/image/port/volume metadata match; the runner must actually select them."
+  ],
+  "conditions_after_fix": [
+    "New request hashes and targeted delta review before execution.",
+    "Require independently verified final process/container/listener/DB/gate cleanup and before/after source/tool/controller/package/config bindings; wrapper exit0 alone is not full acceptance.",
+    "Candidate remains frozen source01/API build01/package02, excluding newer UI/account-resume and local comment-principal changes. Final integrated binding and complete regression remain required."
+  ],
+  "verification": {
+    "read_only_hash_and_metadata": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_user_read_only_constraint",
+    "typecheck": "not_run_user_read_only_constraint",
+    "tests": "not_run_user_constraint"
+  },
+  "evidence": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-linux-assets-audit.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-resource-audit.json"
+  ]
+}

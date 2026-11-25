@@ -38,14 +38,19 @@ test("cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author
   const controls: { requestId: string; input: CollaborationControlInput; receipt: CollaborationControlReceipt }[] = [];
   const executions: { stage: string; actor: string; evidence: unknown }[] = [];
   const snapshot = async () => {
-    const issue = await read();
+    // All five reads complete before another legacy operation starts. Their
+    // independent projections retain the same before/after equality contract.
+    const [issue, history, participants, resources, ordinaryDispatches] = await Promise.all([
+      read(),
+      commandHistory(),
+      fixture.creator.requestJSON<CollaborationParticipants>(`${root}/participants`),
+      fixture.creator.requestJSON<CollaborationResources>(`${root}/resources`),
+      fixture.owner.countIssueDispatches(fixture.issueId),
+    ]);
     return { issue: { id: issue.id, creator: issue.creator, handler: issue.handler, collaboration_revision: issue.collaboration_revision,
       lifecycle_epoch: issue.lifecycle_epoch, status: issue.status, status_category: issue.status_category,
       session: issue.session, execution: issue.execution },
-    history: await commandHistory(),
-    participants: await fixture.creator.requestJSON<CollaborationParticipants>(`${root}/participants`),
-    resources: await fixture.creator.requestJSON<CollaborationResources>(`${root}/resources`),
-    ordinary_dispatches: await fixture.owner.countIssueDispatches(fixture.issueId) };
+    history, participants, resources, ordinary_dispatches: ordinaryDispatches };
   };
   const control = async (action: "stop" | "resume") => {
     const issue = await read();

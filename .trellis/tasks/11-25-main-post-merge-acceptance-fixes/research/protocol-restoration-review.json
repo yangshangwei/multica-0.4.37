@@ -1,0 +1,47 @@
+{
+  "reviewed_at": "2026-11-25T11:36:36.025569+00:00",
+  "captured_baseline_restored": true,
+  "live_matches_captured_baseline": true,
+  "whole_task_initial_state_restored": "UNPROVEN",
+  "default_application_url": "file:///Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/",
+  "handler_count": 2,
+  "registration_counts": {
+    "ai.multica.desktop": 9,
+    "com.github.Electron": 24
+  },
+  "removed_exact": [
+    [
+      "com.github.Electron",
+      "file:///Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-01/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+    ],
+    [
+      "com.github.Electron",
+      "file:///Volumes/artisan/acceptance-fixes-4b9d3494a2/clients/final-02/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/"
+    ]
+  ],
+  "unexplained_loss": [],
+  "unexplained_addition": [],
+  "cleanup_receipt_sha256": "e296953e5906f007e023c08d208a4eb0cd3ceb8a3c556f96cc7d4ccadf615e63",
+  "readiness_hash_matches": true,
+  "snapshots": {
+    "protocol-before-preparation.json": "c7bdfcd5990eafdcdca7ae95f673f430d43230b4df99435c348c84f4a0b196ee",
+    "protocol-before-owned-cleanup.json": "4e19a8e6e4e7a7c0b90fd7545b874d0dc9809b8690905423fcf67f3e8df015b1",
+    "protocol-after-owned-cleanup.json": "f8f0a4152baa351d874d8705a4c1a348e3d31936903828e3d979b93a6096a70c"
+  },
+  "live_observation": {
+    "started_utc": "2026-11-25T11:32:25.129875+00:00",
+    "ended_utc": "2026-11-25T11:32:59.562946+00:00",
+    "exit": 0,
+    "script_sha256": "e536c586a7160d957d316a3176e688c82fa7987acf7a18ea1f17751329c8448a"
+  },
+  "timeline": {
+    "earliest_located_client_native_test_start": "2026-11-25T10:19:45.635Z",
+    "earliest_located_client_native_test_end": "2026-11-25T10:20:03.547Z",
+    "native_baseline_file_birth": "2026-11-25T10:28:39.675799Z",
+    "native_baseline_file_mtime": "2026-11-25T10:29:10.592600Z",
+    "timestamp_limit": "Snapshot contains no embedded capture time; filesystem birth/mtime are supporting metadata, not an independently authenticated exact capture timestamp. The native baseline is not demonstrated to precede client execution."
+  },
+  "remaining_task_registration": "Main acceptance-fixes worktree Electron.app URL is included in the native baseline and remains registered/default. Its exact registration/default-change time and caller are not captured.",
+  "historical_default": "Prior campaign final snapshot reports file:///Applications/Multica.app/; no evidence establishes that this remained the default at this task start.",
+  "mutations_performed_by_reviewer": false
+}

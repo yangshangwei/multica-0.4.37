@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "accepted": false,
+  "verdict": "FIX_PROCESS_CLEANUP_THEN_REVIEW",
+  "scope": "Full unchanged ten-operation CLI spec at original240s, fresh API binding",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli-review-request.json",
+  "request_sha256": "743a86ae2ad98883d3d2c1bc88efc23dec56408e233b6e39e73291a3f75c58fb",
+  "command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli.py",
+    "cli01"
+  ],
+  "files": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_cli.py": "ebbcc5425f15977d1d6117e434c464bb4e5a7d97b893d6eb4a2b6946f6be07bb",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli_guard.py": "fe7b222f4394c76b0e768e14d016462140f52ff650581bececf491aa5e2175a9",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/timing_probe.py": "fd921860e6db2e65a6287d0f620f1081652ef2de2296209f63d5f863e006b627"
+  },
+  "source_manifest": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json",
+    "sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302"
+  },
+  "build_receipts": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/api-build01.json": "da17bce39699846833352cfb6c691c77bcf506d20f4dc3d0116f3cd12f4720cb",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/relay-build.json": "a03e8d74b71a0044f24ccfdb600209fce14e9bd9a47e139672661527ea839331"
+  },
+  "database_allocation": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/legacy_cli_api01/env.json",
+    "sha256": "b6258b645a32785592c1303b95914b59738c33d08f803a9234a86bd39c21bc68",
+    "migration": {
+      "database": "fix_legacy_cli_api01",
+      "exit": 0,
+      "source_base": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1"
+    }
+  },
+  "reviewed_at": "2026-11-25T11:02:56.115136+00:00",
+  "blocking_findings_open": 1,
+  "issues": [
+    {
+      "id": "CLI1",
+      "severity": "blocking",
+      "file": ".omx/private/acceptance-fixes/native/run_cli.py:63-69",
+      "finding": "The process-cleanup loop is outside exception containment. A child can exit between poll() and killpg(), causing ProcessLookupError; signaling/reaping may also fail. Any such exception skips Docker cleanup, gate restoration, final source/listener audits and terminal receipt. The final wait after SIGKILL has no timeout.",
+      "fix": "Handle each exact child independently, record its cleanup error/fallback, treat ProcessLookupError as already gone only after reaping/observation, bound both waits, and continue to Docker/gate cleanup. Enclose the whole cleanup chain in a final receipt-writing finally. Keep the original test240s deadline and failure result unchanged."
+    }
+  ],
+  "verified": [
+    "All declared request file/build/source/allocation digests match.",
+    "Frozen collaboration-installed-clients.spec.ts, collaboration-installed-clients.ts and collaboration-control-journey.ts exactly match original checkout bytes. Original240000ms deadline, one positive plus nine refusal commands, identity/state assertions and zero retries remain.",
+    "The saved URL points to the recorded loopback PostgreSQL port and exact migrated fix_legacy_cli_api01 database. Runner checks live parent owner/image/port/volume and database identity before gate writes.",
+    "Fresh private HOME/TMP/uploads, explicit local Docker endpoint and empty Docker config; fixed v0.6.7 image and previously reviewed exact command guard retained.",
+    "Runner identifies the spawned API by PID/commit at health. Every actor is registered through the fresh password API; no personal credentials or actual provider execution.",
+    "Fallback Docker removal is explicitly cleanupFAIL, even if subsequent absence verification succeeds; historical cleanup failures remain."
+  ],
+  "nonblocking_followup": [
+    "Record initial/final gate epoch as well as booleans, and require restored booleans equality when deciding cleanup success; current SQL increments epoch but the receipt omits it.",
+    "Build receipt pins source/compiler/log but omits output API hash. Reviewer observed current API SHA256 below; bind it in the amended request/receipt before claiming artifact acceptance."
+  ],
+  "observed_api_sha256": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16",
+  "not_cleared": [
+    "Full CLI invocation until CLI1 repair reviewed",
+    "Packaged Main preparation/run"
+  ],
+  "adapter_executed": false,
+  "prior_timing_acceptance": "Unaffected; separate request7abe85ffe2a1fe6f47a5f66fc8b0e2d109448490da7ec196eddae7a2217d3ab0 remains timing-only accepted."
+}

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "./internal/handler",
+    "./cmd/server"
+  ],
+  "exit": 0,
+  "source_manifest_sha256": "e2b17927dd7444492c461ad17664392522be04e048b1d5b99afa52f67eac361c",
+  "toolchain": "go version go1.26.11 darwin/arm64"
+}

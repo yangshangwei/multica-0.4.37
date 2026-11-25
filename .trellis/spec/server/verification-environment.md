@@ -351,3 +351,27 @@ PostgreSQL and `stage_execution_conflict`; keep that evidence alongside replays.
 Wrong: classify every unknown synthetic receipt as a timeout and raise budgets.
 Correct: inspect the observation refusal, use database time in the test source,
 and retain strict production checks plus the original failed runs.
+
+## Supported-toolchain vulnerability scans
+
+Use the supported patched Go toolchain to build both the candidate and native
+`govulncheck` executable. A module minimum such as Go1.26.11 does not patch a
+newer ambient Go1.27.0. Record actual compiler/scanner versions, hashes and
+binary build info, and preserve the old scan's findings and exit status.
+
+For cross-target source analysis, run a host-native scanner while setting the
+target `GOOS`/`GOARCH`; `go tool govulncheck` can instead cross-build the scanner
+and fail to execute it on the host. Source scans and binary scans are separate
+evidence. Neither establishes runtime acceptance on another operating system.
+
+GitHub import HTTP403 alone does not prove quota exhaustion. The tree-fetch
+diagnostic reports fixed reason text based on validated response status and
+allowlisted rate-limit headers, without exposing bodies or arbitrary values.
+Preserve `errImportSourceUnavailable` and no-write behavior. A new response with
+quota remaining0 can explain that new request; it cannot explain a historical403
+whose headers were not captured. Do not retry or borrow personal tokens to turn
+an external-service failure into an acceptance pass.
+
+Verify the GitHub error classification/full failed-import tests, module graph
+identity, supported-target source and actual-binary scans, and retain every
+initial tool invocation error separately from corrected runs.

@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_LINUX02_POSTPACKAGE_MODE_BINDING",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux02-review-request.json",
+  "request_sha256": "8a33bb897b7c6d5e1c6f3671606e7d137b9997b351882c8e234bed4b2e6dbc6c",
+  "reviewed_at": "2026-11-25T12:36:02.910659+00:00",
+  "bindings": {
+    "scope": "Actual original Linux full Main handoff/control/history/permissions journey600s unchanged; noIPCstubs",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_linux02.py",
+      "linux02"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux_guard.py": "3119080f024368141d3e2a1d817225f27556164951b8d6f5f2a9ed15f9778cad",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/providers.py": "0dde60605fe86b846eed5b4c0ecba832f36dca225ea3ac395a039f11012f1fb3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_linux02.py": "d2bad89d7e1ad839846849ba6dd39d8d119368e4b4af9aecf5cd6e964ee0b2be"
+    },
+    "artifacts": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-package02.json": "d744b5ce34733408616685a81b2c27c9289ea716c8d008b08977919cff77b251",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-asar-verification02.json": "ea4c8ec65016de0bca10698915bee77162d6d69a81e4c2bc47fd2a6920e69f25",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-controller.json": "5a281e4e0de6e28063da151e2be223369ab1030b3a7a58028e9e4fdbe0ec50e1",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01-postpackage.json": "0f6da6216d73f62329b54ed32c2369a4855f82de03f0307aaf954be5d7c83f0d"
+    },
+    "binaries": {
+      "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/api": "a4e3a2c12cd0ec3154796b1dc012675cdbdb15c8362e26b5dee51e706896db16"
+    },
+    "database": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_linux_api01/env.json",
+      "sha256": "af4d5bec9ed67c9d74283c8b71321bd21d35cd0ba62e68fe77d6a9de8955f69d",
+      "migration": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native_linux_api01/migration.json",
+      "migration_sha256": "02b613e264e367593a1c68abf057a710bb0031587935a02bc25ae20c54b33896",
+      "exit": 0
+    },
+    "policy": "Canonical Docker default security unchanged; task-only root tmpfs+all26provider overrides+synthetic machineID/discovery; readonlyfrozencontroller+package mounts; exactcontainerintent registry and ID/owner checks; full independentcleanup",
+    "limitations": "Frozenfrontend precedes newlyapprovedaccountresume change; actualoriginal journey diagnostic for this candidate, not finalupdatedUIacceptance",
+    "revision": "Only newlyrecorded dependency7zamode0755 byteidentical; freshlinux02label, previouspreflightbeforeAPI noDBwrites. Preserveoriginalmanifest andrefusal. Originalfull600s unchanged."
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/run_linux02.py",
+    "linux02"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "basis": [
+    "Original source01.json retains201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302. Original Linux01 refusal/log retained; traceback occurs at manifest assertion before API/SQL/Docker startup.",
+    "New source01-postpackage manifest differs in exactly node_modules/.pnpm/7zip-bin@5.2.0/node_modules/7zip-bin/mac/arm64/7za mode0644->0755. SHA2566f4dd78a82cf574f49118d99be620fd3edcfa9e48971d8523816b7ed20419c47 and988208 bytes unchanged. Installed builder-util/out/7za.js:10 explicitly applies chmod0755.",
+    "Full current tree149209 entries matches new manifest with no additional drift. No source/tree mutation or rebuild performed by reviewer. This is a new recorded input state,not normalization of historical evidence.",
+    "Runner differs from accepted Linux v2 only by new source-manifest name in preflight/receipt; exact request/artifact/config/script hashes match. All three cleanup/allocation fixes remain. Fresh linux02 paths were absent at audit."
+  ],
+  "conditions": [
+    "Exact allowed linux02 command only,with unchanged reviewed bindings. No chmod restoration is required for this manifest-based route.",
+    "Preserve Linux01 preflight refusal and original manifest. Original600s complete journey,workers1/retries0/assertions/security boundary unchanged.",
+    "Still older frozen candidate; execution admission is not functional PASS or current C1/comment integrated acceptance. Final outcomes/cleanup and final bindings require review."
+  ],
+  "verification": {
+    "hashes_and_full_manifest": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "evidence": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-linux02-audit.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01-drift-after-packaging.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux01/preflight-refusal.json"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "state": "product/tests stable; await coordinated final frozen normal/race runs",
+  "files": {
+    "server/internal/handler/comment.go": "e718ace5960d9db486ce407916a59ceb405d6299ecbdb7b1214f4f0e7ed639dd",
+    "server/internal/handler/comment_authority_test.go": "2590689ba5c24b4a665b99246df51ec9c2ac82873066dd732b5238e5059df607",
+    "server/cmd/server/comment_authority_integration_test.go": "99f704119465dad78ec0ddacbddd94ac90b3027441ce6b7bb240774c44a5f87b",
+    ".trellis/spec/server/security-boundaries.md": "2bd2c873cea973587e6f47191239a992af9930b3814f70776b5a6620dc814e9e"
+  },
+  "pending_test_cases": [
+    "queued consumer preservation on denied edit/delete",
+    "real mdt_ refused by ordinary Auth"
+  ],
+  "last_executed": "router01:274 passed before these added assertions"
+}

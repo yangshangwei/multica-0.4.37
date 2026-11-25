@@ -1,0 +1,88 @@
+{
+  "label": "final-normal-01",
+  "command": [
+    "/bin/bash",
+    "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-01/source/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "github.com/multica-ai/multica/server/internal/service"
+  ],
+  "database": "fix_service_normal01",
+  "scratch": "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-01/tmp",
+  "source": "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-01/source",
+  "home": "/private/tmp/acceptance-fixes-4b9d3494a2/db-lock-final-normal-01/home",
+  "toolchain_provenance_sha256": "0019f3139c73ff4b4103b960093ad33148f36b6b9ad4c20cdd304587dab17758",
+  "head": "a7bf6ba70fcc3af8171d6a406e0fae6a1b0c29e1",
+  "source_manifest_sha256": "31625facb733494323e0f7836e34ea8e98637879347333ea45f965f1cca5a0dc",
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "go_version": "go version go1.26.11 darwin/arm64",
+  "config_sha256": "198c504114d4aa9c1013dfc28daa9212cc724b4721592f3b3ac37d2fd7ed8a8e",
+  "allocation_sha256": "002256713e6b884c5d06655c9704eb5cd93367dad6945ef61e5523c069b49936",
+  "runner_sha256": "7f6f5b66b1e63cb1674155b838f5fda432cd136d9cee4a4fa33742b5c5205806",
+  "modules_manifest_sha256": "20fd3cc71c9d7eaf8f4b970bfd66df4d44650be65bebe11754a772e8edc25e1d",
+  "dirty_patch_sha256": "b451373feabca4bee045b55286361b5ac5106be04c4598f3ac8c81792fbc73ba",
+  "migration_sha256": "35e3ba4262e22da3b1cf12de38830cddd8f79e8684e1399ffe12ae99b385d961",
+  "monitor_sha256": "be84072c20a6511fd221c8b007d8a589ecf9e161920da6dfd309819cfbf8bf08",
+  "redis_resource": {
+    "container": "f6528c817c5ccc37251e069b4baca243c90d0ce8a815dd4f3375b06c16d103d2",
+    "name": "acceptance-fixes-4b9d3494a2-db-lock-redis02",
+    "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "port": 51112,
+    "command": [
+      "docker",
+      "create",
+      "--name",
+      "acceptance-fixes-4b9d3494a2-db-lock-redis02",
+      "--label",
+      "multica.qa.owner=acceptance-fixes-4b9d3494a2",
+      "--label",
+      "multica.qa.lane=db-lock",
+      "-p",
+      "127.0.0.1::6379",
+      "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "redis-server",
+      "/data/redis.conf"
+    ]
+  },
+  "connections_before": {
+    "total": 32,
+    "client": 27,
+    "max": "100"
+  },
+  "started": 1795603312.778827,
+  "modules_unchanged": true,
+  "exit": 1,
+  "monitor_exit": 0,
+  "finished": 1795605091.909204,
+  "source_unchanged": true,
+  "config_unchanged": true,
+  "go_unchanged": true,
+  "remaining_clients": 0,
+  "hashes": {
+    "test.jsonl": "ddb511e92b1834108472cd24ea5043e6b7bbf06b0d97a69d003cbd04b76d44df",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "locks.jsonl": "11b4227d9c39b3f869cf5612ca5631e2f0d7e834392cbc25f78a5c899a6bbcd8",
+    "monitor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "named_counts": {
+    "pass": 4627,
+    "fail": 2,
+    "skip": 0
+  },
+  "failed": [
+    "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+    "TestBuiltinSkillsConformToTemplate"
+  ],
+  "skipped": [],
+  "unfinished": [],
+  "parse_errors": [],
+  "package_terminal": "fail"
+}

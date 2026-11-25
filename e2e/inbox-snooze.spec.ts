@@ -41,9 +41,13 @@ async function remindNow(session: SnoozeSession, fixture: SnoozeFixture, issue: 
 }
 
 async function switchWorkspace(session: SnoozeSession, from: SnoozeFixture["workspace"], to: SnoozeFixture["workspace"]) {
-  await session.page.getByRole("button", { name: new RegExp(`${from.name}$`) }).click();
+  const navigation = session.page.getByRole("navigation", { name: "Application navigation", exact: true });
+  await expect(navigation.getByRole("button", { name: from.name, exact: true })).toBeVisible();
+  await navigation.getByRole("button", { name: "Switch workspace", exact: true }).click();
   await session.page.getByRole("menuitem").filter({ hasText: to.name }).click();
-  await session.page.getByRole("link", { name: /^Inbox(?:\s+\d+)?$/ }).click();
+  const inbox = navigation.getByRole("link", { name: /^Inbox(?:\s+\d+)?$/ });
+  await expect(inbox).toHaveAttribute("href", new RegExp(`/${to.slug}/inbox$`));
+  await inbox.click();
   await expect(session.page).toHaveURL(new RegExp(`/${to.slug}/inbox`));
 }
 

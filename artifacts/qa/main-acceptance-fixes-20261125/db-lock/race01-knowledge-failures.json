@@ -1,0 +1,135 @@
+[
+  {
+    "Time": "2026-11-25T20:13:09.435634+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgePendingChangesDoNotSignalTarget",
+    "Output": "=== RUN   TestKnowledgePendingChangesDoNotSignalTarget\n"
+  },
+  {
+    "Time": "2026-11-25T20:20:18.39178+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgePendingChangesDoNotSignalTarget",
+    "Output": "--- PASS: TestKnowledgePendingChangesDoNotSignalTarget (428.96s)\n"
+  },
+  {
+    "Time": "2026-11-25T20:20:18.403082+08:00",
+    "Action": "pass",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgePendingChangesDoNotSignalTarget",
+    "Elapsed": 428.96
+  },
+  {
+    "Time": "2026-11-25T20:20:18.403135+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+    "Output": "=== RUN   TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks\n"
+  },
+  {
+    "Time": "2026-11-25T20:20:18.403153+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human",
+    "Output": "=== RUN   TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human\n"
+  },
+  {
+    "Time": "2026-11-25T20:20:45.444133+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human",
+    "Output": "    collaboration_knowledge_invalidation_test.go:164: human purge waited for target: {RequestID: Action: Status:0 Code: ProtocolVersion:0 IssueID: Version:<nil> CurrentVersion:0 Bytes:<nil> MaxBytes:0 EventSeq:<nil>} timeout: context deadline exceeded\n"
+  },
+  {
+    "Time": "2026-11-25T20:20:51.974116+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human",
+    "Output": "--- FAIL: TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human (33.58s)\n"
+  },
+  {
+    "Time": "2026-11-25T20:20:51.976674+08:00",
+    "Action": "fail",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human",
+    "Elapsed": 33.58
+  },
+  {
+    "Time": "2026-11-25T20:20:51.976902+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+    "Output": "=== RUN   TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin\n"
+  },
+  {
+    "Time": "2026-11-25T20:21:20.707467+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+    "Output": "    collaboration_knowledge_invalidation_test.go:159: admin purge waited for target: {Operation:{ID: OrganizationID: ActorKind: ActorID: ActorAuthVersion:0 TargetKind: TargetID: Kind: IdempotencyKey: PayloadHash: Reason: State: ResultCode: Version:0 Confirmation: ReconciliationState: TargetInstallationID: TargetTaskID: BindingID: BindingEpoch:{Int64:0 Valid:false} ExecutionFence:{Int64:0 Valid:false} RootOperationID: AckDeadline:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false} AcceptedAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false} AppliedAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false} ConfirmedAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false} CreatedAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false} UpdatedAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false} ExecutionRuntimeID: ExecutionDispatchedAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finit"
+  },
+  {
+    "Time": "2026-11-25T20:21:20.714222+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+    "Output": "e Valid:false} NextReconcileAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false} EffectsCompletedAt:{Time:0001-01-01 00:00:00 +0000 UTC InfinityModifier:finite Valid:false}} Result:{IssueID: RequestID: Action: Code: CollaborationRevision:0 CreatorUserID: PreviousHandlerUserID: HandlerUserID: PreviousStatus: Status: QueueState: ControlVersion:0 UnsettledRuns:0} MemoryResult:<nil> Replayed:false ParentWakeup:<nil>} timeout: context deadline exceeded\n"
+  },
+  {
+    "Time": "2026-11-25T20:21:32.354989+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+    "Output": "--- FAIL: TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin (40.38s)\n"
+  },
+  {
+    "Time": "2026-11-25T20:21:32.36407+08:00",
+    "Action": "fail",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+    "Elapsed": 40.38
+  },
+  {
+    "Time": "2026-11-25T20:21:32.364115+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+    "Output": "--- FAIL: TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks (73.97s)\n"
+  },
+  {
+    "Time": "2026-11-25T20:21:32.364197+08:00",
+    "Action": "fail",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+    "Elapsed": 73.97
+  },
+  {
+    "Time": "2026-11-25T20:21:32.364368+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+    "Output": "=== RUN   TestKnowledgeFanoutNeverWaitsOnSourceWriter\n"
+  },
+  {
+    "Time": "2026-11-25T20:21:50.54708+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+    "Output": "    collaboration_knowledge_invalidation_test.go:208: scanner acquired a reverse source/candidate lock: context deadline exceeded\n"
+  },
+  {
+    "Time": "2026-11-25T20:21:57.916738+08:00",
+    "Action": "output",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+    "Output": "--- FAIL: TestKnowledgeFanoutNeverWaitsOnSourceWriter (25.55s)\n"
+  },
+  {
+    "Time": "2026-11-25T20:21:57.917182+08:00",
+    "Action": "fail",
+    "Package": "github.com/multica-ai/multica/server/internal/service",
+    "Test": "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+    "Elapsed": 25.55
+  }
+]

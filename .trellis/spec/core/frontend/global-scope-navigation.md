@@ -15,7 +15,7 @@ must remain available with zero, pending or unavailable workspaces.
   presentation is `state === "collapsed" && !isCompact`; compact Sheets always
   use complete navigation. `SIDEBAR_WIDTH_INSET_ICON` from the generic primitive
   owns both the painted/reserved 64px width and Desktop's remaining clearance.
-- `AppSidebar({ navigationWorkspace?, onWorkspaceSelect?,
+- `AppSidebar({ navigationWorkspace?, onWorkspaceSelect?, onAccountResume?,
   workspaceListUnavailable?, onRetryWorkspaces?,
   topSlot?, searchSlot?, versionSlot? })` accepts an authoritative directory
   member or null as its navigation preview. Omitted `navigationWorkspace`
@@ -72,6 +72,20 @@ heading shows a named count only when known and positive; unavailable counts
 are not zero. The notification item is an active native link to
 `/account?view=notifications&filter=unread`; collapse removes the child links
 while the protected count observer and main notification page remain available.
+
+The separate “Return to previous collaboration” action resumes the remembered
+account destination, including selected issue, fragment and scroll, without
+selecting an issue again. It appears exactly once outside the disclosure so
+closed groups and icon-only navigation retain an accessible native button.
+It is disabled in account scope to avoid resetting an editor or focus already
+there. The disclosure and explicit list links keep their existing behavior.
+`onAccountResume` comes from the platform: Web resolves the current viewer's
+`resolveScopePath(..., "account")` and calls `useWebScopeResume`; Desktop calls
+`resumeDesktopScope("account")` without an explicit path. Web invalidates any
+pending workspace lookup at the moment of account-resume intent, before route
+commit, so a late directory response cannot replace that destination. Do not substitute
+Back/Forward or `accountPath({ view })` for this operation.
+
 The standalone `CollaborationNotifications` link keeps its own query for other
 callers. Filtering, exact targets and mounted return restoration follow
 [the notification contract](./collaboration-notifications.md).

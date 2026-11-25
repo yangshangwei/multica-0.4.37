@@ -1,0 +1,153 @@
+{
+  "captured": 1795602957.174186,
+  "case_count": 9,
+  "cases": [
+    {
+      "identity": "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+      "file": "collaboration-cross-client-execution.spec.ts",
+      "title": "collaboration-cross-client-execution.spec.ts / AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "2baf0d89c3e16f740924-57a798cb8c03ff31d703::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "2baf0d89c3e16f740924-40ff4a37c718db2f022d::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "2baf0d89c3e16f740924-62b228e8e2fe12d87faf::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "2baf0d89c3e16f740924-d5cf28a822dcd31e5846::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "c8706aeccaf441d25880-bf60502313c2edcb8554::chromium",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "collaboration-lifecycle-controls.spec.ts / Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "c8706aeccaf441d25880-6cf834f8264130a8d215::chromium",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "collaboration-lifecycle-controls.spec.ts / Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "753e160629e6e5a7052c-f7430be66c7012c9d9a6::chromium",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "collaboration-offline-result-notifications.spec.ts / Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    },
+    {
+      "identity": "753e160629e6e5a7052c-fddac4f88ef9091cfce5::chromium",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "collaboration-offline-result-notifications.spec.ts / Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "original_status": "FAIL",
+      "current_status": "BLOCKED",
+      "reason": "environment/policy: canonical runner requires privileged container and unconfined seccomp/AppArmor; current task forbids security weakening",
+      "historical_probe_cause": "UNKNOWN"
+    }
+  ],
+  "original_inventory_hashes": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/cross-client-01/named-inventory.json",
+      "sha256": "b457e47dbfb9e7d96c5abc9020df2dee23443d968ac0adc34bfbdf12e1e88705"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/named-inventory.json",
+      "sha256": "0bf13ee8d3b06068ff777a20f165056d3a27969b6fda09fc07e0e74fec817934"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lifecycle-01/named-inventory.json",
+      "sha256": "7069c38225a33ff10c2a4ebb56a337539eafbea1393e7fd461f5f69af85beab0"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/offline-notifications-01/named-inventory.json",
+      "sha256": "79c8f2040520be257738de45535cd0373e45f81ad61859b3b99e2900e5c9a94d"
+    }
+  ],
+  "fixture": "e2e/fixtures/collaboration-cross-client-execution.ts",
+  "fixture_sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d",
+  "required_for_original_configuration": [
+    "--privileged",
+    "--security-opt seccomp=unconfined",
+    "--security-opt apparmor=unconfined"
+  ],
+  "readonly_docker_observations": [
+    {
+      "command": [
+        "docker",
+        "info",
+        "--format",
+        "{{json .SecurityOptions}}"
+      ],
+      "exit": 0,
+      "stdout": "[\"name=seccomp,profile=builtin\",\"name=cgroupns\"]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "context",
+        "inspect",
+        "--format",
+        "{{json .Endpoints.docker.Host}}"
+      ],
+      "exit": 0,
+      "stdout": "\"unix:///Users/artisan/.docker/run/docker.sock\"\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "redis:7-alpine",
+        "--format",
+        "{{json .Id}} {{json .Os}} {{json .Architecture}}"
+      ],
+      "exit": 0,
+      "stdout": "\"sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6\" \"linux\" \"arm64\"\n",
+      "stderr": ""
+    }
+  ],
+  "containers_started_for_original_configuration": 0,
+  "policy_changed": false,
+  "backend_eperm_attribution": false
+}

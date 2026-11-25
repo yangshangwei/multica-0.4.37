@@ -1,0 +1,185 @@
+{
+  "reviewed_at": "2026-11-25T13:40:10.238505+00:00",
+  "label": "linux-current02",
+  "functional_verdict": "PASS_BOUNDED_CURRENT_LINUX_MAIN",
+  "case_inventory": [
+    {
+      "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "status": "expected",
+      "timeout": 600000,
+      "results": [
+        {
+          "status": "passed",
+          "duration": 208394,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "startTime": "2026-11-25T13:33:59.847Z",
+    "duration": 210327.94199999998,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "launcher_exit": 0,
+  "launcher_terminal": "completed",
+  "source_unchanged": true,
+  "package_unchanged": true,
+  "receipt_remaining_db_clients": 0,
+  "receipt_cleanup": {
+    "resources": [
+      {
+        "kind": "container",
+        "name": "multica-collaboration-main-2eb390f6-914",
+        "absent": true,
+        "removed": false
+      }
+    ],
+    "errors": [],
+    "child": null,
+    "status": "pass"
+  },
+  "process_cleanup": [
+    {
+      "pid": 51469,
+      "exit": 0
+    },
+    {
+      "pid": 51462,
+      "exit": -15
+    },
+    {
+      "pid": 51457,
+      "exit": 0
+    },
+    {
+      "pid": 51456,
+      "exit": 0
+    }
+  ],
+  "actual_main": {
+    "packaged": true,
+    "appPath": "/opt/multica/resources/app.asar",
+    "name": "Multica",
+    "version": "0.6.7-891-ga7bf6ba70-dirty",
+    "executable": "/opt/multica/multica-desktop",
+    "home": "/root",
+    "userData": "/root/.config/Multica",
+    "platform": "linux",
+    "arch": "arm64",
+    "electron": "39.8.7"
+  },
+  "renderer_url": "file:///opt/multica/resources/app.asar/out/renderer/index.html",
+  "asar_sha256": "921f9abd70d74c70b85947bb668124d00a4db15b9ec06a370ef98d56c0bd92b9",
+  "bundled_cli": {
+    "sha256": "34297bd7be5982641b4dee74f08b7036101cc1dddb47474a0ac227282071dafb",
+    "version": "0.6.7-891-ga7bf6ba70-dirty",
+    "command": [
+      "<packaged-bundled-cli>",
+      "version",
+      "--output",
+      "json"
+    ]
+  },
+  "original_journey_evidence": {
+    "full_process_restart_same_artifact": true,
+    "restored_account_tabs": 1,
+    "control_codes": {
+      "resume": "resumed",
+      "stoppedB": "already_ended",
+      "resumedB": "resumed",
+      "stoppedA": "stop_requested",
+      "refused": "stop_unconfirmed",
+      "stoppedAll": "stop_requested",
+      "partial": "partially_resumed",
+      "stoppedSquad": "already_ended",
+      "resumedSquad": "resumed",
+      "finalStop": "stop_requested"
+    },
+    "directed_workflows_count": 5,
+    "history_assertions_completed": true,
+    "same_issue_handoff_assertions_completed": true,
+    "authority_and_workspace_headers_assertions_completed": true,
+    "native_page_errors": [],
+    "command_terminals": {
+      "init": 1,
+      "login": 1,
+      "navigate": 2,
+      "read": 14,
+      "workflow": 3,
+      "reload": 3,
+      "control": 7,
+      "comment": 2,
+      "cancel": 1,
+      "history": 2,
+      "handoff": 1,
+      "restart": 1,
+      "status": 1,
+      "capture": 1,
+      "close": 1
+    },
+    "timeline_entries": 176,
+    "timeline_truncated": false
+  },
+  "independent_cleanup": {
+    "recorded_process_pids_present": [],
+    "listeners_closed": {
+      "63711": true,
+      "63712": true,
+      "63713": true
+    },
+    "container_absent": {
+      "multica-collaboration-main-2eb390f6-914": true
+    }
+  },
+  "retained_staging_volumes": [
+    {
+      "volume": "multica-gap-full-main-package-acceptance-fixes-4b9d3494a2",
+      "owner": "acceptance-fixes-4b9d3494a2/native/linux-package-volume01",
+      "present": false,
+      "owner_matches": false,
+      "purpose": "staging resource; final disposition requires parent cleanup receipt",
+      "inspection_exit": 1,
+      "absence_proven": true,
+      "inspection_error": false,
+      "final_cleanup_receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/native-volume-final-cleanup.json",
+      "final_disposition": "removed_exit0_and_independently_absent"
+    },
+    {
+      "volume": "multica-gap-full-main-package-current-acceptance-fixes-4b9d3494a2",
+      "owner": "acceptance-fixes-4b9d3494a2/native/linux-current-package-volume",
+      "present": false,
+      "owner_matches": false,
+      "purpose": "staging resource; final disposition requires parent cleanup receipt",
+      "inspection_exit": 1,
+      "absence_proven": true,
+      "inspection_error": false,
+      "final_cleanup_receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/native-volume-final-cleanup.json",
+      "final_disposition": "removed_exit0_and_independently_absent"
+    },
+    {
+      "volume": "multica-native-controller-acceptance-fixes-4b9d3494a2",
+      "owner": "acceptance-fixes-4b9d3494a2/native/alltransport",
+      "present": false,
+      "owner_matches": false,
+      "purpose": "staging resource; final disposition requires parent cleanup receipt",
+      "inspection_exit": 1,
+      "absence_proven": true,
+      "inspection_error": false,
+      "final_cleanup_receipt": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/native-volume-final-cleanup.json",
+      "final_disposition": "removed_exit0_and_independently_absent"
+    }
+  ],
+  "scope_limit": "Complete original Linux Main journey; pending Permit is synthetic,no native provider proof. All3task staging volumes now have exact cleanup receipt,Docker destroy events,and independent absence. Historical failures remain preserved.",
+  "artifact_sha256": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux-current02/receipt.json": "b8bbac1abaaa2b8b9429ed5eb66601a616209281b930339c28c449e41e34dcd4",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux-current02/playwright.json": "8194b47f67af15a333e7e1228c211f88b9b27bb35325f6cebc0707344e61151d",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-current-package.json": "8c659d4f6e0d5cd8b3ae5673b770ef060f526c681b2c486a63f37c3f875e9084",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source-current-postpackage.json": "fae4c892381d2bf2816de6627ab99941a6288b273391855f6ad7f4a7e698c729"
+  },
+  "tests_run_by_reviewer": false
+}

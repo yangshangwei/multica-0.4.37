@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_REASSEMBLY_ONLY",
+  "reviewed_at": "2026-11-25T11:36:36.025569+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/reassemble-review-request.json",
+  "request_sha256": "10f36c8e09e9c9dd979316d7c19b6ed9690cd97bbe321404a3fa4522f5e607d8",
+  "scope": "Repair only failed stock dependency collector using actual bound pnpm inventory; same CLI/frontend/Electron inputs; new outputs02 keep failed originals",
+  "bindings": {
+    "status": "review_requested",
+    "scope": "Repair only failed stock dependency collector using actual bound pnpm inventory; same CLI/frontend/Electron inputs; new outputs02 keep failed originals",
+    "commands": [
+      [
+        "/opt/homebrew/bin/python3",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/reassemble.py",
+        "linux"
+      ],
+      [
+        "/opt/homebrew/bin/python3",
+        "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/reassemble.py",
+        "mac"
+      ]
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/reassemble.py": "7e2d3a0d896630e2119f8acae4dfdb3f224d2fc36b68ec56ca2210ae4b55f4ee",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/inventory.py": "a5e9101247935ef40c86625214442d144217dde2c25ef7eddb2dcbbf53373742",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "inventory": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/pnpm-inventory01.json",
+      "sha256": "8bdbef89a2399e1448dbeb869961ae6c1932d2b40dabadc5a4fc879cf1272841",
+      "command": "pnpm list --prod --json --depth Infinity --silent --loglevel=error",
+      "cwd": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/source01/apps/desktop",
+      "exit": 0
+    },
+    "inputs": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-package-inputs.json": "9fa3d4c029b1080025b4ec1cdb314fb31922c8ae1fca2a5701c501644dfdea04",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-package-inputs.json": "5b4ce9178613ccee907040a04093bef5827310b7699880f7668ede3cbe80d1d3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-dependencies.json": "deaa824b14f07497744d2e02c61389ea65ab8b7e511d025bf9552fac52e7cb37",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-dependencies.json": "b1b3acfe380c635ac3b072c591bc39b9e0d6f17678d89bfa6f3e4ea1ac8fd09e",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/protocol-before-preparation.json": "c7bdfcd5990eafdcdca7ae95f673f430d43230b4df99435c348c84f4a0b196ee"
+    }
+  },
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "allowed_commands": [
+    [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/reassemble.py",
+      "linux"
+    ],
+    [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/reassemble.py",
+      "mac"
+    ]
+  ],
+  "basis": [
+    "Only collector selection is changed: input stage and Electron distribution manifests are checked against failed-preparation inputs, and output02 must be fresh.",
+    "inventory.py rebinds actual bound pnpm production graph to already-selected physical package closure, validates exact dependency edge sources, refuses missing/unselected nodes and requires full selected-node coverage.",
+    "Read-only inventory command wrapper allows only exact pnpm list and workspace-root exec pwd; no package install or new dependency.",
+    "Actual inventory and both closures contain builder-util-runtime9.7.0. No synthetic9.5.1 node is fabricated to satisfy the failed collector.",
+    "ASAR all-member integrity and exact product out/resources comparisons remain; original failures retained.",
+    "macOS path still checks captured protocol baseline and restores only exact owned additions; Linux branch makes no protocol calls. All request digests match."
+  ],
+  "conditions": [
+    "Serial parent-coordinated macOS execution; preserve the supplied captured baseline and scope limitation.",
+    "Package assembly alone is not Main runtime acceptance."
+  ],
+  "not_cleared": [
+    "Main launch/runtime",
+    "Installer/release/publication",
+    "Whole-task initial protocol restoration"
+  ]
+}

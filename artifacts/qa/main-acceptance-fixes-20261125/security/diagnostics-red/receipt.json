@@ -1,0 +1,39 @@
+{
+  "argv": [
+    "/bin/bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/tools/go/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^(TestFetchGitHubTreeErrorDiagnostics|TestFetchFromSkillsShForbiddenDoesNotAssumeRateLimit)$",
+    "./internal/handler"
+  ],
+  "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/security/red/server",
+  "source": "red",
+  "exit": 1,
+  "started_unix": 1795600701.116919,
+  "ended_unix": 1795600751.5295548,
+  "go_sha256": "20e07ffb4f08faaf125e413db024b6e988d3ec2799dcb3568a720d14be0ad133",
+  "source_changes": [],
+  "stdout_sha256": "cf330f9c92e092ccf2f3e05e4bf6fa1a9c0ddb6b52a53db9fd8791cc89af0f26",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "environment_keys": [
+    "DATABASE_URL",
+    "GOCACHE",
+    "GOFLAGS",
+    "GOMAXPROCS",
+    "GOMODCACHE",
+    "GOPATH",
+    "GOTELEMETRY",
+    "GOTMPDIR",
+    "GOTOOLCHAIN",
+    "HOME",
+    "JWT_SECRET",
+    "LANG",
+    "PATH",
+    "TMPDIR"
+  ]
+}

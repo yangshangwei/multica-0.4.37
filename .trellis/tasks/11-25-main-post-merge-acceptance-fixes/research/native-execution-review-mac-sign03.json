@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_MAC_ADHOC_SIGNING_ONLY",
+  "reviewed_at": "2026-11-25T12:18:01.786069+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/mac-sign-review-request.json",
+  "request_sha256": "8170dfbe92809825d49550f9b6d5235d4ca6a0e2c49d1486142d2e08868291e9",
+  "scope": "Complete localad-hoc signing after actualassembly02 failed from emptyCSC_LINK interpreted ascwd; no personalcertificate/network, no productbyteschange",
+  "bindings": {
+    "scope": "Complete localad-hoc signing after actualassembly02 failed from emptyCSC_LINK interpreted ascwd; no personalcertificate/network, no productbyteschange",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_mac.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_mac.py": "37ed898d67b48b17e8b83eb2cb1ededb8c9b4f55abd3818da0afa120ef6412e0",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/sign_mac.mjs": "5805f73c912bf995e8f556b048242c28e8f34b0b9e913fffda189061e89f9b7a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "inputs": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-package-inputs.json": "9fa3d4c029b1080025b4ec1cdb314fb31922c8ae1fca2a5701c501644dfdea04",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/mac-preparation-terminal02.json": "393748254ee7f278bda141c4e6209f0bcbb8c0730cd943fb84213ff96560172f",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/protocol-before-preparation.json": "c7bdfcd5990eafdcdca7ae95f673f430d43230b4df99435c348c84f4a0b196ee"
+    },
+    "checks": "Beforecopy verifies everyASAR hash+allproductbytes, copyexact, signusingalreadyinstalled@electron/osx-sign, ignoreunpackedCLI; codesign--verify--deep--strict; compareasar+unpackedunchanged; originalfailurepreserved",
+    "output": "package-mac03, no newdependencies"
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/finish_mac.py"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "basis": [
+    "All exact request hashes match. Read-only ASAR verification passes47855 packed files and2 unpacked files;497 out/resources product files match reviewed stage inputs. Existing failed package tree745 entries captured in audit. New package-mac03 absent.",
+    "Fresh copy preserves failed package02; no dependency install or personal certificate. Installed osx-sign code with identity=- and identityValidation=false bypasses keychain identity search; preEmbedProvisioningProfile=false avoids profile discovery; timestamp=none avoids timestamp service.",
+    "Frozen entitlements and locally installed signing library are reused. ASAR/unpacked CLI comparison and codesign --verify --deep --strict remain mandatory before signed_verified.",
+    "Existing exact protocol getter/restoration helper bytes unchanged. It requires captured baseline equality before copying and restores only the enumerated package-mac03 app addition; exact final snapshot equality required."
+  ],
+  "conditions": [
+    "Parent serializes macOS protocol-sensitive work. If current registration/default state differs from the captured baseline, preflight must stop; do not broaden recovery ownership.",
+    "Whole-task initial protocol state remains UNPROVEN, as documented in protocol-restoration-review.json. This approval preserves only the captured native baseline.",
+    "Preserve failed preparation02/logs and sign03 terminal result. Reverify old input tree, new signed product/tool/ASAR bindings and exact protocol state after signing.",
+    "This admits local signing only. Main runtime/installer/release acceptance is not cleared; a separate exact Mac Main request is needed. Frozen source01 excludes later UI and comment fixes."
+  ],
+  "tools": {
+    "/usr/bin/codesign": {
+      "sha256": "de395f0ff80209a5f14bde83eb21ef42c9840767d5c3bf8b522520fae8c6b533",
+      "realpath": "/usr/bin/codesign"
+    },
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node": {
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "realpath": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node"
+    },
+    "/opt/homebrew/bin/python3": {
+      "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+      "realpath": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+    }
+  },
+  "verification": {
+    "request_hashes_and_asar_product_comparison": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  },
+  "evidence": [
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-mac-sign03-assets.json",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/protocol-restoration-review.json"
+  ]
+}

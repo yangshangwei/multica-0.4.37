@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_LINUX_VOLUME_TRANSPORT_STAGING_ONLY",
+  "reviewed_at": "2026-11-25T12:45:24.156832+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux-volume-review-request.json",
+  "request_sha256": "1d3828b9e9f5b4a3f9a99fefb2ace555211c531dc7b0345999d37b043e5beff9",
+  "bindings": {
+    "scope": "Repair actualDockerhostsharing gap with ownedreadonlypackagevolume; nohostfile-sharing/securitychange",
+    "command": [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_linux_volume.py"
+    ],
+    "files": {
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_linux_volume.py": "1c077329898647e88fbbe302b408d71579f68dfc0ca1ca9579c1b38d6a6a7753",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+    },
+    "package": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-package02.json",
+      "sha256": "d744b5ce34733408616685a81b2c27c9289ea716c8d008b08977919cff77b251"
+    },
+    "diagnostic": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux02/mount-probe.json",
+    "output": "namedownerlabelvolume retainedforMain, readbackfullmanifest; noappstarted, stagedcontainersremoved",
+    "next": "newguard will mountownedvolume+smallsharedcontroller/identities"
+  },
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/stage_linux_volume.py"
+  ],
+  "blocking_findings_open": 0,
+  "issues": [],
+  "adapters_executed_by_reviewer": false,
+  "basis": [
+    "Targeted transport-path review only; previously reviewed Linux package02 product bytes unchanged and input manifest matched request. No package rebuild or host Docker file-sharing/security configuration change.",
+    "Stage creates fresh owner-labelled volume,network-none readonly-rootfs stopped staging containers and uses Docker cp. Nothing is started; readback full file/mode manifest must equal package manifest before staged_verified.",
+    "Updated finally attempts both staging identities,checks owner/image/name and known ID before fallback removal,preserves errors and returns nonzero on cleanup failure. Explicitly retained named volume is staging output for later Main; failed volume/evidence remains owned and recorded.",
+    "Small controller copied to local workspace must match pinned controller manifest. Same original default Docker runtime policy remains for later Main guard review."
+  ],
+  "additional_bindings": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/linux-controller.json": "5a281e4e0de6e28063da151e2be223369ab1030b3a7a58028e9e4fdbe0ec50e1",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/linux02/mount-probe.json": "8b76d3a162163f755dda6334d6b73c85cdfb0f0f5c569214a6f402deb30df1b2",
+    "/usr/local/bin/docker": "d564bccadf2a017ffa5d81c103a950c53b697cc1b7fcf523cc4c2726b440286a"
+  },
+  "conditions": [
+    "Only transport staging is cleared; next Main guard must use the exact owner-labelled volume/package hash and shared controller/synthetic identity paths. Inspect those path changes without reopening unchanged product/package review.",
+    "This request explicitly stages older linux-package02. Do not count that as current C1/comment candidate or run it again merely because staging passes. Prefer binding the completed current package for the next acceptance journey,with a new volume/output label preserving these results.",
+    "No Main/API/DB is started by this command. Preserve Linux02 failure and both source/runner identities; no historical result rewriting."
+  ],
+  "verification": {
+    "hashes": "pass",
+    "python_ast_parse": "pass",
+    "lint": "not_run_read_only_review",
+    "typecheck": "not_run_read_only_review",
+    "tests": "not_run_user_constraint"
+  }
+}

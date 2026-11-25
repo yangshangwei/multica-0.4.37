@@ -1,0 +1,78 @@
+{
+  "schema": 2,
+  "accepted": true,
+  "verdict": "ACCEPT_TIMING_ONLY",
+  "reviewed_at": "2026-11-25T10:56:29.142766+00:00",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/adapter-review-request.json",
+  "request_sha256": "7abe85ffe2a1fe6f47a5f66fc8b0e2d109448490da7ec196eddae7a2217d3ab0",
+  "scope": "One offline actual cached v0.6.7 relay transaction with synthetic409; no API acceptance or package preparation",
+  "allowed_command": [
+    "/opt/homebrew/bin/python3",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/timing_probe.py",
+    "timing01"
+  ],
+  "cwd": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+  "source_manifest": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json",
+    "sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302"
+  },
+  "files": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cli_guard.py": "fe7b222f4394c76b0e768e14d016462140f52ff650581bececf491aa5e2175a9",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/timing_probe.py": "fd921860e6db2e65a6287d0f620f1081652ef2de2296209f63d5f863e006b627",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup.py": "42ba3adee86058bdc04ddfbc626c937aa9ca2616c97cad866177befcebbcd870",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/guard_test.py": "bbe203ffc7f70778c8e2a6e29e50ad7ea6ad01e933f62e11bb84a19581645693",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup_test.py": "b51281ceae41330bb5f5af4fb8e2f67c5fae056dd5c206a9fa6b9dca9f409767"
+  },
+  "relay": {
+    "path": "/Volumes/artisan/.multica-qa/acceptance-fixes-4b9d3494a2/native/bin/relay",
+    "sha256": "b0231b754c1117c599eb60359e24e28ca2f462e48fecd625fa3572e40e7fae7b",
+    "mode": "0755",
+    "build": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/relay-build.json",
+    "build_sha256": "a03e8d74b71a0044f24ccfdb600209fce14e9bd9a47e139672661527ea839331"
+  },
+  "docker": {
+    "path": "/usr/local/bin/docker",
+    "sha256": "d564bccadf2a017ffa5d81c103a950c53b697cc1b7fcf523cc4c2726b440286a",
+    "host": "unix:///Users/artisan/.docker/run/docker.sock",
+    "config": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/timing01/docker-config",
+    "contents": {}
+  },
+  "image": "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+  "checks": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup-tests02.log": "5ce2405e3b2441af970c654c62acbb7baadb5ee5b0770ba3ec412a9f58a39639",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/guard-tests01.log": "e6ec182765cd965f2837d8eeaef5a64af48a104f245cd1a0b7281559194c57c1",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/cleanup-adapter-tests01.log": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/typecheck02.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/lint03.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "blocking_findings_open": 0,
+  "issues": [],
+  "closed_findings": {
+    "N1": "Concrete schema2 request exists; size4079 and exact SHA256 verified. All declared bindings match.",
+    "N2": "Cleanup attempts each resource independently; terminal receipt is written in finally; owned child terminate/wait/kill/wait is bounded; kill fallback preserves FAIL.",
+    "N3": "Exact container/volume creation intents are persisted before Docker mutation; cleanup reconciles exact intent names, validates owner/image/known ID, then removes only those owned resources."
+  },
+  "accepted_subsets": [
+    "One timing01 offline actual cached-v0.6.7 relay transaction using a synthetic token and synthetic409 response, followed by exact owned cleanup."
+  ],
+  "not_cleared": [
+    "Full ten-operation CLI/API run",
+    "Packaged Main preparation",
+    "Packaged Main runtime acceptance"
+  ],
+  "conditions": [
+    "Acceptance applies only to the exact request/command and bytes above. Compare these digests before execution; changed inputs require review of their changes.",
+    "Preserve primary errors and cleanup failures. A synthetic timing PASS is not a product/API or ten-operation acceptance PASS.",
+    "Only the named local Docker socket and new empty task-owned Docker configuration are in scope. Do not inject personal credentials or switch endpoints."
+  ],
+  "verification_performed": [
+    "Read-only inspection of timing_probe.py, cli_guard.py, cleanup.py, guard/cleanup controls and retained control logs.",
+    "Rehashed request, five scripts/tests, five control logs, Docker executable, relay executable/build receipt and source manifest.",
+    "Confirmed relay source hash matches build receipt and the frozen source manifest entry; verified Go compiler hash, ELF Linux/amd64 relay header and0755 mode.",
+    "Confirmed private native/home/tmp roots are nonsymlinks mode0700 and timing01 output does not yet exist."
+  ],
+  "adapters_executed_by_reviewer": false,
+  "full_source_tree_rehashed": false,
+  "full_source_note": "Timing consumes only the bound static relay and cached CLI image; broad frontend/package source acceptance is outside this exact diagnostic request.",
+  "output_note": "Researcher writes only under parent research; parent may copy this exact JSON to native/adapter-review.json. Earlier rejected review is retained separately."
+}

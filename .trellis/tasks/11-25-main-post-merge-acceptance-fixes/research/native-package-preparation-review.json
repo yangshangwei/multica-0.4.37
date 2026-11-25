@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "verdict": "ACCEPT_PREPARATION_ONLY_EXECUTION_DEFERRED",
+  "request_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/package-review-request.json",
+  "request_sha256": "35b990f6722fa661c6ff1a1a09f50ce4d4311e673080c444771de82b5c4b8944",
+  "reviewed_at": "2026-11-25T11:07:08.298775+00:00",
+  "scope": "Offline package preparation only; native launch requires separate adapter. Mac currentlyblocked by concurrent clients registration pending parent ownership coordination.",
+  "allowed_commands": [
+    [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/prepare_packages.py",
+      "source01",
+      "mac"
+    ],
+    [
+      "/opt/homebrew/bin/python3",
+      "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/prepare_packages.py",
+      "source01",
+      "linux"
+    ]
+  ],
+  "files": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/prepare_packages.py": "42139a51618993a616aacf4dce491dc54cb2558861401d2692d0bc8253a00175",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/installed_closure.py": "2db90a51865e76206f99e060cb79bdccc47d77dad4c01c4bedd82223eb107a2c",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/verify_asar.py": "153dadc60ed7fe100da3ed15ec402ea8b97a0674966269fe9c949c60321a0a56",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.py": "462834fb13aab73f09cf819ae8495d1b11a7750111cc3e3ee9532a9d56f5998d",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol.swift": "7be52f5911480fe79f7936732ef2d3f29b2849620f43dc307518d721e7e5446a",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/protocol_test.py": "fdce58dd4ed64239b0361eb5031ba6ef6e2837bd3ae31158184367422789a278",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/freeze.py": "9f4adec0fdeffb4ecf3c22fc22f920302beb3e6347e07cd53bbbcfb5a96a9a7c"
+  },
+  "source": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/source01.json",
+    "sha256": "201f44e743bd8ac351e0c71ee5fcaa3d92ea4a37932234bf0bc4b65e3d165302"
+  },
+  "protocol": {
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/protocol-before-preparation.json": "c7bdfcd5990eafdcdca7ae95f673f430d43230b4df99435c348c84f4a0b196ee",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/protocol-after-source-freeze.json": "d8b24b3e4a72b3afbb875d1a2014488ba2ca684dafcda2f13365bc8a843ff5a7",
+    "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/artifacts/qa/main-acceptance-fixes-20261125/native/protocol-concurrent-change.json": "5983554dcf85735c52dab681c0660f8a649b2558e34f1c029334a9afb9f78300"
+  },
+  "checks": {
+    "protocol-tests01.log": "3a315533b81287472852b81ae89b89d0f42abf74b1503c45c2c62712388d3eb1"
+  },
+  "blocking_findings_open": 0,
+  "issues": [],
+  "execution_deferred_until": "Parent finishes clients system-protocol cleanup and serializes this prep; live protocol snapshot must equal the exact recorded baseline before either command. No additional user/product decision is requested.",
+  "approved_operations": [
+    "Build current bound CLI with supported task Go; assemble cached Electron macOS arm64/Linux arm64 packages with publication/notarization disabled.",
+    "Copy and rebind existing installed runtime dependency closure within task paths; verify packed/unpacked member hashes and pinned product inventory.",
+    "After preparation, unregister only enumerated newly added owned app URLs and restore the exact recorded default URL; independently compare complete final snapshot."
+  ],
+  "not_cleared": [
+    "macOS or Linux Main launch/runtime acceptance",
+    "Full CLI API execution: separate cli-review-request still needs CLI1 cleanup repair",
+    "Installer/signing/publishing/update acceptance"
+  ],
+  "verification": [
+    "All seven script hashes, three protocol record hashes, source-manifest hash and protocol-test log hash matched.",
+    "Protocol recovery refuses removed pre-existing entries, unowned added URLs and unowned default changes; only exact allowed URL paths can be unregistered.",
+    "Entrypoint checks exact baseline before build and records preparation and restoration outcomes in finally. Protocol failure returns nonzero.",
+    "Dependency copier selects installed production dependencies, checks frozen physical ownership, copies bytes with source-after checks and reconstructs internal links.",
+    "ASAR checker checks file integrity/block hashes, exact packed ranges, safe links and actual unpacked filesystem inventory. Product out/resources are compared against prepared inputs."
+  ],
+  "boundary_notes": [
+    "Approval concerns constructing and checking source01 artifacts, not granting final integrated candidate acceptance or asserting that preliminary frontend builds prove current source behavior.",
+    "The native baseline is the exact supplied protocol snapshot. Taskwide restoration to an earlier campaign baseline remains parent-owned; do not silently replace either baseline.",
+    "The source-manifest tree is revalidated by the adapter before preparation. This static review rehashed the manifest and reviewed the comparison code; it did not rehash every149209 dependency/output entry.",
+    "Package preparation has no database mutation or product execution. Cached Linux Electron is read-only input, not an old orchestration runner."
+  ],
+  "adapters_executed_by_reviewer": false,
+  "copy_destination": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.omx/private/acceptance-fixes/native/package-review.json"
+}

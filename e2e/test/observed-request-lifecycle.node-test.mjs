@@ -1,0 +1,73 @@
+import assert from "node:assert/strict";
+import { EventEmitter } from "node:events";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+import vm from "node:vm";
+import { URL } from "node:url";
+import ts from "typescript";
+import { expect } from "@playwright/test";
+import { ObservedRequestLifecycle } from "../fixtures/observed-request-lifecycle.ts";
+
+test("drains an admitted response reader that starts after sealing and propagates its late failure", async () => {
+  const lifecycle = new ObservedRequestLifecycle();
+  const request = {};
+  lifecycle.admit(request);
+  lifecycle.seal();
+  let drained = false;
+  const result = lifecycle.drain().then(() => { drained = true; }, error => error);
+  await Promise.resolve();
+  assert.equal(drained, false);
+  assert.equal(lifecycle.includes(request), true);
+  let reject;
+  lifecycle.observe(new Promise((_resolve, fail) => { reject = fail; }));
+  lifecycle.finish(request);
+  await Promise.resolve();
+  assert.equal(drained, false);
+  const error = new Error("late original body became unavailable");
+  reject(error);
+  assert.deepEqual((await result).errors, [error]);
+  await assert.rejects(lifecycle.drain(), failure => failure.errors[0] === error);
+});
+
+test("records post-boundary exclusions without discarding an earlier reader", async () => {
+  const lifecycle = new ObservedRequestLifecycle();
+  const request = {}, excluded = {};
+  lifecycle.admit(request);
+  lifecycle.seal();
+  assert.equal(lifecycle.admit(excluded), false);
+  assert.equal(lifecycle.excludedRequests, 1);
+  assert.equal(lifecycle.includes(excluded), false);
+  let resolve;
+  let consumed = false;
+  lifecycle.observe(new Promise(done => { resolve = done; }).then(() => { consumed = true; }));
+  lifecycle.finish(request);
+  resolve();
+  await lifecycle.drain();
+  assert.equal(consumed, true);
+  assert.deepEqual(lifecycle.failures, []);
+});
+
+test("fails the real snooze final check for an admitted200 body reader arriving after the seal", async () => {
+  const source = readFileSync(new URL("../fixtures/inbox-snooze.ts", import.meta.url), "utf8");
+  const observer = source.slice(source.indexOf("export class SnoozeTraffic"), source.indexOf("export interface SnoozeSession"));
+  const compiled = ts.transpileModule(observer, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } }).outputText;
+  const exports = {};
+  vm.runInNewContext(compiled, { exports, ObservedRequestLifecycle, expect, URL, Error, stamp: () => "test", digest: () => "test-digest" });
+  const page = new EventEmitter();
+  const facts = [];
+  const traffic = new exports.SnoozeTraffic(page, { record: (phase, fact) => { facts.push({ phase, fact }); } }, "late-control");
+  const request = { url: () => "http://127.0.0.1/api/inbox/unread-summary", method: () => "GET", allHeaders: async () => ({}) };
+  page.emit("request", request);
+  traffic.seal();
+  const result = traffic.finalCheck();
+  let reject;
+  const body = new Promise((_resolve, fail) => { reject = fail; });
+  page.emit("response", { url: request.url, request: () => request, status: () => 200, json: () => body });
+  page.emit("requestfinished", request);
+  await Promise.resolve();
+  reject(new Error("Target page, context or browser has been closed"));
+  await assert.rejects(result);
+  assert.deepEqual(Array.from(traffic.errors), ["/api/inbox/unread-summary:client_closed"]);
+  assert(facts.some(fact => fact.phase === "traffic_observation_failed"));
+  assert(!facts.some(fact => fact.phase === "traffic_closed"));
+});

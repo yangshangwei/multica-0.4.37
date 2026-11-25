@@ -1,0 +1,22 @@
+{
+  "exit": 0,
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^TestBuiltinSkillsConformToTemplate$",
+    "./internal/service"
+  ],
+  "classification": "focused pure template check; no database",
+  "source_hashes": {
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md": "27a875cdfba54f31f78f23be509aaca30b10b8ab37344e86eb9d14289a314d9a",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md": "654fdd9c75c20cad3ec4fbbd90aca0a65711b73ed886fe37c079f2eeb623876f"
+  },
+  "files_unchanged": true
+}

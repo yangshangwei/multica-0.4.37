@@ -1,0 +1,50 @@
+{
+  "reviewed_at": "2026-11-25T13:50:23.061304+00:00",
+  "status": "SCOPED_INDEPENDENT_REVIEW_COMPLETE",
+  "release_recommendation": "HOLD",
+  "task_status": "in_progress",
+  "remaining_product_failures": [
+    "D02",
+    "D11"
+  ],
+  "external_failure": [
+    "D10"
+  ],
+  "original21_counts": {
+    "PASS": 11,
+    "BLOCKED": 9,
+    "FAIL": 1
+  },
+  "main_review": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/native-execution-review-main-final-addendum.json",
+    "sha256": "7bf74602016a60bb65a677b28f270da577c483d28f773f89b5779238f51e0a81"
+  },
+  "resource_review": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/global-resource-independent-audit.json",
+    "sha256": "022f298300ec296b0287fa78a6c45ad6ae9db03a0db5126f614f14047391339d"
+  },
+  "identity_map": {
+    "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/original-21-dispositions.json",
+    "sha256": "d2652f635af65f14b8be3d4b7594bfaa1865f54ee21eba83d39b5feebbaf86b1"
+  },
+  "source_reviews": {
+    "comment-final-closure.md": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/comment-final-closure.md",
+      "sha256": "c766b7ea1ac66c9989a88388f1ed2ef342a24cabaf8ac65d8b6a662fd99b5f78"
+    },
+    "c1-final-closure.md": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/c1-final-closure.md",
+      "sha256": "e13b26c0ff970c9cd9e6043ae800fbc65d471064eead0291b2535f85011f8c37"
+    },
+    "c2-snooze-closure.md": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/c2-snooze-closure.md",
+      "sha256": "3ab70f3af31e113f1ae8839a223282aa43b15c2b8b22bf1cbbdb4389962ea0b5"
+    },
+    "security-acceptance-review.md": {
+      "path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37/.trellis/tasks/11-25-main-post-merge-acceptance-fixes/research/security-acceptance-review.md",
+      "sha256": "227284810974d38a20a181e32fbaaa1b4f3d2dff7ab21ffa0539405b501c74ce"
+    }
+  },
+  "no_commits_archive_or_product_edits_by_reviewer": true,
+  "final_review_sha256": "32153cd6b0a892b0d84a865f5b60e2e005b0aad02f88e3579874adfb2fddc9ba"
+}
