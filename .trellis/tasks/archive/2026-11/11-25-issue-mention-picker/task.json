@@ -1,0 +1,41 @@
+{
+  "id": "issue-mention-picker",
+  "name": "issue-mention-picker",
+  "title": "任务详情 @ 提及分类与筛选",
+  "description": "改善大量智能体场景下的任务详情提及选择，参考新建任务选择器，提供分类、搜索、清晰辨识及完整候选浏览。",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "issues",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-25",
+  "completedAt": "2026-11-25",
+  "branch": "main",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "f0a64fdf33a276b1411a7b7fe395908ed58c3dd9",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/editor/extensions/mention-suggestion.tsx",
+    "packages/views/editor/extensions/suggestion-popup.tsx",
+    "packages/views/editor/content-editor.tsx",
+    "packages/views/editor/extensions/index.ts",
+    "packages/views/issues/components/comment-input.tsx",
+    "packages/views/issues/components/reply-input.tsx",
+    "packages/views/issues/components/comment-card.tsx",
+    "packages/views/modals/quick-create-actor-picker-model.ts"
+  ],
+  "notes": "Implementation verified on 2026-11-25. User subsequently authorized commit and push. Work committed directly on main without a PR; archive uses the documented non-PR branch-validation exception. 188 focused tests and 3 Web/Electron journeys passed; see verification.md.",
+  "meta": {
+    "planning_approved": true,
+    "execution_phase": "completed",
+    "verification_report": ".trellis/tasks/archive/2026-11/11-25-issue-mention-picker/verification.md",
+    "delivery": "Direct commit and push to origin/main authorized by user",
+    "baseline_verification": "51 tests passed in 2 focused mention/actor-model suites on 2026-11-25; feature not yet implemented"
+  }
+}
