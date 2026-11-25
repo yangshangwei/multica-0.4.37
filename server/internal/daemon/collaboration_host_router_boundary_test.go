@@ -6,10 +6,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"path/filepath"
 	"strings"
 	"sync/atomic"
@@ -179,6 +182,114 @@ func TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements(t *te
 					t.Fatal("the observation lost the original request hash or actual response status")
 				}
 			})
+		}
+	}
+}
+
+func TestCollaborationHostHarnessPermitDiagnostics(t *testing.T) {
+	for _, kind := range []string{"canceled", "deadline", "response"} {
+		t.Run(kind, func(t *testing.T) {
+			entered := make(chan struct{})
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				_, _ = io.Copy(io.Discard, r.Body)
+				close(entered)
+				if kind == "response" {
+					w.WriteHeader(http.StatusServiceUnavailable)
+					return
+				}
+				<-r.Context().Done()
+			}))
+			defer server.Close()
+			ctx, cancel := context.WithCancel(t.Context())
+			if kind == "deadline" {
+				cancel()
+				ctx, cancel = context.WithTimeout(t.Context(), 100*time.Millisecond)
+			}
+			defer cancel()
+			if kind == "canceled" {
+				go func() { <-entered; cancel() }()
+			}
+			request, err := http.NewRequestWithContext(ctx, http.MethodPost,
+				server.URL+"/api/collaboration/runtime/runs/run/permit?private-token=do-not-record", strings.NewReader(`{"protocol_version":3}`))
+			if err != nil {
+				t.Fatal(err)
+			}
+			transport := &collaborationHostTransport{capacity: &collaborationCapacityObserver{}}
+			response, err := transport.RoundTrip(request)
+			if response != nil {
+				defer response.Body.Close()
+			}
+			if (err == nil) != (kind == "response") {
+				t.Fatalf("unexpected transport result: %v", err)
+			}
+			wire, err := json.Marshal(transport.facts)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var facts []map[string]any
+			if err := json.Unmarshal(wire, &facts); err != nil || len(facts) != 1 {
+				t.Fatalf("missing fact: %s", wire)
+			}
+			fact := facts[0]
+			want := kind
+			if kind == "response" {
+				want = "none"
+			}
+			if fact["transport_error"] != want || fact["request_context"] != want {
+				t.Fatalf("missing safe cause: %s", wire)
+			}
+			start, ok := fact["started_ms"].(float64)
+			end, endOK := fact["completed_ms"].(float64)
+			if !ok || !endOK || start < 0 || end < start {
+				t.Fatalf("missing monotonic interval: %s", wire)
+			}
+			if strings.Contains(string(wire), "do-not-record") || strings.Contains(string(wire), server.URL) {
+				t.Fatalf("private request escaped: %s", wire)
+			}
+			wantStatus := 0
+			if kind == "response" {
+				wantStatus = http.StatusServiceUnavailable
+			}
+			if fact["status"] != float64(wantStatus) {
+				t.Fatalf("status reinterpreted: %s", wire)
+			}
+		})
+	}
+}
+
+func TestCollaborationHostTransportErrorNeverRetainsPrivateText(t *testing.T) {
+	for _, tc := range []struct {
+		err  error
+		want string
+	}{
+		{&url.Error{Op: "Post", URL: "https://private-token.invalid/private", Err: context.Canceled}, "canceled"},
+		{&net.DNSError{Err: "private-token", Name: "private-host", IsTimeout: true}, "timeout"},
+		{errors.New("private-token connection failed"), "transport"},
+	} {
+		if got := collaborationHostTransportError(tc.err); got != tc.want {
+			t.Fatalf("classification %q, want %q", got, tc.want)
+		}
+	}
+}
+
+type collaborationHarnessFailedReader struct{}
+
+func (collaborationHarnessFailedReader) Read([]byte) (int, error) {
+	return 0, errors.New("private stdin failure")
+}
+
+func TestCollaborationHostInputTimelineDistinguishesReadFailure(t *testing.T) {
+	for _, tc := range []struct {
+		reader io.Reader
+		event  string
+	}{
+		{strings.NewReader(""), "stdin_eof"}, {collaborationHarnessFailedReader{}, "stdin_read_failed"},
+	} {
+		ctx, cancel := context.WithCancel(t.Context())
+		transport := &collaborationHostTransport{}
+		transport.watchInput(tc.reader, cancel)
+		if ctx.Err() != context.Canceled || len(transport.events) != 1 || transport.events[0].Event != tc.event {
+			t.Fatalf("incorrect shutdown fact: %+v", transport.events)
 		}
 	}
 }

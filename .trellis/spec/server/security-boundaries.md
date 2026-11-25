@@ -379,3 +379,59 @@ backstop tests must reject before touching services, independent of router wirin
 
 Wrong: `Auth -> user ID -> member caller`. Correct:
 `Auth -> RequireHumanActor -> installation scopes -> membership -> action`.
+
+## Ordinary comment management requires human administrator authority
+
+`UpdateComment` and `DeleteComment` in `handler/comment.go` keep two independent
+permission paths: the resolved author, or a current workspace owner/admin using
+a human-equivalent credential. The admin predicate must combine
+`!isMachineCredentialActor(r)` with the existing role check. A verified `mat_`
+task token or `mcn_` Cloud principal must never inherit its runtime owner's role
+to edit/delete another author's comment. Reuse `actor_guards.go`; do not invent a
+second credential classifier or make the whole route human-only.
+
+Auth discards client-supplied actor source and stamps verified task/Cloud
+provenance. Comment mutations use `commentMutationActor`, not the legacy
+`resolveActor` attribution fallback. Only `VerifiedTaskTokenFromContext` may
+select an agent author; require valid agent/task identities and matching user
+and workspace. An inconsistent task principal without that binding is refused.
+Client agent/task IDs, even a matching existing pair, never grant author rights.
+Other credentials use their authenticated member identity. Human JWT/cookie and `mul_` PAT management retain
+existing behavior. Legitimate agent self-writes remain subject to the existing
+capability, membership and credential lifecycle gates. Cloud's existing member
+author path is unchanged; this rule removes its administrator exception.
+
+Refuse before request body processing, attachment replacement, task cancellation,
+revision writes, notifications or event publication. Successful edits preserve
+original author fields and revision-conflict semantics. An unchanged author does
+not prove the author performed the latest edit: human administrators may still
+change it. Event actor metadata remains the existing operator witness; this
+change does not introduce a durable per-edit audit record.
+
+Generic `UploadFile` with `comment_id` remains a separate association contract:
+current membership and same-workspace comment checks plus independent uploader
+provenance. Do not infer a new author/admin requirement from comment edit/delete
+permissions or classify historical upload observations as fixed by this gate.
+
+Regressions: `TestCommentManagementMachineHandlerBackstop` verifies direct
+handler task/Cloud-source denial; `TestCommentManagementAuthorityHTTP` drives an
+actual HTTP listener and production router in legacy/password modes with real
+local JWT/PAT/mat_ verification, owner/admin/member and self/other-human/other-agent
+matrices, attachment-only edits, spoofed headers, revocation, expiry, actual task
+cancellation, restricted reviewer and workspace/member loss. Denials preserve
+full comment/attachment/issue/task/inbox rows and publish no domain event.
+`TestCommentManagementCloudPrincipalHTTP` exercises the Cloud auth branch with a
+local verifier, not an external Fleet account. Fixtures insert task-token rows;
+`TestCommentManagementClaimedLegacyHTTP` and
+`TestCommentManagementClaimedPasswordHTTP` run the same matrix using the token
+returned by the real daemon claim endpoint, validate its database binding, start
+the task through the daemon API, and cancel it through the ordinary task API.
+They never restore the issued token with an inserted row. No provider runs.
+
+`TestCommentManagementValidActorHintsHTTP` uses existing same-workspace agent/task
+pairs, including terminal tasks and agents owned by the caller, under ordinary
+human and local Cloud credentials. Preserve human self/admin operations with
+those hints while refusing unauthorized agent writes. Operator events and edit
+lineage use the verified mutation identity; task edits obtain source task ID
+from the verified context. Direct task-editor tests must install the verified
+context instead of treating headers as authentication.

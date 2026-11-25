@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -439,6 +440,11 @@ func TestUpdateComment_AutopilotAuthorityReStampedToEditingTask(t *testing.T) {
 		})
 		r.Header.Set("X-Agent-ID", fx.LeaderAgentID)
 		r.Header.Set("X-Task-ID", editTaskID)
+		r.Header.Set("X-Actor-Source", "task_token")
+		r = r.WithContext(auth.WithVerifiedTaskToken(r.Context(), db.TaskToken{
+			ID: parseUUID(editTaskID), TaskID: parseUUID(editTaskID), AgentID: parseUUID(fx.LeaderAgentID),
+			UserID: parseUUID(testUserID), WorkspaceID: parseUUID(testWorkspaceID),
+		}))
 		r = withURLParam(r, "commentId", commentID)
 		testHandler.UpdateComment(w, r)
 		if w.Code != http.StatusOK {

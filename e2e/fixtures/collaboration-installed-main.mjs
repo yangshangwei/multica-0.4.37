@@ -525,7 +525,7 @@ async function dispatch(message) {
       assert.equal(data.user.id, message.userId);
       authenticatedUserId = message.userId;
       await expect(username).toHaveCount(0);
-      await expect(page.getByRole("heading", { name: "Collaboration", exact: true })).toBeVisible({ timeout: 45_000 });
+      await expect(page.locator("main > header").getByRole("heading", { name: "Current handling", exact: true })).toBeVisible({ timeout: 45_000 });
       return { status: response.status(), userId: data.user.id, actualPasswordForm: true };
     }
     case "navigate": {

@@ -28,6 +28,7 @@ const state = vi.hoisted(() => ({
   activeWorkspaceSlug: "acme" as string | null,
   lastWorkspaceSlug: "acme" as string | null,
   switchWorkspace: vi.fn(),
+  resumeAccount: vi.fn(),
   retryWorkspaceList: vi.fn(),
   workspaceError: false,
   wsList: [] as { id: string; slug: string; name: string }[] | undefined,
@@ -55,6 +56,7 @@ vi.mock("@/platform/navigation", () => ({
     <>{children}</>
   ),
   routeContentLinkPath: vi.fn(),
+  resumeDesktopScope: state.resumeAccount,
 }));
 
 vi.mock("@multica/core/paths", () => ({
@@ -91,13 +93,15 @@ vi.mock("@multica/views/platform", () => ({
 // Each workspace-scoped component gets a marker so the assertions can tell
 // which of them the shell decided to mount.
 vi.mock("@multica/views/layout", () => ({
-  AppSidebar: ({ navigationWorkspace, onWorkspaceSelect, workspaceListUnavailable, onRetryWorkspaces }: {
+  AppSidebar: ({ navigationWorkspace, onWorkspaceSelect, onAccountResume, workspaceListUnavailable, onRetryWorkspaces }: {
     navigationWorkspace?: { slug: string } | null;
     onWorkspaceSelect?: (slug: string) => void;
+    onAccountResume?: () => void;
     workspaceListUnavailable?: boolean;
     onRetryWorkspaces?: () => void;
   }) => <nav data-testid="app-sidebar" data-navigation-workspace={navigationWorkspace?.slug ?? "none"}>
     <button type="button" onClick={() => onWorkspaceSelect?.("other")}>Resume other workspace</button>
+    <button onClick={onAccountResume}>Return to previous collaboration</button>
     {workspaceListUnavailable && <button type="button" onClick={onRetryWorkspaces}>Retry workspaces</button>}
   </nav>,
   GlobalShortcuts: () => <div data-testid="global-shortcuts" />,
@@ -303,4 +307,12 @@ describe("DesktopShell workspace gating", () => {
     expect(queryByTestId("app-sidebar")).not.toBeNull();
     expect(queryByTestId("search-command")).toBeNull();
   });
+});
+
+it("wires collaboration return to the existing no-path native resume operation", () => {
+  state.resumeAccount.mockClear();
+  const view = renderShell();
+  fireEvent.click(view.getByRole("button", { name: "Return to previous collaboration" }));
+  expect(state.resumeAccount).toHaveBeenCalledExactlyOnceWith("account");
+  expect(state.switchWorkspace).not.toHaveBeenCalled();
 });

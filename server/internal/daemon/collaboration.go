@@ -152,15 +152,22 @@ func (d *Daemon) initializeCollaborationPoller(ctx context.Context) (*collaborat
 		}
 	}
 	available := false
+	var probeErr error
 	if config.Host != nil {
 		available = hostErr == nil && p.host != nil && p.host.Probe(ctx) == nil
 	} else {
-		available = p.controller.Probe(ctx) == nil
+		probeErr = p.controller.Probe(ctx)
+		available = probeErr == nil
 	}
 	if d.managed != nil && d.client.managed != nil && available {
 		p.enabled = true
 	} else {
-		d.logger.Warn("collaboration runtime unavailable", "reason", "managed_identity_or_execution_capability_required")
+		var probe *collaborationrun.NamespaceProbeError
+		if errors.As(probeErr, &probe) {
+			d.logger.Warn("collaboration runtime unavailable", "reason", "managed_identity_or_execution_capability_required", "probe_error", probe.Error())
+		} else {
+			d.logger.Warn("collaboration runtime unavailable", "reason", "managed_identity_or_execution_capability_required")
+		}
 	}
 	return p, reserved, nil
 }

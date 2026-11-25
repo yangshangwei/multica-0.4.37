@@ -6,8 +6,9 @@ import { tmpdir } from "node:os";
 import { extname, join, resolve } from "node:path";
 import { _electron as electron, request as playwrightRequest, test, expect, type Page, type ElectronApplication, type Cookie } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import { openSidebarNavigation } from "./fixtures/sidebar-navigation";
 
-const report = resolve(".omx/reports/admin-resource-publishing/qa");
+const report = resolve(process.env.E2E_RESOURCE_PUBLISHING_OUTPUT_DIR ?? ".omx/reports/admin-resource-publishing/qa");
 const apiURL = process.env.NEXT_PUBLIC_API_URL!;
 const webURL = process.env.PLAYWRIGHT_BASE_URL!;
 type Resource = { key: string; version: string; content_digest: string; state: string; source: string };
@@ -145,7 +146,10 @@ async function nativeConsumer(api: TestApiClient, workspace: { id: string; slug:
     const errors: string[] = []; page.on("pageerror", error => errors.push(error.message));
     await page.context().addInitScript(token => { localStorage.setItem("multica_token", token!); localStorage.setItem("multica:chat:isOpen", "false"); localStorage.setItem("theme", "dark"); }, api.getToken());
     await page.reload();
-    await page.getByRole("link", { name: "Skills", exact: true }).click();
+    const navigation = await openSidebarNavigation(page);
+    const resources = navigation.getByRole("button", { name: "Resources & connections", exact: true });
+    if (await resources.getAttribute("aria-expanded") !== "true") await resources.click();
+    await navigation.getByRole("link", { name: "Skills", exact: true }).click();
     await page.getByRole("link", { name: "From template", exact: true }).click();
     await addSkill(page, key, `native-${key}`);
     await capture(page, "native-skill-created");

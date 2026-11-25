@@ -12,6 +12,7 @@ import { useWebScopeResume } from "./navigation";
 interface WebSidebarNavigation {
   navigationWorkspace: Workspace | null;
   onWorkspaceSelect(slug?: string): void;
+  onAccountResume(): void;
   workspaceListUnavailable: boolean;
   onRetryWorkspaces(): void;
 }
@@ -70,6 +71,15 @@ export function WebScopeShell({ children }: { children: ReactNode }) {
     if (loaded) resume(loaded);
   }, [owner, scope, routeSlug, selectedSlug, ready, workspaces, refetch, navigation, resume]);
 
+  const onAccountResume = useCallback(() => {
+    const state = useScopeHistoryStore.getState();
+    if (!owner || state.owner !== owner) return;
+    request.current += 1;
+    if (scope === "account") return;
+    const destination = resolveScopePath(state, owner, "account");
+    if (destination) resume(destination);
+  }, [owner, scope, resume]);
+
   const onRetryWorkspaces = useCallback(() => {
     if (!owner || useScopeHistoryStore.getState().owner !== owner) return;
     request.current += 1;
@@ -78,9 +88,10 @@ export function WebScopeShell({ children }: { children: ReactNode }) {
   const sidebar = useMemo<WebSidebarNavigation>(() => ({
     navigationWorkspace,
     onWorkspaceSelect: (slug) => { void onWorkspaceSelect(slug); },
+    onAccountResume,
     workspaceListUnavailable: unavailable,
     onRetryWorkspaces,
-  }), [navigationWorkspace, onWorkspaceSelect, unavailable, onRetryWorkspaces]);
+  }), [navigationWorkspace, onWorkspaceSelect, onAccountResume, unavailable, onRetryWorkspaces]);
 
   // One element tree for every state. Viewer discovery must not remount a
   // routed editor, and the route layouts own all sidebar presentation.

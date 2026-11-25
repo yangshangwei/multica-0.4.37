@@ -33,6 +33,7 @@ import { useDesktopUnreadBadge } from "@multica/views/platform";
 import {
   DesktopNavigationProvider,
   routeContentLinkPath,
+  resumeDesktopScope,
 } from "@/platform/navigation";
 import { useWindowOverlayStore } from "@/stores/window-overlay-store";
 import { TabBar } from "./tab-bar";
@@ -347,6 +348,7 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
             <WindowToolbar />
             <AppSidebar
               navigationWorkspace={navigationWorkspace}
+              onAccountResume={() => { resumeDesktopScope("account"); }}
               onWorkspaceSelect={(targetSlug) => {
                 const store = useTabStore.getState();
                 if (store.activeScope === "workspace" && store.activeWorkspaceSlug === targetSlug) return;

@@ -5,9 +5,11 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -67,6 +69,27 @@ func collaborationHostHarnessContextState(ctx context.Context) string {
 	}
 }
 
+func collaborationHostTransportError(err error) string {
+	switch {
+	case err == nil:
+		return "none"
+	case errors.Is(err, context.DeadlineExceeded):
+		return "deadline"
+	case errors.Is(err, context.Canceled):
+		return "canceled"
+	}
+	var network net.Error
+	if errors.As(err, &network) && network.Timeout() {
+		return "timeout"
+	}
+	return "transport"
+}
+
+type collaborationHostTimelineEvent struct {
+	Event     string  `json:"event"`
+	ElapsedMS float64 `json:"elapsed_ms"`
+}
+
 type collaborationHostRouterInput struct {
 	collaborationRouterHarnessInput
 	RuntimeConfigEpoch string
@@ -116,20 +139,24 @@ func init() {
 // Keep observations content-free. The real transport still sends/receives the
 // original request and response; no fixture supplies permits or terminal facts.
 type collaborationHostHTTPFact struct {
-	Operation           string `json:"operation"`
-	RunID               string `json:"run_id"`
-	ProtocolVersion     int    `json:"protocol_version"`
-	Containment         string `json:"containment"`
-	AttemptSeq          string `json:"attempt_seq,omitempty"`
-	LaunchHash          string `json:"launch_hash,omitempty"`
-	Kind                string `json:"kind,omitempty"`
-	State               string `json:"state,omitempty"`
-	Status              int    `json:"status"`
-	EventID             string `json:"event_id,omitempty"`
-	ReceiptID           string `json:"receipt_id,omitempty"`
-	RequestSHA256       string `json:"request_sha256,omitempty"`
-	ResponseSHA256      string `json:"response_sha256,omitempty"`
-	AcknowledgementHeld bool   `json:"acknowledgement_held,omitempty"`
+	Operation           string  `json:"operation"`
+	RunID               string  `json:"run_id"`
+	ProtocolVersion     int     `json:"protocol_version"`
+	Containment         string  `json:"containment"`
+	AttemptSeq          string  `json:"attempt_seq,omitempty"`
+	LaunchHash          string  `json:"launch_hash,omitempty"`
+	Kind                string  `json:"kind,omitempty"`
+	State               string  `json:"state,omitempty"`
+	Status              int     `json:"status"`
+	StartedMS           float64 `json:"started_ms"`
+	CompletedMS         float64 `json:"completed_ms"`
+	TransportError      string  `json:"transport_error"`
+	RequestContext      string  `json:"request_context"`
+	EventID             string  `json:"event_id,omitempty"`
+	ReceiptID           string  `json:"receipt_id,omitempty"`
+	RequestSHA256       string  `json:"request_sha256,omitempty"`
+	ResponseSHA256      string  `json:"response_sha256,omitempty"`
+	AcknowledgementHeld bool    `json:"acknowledgement_held,omitempty"`
 }
 
 type collaborationHostTransport struct {
@@ -137,10 +164,38 @@ type collaborationHostTransport struct {
 	mu              sync.Mutex
 	facts           []collaborationHostHTTPFact
 	holdReceiptACKs bool
+	origin          time.Time
+	events          []collaborationHostTimelineEvent
+}
+
+func (o *collaborationHostTransport) elapsedMS() float64 {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	if o.origin.IsZero() {
+		o.origin = time.Now()
+	}
+	return float64(time.Since(o.origin)) / float64(time.Millisecond)
+}
+
+func (o *collaborationHostTransport) event(name string) {
+	elapsed := o.elapsedMS()
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	o.events = append(o.events, collaborationHostTimelineEvent{Event: name, ElapsedMS: elapsed})
+}
+
+func (o *collaborationHostTransport) watchInput(reader io.Reader, cancel context.CancelFunc) {
+	_, err := io.Copy(io.Discard, reader)
+	if err == nil {
+		o.event("stdin_eof")
+	} else {
+		o.event("stdin_read_failed")
+	}
+	cancel()
 }
 
 func (o *collaborationHostTransport) RoundTrip(r *http.Request) (*http.Response, error) {
-	fact := collaborationHostHTTPFact{Operation: filepath.Base(r.URL.Path)}
+	fact := collaborationHostHTTPFact{Operation: filepath.Base(r.URL.Path), StartedMS: o.elapsedMS()}
 	observe := r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/api/collaboration/runtime/runs/") &&
 		(fact.Operation == "claim" || fact.Operation == "permit" || fact.Operation == "termination" || fact.Operation == "proof" || fact.Operation == "outcome")
 	if observe && r.GetBody != nil {
@@ -177,6 +232,9 @@ func (o *collaborationHostTransport) RoundTrip(r *http.Request) (*http.Response,
 	}
 	response, err := o.capacity.RoundTrip(r)
 	if observe {
+		fact.CompletedMS = o.elapsedMS()
+		fact.TransportError = collaborationHostTransportError(err)
+		fact.RequestContext = collaborationHostHarnessContextState(r.Context())
 		if response != nil {
 			fact.Status = response.StatusCode
 		}
@@ -204,6 +262,7 @@ func (o *collaborationHostTransport) RoundTrip(r *http.Request) (*http.Response,
 }
 
 func runCollaborationHostRouterHarness() error {
+	origin := time.Now()
 	var input collaborationHostRouterInput
 	if err := json.NewDecoder(io.LimitReader(os.Stdin, 64<<10)).Decode(&input); err != nil {
 		return fmt.Errorf("host fixture input was not valid JSON")
@@ -244,7 +303,7 @@ func runCollaborationHostRouterHarness() error {
 	d.setAgentVersion("claude", "fixture-1")
 	d.managed = &managedDaemonLifecycle{homeDirectory: input.Directory, store: &ManagedCredentialStore{DeploymentID: input.DeploymentID, InstallationID: input.InstallationID}}
 	sem := newTaskSlotSemaphore(d.cfg.MaxConcurrentTasks)
-	transport := &collaborationHostTransport{capacity: &collaborationCapacityObserver{daemon: d, slots: sem}, holdReceiptACKs: input.HoldReceiptACKs}
+	transport := &collaborationHostTransport{capacity: &collaborationCapacityObserver{daemon: d, slots: sem}, holdReceiptACKs: input.HoldReceiptACKs, origin: origin}
 	d.client.client.Transport = transport
 	d.client.enableManagedTransport()
 	if err := d.client.installManagedCredential(input.WorkspaceID, input.Credential); err != nil {
@@ -274,7 +333,7 @@ func runCollaborationHostRouterHarness() error {
 	if err != nil {
 		return fmt.Errorf("host fixture capability registration was refused: %w", err)
 	}
-	ready := map[string]any{"ready": true, "protocol_version": identity.ProtocolVersion,
+	ready := map[string]any{"ready": true, "elapsed_ms": transport.elapsedMS(), "protocol_version": identity.ProtocolVersion,
 		"execution_mode": identity.Containment, "preparation_version": capabilities.PreparationVersion,
 		"runtime_config_epoch": registration.RuntimeConfigEpoch, "max_concurrent_tasks": 1, "os": runtime.GOOS, "arch": runtime.GOARCH,
 		"agent_timeout_ms": agentTimeout.Milliseconds(), "hold_receipt_acks": input.HoldReceiptACKs}
@@ -288,9 +347,10 @@ func runCollaborationHostRouterHarness() error {
 		_, _ = io.Copy(io.Discard, os.Stdin)
 		return json.NewEncoder(os.Stdout).Encode(map[string]any{"claims": 0, "invalid_capacity": false, "available_slots": 1, "active_tasks": 0, "http": []collaborationHostHTTPFact{}})
 	}
-	go func() { _, _ = io.Copy(io.Discard, os.Stdin); cancel() }()
+	go transport.watchInput(os.Stdin, cancel)
 	var work sync.WaitGroup
 	d.runBatchPoller(ctx, ctx, sem, make(chan struct{}, 1), &work)
+	transport.event("poller_stopped")
 	var diagnostics map[string]any
 	if input.Diagnostics {
 		pollerContext := collaborationHostHarnessContextState(ctx)
@@ -298,11 +358,13 @@ func runCollaborationHostRouterHarness() error {
 		diagnostics = map[string]any{"poller_context": pollerContext, "ledger_readable": ledgerErr == nil}
 	}
 	work.Wait()
+	transport.event("workers_stopped")
 	transport.mu.Lock()
 	facts := append([]collaborationHostHTTPFact(nil), transport.facts...)
+	events := append([]collaborationHostTimelineEvent(nil), transport.events...)
 	transport.mu.Unlock()
 	summary := map[string]any{"claims": transport.capacity.claims.Load(), "invalid_capacity": transport.capacity.bad.Load(),
-		"available_slots": len(sem), "active_tasks": d.activeTasks.Load(), "http": facts}
+		"available_slots": len(sem), "active_tasks": d.activeTasks.Load(), "http": facts, "timeline": events}
 	if input.Diagnostics {
 		summary["diagnostics"] = diagnostics
 	}

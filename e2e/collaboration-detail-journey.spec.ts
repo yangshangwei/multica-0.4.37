@@ -308,7 +308,7 @@ for (const platform of ["web", "desktop"] as const) {
         if (await history.getAttribute("aria-expanded") !== "true") await history.click();
         await submissionRecord(creator, first.id).getByRole("link", { name: copy.sourceComment, exact: true }).click();
         await expect(anchor).toBeFocused();
-        evidence.restored_scroll = await assertJourneyScopeRestoration(creator, id, fixture.shared.issue.title);
+        evidence.restored_scroll = await assertJourneyScopeRestoration(creator, id, fixture.shared.issue.title, fixture.workspace.name);
         expect((await readJourneyHistory(fixture.creator, id)).items[1]).toEqual(returnedFirst);
       });
 

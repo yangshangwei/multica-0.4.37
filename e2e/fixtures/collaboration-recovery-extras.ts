@@ -666,7 +666,7 @@ async function removeParticipant(fixture: ExtrasFixture, actor: RecoveryActor, e
   return receipt;
 }
 async function deniedUI(session: RecoverySession, fixture: ExtrasFixture, privateTexts: string[]) {
-  await expect(session.page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible({ timeout: 35_000 });
+  await expect(session.page.locator('[data-tab-scroll-root="account-detail"]').locator(":scope > [role=alert]").getByText("You no longer have access to this issue.", { exact: true })).toBeVisible({ timeout: 35_000 });
   await expect(session.page.getByRole("heading", { name: fixture.surface.title, exact: true })).toHaveCount(0);
   await expect(session.page.getByRole("dialog")).toHaveCount(0); await expect(composer(session.page)).toHaveCount(0);
   for (const text of privateTexts) await expect(session.page.getByText(text, { exact: true })).toHaveCount(0);

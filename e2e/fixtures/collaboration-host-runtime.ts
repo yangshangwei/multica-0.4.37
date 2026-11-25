@@ -73,9 +73,9 @@ export interface HostIssue {
   attachment: { id: string; name: string; sha256: string } | null;
 }
 interface HostHTTPFact { operation: string; run_id: string; protocol_version: number; containment: string; attempt_seq?: string; launch_hash?: string; kind?: string; state?: string; status: number;
-  event_id?: string; receipt_id?: string; request_sha256?: string; response_sha256?: string; acknowledgement_held?: boolean }
-interface HostDaemonSummary { claims: number; invalid_capacity: boolean; available_slots: number; active_tasks: number; http: HostHTTPFact[] }
-interface HostReady { ready: true; protocol_version: number; execution_mode: string; preparation_version: number; runtime_config_epoch: string; max_concurrent_tasks: number; os: string; arch: string;
+  event_id?: string; receipt_id?: string; request_sha256?: string; response_sha256?: string; acknowledgement_held?: boolean; started_ms?: number; completed_ms?: number; transport_error?: string; request_context?: string }
+interface HostDaemonSummary { claims: number; invalid_capacity: boolean; available_slots: number; active_tasks: number; http: HostHTTPFact[]; timeline?: { event: string; elapsed_ms: number }[] }
+interface HostReady { ready: true; elapsed_ms?: number; protocol_version: number; execution_mode: string; preparation_version: number; runtime_config_epoch: string; max_concurrent_tasks: number; os: string; arch: string;
   agent_timeout_ms?: number; hold_receipt_acks?: boolean; git?: { object_format: string; commit_oid: string; bundle_digest: string } }
 
 export interface HostGitInput {
@@ -279,6 +279,10 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
   const sockets = new Set<Socket>();
   const started = process.hrtime.bigint();
   const now = () => Number(process.hrtime.bigint() - started) / 1_000_000;
+  const timeline: { event: string; elapsed_ms: number; daemon_generation: number; daemon_elapsed_ms?: number; visit_count?: number }[] = [];
+  let generation = 0;
+  const mark = (event: string, details: { daemon_elapsed_ms?: number; visit_count?: number } = {}) =>
+    timeline.push({ event, elapsed_ms: now(), daemon_generation: generation, ...details });
   const server = createServer((socket) => {
     sockets.add(socket);
     socket.setEncoding("utf8");
@@ -346,6 +350,8 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
   let output = "";
   let stderr = "";
   const launchDaemon = (holdReceiptACKs: boolean) => {
+    generation++;
+    mark("spawn_requested");
     const child = spawn(process.env.COLLABORATION_HOST_DAEMON!, ["__multica_collaboration_host_router_poller"], { env, stdio: "pipe" });
     child.stdout.setEncoding("utf8");
     child.stderr.setEncoding("utf8");
@@ -353,14 +359,18 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
       output += chunk;
       while (output.includes("\n")) {
         const end = output.indexOf("\n");
-        try { messages.push(JSON.parse(output.slice(0, end))); } catch { errors.push("Daemon summary was not JSON"); }
+        try {
+          const message: HostReady | HostDaemonSummary = JSON.parse(output.slice(0, end));
+          messages.push(message);
+          if ("ready" in message) mark("ready_received", { daemon_elapsed_ms: message.elapsed_ms });
+        } catch { errors.push("Daemon summary was not JSON"); }
         output = output.slice(end + 1);
       }
     });
     child.stderr.on("data", (chunk: string) => { stderr += chunk.slice(0, 8000 - stderr.length); });
     child.stdin.on("error", () => errors.push("Native daemon fixture input closed unexpectedly"));
     child.on("error", () => errors.push("Native daemon fixture could not start"));
-    const exit = new Promise<number | null>((resolve) => child.once("close", resolve));
+    const exit = new Promise<number | null>((resolve) => child.once("close", (code) => { mark("process_closed"); resolve(code); }));
     child.stdin.write(`${JSON.stringify({ ServerURL: apiUrl, WorkspaceID: runtime.workspaceId, RuntimeID: runtime.runtimeId,
       DaemonID: runtime.daemonId, DeploymentID: runtime.deploymentId, InstallationID: runtime.installationId,
       RuntimeConfigEpoch: runtime.runtimeConfigEpoch, Directory: directory, Executable: provider, CLIExecutable: cli, Credential: runtime.credential,
@@ -378,6 +388,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     // POSIX suspension prevents EOF reads. Windows has no SIGCONT; its normal
     // close still sends EOF so the daemon can publish its actual final summary.
     if (process.platform !== "win32" && child.exitCode === null) child.kill("SIGCONT");
+    mark("stdin_end_requested");
     child.stdin.end();
     const killTimer = setTimeout(() => child.kill("SIGKILL"), 20_000);
     const exitCode = await exit;
@@ -388,7 +399,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     // The local ledger contains retained credentials. Only its allowlisted
     // summary is attached; the test-owned directory is removed after shutdown.
     rmSync(directory, { recursive: true, force: true });
-    return { exit_code: exitCode, messages, ledger, errors, stderr };
+    return { exit_code: exitCode, messages, ledger, errors, stderr, timeline };
   };
   try {
     await expect.poll(() => ({ errors, exit: child.exitCode, ready: messages.find((item): item is HostReady => "ready" in item) !== undefined }),
@@ -406,11 +417,12 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
       async stopPreservingState() {
         if (closed || child.exitCode !== null) throw new Error("Host daemon is already stopped or cleaned up");
         if (process.platform !== "win32") child.kill("SIGCONT");
+        mark("stdin_end_requested");
         child.stdin.end();
         const killTimer = setTimeout(() => child.kill("SIGKILL"), 20_000);
         const exitCode = await exit;
         clearTimeout(killTimer);
-        return { pid: child.pid, exit_code: exitCode, messages: [...messages], ledger: hostLedgerEvidence(ledgerDirectory), errors: [...errors], stderr };
+        return { pid: child.pid, exit_code: exitCode, messages: [...messages], ledger: hostLedgerEvidence(ledgerDirectory), errors: [...errors], stderr, timeline: [...timeline] };
       },
       /** Recover in a new process with the same directory, managed identity and original requests. */
       async restart() {
@@ -429,8 +441,15 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
         return { previous_pid: previousPid, pid: child.pid, ready: currentReady };
       },
       async waitForVisit(count: number) {
-        await expect.poll(() => ({ errors, exit: child.exitCode, count: visits.length }), { timeout: 30_000 })
-          .toEqual({ errors: [], exit: null, count });
+        mark("visit_wait_started", { visit_count: count });
+        try {
+          await expect.poll(() => ({ errors, exit: child.exitCode, count: visits.length }), { timeout: 30_000 })
+            .toEqual({ errors: [], exit: null, count });
+          mark("visit_wait_succeeded", { visit_count: count });
+        } catch (error) {
+          mark("visit_wait_failed", { visit_count: count });
+          throw error;
+        }
         return visits[count - 1]!;
       },
       release(visit: HostVisit, outcome: "success" | "failure" = "success") {

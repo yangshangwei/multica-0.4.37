@@ -336,3 +336,49 @@ Run fixture prerequisites, Go compile/vet and the credential-free Python bridge 
 ### Wrong versus correct
 
 Wrong: count direct `codex exec` connectivity as a successful built-in Multica adapter or count three scenarios as complete AC43. Correct: identify the selected transport, prove the authoritative runtime records, and report exclusions and blocked scenarios. Evidence: `10-10-cross-workspace-collaboration/research/ac43-20261105/`.
+
+## Prelaunch failure diagnostics
+
+### Scope and signatures
+
+When a Host journey never observes its first Provider visit, inspect
+`collaborationHostTransport` facts and the parent events in
+`e2e/fixtures/collaboration-host-runtime.ts`. Namespace readiness uses
+`NamespaceController.Probe` and its typed `NamespaceProbeError`.
+
+### Contract
+
+Keep HTTP status0 distinct from a received503. Transport classification, request
+context and elapsed intervals use bounded labels and process-local monotonic
+clocks; never log arbitrary error text, URLs, helper output or credentials.
+Parent/child ready observations bound clock alignment; they do not establish
+exact ordering between independent clock origins. Pool pressure alone does not
+prove why a permit failed. Provider execution requires actual launch evidence.
+
+### Error matrix and cases
+
+- A nil stdin-copy error records `stdin_eof`; a read error records
+  `stdin_read_failed`. Both retain existing cancellation behavior.
+- A ready-pipe failure captures context before Stop/Wait; retain cancellation
+  identity independently of empty, malformed or explicitly refused replies.
+- `NamespaceProbeError` preserves `ErrUnsupported` and the underlying cause;
+  its multi-error unwrap must never contain nil. Log only typed safe fields.
+- A probe refused under one Docker policy says nothing about another policy.
+  Unavailable authorized execution conditions remain blocked, not passed.
+
+Good: actual permit intervals and context states explain the observed boundary.
+Base: a later complete successful journey leaves an earlier unknown cause unknown.
+Bad: attribute a prelaunch failure to Provider setup or another lane's EPERM.
+
+### Required verification
+
+Use the Host permit/error-redaction/stdin timeline tests and namespace
+configuration/cancellation/refusal tests, then complete the original journey
+under freshly bound source and resources. Preserve original timeouts, guards,
+failed receipts and downstream unverified steps.
+
+### Wrong versus correct
+
+Wrong: raise timeout/pool size or print raw transport/helper errors to get evidence.
+Correct: capture safe boundary facts first, distinguish hypotheses and change only
+the demonstrated cause. Diagnostic-only changes are not proof of a historical fix.
