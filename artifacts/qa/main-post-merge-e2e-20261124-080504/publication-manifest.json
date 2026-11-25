@@ -1,0 +1,457 @@
+{
+  "schema": 1,
+  "tested_candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "campaign": "main-post-merge-e2e-20261124-080504",
+  "product_verdict": "FAIL",
+  "scope": "Task documents, final accounting code and selected immutable result/provenance/cleanup receipts; raw evidence and private runtime data remain local. This manifest excludes itself.",
+  "files": [
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/check.jsonl",
+      "bytes": 1061,
+      "sha256": "60555b735d29933f6f9f6ed1e416f220dad5d6db38a6232d2ea46c7d984dbdc8"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/continuation-plan.md",
+      "bytes": 4362,
+      "sha256": "5b6d87e8e02268b3ecedb7d32378be8e875133ae841dc0c3af2b139a0307bb74"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/defects.md",
+      "bytes": 4724,
+      "sha256": "40f87819fe3cbcf4e7347916ef3ab13497936d6e5e222e486fb05b81c6bdcd44"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/design.md",
+      "bytes": 4672,
+      "sha256": "ffc4e4f51607d8084736682464d8055b96d9254320fe087019df90af6e87475b"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/implement.jsonl",
+      "bytes": 1237,
+      "sha256": "6678c7a91e078d0912ee21c259c2b119d8f7a7ab4f0cb99fe9efc1713dc5f17d"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/implement.md",
+      "bytes": 7370,
+      "sha256": "707f746d699ebc7d7b9792f42c2f5e858e33835e1640d7a64d38ea55c70a3d4a"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/notes.md",
+      "bytes": 17470,
+      "sha256": "56614f88e5cba01de5e8a80b6784c1ffcc828dc6cf28c56cb4c956d88c504b5e"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/prd.md",
+      "bytes": 5264,
+      "sha256": "8226014d0fa2b702b58895cb376b2dc95bbb9739c52fe89294bdddbcdd1f0ad5"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/report.md",
+      "bytes": 16745,
+      "sha256": "0ab5583e355f66187c09c55e3213bd77ea305204d7d71e55c6930d65ded9a1ae"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/backend-continuation-results.md",
+      "bytes": 12474,
+      "sha256": "2f52c102107d35adee25f09538ee13053be4598842460ee43b116305934f65f6"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/backend-linux-results.md",
+      "bytes": 10667,
+      "sha256": "e8b86c292306d1402a5298f3a21d1f1d5048ed5ce1d94fa690e0619043fca6b8"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/backend-merge-risks.md",
+      "bytes": 27757,
+      "sha256": "c947ba9c4026cbbfdc244f7ab6942d8f4be8df39b27d0c7dfeb5acf02bc8304b"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/backend-runner-notes.md",
+      "bytes": 6248,
+      "sha256": "fce9c79731c1a1c1256b8ba87ef1b0c173ad9e69949ecf63b5c233128e4ffdf8"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/comment-authority-probe.md",
+      "bytes": 10473,
+      "sha256": "1510ccab749d2e22d503bea7e2a160ce40b25e3ae89be70e6d0c5b509861f324"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/comment-probe-review.md",
+      "bytes": 14127,
+      "sha256": "72bb6bd45ecf895fb7b851f0dbf7c226975587b7d8d65ab17d18ec33fbae14b8"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/coverage-continuation-review.md",
+      "bytes": 32208,
+      "sha256": "a241bb1f942e1f33d065ca429084354cc6538b7000998ce20b7e7e131c95cb1d"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/frontend-results.md",
+      "bytes": 5637,
+      "sha256": "d8cda9c2294b1c6efae6e9bbc0919e7b484f9b502d70ad5ac9925a6006b941d4"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/host-visit-failure-review.md",
+      "bytes": 12763,
+      "sha256": "e4c132ddef6ebfbe388b25f0f614d81558e9cb1f6fe0007c760db0cfa33560e4"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/installed-cli-continuation-results.md",
+      "bytes": 10685,
+      "sha256": "67a8392598afd633344b89ed7f28ecb85a5ed8cb197113ac531239af74e866e2"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/knowledge-continuation-results.md",
+      "bytes": 7669,
+      "sha256": "63827d7cac63cc37156087629985b7c8d58a1589b7f9df8fa5779490dde02892"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/linux-main-continuation.md",
+      "bytes": 15291,
+      "sha256": "00fea070f6f0c6e6f9783accf8aef7acb035ff577e41b74ca2323fd38d366180"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/native-continuation-results.md",
+      "bytes": 14386,
+      "sha256": "4d7019e5e1e400a37b61454853955074b6edb7efaad627d6d06afe82550ae912"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/native-main-preparation.md",
+      "bytes": 4231,
+      "sha256": "b50379ff9b5543171573e70c5fd5cd8ec52367770a6a1eae48ee20e4789918c1"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/native-response-continuation.md",
+      "bytes": 4579,
+      "sha256": "f51369670ddd36edadd9c82cf772c104238f7d987c588c6d6adf52020c271911"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/performance-continuation-results.md",
+      "bytes": 7777,
+      "sha256": "9eb355eddcf808c74ebc5a27a3079f5e79f99b781c7ffabbe94b6afe86e816e9"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/plan-review.md",
+      "bytes": 7320,
+      "sha256": "1c6f5df10f69acf0560aa3eaf672e2668a126acfcb418c3cdd798093a9931439"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/platform-acceptance.md",
+      "bytes": 24681,
+      "sha256": "6ab63677da390870f877735df35a41a25bb1e36e23f82d4a7e9aa8d10a082dde"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/runtime-continuation-results.md",
+      "bytes": 44999,
+      "sha256": "30bd790ca1e203f875b416cd6c05689a873a70a176f2167480eb01aaba723045"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/runtime-review.md",
+      "bytes": 8233,
+      "sha256": "a5f1d479e21675c12cde5a4c339272118eabb337b9f9f557bdb9961190485e4e"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/runtime-runner-notes.md",
+      "bytes": 9228,
+      "sha256": "3c010bc7edc59b33faa82dd289d91a00d0f872841fc8c25d0603ae28d298a81e"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/runtime-supplement-notes.md",
+      "bytes": 11799,
+      "sha256": "d944ec9a252133f607465c974446243373993dcd52d0f6d460b33dfb744a3658"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/script-integration-results.md",
+      "bytes": 10265,
+      "sha256": "f12a4440f35fa7f4f63338c2b681603d6f629b704e92ba7a3f10ff9de5ee3ec9"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/script-platform-results.md",
+      "bytes": 11965,
+      "sha256": "869aeacb24e8f874d05b315caacfdbc48875eb3640cfa90a2d9ea4bb5e620904"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/security-boundary-probe.md",
+      "bytes": 10555,
+      "sha256": "cea080f3c493b858842467af522939188cb7427f709c6ba1699bc97f59594c95"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/spec-sync-review.md",
+      "bytes": 6770,
+      "sha256": "ac61667943e0d311a54c6d3137bdf0409b8a44a026a1900f8926c2841459334e"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/stage-continuation-results.md",
+      "bytes": 6092,
+      "sha256": "f2590cff86f015d9f8e33aa2778417689875b4e17eeead161851410e0bfeddbf"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/utc-regression-results.md",
+      "bytes": 5007,
+      "sha256": "d890b7f2e726272847b9ef5920a17c91ea972806ac7a08fad6c82842e5286ff2"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/research/web-e2e-coverage.md",
+      "bytes": 34743,
+      "sha256": "9d5560a1a24a13d915de9bc3f3a24d05d1e4a8082b59bfbbc5398d6fb7beb7c4"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/run-context.json",
+      "bytes": 1562,
+      "sha256": "d66bf7d1722ce6da68082f8480d845052ea53fc1b5a3dcb712d86a7ea298039c"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/task.json",
+      "bytes": 1628,
+      "sha256": "d827e834e6a03a43584f7bf1716fdb7c124086d8e2f0ae4f9b7e434df9167b72"
+    },
+    {
+      "path": ".trellis/tasks/11-24-main-post-merge-e2e-acceptance/test-plan.md",
+      "bytes": 16686,
+      "sha256": "16833d4a4c30a81dff19bdb3641d98fea84e0543ae2ba0e7fff4d2cb187074a4"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/README.md",
+      "bytes": 2208,
+      "sha256": "557744ba826c91b7f1e81995e14a5171568f22a3701cb905c00adbc16dbb223c"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/backend-linux-acceptance/outcome-inventory.json",
+      "bytes": 2408,
+      "sha256": "a433826c0352acbf8690419f333ad3c3921c9e560c15f53f04a2974e014bde5b"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/backend-linux-acceptance/result.json",
+      "bytes": 1444,
+      "sha256": "716aba54b6f3930daa46cf949904f400be9e3dbc0095de50884b03b1a40e978f"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/backend/continuation-offline-audit-01.json",
+      "bytes": 169045,
+      "sha256": "bf2dfc6b03c1c28f9680681a9d55a240e8fddec67cae2d7854d604eacdb5c882"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/backend/continuation-result-01.json",
+      "bytes": 37535,
+      "sha256": "8c4e2cb8cfd587bbf81bdfecd41888d79b72dd1832a01e52f56e9e299a6084f5"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/backend/normal-summary.json",
+      "bytes": 536,
+      "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/backend/race-summary.json",
+      "bytes": 534,
+      "sha256": "ba286d261826f7eafd8b9c3e7f202a83b24f1dbb2dbb8e3550f7ddbbf92f2307"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/backend/root-cleanup-result-20261125.json",
+      "bytes": 872,
+      "sha256": "064f65e90efc3cd9797a2e2372d9ff40f7434707cf67c25c4af7071b5172552c"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/builds/commands.json",
+      "bytes": 4790,
+      "sha256": "45c8348a7dcce95af8b362405c31bd2b40fa2c0f978ab9617b49b2aa9c4eab37"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/audit_coverage.py",
+      "bytes": 53986,
+      "sha256": "e2f5d66df5efe8ea22285929ca1aa75daf4bced61ca3d94466e3978e165fbe31"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/audit_selftest.py",
+      "bytes": 10589,
+      "sha256": "e2b7dcd06d195381e433c7af56662bcdc2871a2912a3bd9839491d3bb82db80f"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/coverage-map.json",
+      "bytes": 20795,
+      "sha256": "6d8de46389dda98154e3f94c621f99024e81b01e0c7d93381923bd1121dca74e"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/linux-go-evidence-20261125.json",
+      "bytes": 10935,
+      "sha256": "4e5e77504f0a10106ca2f7dc309b2cc28d72d4d505307fb4bee3f627780eec52"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/coverage-matrix.json",
+      "bytes": 146878,
+      "sha256": "d4b114c7dce59f8816473177a8b872bb01feba1a5edf9f2060c0264129ce9bc2"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/coverage-matrix.md",
+      "bytes": 6605,
+      "sha256": "e81252d6ff65215d7582ad734adc7da0428424e4f22cbebb81175717a6dacd09"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/final-ac-review.json",
+      "bytes": 5383,
+      "sha256": "b1907c706fa040580176b4b3a10903daf7749e0576c6a05eff8e0b35d19c6aaf"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/final-ac-review.md",
+      "bytes": 2242,
+      "sha256": "71883a5d49abdd4c4f5d6908721298f2bb4f9a087ffaeaefd3ce89bba9c6b848"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/knowledge-variants-audit.json",
+      "bytes": 1865,
+      "sha256": "f21f57e4e3984644a72dcf3e0ab220ff635328967cd4d460ec092c27c11aefda"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/lane-audit.json",
+      "bytes": 5456792,
+      "sha256": "2988443b7cc89110a37c33189f033c58143224b9d557a0d08d267655adb21a77"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/original-identity-dispositions.json",
+      "bytes": 1070632,
+      "sha256": "b12fd12f214049eec25aa8f97ab4a92414c5dc61f1920c7244fd95c3ab4cf092"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/original-skip-dispositions.json",
+      "bytes": 378797,
+      "sha256": "12c823517b4b0ccc3dd0fd5395d1b11b3d4da936da46fe9efb862a8eed47c842"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/security-probe-audit.json",
+      "bytes": 1091,
+      "sha256": "6aeb087c9ca870e5f5f3576ab3e1d8957f4a203d70fcde94414ec3d7533dba1c"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/skip-dispositions.md",
+      "bytes": 7040,
+      "sha256": "0056c9a1c6c8ccacece2b1b87e60922877467e1ef80e99b70e9aa441f689dd2e"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/coverage-audit/snapshot-24/summary.json",
+      "bytes": 1746,
+      "sha256": "d5e6547481799f085b5817c903353598b24c97dde527b66ac3372deec8fb5bdf"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/critical-business-cases-reconciliation-20261125.json",
+      "bytes": 2312,
+      "sha256": "10cf087d5225f6cdc9dc402dc4e7f50cc88ca4fd0ecd5ac484316852e8db18c1"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/named-inventory-final.json",
+      "bytes": 5833090,
+      "sha256": "97f1057c4cb84cec57011d50058357d79fadea22d02ef0c281f209c1144a23d4"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/result.json",
+      "bytes": 6958,
+      "sha256": "546467cec38dd5ccfd2888adb4fc4767bc79afcb1878bfd1ebdbfeeec3156dd9"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/installed-cli-acceptance/installed-cli-03/completion.json",
+      "bytes": 994,
+      "sha256": "44157a66c3318d16bf937299141099c63b3c30845b90d2a7e16d706d898c658c"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/installed-cli-acceptance/installed-cli-03/resource-cleanup.json",
+      "bytes": 5332,
+      "sha256": "5e371b45231924792bebb68455921f575373f333e46fec3caac20999da253808"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/installed-cli-acceptance/installed-cli-03/slot-handback-linux03-final.json",
+      "bytes": 3065,
+      "sha256": "ed1596a4241a4dd41850aea59a0e5505cdda6543610aaeffd5e9b5f6672690e9"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/completion.json",
+      "bytes": 1966,
+      "sha256": "1e37915808ce43986dec4f4afbf3bbb582a72307befc66a19ee380aaa86f4238"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/milestones.json",
+      "bytes": 631,
+      "sha256": "5151c0c924e19dc2a7c760bc23e44196704a3aea6d42b1fb43a31c1798da1a80"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/slot-handback-global-final.json",
+      "bytes": 7942,
+      "sha256": "377fce79f5af3480e52401d5852cd03dd98c6206468e0a4e6c8d2c16fd0b0466"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/final-audit-terminal-01.json",
+      "bytes": 35651,
+      "sha256": "bd0d9f468ba6ad310a8ab66cb8bd39cee567382363f57a40db6f348f3c55f015"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/continuation-final-ledger-05.json",
+      "bytes": 18653,
+      "sha256": "c903b1e54bc60b60617771f1cc48b31fe98859b506c672eedd0260b96b1b1cc6"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/database-cleanup.json",
+      "bytes": 278,
+      "sha256": "3dc05b99137e36cb99859c6cda6256392a0df4aca4caeb7c96e24391474ed707"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/final-audit-terminal-01.json",
+      "bytes": 70681,
+      "sha256": "ae71386faa2899fbb8e8b66040a52f88b8139a959bf6b2792e28cc6ff93fd419"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/global-final-audit-1.receipt.json",
+      "bytes": 820,
+      "sha256": "4d57623be43026c894b8a638f99b7363a5460a86c49ff148620f81337f46bb97"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/global-final-audit-2.receipt.json",
+      "bytes": 842,
+      "sha256": "64f5a0244993f679e07bee606fde07e5502c44ad35cff80c82df82a092aa60aa"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/global-final-cleanup-receipt.json",
+      "bytes": 6274,
+      "sha256": "b209772d17237ba43a48c7139be59bd8027134f954ce8e488c8f2c05f688371a"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/global-final-historical-audits.json",
+      "bytes": 2000,
+      "sha256": "e2675c8d4d00fcaddcecf19d2158a19e02413a378e624bf534f7ca2de835d01f"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/global-final-preflight-01.json",
+      "bytes": 28825,
+      "sha256": "bdf25a177a50efd441bee5637937cddf4d99d816f66027f88a68729ac5234396"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/global-final-stop.receipt.json",
+      "bytes": 509,
+      "sha256": "25c606c51d58f2896e4d2dd55d568aca0bf9ebe787259891e69e4aa543ebc1f9"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/remaining-after-native-execution-05.json",
+      "bytes": 6638,
+      "sha256": "3baa4f559cb2eb9901eda372a8b193d3c6be8e680c93f3b357a062ab13ba5dee"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/completion-ledger.json",
+      "bytes": 6371,
+      "sha256": "1e00023254b026b77d263041561c7c9bdb053687df71508a74ad6a4ea255c045"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/source-initial.json",
+      "bytes": 8546815,
+      "sha256": "5d284d992dc66d268a46dfa3dd19aaba140f3cf77a8aba4509f2dcf3dfe403d8"
+    },
+    {
+      "path": "artifacts/qa/main-post-merge-e2e-20261124-080504/source-support-observed.json",
+      "bytes": 2212,
+      "sha256": "037ff3394ac7dfd9813cda75a22c1ba5a3ee4ad04467a254509fb1c01c1bd851"
+    }
+  ],
+  "file_count": 88,
+  "total_bytes": 22455017,
+  "validation": {
+    "offline_accounting_tests_passed": 17,
+    "task_context_validation": "pass",
+    "selected_json_jsonl_parse": "pass",
+    "token_scan": "No JWT, provider/GitHub/Multica tokens, private keys or populated sensitive JSON fields detected. Six URL-credential strings were verified as existing tracked negative-test fixtures."
+  }
+}

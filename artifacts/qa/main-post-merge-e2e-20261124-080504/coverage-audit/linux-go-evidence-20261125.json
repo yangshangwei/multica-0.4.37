@@ -1,0 +1,208 @@
+{
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "reviewed_at": "2026-11-25T07:22:25.528202+00:00",
+  "status": "RECONCILED",
+  "original_linux9": {
+    "PASS": 2,
+    "BLOCKED": 7
+  },
+  "separate_root_subcase": {
+    "PASS": 1,
+    "parent_terminal_is_not_an_additional_original_identity": true
+  },
+  "normal_only": true,
+  "database_used": false,
+  "configuration_limit": "Default-policy namespace probes fail for UID1000 and UID0; not a canonical namespace assertion failure and not proof every Docker configuration is unsupported",
+  "reviewed_named_runs": [
+    {
+      "run": "process-r01",
+      "exit": 0,
+      "terminals": [
+        {
+          "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+          "action": "pass"
+        },
+        {
+          "test": "TestPiExecuteAttachesStdinPipe",
+          "action": "pass"
+        }
+      ],
+      "raw_events_sha256": "9d4f39c93d6db470df1aabd9b06c3783c8f074ef4563170bf63a81146fa170a7"
+    },
+    {
+      "run": "root-preflight-r01",
+      "exit": 0,
+      "terminals": [
+        {
+          "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+          "action": "pass"
+        },
+        {
+          "test": "TestClaudeRootSudoPreflight",
+          "action": "pass"
+        }
+      ],
+      "raw_events_sha256": "5d4201bdfe709519bcd5d0a89b071452b9358348a817f12f98a88339fcfe320f"
+    },
+    {
+      "run": "namespace-user-r01",
+      "exit": 2,
+      "status": "BLOCKED_IN_ADMITTED_CONFIGURATION",
+      "is_canonical_test": false,
+      "stdout_sha256": "9b884e2af9b22c292d7f6a4aff8a82487f6dc072bb2f3eec9057e58eafa0859e",
+      "stderr_sha256": "dca3a8b609b40380f586d62408d6153797afab983169dfaf4f53fba9298d2623",
+      "no_policy_relaxation": true
+    },
+    {
+      "run": "namespace-root-r01",
+      "exit": 2,
+      "status": "BLOCKED_IN_ADMITTED_CONFIGURATION",
+      "is_canonical_test": false,
+      "stdout_sha256": "0500528428df36c9068d02fc1451c824d1f9a634bb47054ff37e14c1085ec5c2",
+      "stderr_sha256": "2132493902c69024fa4686ee575ddd36813e82c577e7192d68fd7248c60c80a4",
+      "no_policy_relaxation": true
+    }
+  ],
+  "current_binding_counts": {
+    "source": 5288,
+    "dependencies": 2064,
+    "tools_binaries_runner": 18
+  },
+  "binding_issues": [],
+  "identities": [
+    {
+      "package": "pkg/agent",
+      "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+      "status": "PASS",
+      "run": "process-r01",
+      "canonical_executed": true
+    },
+    {
+      "package": "pkg/agent",
+      "test": "TestPiExecuteAttachesStdinPipe",
+      "status": "PASS",
+      "run": "process-r01",
+      "canonical_executed": true
+    },
+    {
+      "package": "pkg/agent",
+      "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+      "status": "PASS",
+      "run": "root-preflight-r01",
+      "canonical_executed": true
+    },
+    {
+      "package": "cmd/server",
+      "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+      "status": "BLOCKED",
+      "canonical_executed": false
+    },
+    {
+      "package": "cmd/server",
+      "test": "TestCollaborationPartialResumeRoutesLinux",
+      "status": "BLOCKED",
+      "canonical_executed": false
+    },
+    {
+      "package": "cmd/server",
+      "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "status": "BLOCKED",
+      "canonical_executed": false
+    },
+    {
+      "package": "cmd/server",
+      "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "status": "BLOCKED",
+      "canonical_executed": false
+    },
+    {
+      "package": "cmd/server",
+      "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+      "status": "BLOCKED",
+      "canonical_executed": false
+    },
+    {
+      "package": "cmd/server",
+      "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+      "status": "BLOCKED",
+      "canonical_executed": false
+    },
+    {
+      "package": "internal/daemon",
+      "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "status": "BLOCKED",
+      "canonical_executed": false
+    }
+  ],
+  "recorded_owned_containers_remaining": 0,
+  "cleanup_receipt_sha256": "b7f14b57b848495e64e5502c0ca633c754d707ee2fae24c6f683bd4ca755aba2",
+  "evidence_sha256": {
+    "offline-checks.json": "2f34bebb025c87c3290369e7bf978d66ec789d8e21a94f3f2c15e0d417cc5f52",
+    "namespace-root-r01.json": "a6a0af660db6c1e89eb5566b04cea3b982466df54d189e7722e46fd625ca6ac1",
+    "image-inspect.stdout": "1e7af334ed3bf19c73f00ebf1cd3183c90947234d58e5e2a837446e9764faeac",
+    "offline-shell-syntax.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "binary-buildinfo.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "offline-guard-exit.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root-preflight-r01-events.stdout": "5d4201bdfe709519bcd5d0a89b071452b9358348a817f12f98a88339fcfe320f",
+    "compile-namespace-probe.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "process-r01-events.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "result.json": "716aba54b6f3930daa46cf949904f400be9e3dbc0095de50884b03b1a40e978f",
+    "offline-guard-success.json": "845b8bbf81b14a09fa5c871438c588b39b4ef81c603f35e7d706111c9a0b6422",
+    "binary-type.stdout": "14981a8604b80c611094ab4d2668ba2750129b01e8117a3932cf166989bfacba",
+    "compile-agent.json": "6f76db7c26b65c7d44f703fc9e3c1c37e0ed3ac1b007abca80286fc07c66cde0",
+    "compile-agent.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "prepared.json": "2f9a43d2c5418580380265c0d7677f342e60efb4d76e75f1ca81bd8efe84801b",
+    "root-preflight-r01.stderr": "2132493902c69024fa4686ee575ddd36813e82c577e7192d68fd7248c60c80a4",
+    "source-before.json": "e0d038d7d592366a046176df531381a0b79cdbb121f9d13a5dbd455bd015fc54",
+    "root-preflight-r01-result.json": "78e7f2c6daceec9e6d0af7132f8513c2ff99b7f8769acf89ed610e14a55d11da",
+    "binary-type.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "namespace-root-r01-result.json": "5002cfa11bd3e3a94b35a06cb8c6e22214316ad0dd8cac17817c31236edcec73",
+    "root-preflight-r01.stdout": "b3a5f48d2bf19c13bccb18ae21e2be4c81346fbd3ed5743a485478fb91b511ab",
+    "containers-after.json": "b7f14b57b848495e64e5502c0ca633c754d707ee2fae24c6f683bd4ca755aba2",
+    "compile-agent.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-namespace-probe.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "offline-guard-exit.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root-preflight-r01-events.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "binary-type.json": "21d2abe667f6fa37e7a1d516e00544cd2b2f325447b19c73ffe3cb1d6453aaac",
+    "root-preflight-r01-events.json": "ec48b987ae8a7ae6015713b60d138492192c06a0b36a643c15e20e01c819dc39",
+    "process-r01-events.stdout": "9d4f39c93d6db470df1aabd9b06c3783c8f074ef4563170bf63a81146fa170a7",
+    "image-inspect.json": "635cd7a0fcb60cd260a696be8ec78cdb96594775cb035d2ecd797ace40e6a655",
+    "dependency-bytes.json": "9055315c34c74d6ccd11bbc548c13bb49e2cbb67c784ce210df013b4e2ec14d6",
+    "binary-buildinfo.stdout": "4406b16cee62ea6b9d87af286f977f804c1a18f893ba2538c6c254a0f95605aa",
+    "image-inspect.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "offline-shell-syntax.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "offline-guard-exit.json": "ff100e4aedd21079cbb027a270e148aa12cd5268b5fbcb5dd4cc86d24812cfe9",
+    "go-version.json": "33f45144304c18ada5e5ae3f5156803b2177dfc3dcfde9d667daa0293029aea9",
+    "go-dependencies.json": "8672a37694d38848f2f15b2fbf9501edf4d8691b018857ef84236f5c4b863d80",
+    "process-r01-events.json": "e560b047a3451ffe2bf9017043dcc819ecca9045fda50c2633100ef694a97399",
+    "go-version.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "namespace-user-r01-result.json": "1acca2f7c7e48e13e0a50ed59934ea6a0fc0299239f45215f2fdbd2355715ff3",
+    "go-dependencies.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "offline-guard-agent.stderr": "10c07b2a9dd04a2ee98788cb10836337ec0981c1a8191b880cd5b573b94d5437",
+    "offline-guard-success.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "namespace-root-r01.stderr": "2132493902c69024fa4686ee575ddd36813e82c577e7192d68fd7248c60c80a4",
+    "process-r01-result.json": "44ceea55affc5e1a5b3f057fc9647e5ca702a99cd426e4532f774751d153dc08",
+    "parent-clearance.json": "a420bfbad0a09211639264919936c43df691c5ac4ff4bffcf8ac128e5d224100",
+    "process-r01.stdout": "d5fb58947ded4ae02d8e7f25e75b300e54fe16f8b029a108ac689523e6cada5b",
+    "compile-namespace-probe.json": "47d4dda241e90b07f959ab424778719d6f3244333f2aeddebb83d591838d57f2",
+    "outcome-inventory.json": "a433826c0352acbf8690419f333ad3c3921c9e560c15f53f04a2974e014bde5b",
+    "namespace-user-r01.json": "e9ba8c0546c6e6693a10f67ba1d31f2aff977d1b570beb1d947af2f5e3963299",
+    "namespace-user-r01.stdout": "9b884e2af9b22c292d7f6a4aff8a82487f6dc072bb2f3eec9057e58eafa0859e",
+    "containers-after.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "namespace-user-r01.stderr": "dca3a8b609b40380f586d62408d6153797afab983169dfaf4f53fba9298d2623",
+    "containers-after.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root-preflight-r01.json": "bd7f6dc0714ae2b33a8e5196f2c9ead39e51cc06db54dff70f70ec837d797155",
+    "offline-guard-agent.json": "0eed9c7ad049869ee4ddd1eda1adf38df11706fd9d64cdf66a77b91777530b38",
+    "compile-environment.json": "62b1256b8daf5a3b7280a860190afa892e368f33051870a8d2c0dbb51ea9ba46",
+    "process-r01.stderr": "0ad4799b67164f455fb6f594856f1ca1f0ee893cb18f11b3c8c598d980609744",
+    "offline-shell-syntax.json": "c96ced1d747d99151760e88dea8ff98118c74b6da7ea72574bb775c2783ab800",
+    "process-r01.json": "fb72a69451023980ae37faecb96b84931eb9ee787cc68bf1e739d317a7f657fe",
+    "go-version.stdout": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+    "namespace-root-r01.stdout": "0500528428df36c9068d02fc1451c824d1f9a634bb47054ff37e14c1085ec5c2",
+    "offline-guard-success.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "offline-guard-agent.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "go-dependencies.stdout": "d21fe92ba65c58904f80337c9767c2f4bd64035059b1e23a44b32dc361f2f1ee",
+    "binary-buildinfo.json": "7cd9cd60874895dd60a37151c093d4e86d78efc8c51ad48359180c174b693333"
+  },
+  "scope": "Independent read-only raw/event/hash audit; no Linux container or Go test run by reviewer; historical normal/race SKIPs retained"
+}

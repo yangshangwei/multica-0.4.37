@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "intent_sha256": "2ca0635f209fc4e1c98abcca5be0e2a51179d52a83cee518700e91b5f3319270",
+  "other_database_clients_before": 0,
+  "containers": [
+    {
+      "kind": "redis",
+      "id": "fd5e59e207f2b2273760854f7f95623881e66795ee9ac918eea628ecbafacbe2",
+      "exit": 0,
+      "running": false,
+      "finished_at": "2026-11-25T03:39:30.455575468Z"
+    },
+    {
+      "kind": "pg",
+      "id": "5bc6b2a4dd3c7743148d807de799a54854a4abc9ea94f6c0e38b273320f967fb",
+      "exit": 0,
+      "running": false,
+      "finished_at": "2026-11-25T03:39:30.770816052Z"
+    }
+  ],
+  "volume_retained": "main-e2e-backend-924fea80cfce-pg-data",
+  "completed_at": "2026-11-25T03:39:31.030455+00:00",
+  "scope": "Backend normal/race/UTC/diagnostic containers only. Runtime and native allocations untouched."
+}

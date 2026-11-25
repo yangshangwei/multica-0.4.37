@@ -1,0 +1,58 @@
+{
+  "results": [
+    {
+      "name": "process-r01",
+      "exit": 0,
+      "expected": [
+        "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "TestPiExecuteAttachesStdinPipe"
+      ],
+      "terminals": [
+        {
+          "Test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+          "Action": "pass"
+        },
+        {
+          "Test": "TestPiExecuteAttachesStdinPipe",
+          "Action": "pass"
+        }
+      ],
+      "accepted": true
+    },
+    {
+      "name": "root-preflight-r01",
+      "exit": 0,
+      "expected": [
+        "TestClaudeRootSudoPreflight",
+        "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+      ],
+      "terminals": [
+        {
+          "Test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+          "Action": "pass"
+        },
+        {
+          "Test": "TestClaudeRootSudoPreflight",
+          "Action": "pass"
+        }
+      ],
+      "accepted": true
+    },
+    {
+      "name": "namespace-user-r01",
+      "exit": 2,
+      "expected": []
+    },
+    {
+      "name": "namespace-root-r01",
+      "exit": 2,
+      "expected": []
+    }
+  ],
+  "final_bindings_match": true,
+  "owned_containers_remaining": 0,
+  "prepared_sha256": "2f9a43d2c5418580380265c0d7677f342e60efb4d76e75f1ca81bd8efe84801b",
+  "clearance_sha256": "a420bfbad0a09211639264919936c43df691c5ac4ff4bffcf8ac128e5d224100",
+  "normal_only": true,
+  "database_used": false
+}

@@ -1,0 +1,63 @@
+{
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+  "captured_at": "2026-11-25T08:59:03.106908+00:00",
+  "audit_script_sha256": "e2f5d66df5efe8ea22285929ca1aa75daf4bced61ca3d94466e3978e165fbe31",
+  "default": {
+    "planned": 538,
+    "observed": 538,
+    "terminal_counts": {
+      "skipped": 138,
+      "passed": 400
+    },
+    "inventory_complete": true
+  },
+  "original_skips": 138,
+  "skip_dispositions": {
+    "PASS": 114,
+    "FAIL": 24
+  },
+  "skip_latest_execution_statuses": {
+    "PASS": 117,
+    "FAIL": 21
+  },
+  "original_identity_dispositions": {
+    "PASS": 514,
+    "FAIL": 24
+  },
+  "lane_count": 71,
+  "incomplete_lanes": [
+    "runtime/business-scenarios-01"
+  ],
+  "record_integrity_issues": [
+    {
+      "lane": "runtime/comment-authority-legacy-01",
+      "issues": [
+        "Missing required bound evidence: probe-result.json"
+      ]
+    },
+    {
+      "lane": "runtime/legacy-broad-01",
+      "issues": [
+        "Missing required bound evidence: named-inventory.json, playwright.json",
+        "No complete browser report was recorded"
+      ]
+    },
+    {
+      "lane": "runtime/native-response-01",
+      "issues": [
+        "Missing required bound evidence: probe-result.json"
+      ]
+    },
+    {
+      "lane": "runtime/stage-01",
+      "issues": [
+        "Missing required bound evidence: collection.json, named-inventory.json, playwright.json, run.json",
+        "No complete browser report was recorded"
+      ]
+    }
+  ],
+  "scope": "Historical raw-evidence audit; not final live process/database shutdown and not a new product test execution",
+  "source_files_changed": false,
+  "release_green": false
+}

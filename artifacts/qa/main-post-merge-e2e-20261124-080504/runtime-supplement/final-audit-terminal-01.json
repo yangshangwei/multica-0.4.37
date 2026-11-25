@@ -1,0 +1,679 @@
+{
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "source": {
+    "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_count": 32724,
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "generated_differences": [],
+    "support_materials": [
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/desktop.png",
+        "sha256": "31595c30f1b1bf285e6b07690af8bafc81bd313ef9228cd8658ec116da50867f",
+        "mode": 420,
+        "size": 121097,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile-dark-examples.png",
+        "sha256": "6db211e5fed14bbbc23dd1cdf0a9f35a19c6e2ee3d001cafd93a52ce6b48baf7",
+        "mode": 420,
+        "size": 50432,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile.png",
+        "sha256": "925eff4f0c988f32ff931d90f34b2f8ab0b403c946c6b48de1ee328a0a034ddf",
+        "mode": 420,
+        "size": 53094,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/narrow-english.png",
+        "sha256": "6e4ccbf9c0154c2a1943fca198e48fb0053c25b317c0c3dbcc44ec6802c01363",
+        "mode": 420,
+        "size": 35650,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/ews-runtimes-components-runtimes-page-tsx-939120c8.md",
+        "sha256": "14c21b8d0dde3a9b3c0c2217d54f38f7322a52f6c1638c34b787df7d8765a556",
+        "mode": 420,
+        "size": 3136,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/packages-views-marketplace-marketplace-page-tsx.md",
+        "sha256": "382edd046412f3de0e0bd8a6f13d80de0f541e97f71a281c6b55c803282b83db",
+        "mode": 420,
+        "size": 1470,
+        "uid": 501,
+        "kind": "non-executable support material"
+      }
+    ],
+    "support_sha256": "037ff3394ac7dfd9813cda75a22c1ba5a3ee4ad04467a254509fb1c01c1bd851"
+  },
+  "clearance": {
+    "candidate_sha": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "resource_plan_sha256": "11522167b31a3282abe062485cacee7433e9a329831d9648c61531dbf0440732",
+    "source_env_sha256": "fe656f6246092eef930b822c017fd8220dc02d9f182f9434d9bae25b230127ed",
+    "bindings_sha256": "1e0e5dda9c5c48e50a61a8af71259425e4e006248a7a2ab8f968252aca843f83"
+  },
+  "runs": [
+    {
+      "label": "admin-auto-init-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "781b59294a899dc89120b3be483c30d719f7ff476202b445ee8ee1ef92b5f2d9",
+          "admission.json": "5261f962d479c5139333f1f0e7af8ae1f96374487edf32ced6bf349e99d0081c",
+          "run.json": "8e5aaebe8101f05986fb9e3783199ea70935610854f075b977e5139f88aed81e",
+          "collection.json": "ccf22cdaa48f0496191cebfbe6d026be4afbf9cd1deae2cf845fb37206b797f7",
+          "playwright.json": "9f5bb43e6739c075b309dad00b40a648d8bd1d79783d7628259d029d0ee2dd20",
+          "named-inventory.json": "2adac41c26682b3cc981653ed38e4bf00e35b63f6a2824411a793c859d0b9b45",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "25b554678be34012307481c2b9b350d9d80ae88895514eb0be21990397d57e2a"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T04:47:38.364076+00:00"
+      },
+      "inventory_sha256": "2adac41c26682b3cc981653ed38e4bf00e35b63f6a2824411a793c859d0b9b45"
+    },
+    {
+      "label": "host-basic-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "ceaff598d5d86c44311c72f0d9f2ac02b5482efae86e3934c832ddbeafa838a3",
+          "admission.json": "f804a67fc78b247b4a7aeb52468707a42d8db1af74bd71dd82900b758e6f8ca9",
+          "run.json": "fefb1f2e77b107741f215473323b60eb1cad894d8e6c49a6ad074497eabaec47",
+          "collection.json": "2e79356660a6a8b8f22f7836bf0726b56ddf380fd0725600799abde87bc4d41d",
+          "playwright.json": "66e16ff4ed9445b2d2d4933a4cfeeb62f76b4725efc13d1e548557e58c55d6a3",
+          "named-inventory.json": "0f5a6ad6492927ba91e43fd342e5419aece7a5498d17935fa7976d44e0f3f7bd",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "769f47c034a12eae62c2ceda4ce56864b8ab5209fdaf1b54a5e567e6fd298feb"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:44:12.755110+00:00"
+      },
+      "inventory_sha256": "0f5a6ad6492927ba91e43fd342e5419aece7a5498d17935fa7976d44e0f3f7bd"
+    },
+    {
+      "label": "inbox-snooze-02",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "7b51e4b701e70470a834965888b0041c94d83478eae04cdd0e9a223cc05bd8c6",
+          "admission.json": "392602f5a9c3501f93e57528fcabf5bf98a5aa8780a074b4cafdf0bc7ac6c8a2",
+          "run.json": "86861e34e3ac7eaa6650d3ad755f0fdf62f62215787ba7e3f2d445e62d687291",
+          "collection.json": "f1501a533f443794d32b7fa9f75704137f29f438cbdac67a4b419d373b931f4a",
+          "playwright.json": "36ee52b7a95431928de05e4583f84cc509c325f15467083843ba13e913ffc85d",
+          "named-inventory.json": "98a244edb3ae97211c9ee4354a66d32312a501009bf79bffe20defee07b75293",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "8560d4e10ad450f1d5da210d0edb79f80035f4b76b203ecb8b76fd507b576697"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T04:51:16.544065+00:00"
+      },
+      "inventory_sha256": "98a244edb3ae97211c9ee4354a66d32312a501009bf79bffe20defee07b75293"
+    },
+    {
+      "label": "information-desktop-02",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "64f973adf6dab2c0d3de5ddedf06e54180cc3bf31a9fc88d2f1f0666bd08a7ff",
+          "admission.json": "b0a08e7daa16ab8d9e3476204c9421997378637ec1ba294824e6212f093f5050",
+          "run.json": "991e0bf9ab07e7b1b5ec3358d11d67cdb06247f43c268c60b5b56e52439dacc8",
+          "collection.json": "f1e093170fa38848fa2eb4cf317cfe978b37e41cc2212a55fa56b612e2cf85f9",
+          "playwright.json": "1883693e5b9e2e0da32c281e2d4abff26de64950c2d1aebfc545fd028da53e84",
+          "named-inventory.json": "764432fb9d6560014e7a28af70537a86574af32c6f9554aed2d6d492cd5afe6b",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "6867d2f45178aca7c1ae6582d9bc34d63226835dcab3bf1e138c32909f4ee371"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T07:45:03.320169+00:00"
+      },
+      "inventory_sha256": "764432fb9d6560014e7a28af70537a86574af32c6f9554aed2d6d492cd5afe6b"
+    },
+    {
+      "label": "information-recovery-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "9216023c36b968358273e44fd289e13487f565935dafd7ca539a76852f1927f0",
+          "admission.json": "d8aeb8429315f769a609fc9e275b917b9d031bd7ae219918f60338d482775885",
+          "run.json": "f1601775ebe0e33723a29b3baf29e419299c9aa417e135f8d9e5b0087ba58f28",
+          "collection.json": "49c9d4d120903ae5c5de77bb920e44e40bd1720ba4ca634506f7ae6da2024189",
+          "playwright.json": "15f9dc97a4e09ea7a761834eba84e558b6866b344318583261620851af67b377",
+          "named-inventory.json": "aeb8a8c1ebeecb841686841da2722df9d971f42531adb19512782c89eec6934a",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "3bfa21e2f01cbe3d00d056740c1b2a9c6cffa51b625ca72c6fedbeb2015a3311"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:36:51.533837+00:00"
+      },
+      "inventory_sha256": "aeb8a8c1ebeecb841686841da2722df9d971f42531adb19512782c89eec6934a"
+    },
+    {
+      "label": "knowledge-deployed-off-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "80024ac5fbce9d65afddcd5ba10aaee8d93ad663103fa1678ff71976139ba0a6",
+          "admission.json": "5875454f111343ce46b8bca090e55a985af4539ddb6252774b2b89debd3883e9",
+          "run.json": "379773e1349747f0064316b0a376886e708b6d91c4fa4186f9f4a98791f7ee32",
+          "collection.json": "a3de9c7afd548b34a8fb997775fee9f37ade7b40f7b4e22f9f932f149d7c0b55",
+          "playwright.json": "326d8293b876283992d9c0d227a86594096f03e17b0d429b4f8b304d208db894",
+          "named-inventory.json": "5eb9991086f1a185c05c97d1489d91bc455869e59bbe59c2a6b198ebef58b576",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "6d6bbd910f5564e5113f6c4f941b7a1ac07310c4f88e49e8eee3c436141fafca"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T06:01:54.103961+00:00"
+      },
+      "inventory_sha256": "5eb9991086f1a185c05c97d1489d91bc455869e59bbe59c2a6b198ebef58b576"
+    },
+    {
+      "label": "knowledge-deployed-on-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "3a285b1a2f2e80125fee87e27d389953f8671095cc225c2ae9220fd34420f88b",
+          "admission.json": "b2685897028f33b5b29e9d803491f8d190c863320b9a8697b10e61435cb068e5",
+          "run.json": "6c9accb67aef66aee5a6bbb2abf141784d26405ed3600f265465160c0c301706",
+          "collection.json": "de7ffd9d41c8c72a0b3b0768d571774cfd45238987c50874e194e1df4df49232",
+          "playwright.json": "a49a4a994acb1789072e2d2a7e67488b674779e60af1e761e0a77f3ced4d6665",
+          "named-inventory.json": "125fa83268c73fa30639a0d1febb895a1d96fe26075c1d3e5e61c67f9f6a9349",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "7a5f2d460a47a4e09cdd978366891315aefaa49e32f3ea50de6b05e3d958a502"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:59:54.755785+00:00"
+      },
+      "inventory_sha256": "125fa83268c73fa30639a0d1febb895a1d96fe26075c1d3e5e61c67f9f6a9349"
+    },
+    {
+      "label": "manual-detail-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "cc2a6ce6e780b4192409ad4334c78d33701e7fc41aeb16f744ba6411966ef075",
+          "admission.json": "0f06371e94fa3ebef7c75fe50b32dcd21903a721bd2e1a9033709e865ad25427",
+          "run.json": "f173af6ad2b8848b1e8a237f179013c27a1ad0daf6d7ef9ac2c7f07cd7e56642",
+          "collection.json": "651b80f45580d954ef239f5b3dde136c684d31947cab2412992129b4bad84cd3",
+          "playwright.json": "5c2a363c77c748c694223b02391caf2a4d22900731c5e59620fab38701bcea31",
+          "named-inventory.json": "da3a4c805324f40d2f38358e311883916665f03fac16754e5a7aacff0302270d",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "7d4b63e4d0b994b10bb5333499b847d72e97a76bfe231c0962b63b811a65dfab"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:26:52.850505+00:00"
+      },
+      "inventory_sha256": "da3a4c805324f40d2f38358e311883916665f03fac16754e5a7aacff0302270d"
+    },
+    {
+      "label": "memory-runtime-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "036fd318c0def719d4c96c4c62b982115e7d9318fb9a1898db0eec316e5746d7",
+          "admission.json": "3d36eeafc057dd2e73a9e69777b7323aa7c937a797ac754966b73195545d5540",
+          "run.json": "908bec031c7411cdddf01a1df8dff1482273bfce2665333faad75596873f17c8",
+          "collection.json": "50788c3f049ceeef0a6a1cc6fe4b7b27f28e915fa4512d854517ab62be8c0fee",
+          "playwright.json": "c99c158c7e2dd6f57c3fa8efa92bda32df2f6a6bd0f45966b37f3a01ac8b84cb",
+          "named-inventory.json": "e61c16de5a4613e23e77055de34391385c959d55b8a0e94bdde26bd9159df7ec",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "fc4c669b4d70867c2cf72b1ab165808bf0ffb5fd01a47f8b34a1a4e7b46b6b2d"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T07:11:55.967259+00:00"
+      },
+      "inventory_sha256": "e61c16de5a4613e23e77055de34391385c959d55b8a0e94bdde26bd9159df7ec"
+    },
+    {
+      "label": "multi-account-timeout-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "d6af9ee404a7fc74308516c9f495067a9df9103c486927f6523cbdcdef58cc5c",
+          "admission.json": "22350d0a3cf3ecdbd4d5a52c5b3d46bc0c4a04065bd1e7e48d1bad2660e15802",
+          "run.json": "c403fd380ff18e95445f34aa062eb2dac78d3f0ae76960ec929935de09dafcb4",
+          "collection.json": "a6caa3cb649ca1ebbc2939c062f7c6bb22404d3df95467ff0af4725760d9cc78",
+          "playwright.json": "538b8f41022075f22badd2ad7dd0f0046cb33d006bed60cec005f72a84fc0675",
+          "named-inventory.json": "64387ca7cca81e7860015f61ca1b569244c5431a8d8898c329109d2b3c6d786f",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "ff7e676dff07d0a4d87b8eb32a7d3dc0ea9ce0d39eeeb88c58912322a505e010"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:47:40.647214+00:00"
+      },
+      "inventory_sha256": "64387ca7cca81e7860015f61ca1b569244c5431a8d8898c329109d2b3c6d786f"
+    },
+    {
+      "label": "order-export-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "d70a88d60f97c46d9b2ca9dafd7745966cb52b2af943ab37cb25abf57ea0c370",
+          "admission.json": "eb55c1db6adf845e73e53bab4ae0fc696d3f2c394f91b2bbe58707e064ddc54a",
+          "run.json": "b5c62723dcd9a742fa234ff80ecc3d4c8267ba04c5ff4cd3fc79ebcaf6d9d24b",
+          "collection.json": "c89fb63aa5818d1965b4319d38530eb5980d460cbe47ed5ef8168c13f867e9cc",
+          "playwright.json": "a6dc05a09efac90210489722a0cbfef508058aa77bc4a9ab4bb7967cbbd1a8fa",
+          "named-inventory.json": "33f8cc325da4454d7aa3d6e22e6cfb4152435531527b7d8649666558e7f39b56",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "6cb16dffbdc4377009fbc2b02b72b41e86494ea21c56a5d6283d6d5745c5c861"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T07:17:53.578806+00:00"
+      },
+      "inventory_sha256": "33f8cc325da4454d7aa3d6e22e6cfb4152435531527b7d8649666558e7f39b56"
+    },
+    {
+      "label": "order-export-leave-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "66abc0e11c6b63761db7fcb6fca7f223df6177cdccae362802cd8060df7c79f9",
+          "admission.json": "78ba1dabca4dcb2c64a4fb9a7d289c375b6966b5abfe3b31e8a1526563adf886",
+          "run.json": "66fbce92e4046c5fb640fd8a1a06d219ca439f428830f67f4201e18fefcb3c20",
+          "collection.json": "52279d0ed516fe3d1828e5a4c6883512a01ca20bfae526bc49b4581413a858cb",
+          "playwright.json": "f259a750e15910ee7a3674770a4da55a9a324cf59db92069b459bbaa9590a674",
+          "named-inventory.json": "8204640d34accca27a96f72c0ab1ad845346653fb7f03c43aaf5959897df58bd",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "ca6fcea82d799d905116396e55e67f30f5623dee25829cfd97e3935fd3bab4eb"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T07:21:03.388135+00:00"
+      },
+      "inventory_sha256": "8204640d34accca27a96f72c0ab1ad845346653fb7f03c43aaf5959897df58bd"
+    },
+    {
+      "label": "ordinary-ui-recovery-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "cbb03f9f49bc5fe4f227d19977e12a048fd11ac3b73ea64b1616d4e200b4a661",
+          "admission.json": "0898bfa2d4f34c4c5800e52ad0558efa00fd63ebd9fc6191a6e5eb377d5e21a7",
+          "run.json": "41917b680d2925d77bec1bc34e62ffbcc10192898f0482e1852b0bb3770e4954",
+          "collection.json": "cd9f0ca07008b73bed171fccea902dd0a8f866bac9097711da8441c5ecbe97dc",
+          "playwright.json": "b011f9567e269c99912ba2d37daca63acf0568bcf4e63683efd06b47d0e8a494",
+          "named-inventory.json": "87aaec334afa57a4a89cbb8e94cdf6bbfa243fa76b3e4d17307c4dd80cabdd57",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "e55d69bfcc054f33382eefafbaa88bc5a045f4683c4a176dc74601c752407d24"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:39:17.184693+00:00"
+      },
+      "inventory_sha256": "87aaec334afa57a4a89cbb8e94cdf6bbfa243fa76b3e4d17307c4dd80cabdd57"
+    },
+    {
+      "label": "password-migration-binding-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "d31ed432f841a58761996bdd6e9976ca70ecf06108fbbc56875c5d371ada2fc7",
+          "admission.json": "4351efc050a8aeaeadb41ab821655807b66e90c6ee248d19f5b50bbd2ccf366d",
+          "run.json": "cdc1cbe56f5843948e92e041f1394c46c00459c50a6c307b5ea32f2bff950600",
+          "collection.json": "5dc5fc40b8f9da88cb12dac89884d875f8ae4e03f68399e937aed92491981f2d",
+          "playwright.json": "1bfd44d1f25c178852a76040435dd928ef80929e9db3c46e067c0d70300c1605",
+          "named-inventory.json": "2a3232d754c134cdcd2b5029400ac34ec8a09035019dee2e49c6f3a3688a7a4f",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "d5a23dc65c554bc41c4238ba9615a42c65561c61b4c0f4b86409258853150ae8"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T04:45:48.208289+00:00"
+      },
+      "inventory_sha256": "2a3232d754c134cdcd2b5029400ac34ec8a09035019dee2e49c6f3a3688a7a4f"
+    },
+    {
+      "label": "pay-creation-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "f3588d3e311f7a529a5bdfc029e35b88866810aeb12b7fffd7a6a8265346fab5",
+          "admission.json": "1c8a2af235e7e23bf32499ee06cdd2728e891c005049c9e2e9e51115378bb5b4",
+          "run.json": "8abc4a8c1a7ee94dccdafd887d6b1723262fec4ea12bf6ec19b432b58d69b80c",
+          "collection.json": "447a7f17886215d457b7b8dbdcfb23c9f78e04acfa2aa6197720ac532cf9f542",
+          "playwright.json": "376af9afe7a3e812c8812376aa9dfa6f64ef1ed5e3ec4723da34a3bf46749bed",
+          "named-inventory.json": "e1f77b72c8bd5a4d372e0e3f1f635e6504ca1900c8e763b5697d6797de849dbc",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "205468ff6fe9e9dc8f14dfbfd92740ac144cd8f73285c9d313f40038243a2004"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:28:51.900570+00:00"
+      },
+      "inventory_sha256": "e1f77b72c8bd5a4d372e0e3f1f635e6504ca1900c8e763b5697d6797de849dbc"
+    },
+    {
+      "label": "recovery-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "b81e853093ee4236462fb97f97e3192d59ffe21218dc8a4b109adac6fb93af53",
+          "admission.json": "d81fc71dc072f5270ff2a42c9e792ec1d97714df5a5fb3f801f5db1a3c4ec231",
+          "run.json": "04845d1e76ddccf378f88b523d490d24930f39f968742f3e61b2fa15de0708c6",
+          "collection.json": "aea16ae8ecebebb304fd525622dc13fc61df98001415bc9405d46a034962d646",
+          "playwright.json": "50fc6ce4e6453469ea7f51f571444427e9c3fe3392f293805ff1b7202a11223d",
+          "named-inventory.json": "6e49696b4ef364afde7f737e7d87711f31eb8289c329a6865adb23e8105944fd",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "036470259c59827aad91c8bf63e7e009222f6240f23a94e1582cd5e2c6f4ae6b"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:33:43.729631+00:00"
+      },
+      "inventory_sha256": "6e49696b4ef364afde7f737e7d87711f31eb8289c329a6865adb23e8105944fd"
+    },
+    {
+      "label": "recovery-extras-five-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "83a35b91796f24e89cecb3ad423a95421190622e2fcc1a8ee624a8877fcf3d5d",
+          "admission.json": "3147ab2fa4d33b1d604c32eab391dffaa1e6209450371d75330fe1b78e307690",
+          "run.json": "414dde0ea2256f4fc9058e885f2d12631d5f4381f00ce7fd3be3b18763f23388",
+          "collection.json": "9ab40f185fe8d4a9ab541e8b7048004a35e170bc157a6cddf16bf99862c89c67",
+          "playwright.json": "3c873c6bde8b5200dac22b7805448fd792f5fea388d686591b07b8789b7bfe7e",
+          "named-inventory.json": "44d6df3a2de1bb4a587c0f6a6c0ff146a9a93ea079d85c095aa719c8092127a3",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "f37f72b173f85f5c8a575550a1147c569616e72f584044b2e0b82185fe2cec0d"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T07:07:04.006321+00:00"
+      },
+      "inventory_sha256": "44d6df3a2de1bb4a587c0f6a6c0ff146a9a93ea079d85c095aa719c8092127a3"
+    },
+    {
+      "label": "requirements-history-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "625221c5df420d6907cd6cbdc3d3a155cb25751bc0ab5434c9f790b6d07e55bd",
+          "admission.json": "cd6060abf28644134a6e208d0e54b8fa099cbf01a6a6f8ef79d2549ba9f2bd98",
+          "run.json": "0764b1468d9579e0f035d726e8a62a963c80463ce4ec7236943e41d73c472429",
+          "collection.json": "2d63bb5ab3ccf40dad778b70b977fcb67a374ad078d059c81a37bb43bd0f48ea",
+          "playwright.json": "81d93d6bd92e1f1ba2960f69911cb9fca57bb68bff92376e39b3fb85b5af2adf",
+          "named-inventory.json": "a06d5673a9ca66bc1af6946d1c9db91175736d9a72b1746a4ae2e640c7bed8a7",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "238884abd00772f0aa55b6b8663ab0480e1aa07baac8021fd282b075be09f223"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:30:54.864854+00:00"
+      },
+      "inventory_sha256": "a06d5673a9ca66bc1af6946d1c9db91175736d9a72b1746a4ae2e640c7bed8a7"
+    },
+    {
+      "label": "runtime-output-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "ab81443d894d5b6df3a4a1647e9abdc087eda9ad2fe2e1dbbe0e56f35aae8849",
+          "admission.json": "eb7d8e691670e0c849c99e3c963f6216667cc0e7e76c93b27e1365da7617ec0c",
+          "run.json": "cbecca40e3d173b42eb55e973fc97e0bc9491706ea4ae94b6f5e125fb195c7c5",
+          "collection.json": "a3caac447485461869635069a3feb09afe31d7eaf03a5aed339acbfea8d911d2",
+          "playwright.json": "28fd81a52637b6595107a11644e8dce44e39e4dc6850b2ff5e1a44c366075891",
+          "named-inventory.json": "6de743a5ca54f9b77981a0a57de5eadaa2cd8c16b75923eac3496b4915022906",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "363285126e1dbcd59f0db866ede187aacae32c9eb979d41988c89a864c3b68e0"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:53:45.681253+00:00"
+      },
+      "inventory_sha256": "6de743a5ca54f9b77981a0a57de5eadaa2cd8c16b75923eac3496b4915022906"
+    },
+    {
+      "label": "runtime-recovery-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "168445f4ffd62c95534570c18156e05d5b10efa854a768f17142c34e645e61d6",
+          "admission.json": "e72a759d3fa2818e39619dbf7dbdf732c6a121db23b98db2a82b198f3de3ef56",
+          "run.json": "4614d141d1d9faed025bb9447cb4910d5a16c4a8112fd388b823678b7a191479",
+          "collection.json": "30a5019050f3ff710ce6fa951aeb59633738da81cd8d582185b77f736e8de688",
+          "playwright.json": "b878cbadab6f17bc1a6e8e018d7e82d915d43abcf26466dfb0ec0daaf53dcb99",
+          "named-inventory.json": "58f21eac8d6510c66cfd55293deed307784fe20bc172ef2165e19fad9ea2cfe1",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "9e0daf0aa3d1e63c02b4d521ce6655ebd91b5313e8d827195e0f91480d5c5d42"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:57:12.671982+00:00"
+      },
+      "inventory_sha256": "58f21eac8d6510c66cfd55293deed307784fe20bc172ef2165e19fad9ea2cfe1"
+    },
+    {
+      "label": "stage-approvals-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "92790f6dc496b70eba31a9d2415e04a9b0e955e616c32f201f26b62eef586531",
+          "admission.json": "67f4faab73bd1142c96780743671d18aa4a40ddb47540c35d7e7f1da71979e6f",
+          "run.json": "49868627aa6568aa88199452b8190a59056a93168e872a54cf3e16372c902a2c",
+          "collection.json": "ebe8b5effc8447994dfe24c3d02a0158bdc1c51ea850b92ae05d793f5687edd9",
+          "playwright.json": "c4258ef45546fef8d20f92dd980979b593716e15021332dcebe77efa7e355b35",
+          "named-inventory.json": "3bab2b5b20b083f4a478e32c6bb3b13a71db3ca863ad3fe3d3fc0baf1e2acea2",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "42adf8e29773f96a97ac37083d6e2050cbd46d0e67f8543246c4440de3ed19c8"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:50:24.663832+00:00"
+      },
+      "inventory_sha256": "3bab2b5b20b083f4a478e32c6bb3b13a71db3ca863ad3fe3d3fc0baf1e2acea2"
+    },
+    {
+      "label": "subscriptions-recovery-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "6178f5e00557cc0d121b066ca22e6070d41fea279d10b50cbe77d5c77dd1c9ea",
+          "admission.json": "f7d27ade6e0975e63bf6d9c8c4be0c866b3a10b11c2eeb853d63491f3d495465",
+          "run.json": "31e0cfeadb651f1a8bd1ee0dc83e2cfe246d8739168ab42b4143ab07cc39dd00",
+          "collection.json": "49432b3d6c2f00417dbc94b11339dff4180bd449356fcc79979bbe13028d9f83",
+          "playwright.json": "c7514e20ed66c65cf106ea34911a5af75aca3435f656dba56f4a5a7a5237414c",
+          "named-inventory.json": "dfae60973a618923ff110fc87781f67ba94a8e3a4220355e13e6d0d26e53dc16",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "d37fd54f035174d7e67ab589f09f86e5dcaf436b2e7a072f8e8db73efc751b6d"
+        },
+        "inputs_sha256": "e7c09e7b7035cf891121ce075aeb2c97985f94bc2647d21f23e6643862f62e07",
+        "completed_at": "2026-11-25T05:41:18.610541+00:00"
+      },
+      "inventory_sha256": "dfae60973a618923ff110fc87781f67ba94a8e3a4220355e13e6d0d26e53dc16"
+    }
+  ],
+  "failures": [
+    "Runtime cleanup did not pass: inbox-snooze-02",
+    "Original browser evidence no longer reconciles: inbox-snooze-02",
+    "Runtime cleanup did not pass: information-recovery-01",
+    "Original browser evidence no longer reconciles: information-recovery-01",
+    "Runtime cleanup did not pass: manual-detail-01",
+    "Original browser evidence no longer reconciles: manual-detail-01",
+    "Runtime cleanup did not pass: memory-runtime-01",
+    "Original browser evidence no longer reconciles: memory-runtime-01",
+    "Runtime cleanup did not pass: order-export-01",
+    "Original browser evidence no longer reconciles: order-export-01",
+    "Runtime cleanup did not pass: pay-creation-01",
+    "Original browser evidence no longer reconciles: pay-creation-01",
+    "Runtime cleanup did not pass: recovery-extras-five-01",
+    "Original browser evidence no longer reconciles: recovery-extras-five-01"
+  ],
+  "audited_at": "2026-11-25T08:45:33.310453+00:00",
+  "database": {
+    "id": "c7602a619c9bd0a870772dffff52dfea8b8c650545ef0d45b35d2ffdfdea80fe",
+    "owner": "main-e2e-runtime-7df2120a1b5b",
+    "other_clients": 0
+  },
+  "status": "fail"
+}

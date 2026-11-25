@@ -1,0 +1,29 @@
+[
+  {
+    "lane": "runtime/security-boundary-01",
+    "status": "FAIL",
+    "completed_at": "2026-11-25T04:24:49.746032+00:00",
+    "witness_counts": {
+      "PASS": 9,
+      "FAIL": 2
+    },
+    "no_request_routing": false,
+    "integrity_issues": [],
+    "probe_result": "runtime/security-boundary-01/probe-result.json",
+    "probe_result_sha256": "4e87b99bbb50be07fcf72917d7b3fe7007e8d13d54e11959fb4cf1d8b7398bcf",
+    "limitation": "Original security01 apparent browser-CORS denial PASS is inadmissible: Playwright synthesized its preflight"
+  },
+  {
+    "lane": "runtime/security-boundary-02",
+    "status": "PASS",
+    "completed_at": "2026-11-25T04:37:26.989895+00:00",
+    "witness_counts": {
+      "PASS": 11
+    },
+    "no_request_routing": true,
+    "integrity_issues": [],
+    "probe_result": "runtime/security-boundary-02/probe-result.json",
+    "probe_result_sha256": "74cd2f89de469e7ab8efcdc589c27789a0b1d4bc6d2796d03c1b5a177e49f59d",
+    "limitation": "Actual cookie/profile, Chromium CORS and browser WS refusal plus separate RFC6455 status; not a product UI journey"
+  }
+]

@@ -1,0 +1,169 @@
+{
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "status": "pass",
+  "failed_or_not_run_steps": [],
+  "commands": [
+    {
+      "step": "01-static",
+      "argv": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "lint",
+        "typecheck",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "status": "pass",
+      "started_at": "2026-11-24T00:16:28.029362+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/01-static.log",
+      "input_sha256": "1ddd7cda92c6ffdd916d85cf0d0f4a12d610e9c688b0d0eb198435456f857e03",
+      "pid": 37431,
+      "pgid": 37431,
+      "exit": 0,
+      "ended_at": "2026-11-24T00:18:52.757623+00:00",
+      "log_sha256": "6b5ae9e9a6a57cec641ee2b47bdac8e302f59ff9922f616138fb90243193e4b5",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/01-static.inventory.json"
+    },
+    {
+      "step": "02-ui-exports",
+      "argv": [
+        "pnpm",
+        "check:ui-exports"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "status": "pass",
+      "started_at": "2026-11-24T00:19:04.355137+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/02-ui-exports.log",
+      "input_sha256": "1ddd7cda92c6ffdd916d85cf0d0f4a12d610e9c688b0d0eb198435456f857e03",
+      "pid": 40095,
+      "pgid": 40095,
+      "exit": 0,
+      "ended_at": "2026-11-24T00:19:20.482726+00:00",
+      "log_sha256": "3111f4d297e2bef1413d7cdafa85999b76e5c35d44d92dc7565555dc0f76b03a",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/02-ui-exports.inventory.json"
+    },
+    {
+      "step": "03-ts-tests",
+      "argv": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2",
+        "--reporter=verbose"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "status": "pass",
+      "started_at": "2026-11-24T00:19:33.011754+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/03-ts-tests.log",
+      "input_sha256": "1ddd7cda92c6ffdd916d85cf0d0f4a12d610e9c688b0d0eb198435456f857e03",
+      "pid": 40187,
+      "pgid": 40187,
+      "exit": 0,
+      "ended_at": "2026-11-24T00:28:25.421235+00:00",
+      "log_sha256": "40d1a562644be9950af02a044155c6a91a080ce73cb38f29dbc54373d7fa6046",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/03-ts-tests.inventory.json"
+    },
+    {
+      "step": "04-mobile-typecheck",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/mobile",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "status": "pass",
+      "started_at": "2026-11-24T00:28:35.440028+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/04-mobile-typecheck.log",
+      "input_sha256": "1ddd7cda92c6ffdd916d85cf0d0f4a12d610e9c688b0d0eb198435456f857e03",
+      "pid": 68568,
+      "pgid": 68568,
+      "exit": 0,
+      "ended_at": "2026-11-24T00:28:42.857466+00:00",
+      "log_sha256": "22957d7722b49d7acd79075cde3f902830b302942710d80f1b62d241ed6912bf",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/04-mobile-typecheck.inventory.json"
+    },
+    {
+      "step": "05-mobile-lint",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/mobile",
+        "lint"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "status": "pass",
+      "started_at": "2026-11-24T00:28:51.586036+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/05-mobile-lint.log",
+      "input_sha256": "1ddd7cda92c6ffdd916d85cf0d0f4a12d610e9c688b0d0eb198435456f857e03",
+      "pid": 69342,
+      "pgid": 69342,
+      "exit": 0,
+      "ended_at": "2026-11-24T00:28:54.564274+00:00",
+      "log_sha256": "f626de76bf84f2012da5b9f3bb89414282ded4cfb7beee68913e1725073bea43",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/05-mobile-lint.inventory.json"
+    },
+    {
+      "step": "06-mobile-vitest",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/mobile",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2",
+        "--reporter=verbose"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "status": "pass",
+      "started_at": "2026-11-24T00:29:03.329973+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/06-mobile-vitest.log",
+      "input_sha256": "1ddd7cda92c6ffdd916d85cf0d0f4a12d610e9c688b0d0eb198435456f857e03",
+      "pid": 69468,
+      "pgid": 69468,
+      "exit": 0,
+      "ended_at": "2026-11-24T00:29:06.777016+00:00",
+      "log_sha256": "fd4a4e2e1a8c6583c5d8b0c85a687f185eaa230a9b6fec4271dea6dfe0043605",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/06-mobile-vitest.inventory.json"
+    },
+    {
+      "step": "07-mobile-ios-script",
+      "argv": [
+        "bash",
+        "scripts/ios-run.test.sh"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile",
+      "status": "pass",
+      "started_at": "2026-11-24T00:29:14.953009+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/07-mobile-ios-script.log",
+      "input_sha256": "1ddd7cda92c6ffdd916d85cf0d0f4a12d610e9c688b0d0eb198435456f857e03",
+      "pid": 69547,
+      "pgid": 69547,
+      "exit": 0,
+      "ended_at": "2026-11-24T00:29:15.582200+00:00",
+      "log_sha256": "8a7cab15a7f5e1e881699bea1c2f22b2e56f90a6d43e12f056c20df4f42e0790",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/frontend/07-mobile-ios-script.inventory.json"
+    }
+  ],
+  "final_source": {
+    "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "captured_at": "2026-11-24T00:29:23.488761+00:00",
+    "tracked_count": 32724,
+    "source_initial_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "unexpected_changes": [],
+    "allowed_generated_changes": [],
+    "status": "pass"
+  },
+  "proof_boundary": "static, headless/component/unit tests and iOS shell contract; no browser or native mobile UI"
+}

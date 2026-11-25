@@ -1,0 +1,422 @@
+{
+  "at": "2026-11-25T07:59:53.729125+00:00",
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "status": "complete_with_retained_failures",
+  "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+  "lanes": [
+    {
+      "label": "recovery-extras-five-01",
+      "scope": "runtime-supplement",
+      "expected": 5,
+      "counts": {
+        "passed": 4,
+        "failed": 1
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "e3fa110325b01e6221fb1a6d489e1d647aa7cf8e89e0d29e74784ecee57e9f7c"
+    },
+    {
+      "label": "memory-runtime-01",
+      "scope": "runtime-supplement",
+      "expected": 1,
+      "counts": {
+        "failed": 1
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "0a252552476944991b02a7729b18fac2b604f0145df6c658dc2943a1122a5d4d"
+    },
+    {
+      "label": "order-export-01",
+      "scope": "runtime-supplement",
+      "expected": 1,
+      "counts": {
+        "failed": 1
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "bed12fb7fcc850d3244b738065b56f0951a5afd17924607b7e88b17dd1bfb13e"
+    },
+    {
+      "label": "order-export-leave-01",
+      "scope": "runtime-supplement",
+      "expected": 1,
+      "counts": {
+        "passed": 1
+      },
+      "command_exit": 0,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": true,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "1b02ca6fe35086fee3be7c38cd3deaae19f2c444a7359551357e79fba6f14a4a"
+    },
+    {
+      "label": "cross-client-01",
+      "scope": "runtime",
+      "expected": 1,
+      "counts": {
+        "failed": 1
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "cc00c985c710b9fce0d58c373691a2edbd841313db4fbca395b46fea07a0932f"
+    },
+    {
+      "label": "lane-close-01",
+      "scope": "runtime",
+      "expected": 6,
+      "counts": {
+        "passed": 2,
+        "failed": 4
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "f01b122c3712d8f63c35583cd4ad9d11a568d38a490e2728ad636ce050067c20"
+    },
+    {
+      "label": "lifecycle-01",
+      "scope": "runtime",
+      "expected": 2,
+      "counts": {
+        "failed": 2
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "fa94db5e94babbefc83b8666ae0937c3c4a6fbe56c2070b71fff8053e54effe5"
+    },
+    {
+      "label": "offline-notifications-01",
+      "scope": "runtime",
+      "expected": 2,
+      "counts": {
+        "failed": 2
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "e786eeaff806df984d562d5e05a02d24486fad8718ba7ab2d92fa12b80c63569"
+    },
+    {
+      "label": "information-desktop-02",
+      "scope": "runtime-supplement",
+      "expected": 1,
+      "counts": {
+        "passed": 1
+      },
+      "command_exit": 0,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": true,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "f1d79d91182dc4ec36954788309377152be03b43e21e477bfad25631248092a7"
+    },
+    {
+      "label": "business-scenarios-02",
+      "scope": "runtime",
+      "expected": 3,
+      "counts": {
+        "passed": 3
+      },
+      "command_exit": 0,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": true,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "e60b55b9c273d22657ab39bc10b6895a0caa746d2576b16f1de048570b3890e9"
+    },
+    {
+      "label": "recovery-extras-delayed-02",
+      "scope": "runtime",
+      "expected": 2,
+      "counts": {
+        "passed": 1,
+        "failed": 1
+      },
+      "command_exit": 1,
+      "complete_terminal_identity_inventory": true,
+      "strict_acceptance_inventory": false,
+      "source_gate_ports_verified": true,
+      "completion_sha256": "457f9d35a54d36b15c38bf5a299269cee41e9811371162d4adfae669a4e6a6a6"
+    }
+  ],
+  "totals": {
+    "passed": 12,
+    "failed": 13
+  },
+  "executed_canonical_occurrences": 25,
+  "unique_identities": 24,
+  "repeated_identities": {
+    "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff::chromium": 2
+  },
+  "terminal_cases": [
+    {
+      "lane": "recovery-extras-five-01",
+      "identity": "ecac6bf78a5fb02bc075-2e0839160985f133ab31::chromium",
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "collaboration-recovery-extras.spec.ts / Web recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "recovery-extras-five-01",
+      "identity": "ecac6bf78a5fb02bc075-c4bc9531da4c7d573c12::chromium",
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "collaboration-recovery-extras.spec.ts / Web recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "recovery-extras-five-01",
+      "identity": "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff::chromium",
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "collaboration-recovery-extras.spec.ts / Web recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "recovery-extras-five-01",
+      "identity": "ecac6bf78a5fb02bc075-14b58370a9af77b68c95::chromium",
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "collaboration-recovery-extras.spec.ts / Desktop recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "recovery-extras-five-01",
+      "identity": "ecac6bf78a5fb02bc075-824d851b97f1774f41d6::chromium",
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "collaboration-recovery-extras.spec.ts / Desktop recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "memory-runtime-01",
+      "identity": "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac::chromium",
+      "file": "collaboration-memory-runtime.spec.ts",
+      "title": "collaboration-memory-runtime.spec.ts / two native runtime profiles hand off shared context through the actual run-local CLI",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "order-export-01",
+      "identity": "00c14b16591e46ce6a3d-c7c17b16d1e00d955492::chromium",
+      "file": "collaboration-order-export-20261109.spec.ts",
+      "title": "collaboration-order-export-20261109.spec.ts / order export: independent owner queues merge authors and preserve AI across transfer",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "order-export-leave-01",
+      "identity": "b0157e4e1d2b2a19d912-8d3948bff83fd4fbf6da::chromium",
+      "file": "collaboration-order-export-leave-20261109.spec.ts",
+      "title": "collaboration-order-export-leave-20261109.spec.ts / order export: owner leaves during live execution and creator removes current handler",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "cross-client-01",
+      "identity": "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+      "file": "collaboration-cross-client-execution.spec.ts",
+      "title": "collaboration-cross-client-execution.spec.ts / AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "lane-close-01",
+      "identity": "2baf0d89c3e16f740924-6ba9d26bee7ad2f7ba4b::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "lane-close-01",
+      "identity": "2baf0d89c3e16f740924-57a798cb8c03ff31d703::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "lane-close-01",
+      "identity": "2baf0d89c3e16f740924-40ff4a37c718db2f022d::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "lane-close-01",
+      "identity": "2baf0d89c3e16f740924-c44ce4cf8479a339bf04::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "lane-close-01",
+      "identity": "2baf0d89c3e16f740924-62b228e8e2fe12d87faf::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "lane-close-01",
+      "identity": "2baf0d89c3e16f740924-d5cf28a822dcd31e5846::chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "collaboration-lane-close-controls.spec.ts / Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "lifecycle-01",
+      "identity": "c8706aeccaf441d25880-bf60502313c2edcb8554::chromium",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "collaboration-lifecycle-controls.spec.ts / Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "lifecycle-01",
+      "identity": "c8706aeccaf441d25880-6cf834f8264130a8d215::chromium",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "collaboration-lifecycle-controls.spec.ts / Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "offline-notifications-01",
+      "identity": "753e160629e6e5a7052c-f7430be66c7012c9d9a6::chromium",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "collaboration-offline-result-notifications.spec.ts / Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "offline-notifications-01",
+      "identity": "753e160629e6e5a7052c-fddac4f88ef9091cfce5::chromium",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "collaboration-offline-result-notifications.spec.ts / Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "failed",
+      "retry": 0
+    },
+    {
+      "lane": "information-desktop-02",
+      "identity": "50dbc6ea2152334c9970-d9e3a292d32ed9284fa9::chromium",
+      "file": "collaboration-information-recovery.spec.ts",
+      "title": "collaboration-information-recovery.spec.ts / Desktop information recovery preserves structured blocks, exact repairs, original receipts and protected history across A B C E F G",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "business-scenarios-02",
+      "identity": "63a5c4fa296e099a1451-cda28dfe98eb1d2a7d58::chromium",
+      "file": "collaboration-business-scenarios.spec.ts",
+      "title": "collaboration-business-scenarios.spec.ts / S2 support ticket: manual intake becomes AI-assisted, files reach the agent, and a reopened ticket is reworked",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "business-scenarios-02",
+      "identity": "63a5c4fa296e099a1451-0d8c7045854b15abdde4::chromium",
+      "file": "collaboration-business-scenarios.spec.ts",
+      "title": "collaboration-business-scenarios.spec.ts / S3 governance: live withdrawal really stops work, removal and cancellation fence AI, and the issue still closes",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "business-scenarios-02",
+      "identity": "63a5c4fa296e099a1451-198e4ec96b24149102ac::chromium",
+      "file": "collaboration-business-scenarios.spec.ts",
+      "title": "collaboration-business-scenarios.spec.ts / S1 outsourcing: client, vendor manager and workspace-less engineer close an issue with a vendor squad and reuse approved knowledge",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "recovery-extras-delayed-02",
+      "identity": "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff::chromium",
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "collaboration-recovery-extras.spec.ts / Web recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "status": "passed",
+      "retry": 0
+    },
+    {
+      "lane": "recovery-extras-delayed-02",
+      "identity": "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2::chromium",
+      "file": "collaboration-recovery-extras.spec.ts",
+      "title": "collaboration-recovery-extras.spec.ts / Desktop recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "status": "failed",
+      "retry": 0
+    }
+  ],
+  "namespace": [
+    {
+      "label": "cross-client-01",
+      "actual_containers": 1,
+      "expected_containers": 2,
+      "cleanup_currently_verified": true
+    },
+    {
+      "label": "lane-close-01",
+      "actual_containers": 4,
+      "expected_containers": 8,
+      "cleanup_currently_verified": true
+    },
+    {
+      "label": "lifecycle-01",
+      "actual_containers": 2,
+      "expected_containers": 4,
+      "cleanup_currently_verified": true
+    },
+    {
+      "label": "offline-notifications-01",
+      "actual_containers": 2,
+      "expected_containers": 4,
+      "cleanup_currently_verified": true
+    }
+  ],
+  "pg": {
+    "id": "c7602a619c9bd0a870772dffff52dfea8b8c650545ef0d45b35d2ffdfdea80fe",
+    "port": 49908,
+    "other_clients": 0,
+    "running": true,
+    "lifecycle_owner": "runtime; parent coordinates nextCLI/Linux and finalshutdown"
+  },
+  "owned_processes": [],
+  "locks_absent": true,
+  "all_resource_checks_pass": true,
+  "source_product_edits": false,
+  "handoff": "Exclusive service slot returned to parent for reserved CLI03 next; runtime will start nothing more without new grant",
+  "failure_groups": {
+    "missing_hold_prerequisite_original_Web": 1,
+    "host_pre_provider_permit_failures_pending_Boyle": 2,
+    "namespace_readiness_refusals": 9,
+    "desktop_denial_locator_ambiguity": 1
+  },
+  "evidence_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/recovery-extras-five-01/completion.json": "e3fa110325b01e6221fb1a6d489e1d647aa7cf8e89e0d29e74784ecee57e9f7c",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/memory-runtime-01/completion.json": "0a252552476944991b02a7729b18fac2b604f0145df6c658dc2943a1122a5d4d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/order-export-01/completion.json": "bed12fb7fcc850d3244b738065b56f0951a5afd17924607b7e88b17dd1bfb13e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/order-export-leave-01/completion.json": "1b02ca6fe35086fee3be7c38cd3deaae19f2c444a7359551357e79fba6f14a4a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/cross-client-01/completion.json": "cc00c985c710b9fce0d58c373691a2edbd841313db4fbca395b46fea07a0932f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lane-close-01/completion.json": "f01b122c3712d8f63c35583cd4ad9d11a568d38a490e2728ad636ce050067c20",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/lifecycle-01/completion.json": "fa94db5e94babbefc83b8666ae0937c3c4a6fbe56c2070b71fff8053e54effe5",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/offline-notifications-01/completion.json": "e786eeaff806df984d562d5e05a02d24486fad8718ba7ab2d92fa12b80c63569",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/information-desktop-02/completion.json": "f1d79d91182dc4ec36954788309377152be03b43e21e477bfad25631248092a7",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/business-scenarios-02/completion.json": "e60b55b9c273d22657ab39bc10b6895a0caa746d2576b16f1de048570b3890e9",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/recovery-extras-delayed-02/completion.json": "457f9d35a54d36b15c38bf5a299269cee41e9811371162d4adfae669a4e6a6a6"
+  }
+}

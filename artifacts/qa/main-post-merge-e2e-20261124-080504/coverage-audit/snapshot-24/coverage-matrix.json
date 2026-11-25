@@ -1,0 +1,3078 @@
+{
+  "mapping_sha256": "6d8de46389dda98154e3f94c621f99024e81b01e0c7d93381923bd1121dca74e",
+  "scope": "Plan-to-evidence map; overlapping domain counts must never be added as independent tests",
+  "domains": [
+    {
+      "id": "T01",
+      "priority": "P0",
+      "name": "启动、配置、迁移",
+      "files": "^$",
+      "extra": [
+        "backend/normal-summary.json",
+        "backend/race-summary.json",
+        "scripts-integration/completion-ledger.json"
+      ],
+      "boundary": "Fresh per-package PostgreSQL integration, actual runtime health/provenance and script fixtures; no production deployment",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "NOT_RUN",
+      "named_identity_statuses": {},
+      "latest_named_identity_statuses": {},
+      "identities": [],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        },
+        {
+          "file": "backend/race-summary.json",
+          "exists": true,
+          "sha256": "ba286d261826f7eafd8b9c3e7f202a83b24f1dbb2dbb8e3550f7ddbbf92f2307"
+        },
+        {
+          "file": "scripts-integration/completion-ledger.json",
+          "exists": true,
+          "sha256": "1e00023254b026b77d263041561c7c9bdb053687df71508a74ad6a4ea255c045"
+        }
+      ],
+      "completed_browser_lanes": [],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T02",
+      "priority": "P0",
+      "name": "认证与账号",
+      "files": "^(auth|password|missing-user-session|onboarding|main-supplemental-qa)",
+      "extra": [
+        "frontend/result.json",
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Real auth/browser journeys plus synthetic native Server-switch and session fixtures; injected login helpers alone do not prove login",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 34
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 34
+      },
+      "identities": [
+        "277384e3c137d30ae41c-d30f1de4a3cadc3dcbc5::chromium",
+        "fe04c358f6399c806e6a-c25329bfecb6eaaf3d41::chromium",
+        "d748ac400d08b85935ef-cdc2c45bcee748615dc4::chromium",
+        "d748ac400d08b85935ef-4c8122c5d7b3ca62db1f::chromium",
+        "d748ac400d08b85935ef-a560bf544d20f2fd0dc3::chromium",
+        "d748ac400d08b85935ef-980f198e147897ecb171::chromium",
+        "ff9cba5c38d4d6c37725-7b831a2aad21dbc3540a::chromium",
+        "ff9cba5c38d4d6c37725-dbb4ea26c60d387cd4a5::chromium",
+        "ff9cba5c38d4d6c37725-e67a328491fa62aad35a::chromium",
+        "c48ecd13f8107b5d7a53-28346b4e06db451d72e3::chromium",
+        "62d2f92bf84e51e6ba69-3dbbc983c8461b3dd3e6::chromium",
+        "62d2f92bf84e51e6ba69-6dac3b484db765133d26::chromium",
+        "6791c1b87bc37d8b45db-de21f69168c631ea7ff2::chromium",
+        "6791c1b87bc37d8b45db-409f5f3293a90422944d::chromium",
+        "6791c1b87bc37d8b45db-8324bf977d8cf58ef1bd::chromium",
+        "ac477c38114dcfb2408b-c8cc29374ba1f1ecaebf::chromium",
+        "499efe5838d4da0407a2-2c6b88f5c4eb7d747419::chromium",
+        "499efe5838d4da0407a2-46918236fc038c1aa42d::chromium",
+        "499efe5838d4da0407a2-33024604fff93cfe1cec::chromium",
+        "499efe5838d4da0407a2-f5e3d247705be9b6c116::chromium",
+        "499efe5838d4da0407a2-44609363e0d5318a4a23::chromium",
+        "499efe5838d4da0407a2-526c19db674ab75853a4::chromium",
+        "499efe5838d4da0407a2-b368ce844e34b9272e92::chromium",
+        "499efe5838d4da0407a2-cbf38d2f404135387ebb::chromium",
+        "499efe5838d4da0407a2-8de404b2d89c4e608d60::chromium",
+        "499efe5838d4da0407a2-515735f17901602c7ab0::chromium",
+        "499efe5838d4da0407a2-06b179453d20be149607::chromium",
+        "499efe5838d4da0407a2-49d345c07d50ce9f6d6e::chromium",
+        "161e234becfe92d18781-b89a2a2813f79f77b7b2::chromium",
+        "161e234becfe92d18781-a9b5a22ac6040d56dbae::chromium",
+        "acc595d64ecfa74c4bdc-54310f00df4aa0e73c5f::chromium",
+        "acc595d64ecfa74c4bdc-3d370629f246bf29b71a::chromium",
+        "707169faded7e17d9857-47afb6c555486dc7f218::chromium",
+        "c45dbf29d3cced49315b-0204b49a3708c2e0aeea::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "frontend/result.json",
+          "exists": true,
+          "sha256": "546467cec38dd5ccfd2888adb4fc4767bc79afcb1878bfd1ebdbfeeec3156dd9"
+        },
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/password-migration-binding-01",
+        "runtime/device-01",
+        "runtime/legacy-broad-02",
+        "runtime/password-branches-01",
+        "runtime/password-native-switch-mcp-01",
+        "runtime/password-registration-01"
+      ],
+      "supplemental_security": [
+        {
+          "lane": "runtime/security-boundary-02",
+          "status": "PASS",
+          "completed_at": "2026-11-25T04:37:26.989895+00:00",
+          "witness_counts": {
+            "PASS": 11
+          },
+          "no_request_routing": true,
+          "integrity_issues": [],
+          "probe_result": "runtime/security-boundary-02/probe-result.json",
+          "probe_result_sha256": "74cd2f89de469e7ab8efcdc589c27789a0b1d4bc6d2796d03c1b5a177e49f59d",
+          "limitation": "Actual cookie/profile, Chromium CORS and browser WS refusal plus separate RFC6455 status; not a product UI journey"
+        }
+      ],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T03",
+      "priority": "P0",
+      "name": "工作区、组织、成员",
+      "files": "^(workspace-|global-scope-navigation|main-supplemental-qa)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Actual browser/API workspace flows and backend authorization matrix",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 20
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 20
+      },
+      "identities": [
+        "b31073548e8c74c3e45a-bf902d1569a002a67397::chromium",
+        "b31073548e8c74c3e45a-3e1b8d11f95d409c13f4::chromium",
+        "ff9cba5c38d4d6c37725-7b831a2aad21dbc3540a::chromium",
+        "ff9cba5c38d4d6c37725-dbb4ea26c60d387cd4a5::chromium",
+        "ff9cba5c38d4d6c37725-e67a328491fa62aad35a::chromium",
+        "c9ccc7aea82dbfd143a1-bc6efe1503deb29e86ba::chromium",
+        "c9ccc7aea82dbfd143a1-04d8caea74501010fa12::chromium",
+        "c9ccc7aea82dbfd143a1-5114391dfbe15e0808e2::chromium",
+        "c9ccc7aea82dbfd143a1-a5b64de19d1b49a0e496::chromium",
+        "c9ccc7aea82dbfd143a1-f6e02b9aa4aa3ea5a770::chromium",
+        "c9ccc7aea82dbfd143a1-67fee3afd40b69edf4d9::chromium",
+        "c9ccc7aea82dbfd143a1-dda95a27716d11ec8800::chromium",
+        "c9ccc7aea82dbfd143a1-b14a7ffe31321e6e71de::chromium",
+        "c9ccc7aea82dbfd143a1-0c996715fbccb07b3142::chromium",
+        "c9ccc7aea82dbfd143a1-52656397fd6aa08faa1f::chromium",
+        "5b352e75c175550f4793-f941f2665897bc97d9c0::chromium",
+        "5b352e75c175550f4793-e309b495b2dac7645498::chromium",
+        "5b352e75c175550f4793-184bf393a79f214553ec::chromium",
+        "51598fd8e06d13b7287e-5565feb448f4ad582fad::chromium",
+        "51598fd8e06d13b7287e-e5457198c2e65f73cc0b::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T04",
+      "priority": "P0",
+      "name": "任务生命周期",
+      "files": "^(issue-|issues\\.|core-business|task-lifecycle|lifecycle-handoff|canonical-issue-interaction|quick-actions)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Real CRUD/API/DB; core Agent journeys use SimulatedDaemon; M1 and deterministic assist need their own permits",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 51
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 51
+      },
+      "identities": [
+        "43d1d4e5e176148748dd-8ffb3078f59c9fdb1d9d::chromium",
+        "286209a742c1f7def3f4-631304224f5ab6e0b41a::chromium",
+        "286209a742c1f7def3f4-eef9e3d549def97a1c38::chromium",
+        "286209a742c1f7def3f4-f561c0c7cc80bac50df4::chromium",
+        "286209a742c1f7def3f4-8e4d1fb36316cf1b1978::chromium",
+        "c8267baa84cc70479c79-efdb5acdb4b32fb83e45::chromium",
+        "c8267baa84cc70479c79-e7e8214d34dd283a94c3::chromium",
+        "c8267baa84cc70479c79-2c76769050cad049088b::chromium",
+        "c8267baa84cc70479c79-868de4d14752bca3d208::chromium",
+        "c8267baa84cc70479c79-0954db059952f8b90d9f::chromium",
+        "429c0bb8490b78222b6c-71bbe3038b6049e056c0::chromium",
+        "429c0bb8490b78222b6c-0febfb24ca933d29b6a0::chromium",
+        "429c0bb8490b78222b6c-f6f894db8ac7133a1abd::chromium",
+        "429c0bb8490b78222b6c-f8ab81b526fda60e5d0b::chromium",
+        "316b50a3ca41198e2e17-3a7c713331b09bf89aa4::chromium",
+        "316b50a3ca41198e2e17-fba5e4dbe9f3ecda02f4::chromium",
+        "316b50a3ca41198e2e17-62c42ecac0703aee4ac2::chromium",
+        "316b50a3ca41198e2e17-f9040d254397bbfffce8::chromium",
+        "316b50a3ca41198e2e17-321e7f4c711857f1b15a::chromium",
+        "316b50a3ca41198e2e17-68690e1ce120e12cae62::chromium",
+        "316b50a3ca41198e2e17-0747dc854d1431ff808f::chromium",
+        "316b50a3ca41198e2e17-b2b4883012ba385b77fc::chromium",
+        "00b7935011b67d3066db-1d2a996123df4c161261::chromium",
+        "00b7935011b67d3066db-80c0697ff0c39df9971f::chromium",
+        "ec77213c1e4ed2d01566-d308a5068024dc9c23fe::chromium",
+        "ec77213c1e4ed2d01566-4eb504f626d07eb21786::chromium",
+        "ec77213c1e4ed2d01566-96cec9964623a26d3f9e::chromium",
+        "ec77213c1e4ed2d01566-a26283f6f01f7328d6d7::chromium",
+        "ec77213c1e4ed2d01566-5eba40b964722084cae3::chromium",
+        "ec77213c1e4ed2d01566-4dbef02e7b4501f55ea5::chromium",
+        "ec77213c1e4ed2d01566-66847ba8c33d5a18507b::chromium",
+        "b65268e14c79985c939b-1c42b2fe26a6298a3981::chromium",
+        "b65268e14c79985c939b-0ce2fd213252cbb209b4::chromium",
+        "b65268e14c79985c939b-9ec490c1d88e8966f7d3::chromium",
+        "b65268e14c79985c939b-7d7e8b22dbe90bc32ffb::chromium",
+        "e766ed53fbf4ce5d87c9-58dfff2ead83b6d2782b::chromium",
+        "e766ed53fbf4ce5d87c9-289dd88b759df0e3272d::chromium",
+        "e766ed53fbf4ce5d87c9-8090e955d1a5a46fd002::chromium",
+        "e766ed53fbf4ce5d87c9-970ac64bbcb742617e7a::chromium",
+        "b59fb33cc1a89aa161ca-9f7ff43e977e601e1498::chromium",
+        "b59fb33cc1a89aa161ca-e736c5ca43592c9104f8::chromium",
+        "b59fb33cc1a89aa161ca-b76a5f3530d9704b58fa::chromium",
+        "b59fb33cc1a89aa161ca-e89279e2498373edfcda::chromium",
+        "b59fb33cc1a89aa161ca-439d82440c0d1e5ed976::chromium",
+        "b59fb33cc1a89aa161ca-557569c71b071d7344d4::chromium",
+        "b59fb33cc1a89aa161ca-28c3c5c0f952b1f02448::chromium",
+        "fbf65b4ddde8fa936458-ca87dd778c83e29cb3cf::chromium",
+        "fbf65b4ddde8fa936458-d4ba9b9e9032028940ad::chromium",
+        "fbf65b4ddde8fa936458-8c277b10209012b9a50e::chromium",
+        "de6920089d3421770f4d-8603ace9645f74880fb9::chromium",
+        "0936fe914d6fee13b76a-9c6758dc935f20a05c89::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/assist-01",
+        "runtime/legacy-broad-02",
+        "runtime/m1-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T05",
+      "priority": "P1",
+      "name": "项目与小队默认",
+      "files": "^(projects-|project-squad|progress-reporting)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Current canonical Web/Electron-renderer project lifecycle, goals, health, risk and progress cases",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 67
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 67
+      },
+      "identities": [
+        "2aed1f97972c60c71e7d-11e7a5ad5ebbee55d7fb::chromium",
+        "2aed1f97972c60c71e7d-5239b4fcc5506d9da49a::chromium",
+        "2aed1f97972c60c71e7d-af3b7d9008264692c156::chromium",
+        "9df1753563a10ac7e89c-aca5ea7f49bd406682ee::chromium",
+        "6e37fd6dafef143f5e9e-54cac743d428084884c6::chromium",
+        "6e37fd6dafef143f5e9e-c438af3b331a739fc152::chromium",
+        "6e37fd6dafef143f5e9e-02b9a44c065cd05bbbad::chromium",
+        "6e37fd6dafef143f5e9e-15d79b05cffe33afc2f9::chromium",
+        "6e37fd6dafef143f5e9e-77f9d9a3badcd306f18c::chromium",
+        "6e37fd6dafef143f5e9e-4319f63efcf1c7330b78::chromium",
+        "1b818d5414ee584b2d84-b5ac06cbe1c2513f62e3::chromium",
+        "1b818d5414ee584b2d84-8f1269fb47379d3862bc::chromium",
+        "1b818d5414ee584b2d84-89b808058675eea390b1::chromium",
+        "1b818d5414ee584b2d84-61d5329aa0fe648143a7::chromium",
+        "1b818d5414ee584b2d84-e3e6813a0afc22c98056::chromium",
+        "8d1cf4b8acd4af5229cd-bf508b7153e035c5b6f4::chromium",
+        "8d1cf4b8acd4af5229cd-c3074110d8e9cee7c967::chromium",
+        "8d1cf4b8acd4af5229cd-b8b9e854c8a4eb3cc3b0::chromium",
+        "8d1cf4b8acd4af5229cd-16b48625a33d0a40ee30::chromium",
+        "8d1cf4b8acd4af5229cd-612127d9100023077205::chromium",
+        "8d1cf4b8acd4af5229cd-8d605e9ca887a7c1df04::chromium",
+        "8d1cf4b8acd4af5229cd-b2ec4900c6a975c08dd9::chromium",
+        "8d1cf4b8acd4af5229cd-5c7bcc9b19e7c819f1af::chromium",
+        "8d1cf4b8acd4af5229cd-0aff1c578202abc29c0c::chromium",
+        "8d1cf4b8acd4af5229cd-b6870ea5a9e9ecc670a4::chromium",
+        "8d1cf4b8acd4af5229cd-fc7a4fe8d84de6583b71::chromium",
+        "d085887d0eeaf8211901-7ea084d75feb95a2b5fa::chromium",
+        "d085887d0eeaf8211901-2519237bdbb21a8b5313::chromium",
+        "d085887d0eeaf8211901-c51f5c9039537774bceb::chromium",
+        "d085887d0eeaf8211901-3eeaadd8178e50c3cc6a::chromium",
+        "d085887d0eeaf8211901-043769a2c32c7c693f0a::chromium",
+        "d085887d0eeaf8211901-a110a378431bbf8b3287::chromium",
+        "d085887d0eeaf8211901-e587f376d58b494e6171::chromium",
+        "d085887d0eeaf8211901-bf59ca3d4f5a24363a55::chromium",
+        "d085887d0eeaf8211901-cf2f75be2cce5c3b8d0b::chromium",
+        "d085887d0eeaf8211901-eb91ac8c546548e38873::chromium",
+        "d085887d0eeaf8211901-732b678d3143fc3fb5b1::chromium",
+        "d085887d0eeaf8211901-c27afa253907fcb63193::chromium",
+        "d085887d0eeaf8211901-3e26a09902e8cfb80178::chromium",
+        "d085887d0eeaf8211901-ab51ef8a3f02da1bc769::chromium",
+        "d085887d0eeaf8211901-5fe4f84ab7960fd9683f::chromium",
+        "d085887d0eeaf8211901-606e2d2547217444289c::chromium",
+        "d085887d0eeaf8211901-5859d08fe6271d78d4eb::chromium",
+        "dc350675e24b25c8346a-65aaa53e8f7b9230809b::chromium",
+        "dc350675e24b25c8346a-fbd2d90505e1114e3877::chromium",
+        "dc350675e24b25c8346a-b2a5d58e05916a0a6a5f::chromium",
+        "dc350675e24b25c8346a-7ea92583a61c52904f8e::chromium",
+        "dc350675e24b25c8346a-7f9315b5a26d8bb9fd36::chromium",
+        "dc350675e24b25c8346a-a5c9f3eeaf05bbb8cb55::chromium",
+        "dc350675e24b25c8346a-bf0b562955f0bb82c3df::chromium",
+        "dc350675e24b25c8346a-316d4d559f8f0a632a6a::chromium",
+        "dc350675e24b25c8346a-9d84ac1846532651964c::chromium",
+        "dc350675e24b25c8346a-fcc6c752797a8ace1a1a::chromium",
+        "dc350675e24b25c8346a-7e71848a14e756cce9de::chromium",
+        "dc350675e24b25c8346a-977b3465cb5958301716::chromium",
+        "dc350675e24b25c8346a-826365d19e4b5722c560::chromium",
+        "dc350675e24b25c8346a-29219d910e0385553167::chromium",
+        "dc350675e24b25c8346a-5dbd02af996ec71b473a::chromium",
+        "cce2a6040560e1331cfa-02deb98b339801d339b5::chromium",
+        "cce2a6040560e1331cfa-3fbc87067b4b7b884029::chromium",
+        "cce2a6040560e1331cfa-0c36939974844ea26880::chromium",
+        "cce2a6040560e1331cfa-dbff13c57f28f3f57d06::chromium",
+        "cce2a6040560e1331cfa-fe38266441ef8621095f::chromium",
+        "cce2a6040560e1331cfa-7d7b0b6606074dd30f04::chromium",
+        "cce2a6040560e1331cfa-1438b8e2a2eabcfdee53::chromium",
+        "cce2a6040560e1331cfa-e6df884095c52b13688d::chromium",
+        "5445bab7d785f2446c0f-a6baa15093439a770dec::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T06",
+      "priority": "P1",
+      "name": "迭代",
+      "files": "^iteration",
+      "extra": [
+        "utc/result.json",
+        "backend-diagnostics/iteration-perf-01/summary.json",
+        "frontend/06-mobile-vitest.inventory.json"
+      ],
+      "boundary": "Real Web/native-renderer flows, database timezone round trips and handler P95; mobile is headless data only",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 23
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 23
+      },
+      "identities": [
+        "d7fe5771aad69823a2db-545283ff57a05112f129::chromium",
+        "f2a802c5af7b0c7e2612-2a4a040c9eda358587c4::chromium",
+        "f2a802c5af7b0c7e2612-e0f48a993d57ed1d2e9e::chromium",
+        "0f725ce676e45196fd22-84260a4118aca5889c84::chromium",
+        "0f725ce676e45196fd22-63a5692adf71c3950e7f::chromium",
+        "496b6e7fe2e1b9404a76-1dca83814f65dea3645d::chromium",
+        "496b6e7fe2e1b9404a76-f6710974d6b75822a599::chromium",
+        "496b6e7fe2e1b9404a76-63282714c5339a533979::chromium",
+        "15a524afb552feac73d6-c5a670cf3a27978bac20::chromium",
+        "15a524afb552feac73d6-238887d51d7f0bd9c519::chromium",
+        "15a524afb552feac73d6-5b860a9068dcb0783812::chromium",
+        "15a524afb552feac73d6-c930e3a6094f90de1c7f::chromium",
+        "5694ea610c74371beec7-ea0b5ae4ccfe41e271ed::chromium",
+        "7d4a5b21f5d85423e591-94d2ade8f9aabdd3f43b::chromium",
+        "7d4a5b21f5d85423e591-ec7475f98cbdfc62e1f4::chromium",
+        "7d4a5b21f5d85423e591-0e8b19399525fc4514c5::chromium",
+        "b1acbef9d6ca0b02b60c-c1aa1d47531868ac7912::chromium",
+        "b1acbef9d6ca0b02b60c-f786925c18990601dc5e::chromium",
+        "b1acbef9d6ca0b02b60c-39d99b6b39ca6076b2b4::chromium",
+        "dfd28f80359b548429e2-79ddb7461bdcf2e47de8::chromium",
+        "b6b2e194fc45fcf2f850-e58751c82b97546a312b::chromium",
+        "b6b2e194fc45fcf2f850-f6506b4d245ec9b76e6d::chromium",
+        "b6b2e194fc45fcf2f850-5470ded8647646304fe1::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "utc/result.json",
+          "exists": true,
+          "sha256": "cc495991904f5abadcc27bd06ad43a40b91723c9d3b919659f1ece7206a304e9"
+        },
+        {
+          "file": "backend-diagnostics/iteration-perf-01/summary.json",
+          "exists": true,
+          "sha256": "2390d030366840f71e07a2367d1b326da0655e41d6d3d83fc44f259066645061"
+        },
+        {
+          "file": "frontend/06-mobile-vitest.inventory.json",
+          "exists": true,
+          "sha256": "10ee6fce12e89cc421952b617ae04a3291b5a76ade1f2c44ee0e9b4dbb8205ea"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T07",
+      "priority": "P1",
+      "name": "筛选、搜索、分页、导航",
+      "files": "^(issue-table|navigation|sidebar-|global-scope-navigation|canonical-issue-interaction|collaboration-account-desktop|iteration-history-navigation)",
+      "extra": [
+        "frontend/result.json"
+      ],
+      "boundary": "Canonical browser/renderer navigation and pagination; mocked large actor lists are not server load evidence",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 26
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 26
+      },
+      "identities": [
+        "43d1d4e5e176148748dd-8ffb3078f59c9fdb1d9d::chromium",
+        "d830fff7a787071ac252-cce5cce322a1d9534728::chromium",
+        "d830fff7a787071ac252-aeabddf81c5e64c81e35::chromium",
+        "d830fff7a787071ac252-2802bec50cf95487730b::chromium",
+        "d830fff7a787071ac252-a17f2ed256028f8c455c::chromium",
+        "d830fff7a787071ac252-eac673a2b556e5572224::chromium",
+        "d830fff7a787071ac252-7550f6b55624b4737b2d::chromium",
+        "d830fff7a787071ac252-8210e9d714e4a772d567::chromium",
+        "d830fff7a787071ac252-8b3d1c56378e13759b41::chromium",
+        "d830fff7a787071ac252-50bd78a5291e45034c84::chromium",
+        "d830fff7a787071ac252-67f16d420e51298c62f2::chromium",
+        "d830fff7a787071ac252-4a853469be2906c7a36f::chromium",
+        "b31073548e8c74c3e45a-bf902d1569a002a67397::chromium",
+        "b31073548e8c74c3e45a-3e1b8d11f95d409c13f4::chromium",
+        "e766ed53fbf4ce5d87c9-58dfff2ead83b6d2782b::chromium",
+        "e766ed53fbf4ce5d87c9-289dd88b759df0e3272d::chromium",
+        "e766ed53fbf4ce5d87c9-8090e955d1a5a46fd002::chromium",
+        "e766ed53fbf4ce5d87c9-970ac64bbcb742617e7a::chromium",
+        "d7fe5771aad69823a2db-545283ff57a05112f129::chromium",
+        "f2a802c5af7b0c7e2612-2a4a040c9eda358587c4::chromium",
+        "f2a802c5af7b0c7e2612-e0f48a993d57ed1d2e9e::chromium",
+        "5d2868f7d23420c27cca-a787ba5398c7bc3539a3::chromium",
+        "5d2868f7d23420c27cca-67549f153dfd662c37ca::chromium",
+        "5d2868f7d23420c27cca-419e2be717fb00d847a4::chromium",
+        "305ab7a03fed80082107-1313f017b3a270d01e5d::chromium",
+        "305ab7a03fed80082107-b565c74f78f8b0bd4ae9::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "frontend/result.json",
+          "exists": true,
+          "sha256": "546467cec38dd5ccfd2888adb4fc4767bc79afcb1878bfd1ebdbfeeec3156dd9"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T08",
+      "priority": "P0",
+      "name": "评论、附件、引用",
+      "files": "^(upstream-selected-fixes|comments|chat-attachments|collaboration-retained-attachment|collaboration-runtime-output|collaboration-mention|upstream-backports-cli)",
+      "extra": [
+        "runtime/comment-authority-legacy-02/probe-result.json",
+        "runtime/comment-authority-password-01/probe-result.json",
+        "native-file-access/current-01/native-result.json"
+      ],
+      "known_failure": "Machine owner/admin task credentials changed other human authors' comments through real HTTP; separate generic-upload observations remain policy questions",
+      "boundary": "Ordinary live comments, real credential probes and native file-access fixtures; immutable runtime output requires actual controlled runtime lane",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 22
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 22
+      },
+      "identities": [
+        "6880e8a95221ae7c8fc8-124c6e2ce713183a1959::chromium",
+        "e1244c64bf212413b472-21e1aed1c8d6c522f803::chromium",
+        "e1244c64bf212413b472-40cb2a40180050917361::chromium",
+        "e1244c64bf212413b472-f56f261bd296c36c7784::chromium",
+        "a2c6b754d21b70f11df3-e4beab049273f7979057::chromium",
+        "a2c6b754d21b70f11df3-64a32e62b06c28657aa8::chromium",
+        "a2c6b754d21b70f11df3-24073f543fb2f4024711::chromium",
+        "32ff48078ff9327ee98f-b14f87017555ef29f972::chromium",
+        "32ff48078ff9327ee98f-30169eca31035cff2a15::chromium",
+        "32ff48078ff9327ee98f-952cd334ba541c9d53a9::chromium",
+        "6aaa25148c0e1afd59f7-606d9c3aeb24e22fa529::chromium",
+        "6aaa25148c0e1afd59f7-3b82058b2fb1bf9f0ef2::chromium",
+        "0dd0b076f0868dfee4c3-54fd68f12e111eb47371::chromium",
+        "0dd0b076f0868dfee4c3-f93c334be764e9490f59::chromium",
+        "bd9ae41f816d28ed7ab4-38a54bae21a8893026de::chromium",
+        "bd9ae41f816d28ed7ab4-2aaf689b65418ee3e597::chromium",
+        "bd9ae41f816d28ed7ab4-02c5d3f770f808c9c386::chromium",
+        "7d5f4a6cd47a0e484bf3-715ead897b520e4add3d::chromium",
+        "7d5f4a6cd47a0e484bf3-f0c5ff0fba743b1ad12a::chromium",
+        "7d5f4a6cd47a0e484bf3-56998c3b2a1ab253ee6e::chromium",
+        "7d5f4a6cd47a0e484bf3-93752d52884caaa9807a::chromium",
+        "7d5f4a6cd47a0e484bf3-5c344f12f2f6a8c23fe6::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "runtime/comment-authority-legacy-02/probe-result.json",
+          "exists": true,
+          "sha256": "fb47672ed92229089baa63659fcc955b9d4dcfdfcb93e6a5f52f38ba6b026f8b"
+        },
+        {
+          "file": "runtime/comment-authority-password-01/probe-result.json",
+          "exists": true,
+          "sha256": "7c62025c9bf72a4be7ee2f996a17355392caede2e36b9894e97dd844bfe0f862"
+        },
+        {
+          "file": "native-file-access/current-01/native-result.json",
+          "exists": true,
+          "sha256": "45ef2edf2b5e110f9351dbc18991469a02559f0d53369278d1c199b3556b9e94"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/runtime-output-01",
+        "runtime/legacy-broad-02",
+        "runtime/password-retained-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T09",
+      "priority": "P1",
+      "name": "Inbox、Triage",
+      "files": "^(upstream-selected-fixes|inbox-snooze|triage|collaboration-notifications-page|collaboration-offline-result-notifications)",
+      "extra": [
+        "utc/result.json",
+        "backend-diagnostics/triage-perf-01/summary.json"
+      ],
+      "boundary": "Browser and actual database snooze/triage, explicit native renderer; first snooze attempt refused incomplete allocation before business setup",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 35,
+        "FAIL": 4
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 36,
+        "FAIL": 3
+      },
+      "identities": [
+        "870c3436829a9cb25b04-28a0b4d430ca315035ba::chromium",
+        "870c3436829a9cb25b04-dfdd3af18f19f27a5fa6::chromium",
+        "753e160629e6e5a7052c-f7430be66c7012c9d9a6::chromium",
+        "753e160629e6e5a7052c-fddac4f88ef9091cfce5::chromium",
+        "2965b1f5e7ed7b139948-cd8e9283e9bd9483caf8::chromium",
+        "2965b1f5e7ed7b139948-82b9a5d528fd18060683::chromium",
+        "2965b1f5e7ed7b139948-939020715d6b657e1918::chromium",
+        "2965b1f5e7ed7b139948-a68672c7710c8a10774c::chromium",
+        "2965b1f5e7ed7b139948-6d6e7627e024ce7028ed::chromium",
+        "2965b1f5e7ed7b139948-7629ef8a1d24452be878::chromium",
+        "59de9504d86b3b7ee8f0-7e2699399592e897a58e::chromium",
+        "59de9504d86b3b7ee8f0-6ed07e486bc962c20bbc::chromium",
+        "59de9504d86b3b7ee8f0-61e9248b5626e2120cc4::chromium",
+        "59de9504d86b3b7ee8f0-3aeeadf42fd4965e6a27::chromium",
+        "59de9504d86b3b7ee8f0-f335e1b00b20c04ad3a9::chromium",
+        "59de9504d86b3b7ee8f0-255167be6e24c02bb56b::chromium",
+        "59de9504d86b3b7ee8f0-8d5de95351eb1342c1b6::chromium",
+        "59de9504d86b3b7ee8f0-4030ed811b16d34c1ecc::chromium",
+        "59de9504d86b3b7ee8f0-fcc41296a9cc5efaeed0::chromium",
+        "59de9504d86b3b7ee8f0-7e59578d30d1e3bc5452::chromium",
+        "a4f87ecd882bde171947-1cc0316e640452fdf64d::chromium",
+        "bdfad659a63831abbad5-b1a6cae3748cc7498a4b::chromium",
+        "bdfad659a63831abbad5-0bc1a1ec66314db02364::chromium",
+        "7e854b2f15c7ccd1df81-3d45549dced8ce6a42a9::chromium",
+        "7e854b2f15c7ccd1df81-81f9895dfb84cc87cd63::chromium",
+        "18cf56c89ac5da3b6284-ea5b1e68558fd12b2a3c::chromium",
+        "18cf56c89ac5da3b6284-b91aa4d2f1ea0320fbad::chromium",
+        "5c882986578ede236a1e-a7c2d68f6cac39dde4ff::chromium",
+        "5c882986578ede236a1e-a93626b1987cfa6280ac::chromium",
+        "5c882986578ede236a1e-13de9f20444169788ccb::chromium",
+        "5c882986578ede236a1e-6e706952114eaf3a4ea2::chromium",
+        "5c882986578ede236a1e-89c51b2287b228d5bd42::chromium",
+        "5c882986578ede236a1e-b5eb050b04a0c0bd31b7::chromium",
+        "5c882986578ede236a1e-11b9cca999a705f0cd1a::chromium",
+        "7d5f4a6cd47a0e484bf3-715ead897b520e4add3d::chromium",
+        "7d5f4a6cd47a0e484bf3-f0c5ff0fba743b1ad12a::chromium",
+        "7d5f4a6cd47a0e484bf3-56998c3b2a1ab253ee6e::chromium",
+        "7d5f4a6cd47a0e484bf3-93752d52884caaa9807a::chromium",
+        "7d5f4a6cd47a0e484bf3-5c344f12f2f6a8c23fe6::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "utc/result.json",
+          "exists": true,
+          "sha256": "cc495991904f5abadcc27bd06ad43a40b91723c9d3b919659f1ece7206a304e9"
+        },
+        {
+          "file": "backend-diagnostics/triage-perf-01/summary.json",
+          "exists": true,
+          "sha256": "d75367b58ed990b9a0a93e82a126d64d828464a7875725c57a275274887e1044"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/inbox-snooze-02",
+        "runtime/inbox-snooze-01",
+        "runtime/legacy-broad-02",
+        "runtime/offline-notifications-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon admission refusal; actual proven AI offline-result assertions not reached",
+          "evidence": "runtime/offline-notifications-01/failure-classification.json",
+          "evidence_sha256": "62100d5bb0b546cd7fe47d020a545f6a58a4648bc34b2c135f3dfe9a95324282"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon admission refusal; actual proven AI offline-result assertions not reached",
+          "evidence": "runtime/offline-notifications-01/failure-classification.json",
+          "evidence_sha256": "62100d5bb0b546cd7fe47d020a545f6a58a4648bc34b2c135f3dfe9a95324282"
+        },
+        {
+          "category": "TEST_ALLOCATION_PREREQUISITE",
+          "product_failure_proven": false,
+          "reason": "Generic opt-in omitted required password inbox allocation; failed before actor/business setup"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture navigation mismatch before cross-workspace snooze/wakeup business operations",
+          "evidence": "runtime-supplement/inbox-snooze-02/failure-classification.json",
+          "evidence_sha256": "93c290b1b268d2dcc4b78d921e5517065ac0f126df063f2c156e1b15a72a2c20"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T10",
+      "priority": "P1",
+      "name": "Agent、角色、小队",
+      "files": "^(upstream-selected-fixes|agent|squad|builtin-agent|autopilot|quick-create|localized-template-defaults|security-remediation-squad)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Real API/UI controls; recommendation and assist providers are deterministic local fixtures, not commercial model quality",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 99
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 99
+      },
+      "identities": [
+        "e8efb808ba01ff965e9d-0a157d749a0a382b1f8f::chromium",
+        "e8efb808ba01ff965e9d-a7ed253116a87ee650b1::chromium",
+        "e8efb808ba01ff965e9d-07463f034962bcdc52ea::chromium",
+        "e8efb808ba01ff965e9d-17b848dae2ae30f8da79::chromium",
+        "e8efb808ba01ff965e9d-6c1a43e3c488fa14ff03::chromium",
+        "e8efb808ba01ff965e9d-9a707d578124cb54d228::chromium",
+        "e8efb808ba01ff965e9d-4c07082a7d0d94a1faf2::chromium",
+        "e8efb808ba01ff965e9d-e4346ab40b7dc2f7ede1::chromium",
+        "e8efb808ba01ff965e9d-aa810445af5c079571e6::chromium",
+        "e8efb808ba01ff965e9d-30c4632c7fab22e740f7::chromium",
+        "e8efb808ba01ff965e9d-05c9cd849f612de390b6::chromium",
+        "e8efb808ba01ff965e9d-2a02c2d936bb1820d1cd::chromium",
+        "e8efb808ba01ff965e9d-ee77e6091f3cac91b96e::chromium",
+        "e8efb808ba01ff965e9d-9b23d1c969418669a774::chromium",
+        "e8efb808ba01ff965e9d-bf2bdca4446cdad85089::chromium",
+        "e8efb808ba01ff965e9d-c9b2602c857d89061487::chromium",
+        "e8efb808ba01ff965e9d-a74adc62c0b8bb6ce80a::chromium",
+        "e8efb808ba01ff965e9d-aae602dd41bc71bdb41b::chromium",
+        "e8efb808ba01ff965e9d-46d620ad09b3549afd3d::chromium",
+        "e8efb808ba01ff965e9d-3128500374f25e7f6918::chromium",
+        "e8efb808ba01ff965e9d-9ce20b1e881dd66809db::chromium",
+        "e8efb808ba01ff965e9d-df9d23050be632d054fd::chromium",
+        "e8efb808ba01ff965e9d-b8d920f8e6b9ed852f22::chromium",
+        "e8efb808ba01ff965e9d-64c67d730606b6bc7668::chromium",
+        "e8efb808ba01ff965e9d-e6e2f8e8f66dc5b66dd8::chromium",
+        "ebe0e0d6f6a8382aed34-3c20a605571c21e197e0::chromium",
+        "413bc7f4b7984c367db0-4fde0744e6fe37a27c42::chromium",
+        "2c8ce544119bfa6e85e9-dd0672803da0228fb18c::chromium",
+        "2c8ce544119bfa6e85e9-d43a7027aec36a665054::chromium",
+        "c0b226ed5f4844681dfe-f9329157fc52b323faa4::chromium",
+        "c0b226ed5f4844681dfe-352d80e73a0a4ff6d95e::chromium",
+        "c0b226ed5f4844681dfe-18648496baedcf7dfa9e::chromium",
+        "c0b226ed5f4844681dfe-9e13858dd7117b6ac243::chromium",
+        "c0b226ed5f4844681dfe-84e8d4fd2d1bacab3adf::chromium",
+        "4c2f0a2406cc7deffd30-b71f4d2cb710417d9051::chromium",
+        "1d916a491569120105f8-0f576a82b0ca494fa342::chromium",
+        "6c2496c1aabdd7e66cc4-0be4bb6ce036c9195e35::chromium",
+        "ec3ce1bcfd306272d4de-ae3ba80cc4f1985e8d78::chromium",
+        "ec3ce1bcfd306272d4de-21c0c799e1ab7a37c7b2::chromium",
+        "ec3ce1bcfd306272d4de-b78f3e3cf845d6c640ec::chromium",
+        "ec3ce1bcfd306272d4de-a62d7fb6983b53233ee0::chromium",
+        "ec3ce1bcfd306272d4de-2f42a1349fd0ebbe9290::chromium",
+        "ec3ce1bcfd306272d4de-363a429591b1bd4c45a2::chromium",
+        "ec3ce1bcfd306272d4de-e52e6997b255c8053827::chromium",
+        "ec3ce1bcfd306272d4de-ad518d42e88ae4d1ae5c::chromium",
+        "ec3ce1bcfd306272d4de-176981f856922b52f146::chromium",
+        "5171ba4e45e8153c7e9c-653ae75a29a95a539d04::chromium",
+        "664adac2ce043ee7cb79-0575e292748c5b1ce956::chromium",
+        "664adac2ce043ee7cb79-e69fc90bd431f4c8d30f::chromium",
+        "ae97639f8a12db6f1467-4336814dc6e9deec4df0::chromium",
+        "ae97639f8a12db6f1467-73767dd86e490c95199c::chromium",
+        "272c584b2640c2316de9-509657310493c59b438b::chromium",
+        "272c584b2640c2316de9-75e733c661b301f131e5::chromium",
+        "272c584b2640c2316de9-a40735e50e42e2e99d84::chromium",
+        "272c584b2640c2316de9-736a91f761654c6652d9::chromium",
+        "272c584b2640c2316de9-2b51c877943a05649371::chromium",
+        "2e8047e6a79406123d43-917734d962ee445caa3e::chromium",
+        "2e8047e6a79406123d43-48a3237c0b018794c136::chromium",
+        "2e8047e6a79406123d43-e0779b130c28cbf8e2ea::chromium",
+        "2e8047e6a79406123d43-34ddf6303236672b6066::chromium",
+        "11f14e573b02cdc34596-22cf0f7110ca9e9faf7a::chromium",
+        "11f14e573b02cdc34596-6247ca7e92d0d2f3c214::chromium",
+        "11f14e573b02cdc34596-8c898a6ec6b7a30b56ce::chromium",
+        "11f14e573b02cdc34596-ef8932b59d4e8feeeef5::chromium",
+        "11f14e573b02cdc34596-66f36554bece65e868f4::chromium",
+        "11f14e573b02cdc34596-dbc6cc7829bcf697ee38::chromium",
+        "11f14e573b02cdc34596-7e8463d4ea155e76dca8::chromium",
+        "11f14e573b02cdc34596-d6a52f2d1a0beb59fa33::chromium",
+        "e964f08b68de3e390272-c8bba5cb04849bc0429e::chromium",
+        "e964f08b68de3e390272-2e4edc47996ceac650bd::chromium",
+        "e964f08b68de3e390272-163a293a0f2cd59151fa::chromium",
+        "a8da8c46ffd46bfee43b-69f2c27be27f538cadad::chromium",
+        "a8da8c46ffd46bfee43b-cef5a49e5cbf4e316e1b::chromium",
+        "a8da8c46ffd46bfee43b-deea30e7c87328172a78::chromium",
+        "a8da8c46ffd46bfee43b-1a14f0884a8931fde932::chromium",
+        "a8da8c46ffd46bfee43b-278be7c00c2d6721cac5::chromium",
+        "a8da8c46ffd46bfee43b-83d4d6e0d994e955fe85::chromium",
+        "a8da8c46ffd46bfee43b-af46c4738c42e3d82c2f::chromium",
+        "a8da8c46ffd46bfee43b-07c04894087e1c1338b9::chromium",
+        "a8da8c46ffd46bfee43b-9e73d9f9d51390c00b19::chromium",
+        "a8da8c46ffd46bfee43b-fc74e423d03367148bf7::chromium",
+        "a8da8c46ffd46bfee43b-25b46ce79a204c7e9c42::chromium",
+        "a8da8c46ffd46bfee43b-7ac703bb61bf11c207a1::chromium",
+        "a8da8c46ffd46bfee43b-ba5e23f98a659dbc2dae::chromium",
+        "a8da8c46ffd46bfee43b-47a397ca2301962bf28a::chromium",
+        "a8da8c46ffd46bfee43b-c0b93f230e4159cdf589::chromium",
+        "a8da8c46ffd46bfee43b-d9507abee7ec61686ee1::chromium",
+        "a8da8c46ffd46bfee43b-4ef7fdc48d0dea2aabea::chromium",
+        "a8da8c46ffd46bfee43b-fd1d765bc22301467e1b::chromium",
+        "2895ed868a142843017c-80df0c88244b6739fee6::chromium",
+        "2895ed868a142843017c-6213b78d50cd9269343c::chromium",
+        "0dd4bbb773f1fdf0bbc7-50dcf6d848d79f5723b0::chromium",
+        "105bd24aa0b6269bcd78-c31418881ed323ca627c::chromium",
+        "66c7ecb4430f71ae3155-5dbcd1cf5426dd000cc0::chromium",
+        "7d5f4a6cd47a0e484bf3-715ead897b520e4add3d::chromium",
+        "7d5f4a6cd47a0e484bf3-f0c5ff0fba743b1ad12a::chromium",
+        "7d5f4a6cd47a0e484bf3-56998c3b2a1ab253ee6e::chromium",
+        "7d5f4a6cd47a0e484bf3-93752d52884caaa9807a::chromium",
+        "7d5f4a6cd47a0e484bf3-5c344f12f2f6a8c23fe6::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02",
+        "runtime/recommendations-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T11",
+      "priority": "P0",
+      "name": "协作创建与信息",
+      "files": "^collaboration-(account|command-history|preparation-records|preview|records|runtime-handoff|boundaries|creation|detail|drawer|editing|information|pay-creation|recipient|requirements|resources|resource-offers|selection|source-surface|workbench|recovery|retained-attachment)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Actual API/production browser and fixture Main, exact original-key/history/permission recovery",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 58,
+        "FAIL": 7
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 60,
+        "FAIL": 5
+      },
+      "identities": [
+        "d830fff7a787071ac252-cce5cce322a1d9534728::chromium",
+        "d830fff7a787071ac252-aeabddf81c5e64c81e35::chromium",
+        "d830fff7a787071ac252-2802bec50cf95487730b::chromium",
+        "d830fff7a787071ac252-a17f2ed256028f8c455c::chromium",
+        "d830fff7a787071ac252-eac673a2b556e5572224::chromium",
+        "d830fff7a787071ac252-7550f6b55624b4737b2d::chromium",
+        "d830fff7a787071ac252-8210e9d714e4a772d567::chromium",
+        "d830fff7a787071ac252-8b3d1c56378e13759b41::chromium",
+        "d830fff7a787071ac252-50bd78a5291e45034c84::chromium",
+        "d830fff7a787071ac252-67f16d420e51298c62f2::chromium",
+        "d830fff7a787071ac252-4a853469be2906c7a36f::chromium",
+        "6e126002765c26c65f32-72051070d351cc025e2c::chromium",
+        "6e126002765c26c65f32-f3f66911ac00e604b913::chromium",
+        "6e126002765c26c65f32-9d52924653599de8bd73::chromium",
+        "dc6e451f347c4093ecd2-a28eb97dd4e993efe152::chromium",
+        "ae604bba5fe0842e68fc-9f7f67265bb713d94466::chromium",
+        "ae604bba5fe0842e68fc-d43bdaccec024c2860a6::chromium",
+        "900011f45627c15b945e-e3d039a6ffb48d4184b3::chromium",
+        "900011f45627c15b945e-31ca666382809bfc78dc::chromium",
+        "2a12307fbe587ad30b9d-1f00226cface18b21c69::chromium",
+        "16fb198f1f05de30d9cd-9ee56d8d1c279b1ffa65::chromium",
+        "16fb198f1f05de30d9cd-7d2cb0865c8a7d865a22::chromium",
+        "50dbc6ea2152334c9970-f163e18c99b25f48ec6d::chromium",
+        "50dbc6ea2152334c9970-d9e3a292d32ed9284fa9::chromium",
+        "ca48d702c1e4c67aefbb-4c7e53db969d5505a370::chromium",
+        "ca48d702c1e4c67aefbb-a51ef4f8f1c2f1b77bbe::chromium",
+        "cde037303ed86892b546-c487173c2ca4fe36791b::chromium",
+        "a51aed25ed03c8fdf991-8eebfabe4531dc636537::chromium",
+        "6a3286d9ccab8513fbec-e93b6369b5b4939e29a8::chromium",
+        "3816d6535569401f4102-f55cbf56b30c1f738b53::chromium",
+        "0bfd230843f79e727b28-dc35d5e24b961c6b892f::chromium",
+        "ecac6bf78a5fb02bc075-2e0839160985f133ab31::chromium",
+        "ecac6bf78a5fb02bc075-c4bc9531da4c7d573c12::chromium",
+        "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff::chromium",
+        "ecac6bf78a5fb02bc075-14b58370a9af77b68c95::chromium",
+        "ecac6bf78a5fb02bc075-824d851b97f1774f41d6::chromium",
+        "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2::chromium",
+        "ed44d74a0711f42c4c9b-7936f0baa06f189d5dde::chromium",
+        "ed44d74a0711f42c4c9b-e7fa1233b088e6382147::chromium",
+        "9626b9bf672f93051bc7-67f468c0ec27efb1fb16::chromium",
+        "9626b9bf672f93051bc7-dfc54d49264cd5bf2562::chromium",
+        "9626b9bf672f93051bc7-b1549124e6dd772929b9::chromium",
+        "9626b9bf672f93051bc7-45f194ed1a914c7bd2c2::chromium",
+        "714a517df346ea008da2-84df73c1a532c0e482c8::chromium",
+        "714a517df346ea008da2-8b2a28363c91382fa472::chromium",
+        "75db0b9d9278c900ff5e-24c8eb350f462c48fcd9::chromium",
+        "75db0b9d9278c900ff5e-60e1828a4a4508d6677d::chromium",
+        "75db0b9d9278c900ff5e-81ce69aa68f15edc7ee4::chromium",
+        "75db0b9d9278c900ff5e-e930a2196195650e6a1f::chromium",
+        "75db0b9d9278c900ff5e-fafc6f3febf440ceebd1::chromium",
+        "75db0b9d9278c900ff5e-c1ffc30138c46dc1a440::chromium",
+        "ae1717817739f0698543-e966ddc97d3b5f48187a::chromium",
+        "ae1717817739f0698543-2aff574e4246ff1da885::chromium",
+        "c78071dd87551f1b6349-e8466e8ab1e2b5c666b4::chromium",
+        "217ddf7a66d97257e3f4-2fc69945ab2d775c7b1e::chromium",
+        "32ff48078ff9327ee98f-b14f87017555ef29f972::chromium",
+        "32ff48078ff9327ee98f-30169eca31035cff2a15::chromium",
+        "32ff48078ff9327ee98f-952cd334ba541c9d53a9::chromium",
+        "5218ae82d47952dd2ef5-24ac0b7b816e413d94af::chromium",
+        "535c4a178b0047bfeb34-fc595010fd4da324f891::chromium",
+        "535c4a178b0047bfeb34-1c0f20d2a0aa38b9bb87::chromium",
+        "f1f9ccf487bccfab98fb-ff0ee90dad2517a8fd38::chromium",
+        "fd76911901244b93c23f-3e206b9269e8f7353c12::chromium",
+        "50c10161bcd66db5d006-c7c60ee75e2b879089ce::chromium",
+        "50c10161bcd66db5d006-4bde6a94628c286e6905::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/information-desktop-02",
+        "runtime-supplement/information-recovery-01",
+        "runtime-supplement/manual-detail-01",
+        "runtime-supplement/ordinary-ui-recovery-01",
+        "runtime-supplement/pay-creation-01",
+        "runtime-supplement/recovery-01",
+        "runtime-supplement/recovery-extras-five-01",
+        "runtime-supplement/requirements-history-01",
+        "runtime-supplement/runtime-recovery-01",
+        "runtime-supplement/subscriptions-recovery-01",
+        "runtime/legacy-broad-02",
+        "runtime/password-manual-handoff-01",
+        "runtime/password-manual-surfaces-01",
+        "runtime/password-retained-01",
+        "runtime/recovery-extras-delayed-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture sidebar scope-navigation contract drift",
+          "evidence": "runtime-supplement/manual-detail-01/failure-classification.json",
+          "evidence_sha256": "8c6a1e982f24671165a34270a96df39d9ab91f85b63a707123cd1c5c7ca94ec0"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture sidebar scope-navigation contract drift",
+          "evidence": "runtime-supplement/manual-detail-01/failure-classification.json",
+          "evidence_sha256": "8c6a1e982f24671165a34270a96df39d9ab91f85b63a707123cd1c5c7ca94ec0"
+        },
+        {
+          "category": "TEST_ACCOUNT_RATE_LIMIT_PREREQUISITE",
+          "product_failure_proven": false,
+          "reason": "Combined Web/Desktop canonical information matrices exceed password registration budget in one short API lifetime",
+          "evidence": "runtime-supplement/information-recovery-01/failure-classification.json",
+          "evidence_sha256": "e11549d75626bbc1f4707d72171f281a1271479997018ee2d9f226491aba74d3"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture obsolete account workbench heading before creation flow",
+          "evidence": "runtime-supplement/pay-creation-01/failure-classification.json",
+          "evidence_sha256": "5700921cb2e6fa5c7c107651f539612ee2f0713f9d07a6363a6ad32d77b6f35a"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture obsolete account workbench heading before creation flow",
+          "evidence": "runtime-supplement/pay-creation-01/failure-classification.json",
+          "evidence_sha256": "5700921cb2e6fa5c7c107651f539612ee2f0713f9d07a6363a6ad32d77b6f35a"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Private environment prerequisite missing; not product verdict",
+          "evidence": "runtime-supplement/recovery-extras-five-01/failure-classification.json",
+          "evidence_sha256": "c116878eead56a39ebcf24b15089c6a3df1ba9d6638be71f978b2d649ff4fbc1"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Canonical Desktop locator ambiguity during source-only membership loss; broader business outcome unresolved",
+          "evidence": "runtime/recovery-extras-delayed-02/failure-classification.json",
+          "evidence_sha256": "5bf942bdf092a312aaa2a4187081c3d5d48c58a741d0675ba3dc3014d41f7027"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T12",
+      "priority": "P0",
+      "name": "协作审批与交付",
+      "files": "^collaboration-(delivery|detail|handoff|stage|offline-handoff|administration|terminal-reopen)",
+      "extra": [
+        "backend/continuation-result-01.json",
+        "backend-diagnostics/stage-race-01/summary.json"
+      ],
+      "known_failure": "Original full Go race wrong_consumer scenario failed during legal M1 setup on a NOWAIT table-lock conflict; narrower diagnostic pass does not close it",
+      "boundary": "Canonical live human workflows plus actual service/router integration; stage signed proofs require explicit fixture configuration",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 13,
+        "FAIL": 2
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 13,
+        "FAIL": 2
+      },
+      "identities": [
+        "aff776393daaba5098a2-041a9af2fb1dbe0a9934::chromium",
+        "427dade945a4fd868ebf-8b0acf859e57abc2595c::chromium",
+        "15f3b9165f0f8e648925-78fcb3f0d415495d3093::chromium",
+        "15f3b9165f0f8e648925-458993d157d1e764a931::chromium",
+        "900011f45627c15b945e-e3d039a6ffb48d4184b3::chromium",
+        "900011f45627c15b945e-31ca666382809bfc78dc::chromium",
+        "34b4463281fad786160c-704b869416befd2e99b4::chromium",
+        "b1c4a136b719ec2a1e4b-09a46b535c4a3f203e12::chromium",
+        "b53c6fa0121e7a26b406-ff6fd6de8ee75bb8a8f0::chromium",
+        "b53c6fa0121e7a26b406-a8bc0f7668ca407e964f::chromium",
+        "d74346f239402bb917bf-ebf93d609e35e592d476::chromium",
+        "6bf57ddf04cc7754faff-ae9e1351914dd32300f6::chromium",
+        "6bf57ddf04cc7754faff-4f09eb913f69dad2952b::chromium",
+        "6bf57ddf04cc7754faff-0b698cff1192d5ac8f14::chromium",
+        "a9b46edddb706f4df5c2-98fcf32b219eef43ae3d::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/continuation-result-01.json",
+          "exists": true,
+          "sha256": "8c4e2cb8cfd587bbf81bdfecd41888d79b72dd1832a01e52f56e9e299a6084f5"
+        },
+        {
+          "file": "backend-diagnostics/stage-race-01/summary.json",
+          "exists": true,
+          "sha256": "f183e46ac8f47b0e07d0eb45edd947e0e138180520a94c6c7c504b2827f71553"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/manual-detail-01",
+        "runtime-supplement/stage-approvals-01",
+        "runtime/admin-collaboration-desktop-01",
+        "runtime/admin-collaboration-web-01",
+        "runtime/legacy-broad-02",
+        "runtime/namespace-controls-01",
+        "runtime/password-manual-handoff-01",
+        "runtime/password-manual-surfaces-01",
+        "runtime/stage-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture sidebar scope-navigation contract drift",
+          "evidence": "runtime-supplement/manual-detail-01/failure-classification.json",
+          "evidence_sha256": "8c6a1e982f24671165a34270a96df39d9ab91f85b63a707123cd1c5c7ca94ec0"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture sidebar scope-navigation contract drift",
+          "evidence": "runtime-supplement/manual-detail-01/failure-classification.json",
+          "evidence_sha256": "8c6a1e982f24671165a34270a96df39d9ab91f85b63a707123cd1c5c7ca94ec0"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T13",
+      "priority": "P0",
+      "name": "协作执行与控制",
+      "files": "^collaboration-(business|control|cross-client|host|lane-close|leave|lifecycle-controls|live-revoke|memory-runtime|multi-account|offline-result|order-export|recovery-runtime|runtime-output|terminal-reopen|timeout)",
+      "extra": [
+        "runtime/binary-builds.json",
+        "backend/normal-summary.json",
+        "backend/race-summary.json",
+        "coverage-audit/linux-go-feasibility-20261125.json",
+        "coverage-audit/linux-go-evidence-20261125.json"
+      ],
+      "boundary": "Controlled real daemon/provider/CLI only when named host tests execute; compilation and namespace simulation alone do not prove that path",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Seven original Linux Go namespace identities blocked under tested default container policy; two original process identities passed, root-only subcase passed separately",
+          "required": "A separately authorized supported namespace environment is needed; UID1000/root probes both exit2 and no privileged/unconfined retry is authorized. Probe outcomes are not canonical test failures.",
+          "resolver": "linux_go_owning_layer"
+        }
+      ],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 24,
+        "FAIL": 12
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 24,
+        "FAIL": 12
+      },
+      "identities": [
+        "63a5c4fa296e099a1451-cda28dfe98eb1d2a7d58::chromium",
+        "63a5c4fa296e099a1451-0d8c7045854b15abdde4::chromium",
+        "63a5c4fa296e099a1451-198e4ec96b24149102ac::chromium",
+        "b7041fbce68d9d61e19a-33ff743fc983c96c3778::chromium",
+        "b7041fbce68d9d61e19a-fa31a3b5fe85ba70e358::chromium",
+        "0b39328aa0f4a04d8d0a-51d8ef5fd33ac1a523bb::chromium",
+        "0b39328aa0f4a04d8d0a-754afe819db0456fac63::chromium",
+        "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+        "e481c356ede738d608ed-429067c898ab68cfd473::chromium",
+        "49e3411a966fddb17b9a-200bce7fedd3491208e3::chromium",
+        "cf7c9df06f6e4ea1db10-0f46104619ff101d221a::chromium",
+        "0e5cd2682e7c94e15948-a8b3ab0d75032729edb3::chromium",
+        "2baf0d89c3e16f740924-6ba9d26bee7ad2f7ba4b::chromium",
+        "2baf0d89c3e16f740924-57a798cb8c03ff31d703::chromium",
+        "2baf0d89c3e16f740924-40ff4a37c718db2f022d::chromium",
+        "2baf0d89c3e16f740924-c44ce4cf8479a339bf04::chromium",
+        "2baf0d89c3e16f740924-62b228e8e2fe12d87faf::chromium",
+        "2baf0d89c3e16f740924-d5cf28a822dcd31e5846::chromium",
+        "c32a5058833059c3776e-cc2b7d39a133cac5df19::chromium",
+        "c8706aeccaf441d25880-bf60502313c2edcb8554::chromium",
+        "c8706aeccaf441d25880-6cf834f8264130a8d215::chromium",
+        "e3c6d3818c837a989021-2fd3dc7933883044e094::chromium",
+        "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac::chromium",
+        "7f6fc72c72ab8e0da549-24370a70f4356b84fb22::chromium",
+        "753e160629e6e5a7052c-f7430be66c7012c9d9a6::chromium",
+        "753e160629e6e5a7052c-fddac4f88ef9091cfce5::chromium",
+        "00c14b16591e46ce6a3d-c7c17b16d1e00d955492::chromium",
+        "b0157e4e1d2b2a19d912-8d3948bff83fd4fbf6da::chromium",
+        "9626b9bf672f93051bc7-67f468c0ec27efb1fb16::chromium",
+        "9626b9bf672f93051bc7-dfc54d49264cd5bf2562::chromium",
+        "9626b9bf672f93051bc7-b1549124e6dd772929b9::chromium",
+        "9626b9bf672f93051bc7-45f194ed1a914c7bd2c2::chromium",
+        "6aaa25148c0e1afd59f7-606d9c3aeb24e22fa529::chromium",
+        "6aaa25148c0e1afd59f7-3b82058b2fb1bf9f0ef2::chromium",
+        "a9b46edddb706f4df5c2-98fcf32b219eef43ae3d::chromium",
+        "07c64dcce358dadb1f23-3156e7f0586da38869fb::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "runtime/binary-builds.json",
+          "exists": true,
+          "sha256": "3d80acfe5c709a14c8c02e0c43670dd7f23a978e292a237f4ecbc24eeef18d26"
+        },
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        },
+        {
+          "file": "backend/race-summary.json",
+          "exists": true,
+          "sha256": "ba286d261826f7eafd8b9c3e7f202a83b24f1dbb2dbb8e3550f7ddbbf92f2307"
+        },
+        {
+          "file": "coverage-audit/linux-go-feasibility-20261125.json",
+          "exists": true,
+          "sha256": "58d418f3790fe6fcc6c4bb42cb42261dd6b45caed7db8a047b8bc676e9a3a8d0"
+        },
+        {
+          "file": "coverage-audit/linux-go-evidence-20261125.json",
+          "exists": true,
+          "sha256": "4e5e77504f0a10106ca2f7dc309b2cc28d72d4d505307fb4bee3f627780eec52"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/host-basic-01",
+        "runtime-supplement/memory-runtime-01",
+        "runtime-supplement/multi-account-timeout-01",
+        "runtime-supplement/order-export-01",
+        "runtime-supplement/order-export-leave-01",
+        "runtime-supplement/runtime-output-01",
+        "runtime-supplement/runtime-recovery-01",
+        "runtime/business-scenarios-02",
+        "runtime/cross-client-01",
+        "runtime/installed-main-02",
+        "runtime/lane-close-01",
+        "runtime/lifecycle-01",
+        "runtime/namespace-controls-01",
+        "runtime/offline-notifications-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace fixture daemon admission refusal; actual execution not reached, underlying capability/configuration cause unresolved",
+          "evidence": "runtime/cross-client-01/failure-classification.json",
+          "evidence_sha256": "59cc5e676f4c2e70f5ac0fdf6ce52bf7c97df95a1d0bf6a6724789e5249d27d8"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "Canonical controller waits for obsolete Collaboration heading; later full Main controls unverified"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon readiness/admission refusal; execution-dependent assertions unverified, underlying capability/probe cause unresolved",
+          "evidence": "runtime/lane-close-01/failure-classification.json",
+          "evidence_sha256": "b8ddbac57c7a0a82e51177d4ffe2d2eeb0162dd0f925a93037c3caf18968281d"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon readiness/admission refusal; execution-dependent assertions unverified, underlying capability/probe cause unresolved",
+          "evidence": "runtime/lane-close-01/failure-classification.json",
+          "evidence_sha256": "b8ddbac57c7a0a82e51177d4ffe2d2eeb0162dd0f925a93037c3caf18968281d"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon readiness/admission refusal; execution-dependent assertions unverified, underlying capability/probe cause unresolved",
+          "evidence": "runtime/lane-close-01/failure-classification.json",
+          "evidence_sha256": "b8ddbac57c7a0a82e51177d4ffe2d2eeb0162dd0f925a93037c3caf18968281d"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon readiness/admission refusal; execution-dependent assertions unverified, underlying capability/probe cause unresolved",
+          "evidence": "runtime/lane-close-01/failure-classification.json",
+          "evidence_sha256": "b8ddbac57c7a0a82e51177d4ffe2d2eeb0162dd0f925a93037c3caf18968281d"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon readiness/admission refusal; execution-dependent assertions unverified, underlying capability/probe cause unresolved",
+          "evidence": "runtime/lifecycle-01/failure-classification.json",
+          "evidence_sha256": "cabb8af5447213f11322b8d13cba0b96868ae1805066a63284f29a0275784e10"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon readiness/admission refusal; execution-dependent assertions unverified, underlying capability/probe cause unresolved",
+          "evidence": "runtime/lifecycle-01/failure-classification.json",
+          "evidence_sha256": "cabb8af5447213f11322b8d13cba0b96868ae1805066a63284f29a0275784e10"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Unresolved host permit/first-visit failure; not yet attributed to product or environment",
+          "evidence": "runtime-supplement/memory-runtime-01/failure-classification.json",
+          "evidence_sha256": "76ef1e2a5b0891f318c25a4788b875bcd6f66ee8d4e26d6f52df9b24daa65911"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon admission refusal; actual proven AI offline-result assertions not reached",
+          "evidence": "runtime/offline-notifications-01/failure-classification.json",
+          "evidence_sha256": "62100d5bb0b546cd7fe47d020a545f6a58a4648bc34b2c135f3dfe9a95324282"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace daemon admission refusal; actual proven AI offline-result assertions not reached",
+          "evidence": "runtime/offline-notifications-01/failure-classification.json",
+          "evidence_sha256": "62100d5bb0b546cd7fe47d020a545f6a58a4648bc34b2c135f3dfe9a95324282"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Unresolved first-provider-visit failure; product versus environment not established",
+          "evidence": "runtime-supplement/order-export-01/failure-classification.json",
+          "evidence_sha256": "af528cafb12083ae543d4c7f513a6befc50c813e0677e8a02b0672f82915b931"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T14",
+      "priority": "P0",
+      "name": "知识全生命周期",
+      "files": "^(collaboration-knowledge|project-knowledge-automation|collaboration-memory|collaboration-business-scenarios)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Human knowledge API/browser and service integration; automatic knowledge and deployed on/off Host input need dedicated runs",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 16,
+        "FAIL": 1
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 16,
+        "FAIL": 1
+      },
+      "identities": [
+        "63a5c4fa296e099a1451-cda28dfe98eb1d2a7d58::chromium",
+        "63a5c4fa296e099a1451-0d8c7045854b15abdde4::chromium",
+        "63a5c4fa296e099a1451-198e4ec96b24149102ac::chromium",
+        "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+        "518f6bbc4476ef6f9015-5553c27836ef6710d3b7::chromium",
+        "518f6bbc4476ef6f9015-0957832eb417948da789::chromium",
+        "518f6bbc4476ef6f9015-e88116dd63356103372c::chromium",
+        "518f6bbc4476ef6f9015-9def355569b215f9595c::chromium",
+        "518f6bbc4476ef6f9015-2f09447e39234e3e82de::chromium",
+        "518f6bbc4476ef6f9015-c80f6ab17c8e6cc70021::chromium",
+        "518f6bbc4476ef6f9015-5cb105621eeeac7777a9::chromium",
+        "518f6bbc4476ef6f9015-adbcc89dc58b5184f0b6::chromium",
+        "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac::chromium",
+        "dcd11c08b0fd8fcf1cf6-b4f252a185d9bd67c4c0::chromium",
+        "dcd11c08b0fd8fcf1cf6-360e0fdfd361cd582994::chromium",
+        "57074c05651a53503057-866510320c6fc1bf98c0::chromium",
+        "57074c05651a53503057-2e88e48d0406a500d8f3::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "knowledge-acceptance/knowledge-02",
+        "runtime-supplement/knowledge-deployed-off-01",
+        "runtime-supplement/knowledge-deployed-on-01",
+        "runtime-supplement/memory-runtime-01",
+        "runtime/business-scenarios-02",
+        "runtime/legacy-broad-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [
+        {
+          "lane": "runtime-supplement/knowledge-deployed-off-01",
+          "identity": "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+          "status": "PASS",
+          "enabled": false,
+          "integrity_issues": [],
+          "attachment_sha256": "abb9a9fc1e40972cdece992ce0014b648232ce5930ca38228b56d66fac995afe",
+          "completion_sha256": "e6fd2f3135ad121b6b91007d0ff0abe9f8e837d6bf60c5ffdcea7d8386f2e513",
+          "playwright_sha256": "326d8293b876283992d9c0d227a86594096f03e17b0d429b4f8b304d208db894",
+          "knowledge_events": {
+            "knowledge_claim": 0,
+            "knowledge_preparation": 0,
+            "knowledge_authorization": 0
+          },
+          "run": {
+            "id": "f11ae1c2-0369-4dcc-8bb8-0988149c7cbb",
+            "progress_state": "settled",
+            "proof_state": "host_exit_observed",
+            "business_outcome": "success",
+            "launch_count": "1"
+          },
+          "scope": "Actual deterministic Host input; paired configuration proof, one original identity"
+        },
+        {
+          "lane": "runtime-supplement/knowledge-deployed-on-01",
+          "identity": "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+          "status": "PASS",
+          "enabled": true,
+          "integrity_issues": [],
+          "attachment_sha256": "29a2c2aae87491e242be289d776b8fe171876703d7ced7ebbbe6420d58a9f19e",
+          "completion_sha256": "99dcc05f11312df0a56c2c2b65ec7c4d38d88952f74b8b384d99d09f51b71ced",
+          "playwright_sha256": "a49a4a994acb1789072e2d2a7e67488b674779e60af1e761e0a77f3ced4d6665",
+          "knowledge_events": {
+            "knowledge_claim": 1,
+            "knowledge_preparation": 1,
+            "knowledge_authorization": 1
+          },
+          "run": {
+            "id": "a03afa93-a89e-47c7-87dc-da081b12d2a4",
+            "progress_state": "settled",
+            "proof_state": "host_exit_observed",
+            "business_outcome": "success",
+            "launch_count": "1"
+          },
+          "scope": "Actual deterministic Host input; paired configuration proof, one original identity"
+        }
+      ],
+      "retained_failure_classifications": [
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Unresolved host permit/first-visit failure; not yet attributed to product or environment",
+          "evidence": "runtime-supplement/memory-runtime-01/failure-classification.json",
+          "evidence_sha256": "76ef1e2a5b0891f318c25a4788b875bcd6f66ee8d4e26d6f52df9b24daa65911"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T15",
+      "priority": "P0",
+      "name": "全局权限与隔离",
+      "files": "^(workspace-access|auth|password|platform-admin|admin-|collaboration-(boundaries|machine-boundary|administration|recovery|live-revoke|leave)|upstream-backports-cli|cli-forbidden-reason)",
+      "extra": [
+        "runtime/comment-authority-legacy-02/probe-result.json",
+        "runtime/comment-authority-password-01/probe-result.json",
+        "backend/continuation-result-01.json"
+      ],
+      "known_failure": "Comment machine-principal authority defect reproduced; govulncheck also reports 14 reachable findings with toolchain/platform limitations",
+      "boundary": "Exact legal-principal live HTTP witnesses plus canonical browser/backend refusals; generic comment upload observations are not an adjudicated policy violation",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 77,
+        "FAIL": 3
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 78,
+        "FAIL": 2
+      },
+      "identities": [
+        "ef571447aed0b4db57a3-295442a63e27b22d0672::chromium",
+        "8b3c43dc51139ab50b4b-7875d1978ba1d8d8dc82::chromium",
+        "8b3c43dc51139ab50b4b-25b8f5b6b77d2062a0f7::chromium",
+        "8b3c43dc51139ab50b4b-44aa37df1aae596f2971::chromium",
+        "277384e3c137d30ae41c-d30f1de4a3cadc3dcbc5::chromium",
+        "fe04c358f6399c806e6a-c25329bfecb6eaaf3d41::chromium",
+        "d748ac400d08b85935ef-cdc2c45bcee748615dc4::chromium",
+        "d748ac400d08b85935ef-4c8122c5d7b3ca62db1f::chromium",
+        "d748ac400d08b85935ef-a560bf544d20f2fd0dc3::chromium",
+        "d748ac400d08b85935ef-980f198e147897ecb171::chromium",
+        "6f6f165d618e845d610c-5573062e7db687259669::chromium",
+        "6f6f165d618e845d610c-e38d7156a44d58c6bcf5::chromium",
+        "6f6f165d618e845d610c-906e8061dbeaefea0e37::chromium",
+        "aff776393daaba5098a2-041a9af2fb1dbe0a9934::chromium",
+        "427dade945a4fd868ebf-8b0acf859e57abc2595c::chromium",
+        "6e126002765c26c65f32-72051070d351cc025e2c::chromium",
+        "6e126002765c26c65f32-f3f66911ac00e604b913::chromium",
+        "6e126002765c26c65f32-9d52924653599de8bd73::chromium",
+        "c32a5058833059c3776e-cc2b7d39a133cac5df19::chromium",
+        "e3c6d3818c837a989021-2fd3dc7933883044e094::chromium",
+        "ce7a48206ee8d6496a5e-291d4437bf79b47964a1::chromium",
+        "ecac6bf78a5fb02bc075-2e0839160985f133ab31::chromium",
+        "ecac6bf78a5fb02bc075-c4bc9531da4c7d573c12::chromium",
+        "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff::chromium",
+        "ecac6bf78a5fb02bc075-14b58370a9af77b68c95::chromium",
+        "ecac6bf78a5fb02bc075-824d851b97f1774f41d6::chromium",
+        "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2::chromium",
+        "ed44d74a0711f42c4c9b-7936f0baa06f189d5dde::chromium",
+        "ed44d74a0711f42c4c9b-e7fa1233b088e6382147::chromium",
+        "9626b9bf672f93051bc7-67f468c0ec27efb1fb16::chromium",
+        "9626b9bf672f93051bc7-dfc54d49264cd5bf2562::chromium",
+        "9626b9bf672f93051bc7-b1549124e6dd772929b9::chromium",
+        "9626b9bf672f93051bc7-45f194ed1a914c7bd2c2::chromium",
+        "714a517df346ea008da2-84df73c1a532c0e482c8::chromium",
+        "714a517df346ea008da2-8b2a28363c91382fa472::chromium",
+        "75db0b9d9278c900ff5e-24c8eb350f462c48fcd9::chromium",
+        "75db0b9d9278c900ff5e-60e1828a4a4508d6677d::chromium",
+        "75db0b9d9278c900ff5e-81ce69aa68f15edc7ee4::chromium",
+        "75db0b9d9278c900ff5e-e930a2196195650e6a1f::chromium",
+        "75db0b9d9278c900ff5e-fafc6f3febf440ceebd1::chromium",
+        "75db0b9d9278c900ff5e-c1ffc30138c46dc1a440::chromium",
+        "ac477c38114dcfb2408b-c8cc29374ba1f1ecaebf::chromium",
+        "499efe5838d4da0407a2-2c6b88f5c4eb7d747419::chromium",
+        "499efe5838d4da0407a2-46918236fc038c1aa42d::chromium",
+        "499efe5838d4da0407a2-33024604fff93cfe1cec::chromium",
+        "499efe5838d4da0407a2-f5e3d247705be9b6c116::chromium",
+        "499efe5838d4da0407a2-44609363e0d5318a4a23::chromium",
+        "499efe5838d4da0407a2-526c19db674ab75853a4::chromium",
+        "499efe5838d4da0407a2-b368ce844e34b9272e92::chromium",
+        "499efe5838d4da0407a2-cbf38d2f404135387ebb::chromium",
+        "499efe5838d4da0407a2-8de404b2d89c4e608d60::chromium",
+        "499efe5838d4da0407a2-515735f17901602c7ab0::chromium",
+        "499efe5838d4da0407a2-06b179453d20be149607::chromium",
+        "499efe5838d4da0407a2-49d345c07d50ce9f6d6e::chromium",
+        "161e234becfe92d18781-b89a2a2813f79f77b7b2::chromium",
+        "161e234becfe92d18781-a9b5a22ac6040d56dbae::chromium",
+        "acc595d64ecfa74c4bdc-54310f00df4aa0e73c5f::chromium",
+        "acc595d64ecfa74c4bdc-3d370629f246bf29b71a::chromium",
+        "707169faded7e17d9857-47afb6c555486dc7f218::chromium",
+        "c45dbf29d3cced49315b-0204b49a3708c2e0aeea::chromium",
+        "24e33de26869ce7dc84d-275dae4fea8611b58c04::chromium",
+        "ab47b0ce4f162af82317-388db09f85767fcf24d0::chromium",
+        "c2191e055844bd116d20-96e8e9441b8ff4212027::chromium",
+        "67e548c977100ea99989-f5a222a03f7fed3bf10a::chromium",
+        "e16d84430229b8bcb612-e522339c7bd58ee3f28c::chromium",
+        "74ccab361eb031273b67-dad29e78fb027d80ffaa::chromium",
+        "eb1181b976bfeaf69bd0-6d0816a68479a8c76ec9::chromium",
+        "bd9ae41f816d28ed7ab4-38a54bae21a8893026de::chromium",
+        "bd9ae41f816d28ed7ab4-2aaf689b65418ee3e597::chromium",
+        "bd9ae41f816d28ed7ab4-02c5d3f770f808c9c386::chromium",
+        "c9ccc7aea82dbfd143a1-bc6efe1503deb29e86ba::chromium",
+        "c9ccc7aea82dbfd143a1-04d8caea74501010fa12::chromium",
+        "c9ccc7aea82dbfd143a1-5114391dfbe15e0808e2::chromium",
+        "c9ccc7aea82dbfd143a1-a5b64de19d1b49a0e496::chromium",
+        "c9ccc7aea82dbfd143a1-f6e02b9aa4aa3ea5a770::chromium",
+        "c9ccc7aea82dbfd143a1-67fee3afd40b69edf4d9::chromium",
+        "c9ccc7aea82dbfd143a1-dda95a27716d11ec8800::chromium",
+        "c9ccc7aea82dbfd143a1-b14a7ffe31321e6e71de::chromium",
+        "c9ccc7aea82dbfd143a1-0c996715fbccb07b3142::chromium",
+        "c9ccc7aea82dbfd143a1-52656397fd6aa08faa1f::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "runtime/comment-authority-legacy-02/probe-result.json",
+          "exists": true,
+          "sha256": "fb47672ed92229089baa63659fcc955b9d4dcfdfcb93e6a5f52f38ba6b026f8b"
+        },
+        {
+          "file": "runtime/comment-authority-password-01/probe-result.json",
+          "exists": true,
+          "sha256": "7c62025c9bf72a4be7ee2f996a17355392caede2e36b9894e97dd844bfe0f862"
+        },
+        {
+          "file": "backend/continuation-result-01.json",
+          "exists": true,
+          "sha256": "8c4e2cb8cfd587bbf81bdfecd41888d79b72dd1832a01e52f56e9e299a6084f5"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/admin-auto-init-01",
+        "runtime-supplement/ordinary-ui-recovery-01",
+        "runtime-supplement/password-migration-binding-01",
+        "runtime-supplement/recovery-01",
+        "runtime-supplement/recovery-extras-five-01",
+        "runtime-supplement/runtime-recovery-01",
+        "runtime-supplement/subscriptions-recovery-01",
+        "runtime/admin-access-01",
+        "runtime/admin-accounts-01",
+        "runtime/admin-collaboration-desktop-01",
+        "runtime/admin-collaboration-web-01",
+        "runtime/admin-controls-01",
+        "runtime/admin-executions-01",
+        "runtime/admin-installations-01",
+        "runtime/admin-observability-01",
+        "runtime/admin-switches-01",
+        "runtime/device-01",
+        "runtime/legacy-broad-02",
+        "runtime/namespace-controls-01",
+        "runtime/password-branches-01",
+        "runtime/password-native-switch-mcp-01",
+        "runtime/password-registration-01",
+        "runtime/recovery-extras-delayed-02",
+        "runtime/resource-publishing-01"
+      ],
+      "supplemental_security": [
+        {
+          "lane": "runtime/security-boundary-02",
+          "status": "PASS",
+          "completed_at": "2026-11-25T04:37:26.989895+00:00",
+          "witness_counts": {
+            "PASS": 11
+          },
+          "no_request_routing": true,
+          "integrity_issues": [],
+          "probe_result": "runtime/security-boundary-02/probe-result.json",
+          "probe_result_sha256": "74cd2f89de469e7ab8efcdc589c27789a0b1d4bc6d2796d03c1b5a177e49f59d",
+          "limitation": "Actual cookie/profile, Chromium CORS and browser WS refusal plus separate RFC6455 status; not a product UI journey"
+        }
+      ],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "Native consumer waits for old Skills navigation link; canonical end-to-end market journey not completed"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Private environment prerequisite missing; not product verdict",
+          "evidence": "runtime-supplement/recovery-extras-five-01/failure-classification.json",
+          "evidence_sha256": "c116878eead56a39ebcf24b15089c6a3df1ba9d6638be71f978b2d649ff4fbc1"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Canonical Desktop locator ambiguity during source-only membership loss; broader business outcome unresolved",
+          "evidence": "runtime/recovery-extras-delayed-02/failure-classification.json",
+          "evidence_sha256": "5bf942bdf092a312aaa2a4187081c3d5d48c58a741d0675ba3dc3014d41f7027"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T16",
+      "priority": "P0",
+      "name": "实时与一致性",
+      "files": "^(core-business|global-scope-navigation|inbox-snooze|projects-p1-lifecycle|collaboration-(recovery|cross-client|host-runtime|information-recovery|requirements-history))",
+      "extra": [
+        "backend/normal-summary.json",
+        "utc/result.json"
+      ],
+      "boundary": "Actual clients/WS where exercised; core daemon is simulated and live recovery/host paths remain separate",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "FAIL": 6,
+        "PASS": 58
+      },
+      "latest_named_identity_statuses": {
+        "FAIL": 3,
+        "PASS": 61
+      },
+      "identities": [
+        "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+        "49e3411a966fddb17b9a-200bce7fedd3491208e3::chromium",
+        "50dbc6ea2152334c9970-f163e18c99b25f48ec6d::chromium",
+        "50dbc6ea2152334c9970-d9e3a292d32ed9284fa9::chromium",
+        "ecac6bf78a5fb02bc075-2e0839160985f133ab31::chromium",
+        "ecac6bf78a5fb02bc075-c4bc9531da4c7d573c12::chromium",
+        "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff::chromium",
+        "ecac6bf78a5fb02bc075-14b58370a9af77b68c95::chromium",
+        "ecac6bf78a5fb02bc075-824d851b97f1774f41d6::chromium",
+        "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2::chromium",
+        "ed44d74a0711f42c4c9b-7936f0baa06f189d5dde::chromium",
+        "ed44d74a0711f42c4c9b-e7fa1233b088e6382147::chromium",
+        "9626b9bf672f93051bc7-67f468c0ec27efb1fb16::chromium",
+        "9626b9bf672f93051bc7-dfc54d49264cd5bf2562::chromium",
+        "9626b9bf672f93051bc7-b1549124e6dd772929b9::chromium",
+        "9626b9bf672f93051bc7-45f194ed1a914c7bd2c2::chromium",
+        "714a517df346ea008da2-84df73c1a532c0e482c8::chromium",
+        "714a517df346ea008da2-8b2a28363c91382fa472::chromium",
+        "75db0b9d9278c900ff5e-24c8eb350f462c48fcd9::chromium",
+        "75db0b9d9278c900ff5e-60e1828a4a4508d6677d::chromium",
+        "75db0b9d9278c900ff5e-81ce69aa68f15edc7ee4::chromium",
+        "75db0b9d9278c900ff5e-e930a2196195650e6a1f::chromium",
+        "75db0b9d9278c900ff5e-fafc6f3febf440ceebd1::chromium",
+        "75db0b9d9278c900ff5e-c1ffc30138c46dc1a440::chromium",
+        "ae1717817739f0698543-e966ddc97d3b5f48187a::chromium",
+        "ae1717817739f0698543-2aff574e4246ff1da885::chromium",
+        "286209a742c1f7def3f4-631304224f5ab6e0b41a::chromium",
+        "286209a742c1f7def3f4-eef9e3d549def97a1c38::chromium",
+        "286209a742c1f7def3f4-f561c0c7cc80bac50df4::chromium",
+        "286209a742c1f7def3f4-8e4d1fb36316cf1b1978::chromium",
+        "c8267baa84cc70479c79-efdb5acdb4b32fb83e45::chromium",
+        "c8267baa84cc70479c79-e7e8214d34dd283a94c3::chromium",
+        "c8267baa84cc70479c79-2c76769050cad049088b::chromium",
+        "c8267baa84cc70479c79-868de4d14752bca3d208::chromium",
+        "c8267baa84cc70479c79-0954db059952f8b90d9f::chromium",
+        "429c0bb8490b78222b6c-71bbe3038b6049e056c0::chromium",
+        "429c0bb8490b78222b6c-0febfb24ca933d29b6a0::chromium",
+        "429c0bb8490b78222b6c-f6f894db8ac7133a1abd::chromium",
+        "429c0bb8490b78222b6c-f8ab81b526fda60e5d0b::chromium",
+        "b31073548e8c74c3e45a-bf902d1569a002a67397::chromium",
+        "b31073548e8c74c3e45a-3e1b8d11f95d409c13f4::chromium",
+        "2965b1f5e7ed7b139948-cd8e9283e9bd9483caf8::chromium",
+        "2965b1f5e7ed7b139948-82b9a5d528fd18060683::chromium",
+        "2965b1f5e7ed7b139948-939020715d6b657e1918::chromium",
+        "2965b1f5e7ed7b139948-a68672c7710c8a10774c::chromium",
+        "2965b1f5e7ed7b139948-6d6e7627e024ce7028ed::chromium",
+        "2965b1f5e7ed7b139948-7629ef8a1d24452be878::chromium",
+        "d085887d0eeaf8211901-7ea084d75feb95a2b5fa::chromium",
+        "d085887d0eeaf8211901-2519237bdbb21a8b5313::chromium",
+        "d085887d0eeaf8211901-c51f5c9039537774bceb::chromium",
+        "d085887d0eeaf8211901-3eeaadd8178e50c3cc6a::chromium",
+        "d085887d0eeaf8211901-043769a2c32c7c693f0a::chromium",
+        "d085887d0eeaf8211901-a110a378431bbf8b3287::chromium",
+        "d085887d0eeaf8211901-e587f376d58b494e6171::chromium",
+        "d085887d0eeaf8211901-bf59ca3d4f5a24363a55::chromium",
+        "d085887d0eeaf8211901-cf2f75be2cce5c3b8d0b::chromium",
+        "d085887d0eeaf8211901-eb91ac8c546548e38873::chromium",
+        "d085887d0eeaf8211901-732b678d3143fc3fb5b1::chromium",
+        "d085887d0eeaf8211901-c27afa253907fcb63193::chromium",
+        "d085887d0eeaf8211901-3e26a09902e8cfb80178::chromium",
+        "d085887d0eeaf8211901-ab51ef8a3f02da1bc769::chromium",
+        "d085887d0eeaf8211901-5fe4f84ab7960fd9683f::chromium",
+        "d085887d0eeaf8211901-606e2d2547217444289c::chromium",
+        "d085887d0eeaf8211901-5859d08fe6271d78d4eb::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        },
+        {
+          "file": "utc/result.json",
+          "exists": true,
+          "sha256": "cc495991904f5abadcc27bd06ad43a40b91723c9d3b919659f1ece7206a304e9"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/host-basic-01",
+        "runtime-supplement/inbox-snooze-02",
+        "runtime-supplement/information-desktop-02",
+        "runtime-supplement/information-recovery-01",
+        "runtime-supplement/ordinary-ui-recovery-01",
+        "runtime-supplement/recovery-01",
+        "runtime-supplement/recovery-extras-five-01",
+        "runtime-supplement/requirements-history-01",
+        "runtime-supplement/runtime-recovery-01",
+        "runtime-supplement/subscriptions-recovery-01",
+        "runtime/cross-client-01",
+        "runtime/inbox-snooze-01",
+        "runtime/legacy-broad-02",
+        "runtime/recovery-extras-delayed-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace fixture daemon admission refusal; actual execution not reached, underlying capability/configuration cause unresolved",
+          "evidence": "runtime/cross-client-01/failure-classification.json",
+          "evidence_sha256": "59cc5e676f4c2e70f5ac0fdf6ce52bf7c97df95a1d0bf6a6724789e5249d27d8"
+        },
+        {
+          "category": "TEST_ACCOUNT_RATE_LIMIT_PREREQUISITE",
+          "product_failure_proven": false,
+          "reason": "Combined Web/Desktop canonical information matrices exceed password registration budget in one short API lifetime",
+          "evidence": "runtime-supplement/information-recovery-01/failure-classification.json",
+          "evidence_sha256": "e11549d75626bbc1f4707d72171f281a1271479997018ee2d9f226491aba74d3"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Private environment prerequisite missing; not product verdict",
+          "evidence": "runtime-supplement/recovery-extras-five-01/failure-classification.json",
+          "evidence_sha256": "c116878eead56a39ebcf24b15089c6a3df1ba9d6638be71f978b2d649ff4fbc1"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Canonical Desktop locator ambiguity during source-only membership loss; broader business outcome unresolved",
+          "evidence": "runtime/recovery-extras-delayed-02/failure-classification.json",
+          "evidence_sha256": "5bf942bdf092a312aaa2a4187081c3d5d48c58a741d0675ba3dc3014d41f7027"
+        },
+        {
+          "category": "TEST_ALLOCATION_PREREQUISITE",
+          "product_failure_proven": false,
+          "reason": "Generic opt-in omitted required password inbox allocation; failed before actor/business setup"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture navigation mismatch before cross-workspace snooze/wakeup business operations",
+          "evidence": "runtime-supplement/inbox-snooze-02/failure-classification.json",
+          "evidence_sha256": "93c290b1b268d2dcc4b78d921e5517065ac0f126df063f2c156e1b15a72a2c20"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T17",
+      "priority": "P1",
+      "name": "设置与资源",
+      "files": "^(settings|desktop-settings|mcp|skill|capability|runtime-welcome|retained-languages|changelog)",
+      "extra": [
+        "backend-diagnostics/skills-public-01/summary.json"
+      ],
+      "known_failure": "Fresh public GitHub skill-import integration returned HTTP403; no headers establish rate-limiting as the cause",
+      "boundary": "Local catalog/resource/settings behavior; remote public source failure retained without using personal credentials",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 35
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 35
+      },
+      "identities": [
+        "e22dcf6e3fbbae824862-848cc74c7f16e7c22154::chromium",
+        "e22dcf6e3fbbae824862-aaa35f8846b4f6fb5ad2::chromium",
+        "685463f23050cc04c127-f26e7fac7e869cfbaafa::chromium",
+        "685463f23050cc04c127-3c00e48cc4c19a4cb599::chromium",
+        "685463f23050cc04c127-aefe3592a4db331c68c6::chromium",
+        "1f2d7175777944768fa5-d9afc4176395cbe3a5d6::chromium",
+        "216befff53a719ccf302-d25394984e73c94249f9::chromium",
+        "216befff53a719ccf302-25a5379d6f8c5f8ce37f::chromium",
+        "5155c618dfa1d8f5cd16-9b0c2a711deab575d3f3::chromium",
+        "3109328bccfe40d0e455-b5125772ec6985779165::chromium",
+        "468504805e00dc44c356-cfcded60d22f154e60a9::chromium",
+        "468504805e00dc44c356-012c0032162579fd4403::chromium",
+        "468504805e00dc44c356-efdf757229bdf0c3d334::chromium",
+        "468504805e00dc44c356-af9558a86bee8bb52b89::chromium",
+        "468504805e00dc44c356-fab0a34d4596a4b31162::chromium",
+        "a4406ea24ff8476f4383-bf44df1b77686147aff9::chromium",
+        "c046d048fb237c3da98a-0682fd9d8ac978cd12e7::chromium",
+        "003133b91e9e96893c56-1947c3f3807b5fda184a::chromium",
+        "003133b91e9e96893c56-cae8f68535b51078a06d::chromium",
+        "30b714dc4af7057366bb-98e31d56318615821329::chromium",
+        "30b714dc4af7057366bb-8036c2acc65a988696d1::chromium",
+        "30b714dc4af7057366bb-1c44106423fb1d477ebd::chromium",
+        "954b9339f14cbe95fba6-0d187531f63d3238c8f6::chromium",
+        "73a5d9118e18bf38c532-e6617b7a32ea1c9dd604::chromium",
+        "73a5d9118e18bf38c532-9b2e012eaa742f881dcb::chromium",
+        "4f6b07a2ab779aaf77a5-07a891421a411eea0460::chromium",
+        "4f6b07a2ab779aaf77a5-891c4208eb564765af37::chromium",
+        "d877ffdf71ec720167ae-7d3bb6e8bb2ee71f06d4::chromium",
+        "d877ffdf71ec720167ae-ef6e0164675ba55c17c7::chromium",
+        "65710a2fdcb47ced907f-0862242f1038ca2b50de::chromium",
+        "8c426da9c67103ece09c-a8a51b30032dc1a12648::chromium",
+        "beaa01fe4fa75aacabd8-cabec6d1bb99e0023460::chromium",
+        "dc268c96811125d08265-7b40b83b6fcedf324a2e::chromium",
+        "54c78deff82b2638735b-e0dafa6ba095625edce4::chromium",
+        "3d3a5a776b9d8c794a49-9f1ac6621fe421315f70::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend-diagnostics/skills-public-01/summary.json",
+          "exists": true,
+          "sha256": "2273c8877ba9a6635d12bfbe1998669ebdeaef6a2e1cf902e04cadd44992a35d"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02",
+        "runtime/password-native-switch-mcp-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T18",
+      "priority": "P0",
+      "name": "管理、安装与观测",
+      "files": "^(admin-|platform-admin|collaboration-administration)",
+      "extra": [
+        "backend/normal-summary.json",
+        "scripts-integration/completion-ledger.json"
+      ],
+      "boundary": "Dedicated real password admin/enrollment/runtime lanes; unit and Compose contract results cannot replace their UI actions",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 12,
+        "FAIL": 1
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 12,
+        "FAIL": 1
+      },
+      "identities": [
+        "ef571447aed0b4db57a3-295442a63e27b22d0672::chromium",
+        "8b3c43dc51139ab50b4b-7875d1978ba1d8d8dc82::chromium",
+        "8b3c43dc51139ab50b4b-25b8f5b6b77d2062a0f7::chromium",
+        "8b3c43dc51139ab50b4b-44aa37df1aae596f2971::chromium",
+        "aff776393daaba5098a2-041a9af2fb1dbe0a9934::chromium",
+        "427dade945a4fd868ebf-8b0acf859e57abc2595c::chromium",
+        "24e33de26869ce7dc84d-275dae4fea8611b58c04::chromium",
+        "ab47b0ce4f162af82317-388db09f85767fcf24d0::chromium",
+        "c2191e055844bd116d20-96e8e9441b8ff4212027::chromium",
+        "67e548c977100ea99989-f5a222a03f7fed3bf10a::chromium",
+        "e16d84430229b8bcb612-e522339c7bd58ee3f28c::chromium",
+        "74ccab361eb031273b67-dad29e78fb027d80ffaa::chromium",
+        "eb1181b976bfeaf69bd0-6d0816a68479a8c76ec9::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        },
+        {
+          "file": "scripts-integration/completion-ledger.json",
+          "exists": true,
+          "sha256": "1e00023254b026b77d263041561c7c9bdb053687df71508a74ad6a4ea255c045"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/admin-auto-init-01",
+        "runtime/admin-access-01",
+        "runtime/admin-accounts-01",
+        "runtime/admin-collaboration-desktop-01",
+        "runtime/admin-collaboration-web-01",
+        "runtime/admin-controls-01",
+        "runtime/admin-executions-01",
+        "runtime/admin-installations-01",
+        "runtime/admin-observability-01",
+        "runtime/admin-switches-01",
+        "runtime/resource-publishing-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "Native consumer waits for old Skills navigation link; canonical end-to-end market journey not completed"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T19",
+      "priority": "P1",
+      "name": "桌面原生与持久化",
+      "files": "(desktop|password-server-switch|password-session-persistence|collaboration-host-installed|collaboration-installed-main)",
+      "extra": [
+        "native-file-access/current-01/native-result.json",
+        "native-acceptance/current06-package.json",
+        "native-acceptance/current06-signature.json"
+      ],
+      "boundary": "Renderer/preload/fixture Main and actual packaged production Main reported separately; ad-hoc signing is not distribution/notarization",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 49,
+        "FAIL": 2
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 49,
+        "FAIL": 2
+      },
+      "identities": [
+        "4c2f0a2406cc7deffd30-b71f4d2cb710417d9051::chromium",
+        "1f2d7175777944768fa5-d9afc4176395cbe3a5d6::chromium",
+        "d830fff7a787071ac252-cce5cce322a1d9534728::chromium",
+        "d830fff7a787071ac252-aeabddf81c5e64c81e35::chromium",
+        "d830fff7a787071ac252-2802bec50cf95487730b::chromium",
+        "d830fff7a787071ac252-a17f2ed256028f8c455c::chromium",
+        "d830fff7a787071ac252-eac673a2b556e5572224::chromium",
+        "d830fff7a787071ac252-7550f6b55624b4737b2d::chromium",
+        "d830fff7a787071ac252-8210e9d714e4a772d567::chromium",
+        "d830fff7a787071ac252-8b3d1c56378e13759b41::chromium",
+        "d830fff7a787071ac252-50bd78a5291e45034c84::chromium",
+        "d830fff7a787071ac252-67f16d420e51298c62f2::chromium",
+        "d830fff7a787071ac252-4a853469be2906c7a36f::chromium",
+        "aff776393daaba5098a2-041a9af2fb1dbe0a9934::chromium",
+        "b7041fbce68d9d61e19a-33ff743fc983c96c3778::chromium",
+        "b7041fbce68d9d61e19a-fa31a3b5fe85ba70e358::chromium",
+        "34b4463281fad786160c-704b869416befd2e99b4::chromium",
+        "e481c356ede738d608ed-429067c898ab68cfd473::chromium",
+        "6bb3c38027cdc912e0b7-7d0a58cb34e138e51c15::chromium",
+        "e1244c64bf212413b472-21e1aed1c8d6c522f803::chromium",
+        "e1244c64bf212413b472-40cb2a40180050917361::chromium",
+        "e1244c64bf212413b472-f56f261bd296c36c7784::chromium",
+        "cde037303ed86892b546-c487173c2ca4fe36791b::chromium",
+        "5218ae82d47952dd2ef5-24ac0b7b816e413d94af::chromium",
+        "5155c618dfa1d8f5cd16-9b0c2a711deab575d3f3::chromium",
+        "d7fe5771aad69823a2db-545283ff57a05112f129::chromium",
+        "0f725ce676e45196fd22-84260a4118aca5889c84::chromium",
+        "0f725ce676e45196fd22-63a5692adf71c3950e7f::chromium",
+        "7d4a5b21f5d85423e591-94d2ade8f9aabdd3f43b::chromium",
+        "7d4a5b21f5d85423e591-ec7475f98cbdfc62e1f4::chromium",
+        "7d4a5b21f5d85423e591-0e8b19399525fc4514c5::chromium",
+        "b1acbef9d6ca0b02b60c-c1aa1d47531868ac7912::chromium",
+        "b1acbef9d6ca0b02b60c-f786925c18990601dc5e::chromium",
+        "b1acbef9d6ca0b02b60c-39d99b6b39ca6076b2b4::chromium",
+        "3109328bccfe40d0e455-b5125772ec6985779165::chromium",
+        "a4406ea24ff8476f4383-bf44df1b77686147aff9::chromium",
+        "ac477c38114dcfb2408b-c8cc29374ba1f1ecaebf::chromium",
+        "707169faded7e17d9857-47afb6c555486dc7f218::chromium",
+        "c45dbf29d3cced49315b-0204b49a3708c2e0aeea::chromium",
+        "6e37fd6dafef143f5e9e-54cac743d428084884c6::chromium",
+        "6e37fd6dafef143f5e9e-c438af3b331a739fc152::chromium",
+        "6e37fd6dafef143f5e9e-02b9a44c065cd05bbbad::chromium",
+        "6e37fd6dafef143f5e9e-15d79b05cffe33afc2f9::chromium",
+        "6e37fd6dafef143f5e9e-77f9d9a3badcd306f18c::chromium",
+        "6e37fd6dafef143f5e9e-4319f63efcf1c7330b78::chromium",
+        "003133b91e9e96893c56-1947c3f3807b5fda184a::chromium",
+        "003133b91e9e96893c56-cae8f68535b51078a06d::chromium",
+        "54c78deff82b2638735b-e0dafa6ba095625edce4::chromium",
+        "a4f87ecd882bde171947-1cc0316e640452fdf64d::chromium",
+        "bdfad659a63831abbad5-b1a6cae3748cc7498a4b::chromium",
+        "bdfad659a63831abbad5-0bc1a1ec66314db02364::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "native-file-access/current-01/native-result.json",
+          "exists": true,
+          "sha256": "45ef2edf2b5e110f9351dbc18991469a02559f0d53369278d1c199b3556b9e94"
+        },
+        {
+          "file": "native-acceptance/current06-package.json",
+          "exists": true,
+          "sha256": "6a6f2a08a93bfd3354273b2d555fce4d77cad4c790a4621fe07e5e648e3865b9"
+        },
+        {
+          "file": "native-acceptance/current06-signature.json",
+          "exists": true,
+          "sha256": "4b945635826d39cc2e2c56c6816c54eecbb813109ebfe1b15d0c0cc0f14e6cb9"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/password-migration-binding-01",
+        "runtime/admin-collaboration-desktop-01",
+        "runtime/installed-main-02",
+        "runtime/legacy-broad-02",
+        "runtime/linux-main-03",
+        "runtime/linux-main-04",
+        "runtime/namespace-controls-01",
+        "runtime/password-manual-handoff-01",
+        "runtime/password-native-switch-mcp-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "Canonical controller waits for obsolete Collaboration heading; later full Main controls unverified"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T20",
+      "priority": "P1",
+      "name": "移动端",
+      "files": "^$",
+      "extra": [
+        "frontend/04-mobile-typecheck.inventory.json",
+        "frontend/05-mobile-lint.inventory.json",
+        "frontend/06-mobile-vitest.inventory.json",
+        "frontend/07-mobile-ios-script.inventory.json"
+      ],
+      "boundary": "196 Node headless tests and independent static/script gates only",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Native iOS/RN login, keyboard, foreground/background and network recovery",
+          "required": "Installed full Xcode, iOS simulator/device and native driver; absent in retained local prerequisite inspection"
+        }
+      ],
+      "status": "BLOCKED",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "NOT_RUN",
+      "named_identity_statuses": {},
+      "latest_named_identity_statuses": {},
+      "identities": [],
+      "extra_evidence": [
+        {
+          "file": "frontend/04-mobile-typecheck.inventory.json",
+          "exists": true,
+          "sha256": "994fd9ec70748ba3a2ced2a81f98cb03c665e722a5f062f1f72e0b292bc7c428"
+        },
+        {
+          "file": "frontend/05-mobile-lint.inventory.json",
+          "exists": true,
+          "sha256": "11982fc1628ca1661bc9c643a38adca08c9eda9a54e0ff8ee0d513c109503652"
+        },
+        {
+          "file": "frontend/06-mobile-vitest.inventory.json",
+          "exists": true,
+          "sha256": "10ee6fce12e89cc421952b617ae04a3291b5a76ade1f2c44ee0e9b4dbb8205ea"
+        },
+        {
+          "file": "frontend/07-mobile-ios-script.inventory.json",
+          "exists": true,
+          "sha256": "dd8ac771561beeecbed19ca3219b1c54a21db9573022b080cf279cf9b43a0dd0"
+        }
+      ],
+      "completed_browser_lanes": [],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T21",
+      "priority": "P1",
+      "name": "CLI、daemon、安装/升级",
+      "files": "^(upstream-backports-cli|cli-forbidden-reason|core-business-agent-loops|collaboration-(host|installed|cross-client|memory-runtime))",
+      "extra": [
+        "runtime/binary-builds.json",
+        "backend/normal-summary.json",
+        "backend/race-summary.json",
+        "scripts-integration/completion-ledger.json",
+        "coverage-audit/linux-go-feasibility-20261125.json",
+        "coverage-audit/linux-go-evidence-20261125.json"
+      ],
+      "boundary": "Current fake-protected Go/native Host/CLI; fixed legacy OCI compatibility separate from package installation and updater",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Native Windows installer/Jobs/ACL and signed OS updater/restart",
+          "required": "Native matching runner or signing/updater conditions; current macOS ad-hoc package does not establish them"
+        },
+        {
+          "status": "BLOCKED",
+          "scope": "Seven original Linux Go namespace identities blocked under tested default container policy; two original process identities passed, root-only subcase passed separately",
+          "required": "A separately authorized supported namespace environment is needed; UID1000/root probes both exit2 and no privileged/unconfined retry is authorized. Probe outcomes are not canonical test failures.",
+          "resolver": "linux_go_owning_layer"
+        }
+      ],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 13,
+        "FAIL": 5
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 13,
+        "FAIL": 5
+      },
+      "identities": [
+        "6f6f165d618e845d610c-5573062e7db687259669::chromium",
+        "6f6f165d618e845d610c-e38d7156a44d58c6bcf5::chromium",
+        "6f6f165d618e845d610c-906e8061dbeaefea0e37::chromium",
+        "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+        "e481c356ede738d608ed-429067c898ab68cfd473::chromium",
+        "49e3411a966fddb17b9a-200bce7fedd3491208e3::chromium",
+        "cf7c9df06f6e4ea1db10-0f46104619ff101d221a::chromium",
+        "0e5cd2682e7c94e15948-a8b3ab0d75032729edb3::chromium",
+        "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d::chromium",
+        "6bb3c38027cdc912e0b7-7d0a58cb34e138e51c15::chromium",
+        "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac::chromium",
+        "286209a742c1f7def3f4-631304224f5ab6e0b41a::chromium",
+        "286209a742c1f7def3f4-eef9e3d549def97a1c38::chromium",
+        "286209a742c1f7def3f4-f561c0c7cc80bac50df4::chromium",
+        "286209a742c1f7def3f4-8e4d1fb36316cf1b1978::chromium",
+        "bd9ae41f816d28ed7ab4-38a54bae21a8893026de::chromium",
+        "bd9ae41f816d28ed7ab4-2aaf689b65418ee3e597::chromium",
+        "bd9ae41f816d28ed7ab4-02c5d3f770f808c9c386::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "runtime/binary-builds.json",
+          "exists": true,
+          "sha256": "3d80acfe5c709a14c8c02e0c43670dd7f23a978e292a237f4ecbc24eeef18d26"
+        },
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        },
+        {
+          "file": "backend/race-summary.json",
+          "exists": true,
+          "sha256": "ba286d261826f7eafd8b9c3e7f202a83b24f1dbb2dbb8e3550f7ddbbf92f2307"
+        },
+        {
+          "file": "scripts-integration/completion-ledger.json",
+          "exists": true,
+          "sha256": "1e00023254b026b77d263041561c7c9bdb053687df71508a74ad6a4ea255c045"
+        },
+        {
+          "file": "coverage-audit/linux-go-feasibility-20261125.json",
+          "exists": true,
+          "sha256": "58d418f3790fe6fcc6c4bb42cb42261dd6b45caed7db8a047b8bc676e9a3a8d0"
+        },
+        {
+          "file": "coverage-audit/linux-go-evidence-20261125.json",
+          "exists": true,
+          "sha256": "4e5e77504f0a10106ca2f7dc309b2cc28d72d4d505307fb4bee3f627780eec52"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/host-basic-01",
+        "runtime-supplement/memory-runtime-01",
+        "runtime/cross-client-01",
+        "runtime/installed-cli-02",
+        "runtime/installed-cli-03",
+        "runtime/installed-main-02",
+        "runtime/legacy-broad-02",
+        "runtime/linux-main-03",
+        "runtime/linux-main-04"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Namespace fixture daemon admission refusal; actual execution not reached, underlying capability/configuration cause unresolved",
+          "evidence": "runtime/cross-client-01/failure-classification.json",
+          "evidence_sha256": "59cc5e676f4c2e70f5ac0fdf6ce52bf7c97df95a1d0bf6a6724789e5249d27d8"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "Canonical controller waits for obsolete Collaboration heading; later full Main controls unverified"
+        },
+        {
+          "category": "TEST_EXECUTABLE_PREREQUISITE",
+          "product_failure_proven": false,
+          "reason": "Docker/runc refuses /fixture/relay execution before first ordinary positive old-CLI write; copied-volume file mode/ownership cause unobserved",
+          "evidence": "installed-cli-acceptance/installed-cli-02/failure-classification.json"
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false
+        },
+        {
+          "category": "UNTRIAGED",
+          "product_failure_proven": false,
+          "reason": "Unresolved host permit/first-visit failure; not yet attributed to product or environment",
+          "evidence": "runtime-supplement/memory-runtime-01/failure-classification.json",
+          "evidence_sha256": "76ef1e2a5b0891f318c25a4788b875bcd6f66ee8d4e26d6f52df9b24daa65911"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T22",
+      "priority": "P2",
+      "name": "多语言、主题、可访问性",
+      "files": "^(upstream-selected-fixes|retained-languages|localized-template-defaults|quick-create-blocked-feedback|skill-library-accessibility|triage-layout|iteration-scope|collaboration-mention|property-icons|desktop-settings|inbox-snooze)",
+      "extra": [
+        "frontend/result.json"
+      ],
+      "boundary": "Only named viewport/theme/keyboard/layout assertions and saved captures; no blanket claim of every UI surface or native mobile accessibility",
+      "gaps": [],
+      "status": "FAIL",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "FAIL",
+      "named_identity_statuses": {
+        "PASS": 53,
+        "FAIL": 2
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 54,
+        "FAIL": 1
+      },
+      "identities": [
+        "e1244c64bf212413b472-21e1aed1c8d6c522f803::chromium",
+        "e1244c64bf212413b472-40cb2a40180050917361::chromium",
+        "e1244c64bf212413b472-f56f261bd296c36c7784::chromium",
+        "a2c6b754d21b70f11df3-e4beab049273f7979057::chromium",
+        "a2c6b754d21b70f11df3-64a32e62b06c28657aa8::chromium",
+        "a2c6b754d21b70f11df3-24073f543fb2f4024711::chromium",
+        "5155c618dfa1d8f5cd16-9b0c2a711deab575d3f3::chromium",
+        "2965b1f5e7ed7b139948-cd8e9283e9bd9483caf8::chromium",
+        "2965b1f5e7ed7b139948-82b9a5d528fd18060683::chromium",
+        "2965b1f5e7ed7b139948-939020715d6b657e1918::chromium",
+        "2965b1f5e7ed7b139948-a68672c7710c8a10774c::chromium",
+        "2965b1f5e7ed7b139948-6d6e7627e024ce7028ed::chromium",
+        "2965b1f5e7ed7b139948-7629ef8a1d24452be878::chromium",
+        "0f725ce676e45196fd22-84260a4118aca5889c84::chromium",
+        "0f725ce676e45196fd22-63a5692adf71c3950e7f::chromium",
+        "496b6e7fe2e1b9404a76-1dca83814f65dea3645d::chromium",
+        "496b6e7fe2e1b9404a76-f6710974d6b75822a599::chromium",
+        "496b6e7fe2e1b9404a76-63282714c5339a533979::chromium",
+        "272c584b2640c2316de9-509657310493c59b438b::chromium",
+        "272c584b2640c2316de9-75e733c661b301f131e5::chromium",
+        "272c584b2640c2316de9-a40735e50e42e2e99d84::chromium",
+        "272c584b2640c2316de9-736a91f761654c6652d9::chromium",
+        "272c584b2640c2316de9-2b51c877943a05649371::chromium",
+        "a31e7123dba5f6554465-667addb86753bebc0482::chromium",
+        "a8da8c46ffd46bfee43b-69f2c27be27f538cadad::chromium",
+        "a8da8c46ffd46bfee43b-cef5a49e5cbf4e316e1b::chromium",
+        "a8da8c46ffd46bfee43b-deea30e7c87328172a78::chromium",
+        "a8da8c46ffd46bfee43b-1a14f0884a8931fde932::chromium",
+        "a8da8c46ffd46bfee43b-278be7c00c2d6721cac5::chromium",
+        "a8da8c46ffd46bfee43b-83d4d6e0d994e955fe85::chromium",
+        "a8da8c46ffd46bfee43b-af46c4738c42e3d82c2f::chromium",
+        "a8da8c46ffd46bfee43b-07c04894087e1c1338b9::chromium",
+        "a8da8c46ffd46bfee43b-9e73d9f9d51390c00b19::chromium",
+        "a8da8c46ffd46bfee43b-fc74e423d03367148bf7::chromium",
+        "a8da8c46ffd46bfee43b-25b46ce79a204c7e9c42::chromium",
+        "a8da8c46ffd46bfee43b-7ac703bb61bf11c207a1::chromium",
+        "a8da8c46ffd46bfee43b-ba5e23f98a659dbc2dae::chromium",
+        "a8da8c46ffd46bfee43b-47a397ca2301962bf28a::chromium",
+        "a8da8c46ffd46bfee43b-c0b93f230e4159cdf589::chromium",
+        "a8da8c46ffd46bfee43b-d9507abee7ec61686ee1::chromium",
+        "a8da8c46ffd46bfee43b-4ef7fdc48d0dea2aabea::chromium",
+        "a8da8c46ffd46bfee43b-fd1d765bc22301467e1b::chromium",
+        "003133b91e9e96893c56-1947c3f3807b5fda184a::chromium",
+        "003133b91e9e96893c56-cae8f68535b51078a06d::chromium",
+        "30b714dc4af7057366bb-98e31d56318615821329::chromium",
+        "30b714dc4af7057366bb-8036c2acc65a988696d1::chromium",
+        "30b714dc4af7057366bb-1c44106423fb1d477ebd::chromium",
+        "8c426da9c67103ece09c-a8a51b30032dc1a12648::chromium",
+        "18cf56c89ac5da3b6284-ea5b1e68558fd12b2a3c::chromium",
+        "18cf56c89ac5da3b6284-b91aa4d2f1ea0320fbad::chromium",
+        "7d5f4a6cd47a0e484bf3-715ead897b520e4add3d::chromium",
+        "7d5f4a6cd47a0e484bf3-f0c5ff0fba743b1ad12a::chromium",
+        "7d5f4a6cd47a0e484bf3-56998c3b2a1ab253ee6e::chromium",
+        "7d5f4a6cd47a0e484bf3-93752d52884caaa9807a::chromium",
+        "7d5f4a6cd47a0e484bf3-5c344f12f2f6a8c23fe6::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "frontend/result.json",
+          "exists": true,
+          "sha256": "546467cec38dd5ccfd2888adb4fc4767bc79afcb1878bfd1ebdbfeeec3156dd9"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime-supplement/inbox-snooze-02",
+        "runtime/inbox-snooze-01",
+        "runtime/legacy-broad-02",
+        "runtime/recommendations-01"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [
+        {
+          "category": "TEST_ALLOCATION_PREREQUISITE",
+          "product_failure_proven": false,
+          "reason": "Generic opt-in omitted required password inbox allocation; failed before actor/business setup"
+        },
+        {
+          "category": "TEST_LOCATOR_DRIFT",
+          "product_failure_proven": false,
+          "reason": "canonical fixture navigation mismatch before cross-workspace snooze/wakeup business operations",
+          "evidence": "runtime-supplement/inbox-snooze-02/failure-classification.json",
+          "evidence_sha256": "93c290b1b268d2dcc4b78d921e5517065ac0f126df063f2c156e1b15a72a2c20"
+        }
+      ],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T23",
+      "priority": "P1",
+      "name": "文档、插件、自托管",
+      "files": "^(plugin-|iframe-|changelog)",
+      "extra": [
+        "builds/commands.json",
+        "scripts/recovery-review-01.json",
+        "scripts-integration/completion-ledger.json"
+      ],
+      "boundary": "Current docs production build, plugin/iframe browser assertions and local Compose/Docker/Postgres script integration; no deployment/publish",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Four declared platform script entry points: one Helm, three PowerShell",
+          "required": "Helm/PowerShell runtime absent; no new dependency installation authorized"
+        }
+      ],
+      "status": "BLOCKED",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 14
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 14
+      },
+      "identities": [
+        "1f2d7175777944768fa5-d9afc4176395cbe3a5d6::chromium",
+        "216befff53a719ccf302-d25394984e73c94249f9::chromium",
+        "216befff53a719ccf302-25a5379d6f8c5f8ce37f::chromium",
+        "f25609df3dd1f67ff322-4a25755e6f71c0627a45::chromium",
+        "f25609df3dd1f67ff322-3f873a7d1dcc2ffb16ee::chromium",
+        "f25609df3dd1f67ff322-fd4d5b940813a9214dc0::chromium",
+        "f25609df3dd1f67ff322-3bace43330b54651196a::chromium",
+        "f25609df3dd1f67ff322-82749b85bd068385cf76::chromium",
+        "f25609df3dd1f67ff322-2e3de53c71f5606accd2::chromium",
+        "a8fdd687cac3b8f8d44c-19c82b5bb295e0cb249b::chromium",
+        "a8fdd687cac3b8f8d44c-61d782ee62d26d86785a::chromium",
+        "62493d51e1202c611945-ec19e6326c9b97baed79::chromium",
+        "62493d51e1202c611945-d19416d4779ff6dc0b1d::chromium",
+        "62493d51e1202c611945-e919bb4bfcf001055181::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "builds/commands.json",
+          "exists": true,
+          "sha256": "45c8348a7dcce95af8b362405c31bd2b40fa2c0f978ab9617b49b2aa9c4eab37"
+        },
+        {
+          "file": "scripts/recovery-review-01.json",
+          "exists": true,
+          "sha256": "03530a9671fad4dee9c52c780c1a57c6668a0d376c96e73a591c4e857c65ba5e"
+        },
+        {
+          "file": "scripts-integration/completion-ledger.json",
+          "exists": true,
+          "sha256": "1e00023254b026b77d263041561c7c9bdb053687df71508a74ad6a4ea255c045"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T24",
+      "priority": "P1",
+      "name": "性能、规模、清理",
+      "files": "^collaboration-performance",
+      "extra": [
+        "backend-diagnostics/iteration-perf-01/summary.json",
+        "backend-diagnostics/triage-perf-01/summary.json",
+        "backend/continuation-result-01.json",
+        "backend/root-cleanup-result-20261125.json",
+        "runtime/global-final-cleanup-receipt.json"
+      ],
+      "boundary": "Performance thresholds and final current-resource closure verified: PG/Redis stopped, retained data,182ports closed,0owned processes/locks/extra containers; CLI03 historical fallback cleanupFAIL retained separately and not rewritten.",
+      "gaps": [],
+      "historical_cleanup_failure": {
+        "status": "FAIL",
+        "lane": "installed-cli-03",
+        "evidence": "installed-cli-acceptance/installed-cli-03/resource-cleanup.json",
+        "note": "Current final cleanup PASS is separate from original fallback-volume deletion FAIL."
+      },
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 3
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 3
+      },
+      "identities": [
+        "2b202428f0634457c64e-7c2744cef183cc1fc894::chromium",
+        "2b202428f0634457c64e-e4b5ca2f6ae4c3b17306::chromium",
+        "2b202428f0634457c64e-40af1d2b6531e3786ed0::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "backend-diagnostics/iteration-perf-01/summary.json",
+          "exists": true,
+          "sha256": "2390d030366840f71e07a2367d1b326da0655e41d6d3d83fc44f259066645061"
+        },
+        {
+          "file": "backend-diagnostics/triage-perf-01/summary.json",
+          "exists": true,
+          "sha256": "d75367b58ed990b9a0a93e82a126d64d828464a7875725c57a275274887e1044"
+        },
+        {
+          "file": "backend/continuation-result-01.json",
+          "exists": true,
+          "sha256": "8c4e2cb8cfd587bbf81bdfecd41888d79b72dd1832a01e52f56e9e299a6084f5"
+        },
+        {
+          "file": "backend/root-cleanup-result-20261125.json",
+          "exists": true,
+          "sha256": "064f65e90efc3cd9797a2e2372d9ff40f7434707cf67c25c4af7071b5172552c"
+        },
+        {
+          "file": "runtime/global-final-cleanup-receipt.json",
+          "exists": true,
+          "sha256": "b209772d17237ba43a48c7139be59bd8027134f954ce8e488c8f2c05f688371a"
+        }
+      ],
+      "completed_browser_lanes": [
+        "performance/performance-01/prepare",
+        "performance/performance-01/propagation",
+        "performance/performance-01/writeback"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    },
+    {
+      "id": "T25",
+      "priority": "P1",
+      "name": "Chat 会话与消息",
+      "files": "^chat-",
+      "extra": [
+        "frontend/result.json",
+        "backend/normal-summary.json"
+      ],
+      "boundary": "10 current browser cases plus canonical headless/backend tests; injected failure responses remain labeled fixture recovery, not arbitrary network/device proof",
+      "gaps": [],
+      "status": "PASS",
+      "status_basis": "Latest complete execution per named identity plus unresolved known defects and explicit gaps",
+      "retained_history_status": "PASS",
+      "named_identity_statuses": {
+        "PASS": 10
+      },
+      "latest_named_identity_statuses": {
+        "PASS": 10
+      },
+      "identities": [
+        "f71cd9b765b4d7354991-b4860a5a96ae4ec2f262::chromium",
+        "f71cd9b765b4d7354991-695302247b0caa40cea0::chromium",
+        "f71cd9b765b4d7354991-42c4a405ffc2d3536e7b::chromium",
+        "6880e8a95221ae7c8fc8-124c6e2ce713183a1959::chromium",
+        "156be6234bc2dee88964-8ed8a38d7316c903834a::chromium",
+        "156be6234bc2dee88964-1426724ef9386fda1e92::chromium",
+        "156be6234bc2dee88964-0d2437c9da86d25bf62e::chromium",
+        "156be6234bc2dee88964-9aef47c67a3ab3a889c1::chromium",
+        "156be6234bc2dee88964-78ca3057b8ed3ccfcd08::chromium",
+        "156be6234bc2dee88964-2ee60f17ecf71a49e990::chromium"
+      ],
+      "extra_evidence": [
+        {
+          "file": "frontend/result.json",
+          "exists": true,
+          "sha256": "546467cec38dd5ccfd2888adb4fc4767bc79afcb1878bfd1ebdbfeeec3156dd9"
+        },
+        {
+          "file": "backend/normal-summary.json",
+          "exists": true,
+          "sha256": "57b93973df35935af175a4e6627b4801c5bdb79f47d50bf29355c585dd9df5f3"
+        }
+      ],
+      "completed_browser_lanes": [
+        "runtime/legacy-broad-02"
+      ],
+      "supplemental_security": [],
+      "knowledge_variants": [],
+      "retained_failure_classifications": [],
+      "acceptance_scope": "Mapped canonical cases and explicit retained extra evidence; counts overlap other domains"
+    }
+  ],
+  "lanes": [
+    {
+      "id": "L0",
+      "name": "静态、TS、Go、脚本、UTC",
+      "status": "FAIL",
+      "evidence": [
+        {
+          "file": "frontend/result.json",
+          "exists": true,
+          "sha256": "546467cec38dd5ccfd2888adb4fc4767bc79afcb1878bfd1ebdbfeeec3156dd9"
+        },
+        {
+          "file": "backend/continuation-result-01.json",
+          "exists": true,
+          "sha256": "8c4e2cb8cfd587bbf81bdfecd41888d79b72dd1832a01e52f56e9e299a6084f5"
+        },
+        {
+          "file": "utc/result.json",
+          "exists": true,
+          "sha256": "cc495991904f5abadcc27bd06ad43a40b91723c9d3b919659f1ece7206a304e9"
+        },
+        {
+          "file": "scripts/recovery-review-01.json",
+          "exists": true,
+          "sha256": "03530a9671fad4dee9c52c780c1a57c6668a0d376c96e73a591c4e857c65ba5e"
+        },
+        {
+          "file": "scripts-integration/completion-ledger.json",
+          "exists": true,
+          "sha256": "1e00023254b026b77d263041561c7c9bdb053687df71508a74ad6a4ea255c045"
+        },
+        {
+          "file": "coverage-audit/linux-go-feasibility-20261125.json",
+          "exists": true,
+          "sha256": "58d418f3790fe6fcc6c4bb42cb42261dd6b45caed7db8a047b8bc676e9a3a8d0"
+        },
+        {
+          "file": "coverage-audit/linux-go-evidence-20261125.json",
+          "exists": true,
+          "sha256": "4e5e77504f0a10106ca2f7dc309b2cc28d72d4d505307fb4bee3f627780eec52"
+        }
+      ],
+      "boundary": "Lint/typecheck/TS and normal Go passed; original race and govulncheck failed; Linux normal supplement closes2 original process skips +1 root preflight subcase;7 namespace identities BLOCKED in tested default policy; remaining platform/script gaps retained",
+      "original_skip_statuses": {},
+      "variant_evidence": [],
+      "latest_skip_statuses": {},
+      "retained_history_status": "NOT_RUN",
+      "identities": [],
+      "completed_lanes": []
+    },
+    {
+      "id": "L1",
+      "name": "默认 legacy 与补充",
+      "evidence": [
+        {
+          "file": "runtime/legacy-broad-02/completion.json",
+          "exists": true,
+          "sha256": "5ce39d478c2a1fb72402cee3be15f96ef7632cca7870246ecb940451565afa95"
+        }
+      ],
+      "boundary": "Original538 complete:400PASS138SKIP; assist/recommendation/manual detail supplements tracked separately; fixture Main only",
+      "status": "FAIL",
+      "original_skip_statuses": {
+        "FAIL": 2,
+        "PASS": 12
+      },
+      "variant_evidence": [],
+      "latest_skip_statuses": {
+        "FAIL": 2,
+        "PASS": 12
+      },
+      "retained_history_status": "FAIL",
+      "identities": [
+        "900011f45627c15b945e-e3d039a6ffb48d4184b3::chromium",
+        "900011f45627c15b945e-31ca666382809bfc78dc::chromium",
+        "316b50a3ca41198e2e17-3a7c713331b09bf89aa4::chromium",
+        "316b50a3ca41198e2e17-fba5e4dbe9f3ecda02f4::chromium",
+        "316b50a3ca41198e2e17-62c42ecac0703aee4ac2::chromium",
+        "316b50a3ca41198e2e17-f9040d254397bbfffce8::chromium",
+        "316b50a3ca41198e2e17-321e7f4c711857f1b15a::chromium",
+        "316b50a3ca41198e2e17-68690e1ce120e12cae62::chromium",
+        "316b50a3ca41198e2e17-0747dc854d1431ff808f::chromium",
+        "316b50a3ca41198e2e17-b2b4883012ba385b77fc::chromium",
+        "2e8047e6a79406123d43-48a3237c0b018794c136::chromium",
+        "2e8047e6a79406123d43-e0779b130c28cbf8e2ea::chromium",
+        "2e8047e6a79406123d43-34ddf6303236672b6066::chromium",
+        "a8da8c46ffd46bfee43b-af46c4738c42e3d82c2f::chromium"
+      ],
+      "completed_lanes": [
+        "runtime-supplement/manual-detail-01",
+        "runtime/assist-01",
+        "runtime/recommendations-01"
+      ]
+    },
+    {
+      "id": "L2",
+      "name": "password",
+      "evidence": [
+        {
+          "file": "runtime/password-registration-01/completion.json",
+          "exists": true,
+          "sha256": "182fbdf8589dd333811ac3595ebb207431da8d8d687dce3c5e735ee36fc66f1c"
+        },
+        {
+          "file": "runtime/password-branches-01/completion.json",
+          "exists": true,
+          "sha256": "a1ca7d7d3d0af46be947ffc8f297a044204a36a83615dcd1ae10c1062a858d7d"
+        },
+        {
+          "file": "runtime/password-native-switch-mcp-01/completion.json",
+          "exists": true,
+          "sha256": "d7af805581f9ebce5954b3e3b7a68286ad9595acc0430d7f034774c71f99ad6c"
+        }
+      ],
+      "boundary": "Independent compatible password suites, real auth flows and separately declared native fixtures",
+      "status": "FAIL",
+      "original_skip_statuses": {
+        "PASS": 53,
+        "FAIL": 7
+      },
+      "variant_evidence": [],
+      "latest_skip_statuses": {
+        "PASS": 56,
+        "FAIL": 4
+      },
+      "retained_history_status": "FAIL",
+      "identities": [
+        "2a12307fbe587ad30b9d-1f00226cface18b21c69::chromium",
+        "34b4463281fad786160c-704b869416befd2e99b4::chromium",
+        "b1c4a136b719ec2a1e4b-09a46b535c4a3f203e12::chromium",
+        "50dbc6ea2152334c9970-f163e18c99b25f48ec6d::chromium",
+        "50dbc6ea2152334c9970-d9e3a292d32ed9284fa9::chromium",
+        "b53c6fa0121e7a26b406-ff6fd6de8ee75bb8a8f0::chromium",
+        "b53c6fa0121e7a26b406-a8bc0f7668ca407e964f::chromium",
+        "ca48d702c1e4c67aefbb-4c7e53db969d5505a370::chromium",
+        "ca48d702c1e4c67aefbb-a51ef4f8f1c2f1b77bbe::chromium",
+        "ecac6bf78a5fb02bc075-2e0839160985f133ab31::chromium",
+        "ecac6bf78a5fb02bc075-c4bc9531da4c7d573c12::chromium",
+        "ecac6bf78a5fb02bc075-2152e7cbfb0ded6046ff::chromium",
+        "ecac6bf78a5fb02bc075-14b58370a9af77b68c95::chromium",
+        "ecac6bf78a5fb02bc075-824d851b97f1774f41d6::chromium",
+        "ecac6bf78a5fb02bc075-cbe160e85044eb1e98e2::chromium",
+        "ed44d74a0711f42c4c9b-7936f0baa06f189d5dde::chromium",
+        "ed44d74a0711f42c4c9b-e7fa1233b088e6382147::chromium",
+        "714a517df346ea008da2-84df73c1a532c0e482c8::chromium",
+        "714a517df346ea008da2-8b2a28363c91382fa472::chromium",
+        "75db0b9d9278c900ff5e-24c8eb350f462c48fcd9::chromium",
+        "75db0b9d9278c900ff5e-60e1828a4a4508d6677d::chromium",
+        "75db0b9d9278c900ff5e-81ce69aa68f15edc7ee4::chromium",
+        "75db0b9d9278c900ff5e-e930a2196195650e6a1f::chromium",
+        "75db0b9d9278c900ff5e-fafc6f3febf440ceebd1::chromium",
+        "75db0b9d9278c900ff5e-c1ffc30138c46dc1a440::chromium",
+        "ae1717817739f0698543-e966ddc97d3b5f48187a::chromium",
+        "ae1717817739f0698543-2aff574e4246ff1da885::chromium",
+        "32ff48078ff9327ee98f-b14f87017555ef29f972::chromium",
+        "32ff48078ff9327ee98f-30169eca31035cff2a15::chromium",
+        "32ff48078ff9327ee98f-952cd334ba541c9d53a9::chromium",
+        "5218ae82d47952dd2ef5-24ac0b7b816e413d94af::chromium",
+        "535c4a178b0047bfeb34-fc595010fd4da324f891::chromium",
+        "535c4a178b0047bfeb34-1c0f20d2a0aa38b9bb87::chromium",
+        "f1f9ccf487bccfab98fb-ff0ee90dad2517a8fd38::chromium",
+        "fd76911901244b93c23f-3e206b9269e8f7353c12::chromium",
+        "2965b1f5e7ed7b139948-cd8e9283e9bd9483caf8::chromium",
+        "2965b1f5e7ed7b139948-82b9a5d528fd18060683::chromium",
+        "2965b1f5e7ed7b139948-939020715d6b657e1918::chromium",
+        "2965b1f5e7ed7b139948-a68672c7710c8a10774c::chromium",
+        "2965b1f5e7ed7b139948-6d6e7627e024ce7028ed::chromium",
+        "2965b1f5e7ed7b139948-7629ef8a1d24452be878::chromium",
+        "3109328bccfe40d0e455-b5125772ec6985779165::chromium",
+        "ac477c38114dcfb2408b-c8cc29374ba1f1ecaebf::chromium",
+        "499efe5838d4da0407a2-2c6b88f5c4eb7d747419::chromium",
+        "499efe5838d4da0407a2-46918236fc038c1aa42d::chromium",
+        "499efe5838d4da0407a2-33024604fff93cfe1cec::chromium",
+        "499efe5838d4da0407a2-f5e3d247705be9b6c116::chromium",
+        "499efe5838d4da0407a2-44609363e0d5318a4a23::chromium",
+        "499efe5838d4da0407a2-526c19db674ab75853a4::chromium",
+        "499efe5838d4da0407a2-b368ce844e34b9272e92::chromium",
+        "499efe5838d4da0407a2-cbf38d2f404135387ebb::chromium",
+        "499efe5838d4da0407a2-8de404b2d89c4e608d60::chromium",
+        "499efe5838d4da0407a2-515735f17901602c7ab0::chromium",
+        "499efe5838d4da0407a2-06b179453d20be149607::chromium",
+        "499efe5838d4da0407a2-49d345c07d50ce9f6d6e::chromium",
+        "161e234becfe92d18781-b89a2a2813f79f77b7b2::chromium",
+        "161e234becfe92d18781-a9b5a22ac6040d56dbae::chromium",
+        "acc595d64ecfa74c4bdc-54310f00df4aa0e73c5f::chromium",
+        "acc595d64ecfa74c4bdc-3d370629f246bf29b71a::chromium",
+        "707169faded7e17d9857-47afb6c555486dc7f218::chromium"
+      ],
+      "completed_lanes": [
+        "runtime-supplement/inbox-snooze-02",
+        "runtime-supplement/information-desktop-02",
+        "runtime-supplement/information-recovery-01",
+        "runtime-supplement/ordinary-ui-recovery-01",
+        "runtime-supplement/password-migration-binding-01",
+        "runtime-supplement/pay-creation-01",
+        "runtime-supplement/recovery-01",
+        "runtime-supplement/recovery-extras-five-01",
+        "runtime-supplement/requirements-history-01",
+        "runtime-supplement/subscriptions-recovery-01",
+        "runtime/inbox-snooze-01",
+        "runtime/password-branches-01",
+        "runtime/password-manual-handoff-01",
+        "runtime/password-manual-surfaces-01",
+        "runtime/password-native-switch-mcp-01",
+        "runtime/password-registration-01",
+        "runtime/password-retained-01",
+        "runtime/recovery-extras-delayed-02"
+      ]
+    },
+    {
+      "id": "L3",
+      "name": "admin/managed",
+      "evidence": [],
+      "boundary": "Fresh synthetic admins, actual enrollment/resource/observability, no inherited production account",
+      "status": "FAIL",
+      "original_skip_statuses": {
+        "PASS": 12,
+        "FAIL": 1
+      },
+      "variant_evidence": [],
+      "latest_skip_statuses": {
+        "PASS": 12,
+        "FAIL": 1
+      },
+      "retained_history_status": "FAIL",
+      "identities": [
+        "ef571447aed0b4db57a3-295442a63e27b22d0672::chromium",
+        "8b3c43dc51139ab50b4b-7875d1978ba1d8d8dc82::chromium",
+        "8b3c43dc51139ab50b4b-25b8f5b6b77d2062a0f7::chromium",
+        "8b3c43dc51139ab50b4b-44aa37df1aae596f2971::chromium",
+        "aff776393daaba5098a2-041a9af2fb1dbe0a9934::chromium",
+        "427dade945a4fd868ebf-8b0acf859e57abc2595c::chromium",
+        "24e33de26869ce7dc84d-275dae4fea8611b58c04::chromium",
+        "ab47b0ce4f162af82317-388db09f85767fcf24d0::chromium",
+        "c2191e055844bd116d20-96e8e9441b8ff4212027::chromium",
+        "67e548c977100ea99989-f5a222a03f7fed3bf10a::chromium",
+        "e16d84430229b8bcb612-e522339c7bd58ee3f28c::chromium",
+        "74ccab361eb031273b67-dad29e78fb027d80ffaa::chromium",
+        "eb1181b976bfeaf69bd0-6d0816a68479a8c76ec9::chromium"
+      ],
+      "completed_lanes": [
+        "runtime-supplement/admin-auto-init-01",
+        "runtime/admin-access-01",
+        "runtime/admin-accounts-01",
+        "runtime/admin-collaboration-desktop-01",
+        "runtime/admin-collaboration-web-01",
+        "runtime/admin-controls-01",
+        "runtime/admin-executions-01",
+        "runtime/admin-installations-01",
+        "runtime/admin-observability-01",
+        "runtime/admin-switches-01",
+        "runtime/resource-publishing-01"
+      ]
+    },
+    {
+      "id": "L4",
+      "name": "device auth",
+      "evidence": [
+        {
+          "file": "runtime/device-01/completion.json",
+          "exists": true,
+          "sha256": "76a45c5c2c7983208220dea66bf70a0fb35d89b6f903855894173e9e519e75eb"
+        }
+      ],
+      "boundary": "One exact live device login case; independent device API",
+      "status": "PASS",
+      "original_skip_statuses": {
+        "PASS": 1
+      },
+      "variant_evidence": [],
+      "latest_skip_statuses": {
+        "PASS": 1
+      },
+      "retained_history_status": "PASS",
+      "identities": [
+        "277384e3c137d30ae41c-d30f1de4a3cadc3dcbc5::chromium"
+      ],
+      "completed_lanes": [
+        "runtime/device-01"
+      ]
+    },
+    {
+      "id": "L5",
+      "name": "namespace/control",
+      "evidence": [],
+      "boundary": "Namespace-only gate, explicit fixture binaries; not real commercial-model/host proof",
+      "status": "FAIL",
+      "original_skip_statuses": {
+        "PASS": 11,
+        "FAIL": 9
+      },
+      "variant_evidence": [],
+      "latest_skip_statuses": {
+        "PASS": 11,
+        "FAIL": 9
+      },
+      "retained_history_status": "FAIL",
+      "identities": [
+        "b7041fbce68d9d61e19a-33ff743fc983c96c3778::chromium",
+        "b7041fbce68d9d61e19a-fa31a3b5fe85ba70e358::chromium",
+        "0b39328aa0f4a04d8d0a-51d8ef5fd33ac1a523bb::chromium",
+        "0b39328aa0f4a04d8d0a-754afe819db0456fac63::chromium",
+        "33392745d96a6bf05c15-ec9822c3a1d5a7fd89a0::chromium",
+        "2baf0d89c3e16f740924-6ba9d26bee7ad2f7ba4b::chromium",
+        "2baf0d89c3e16f740924-57a798cb8c03ff31d703::chromium",
+        "2baf0d89c3e16f740924-40ff4a37c718db2f022d::chromium",
+        "2baf0d89c3e16f740924-c44ce4cf8479a339bf04::chromium",
+        "2baf0d89c3e16f740924-62b228e8e2fe12d87faf::chromium",
+        "2baf0d89c3e16f740924-d5cf28a822dcd31e5846::chromium",
+        "c32a5058833059c3776e-cc2b7d39a133cac5df19::chromium",
+        "c8706aeccaf441d25880-bf60502313c2edcb8554::chromium",
+        "c8706aeccaf441d25880-6cf834f8264130a8d215::chromium",
+        "e3c6d3818c837a989021-2fd3dc7933883044e094::chromium",
+        "753e160629e6e5a7052c-f7430be66c7012c9d9a6::chromium",
+        "753e160629e6e5a7052c-fddac4f88ef9091cfce5::chromium",
+        "a9b46edddb706f4df5c2-98fcf32b219eef43ae3d::chromium",
+        "00b7935011b67d3066db-1d2a996123df4c161261::chromium",
+        "00b7935011b67d3066db-80c0697ff0c39df9971f::chromium"
+      ],
+      "completed_lanes": [
+        "runtime/cross-client-01",
+        "runtime/lane-close-01",
+        "runtime/lifecycle-01",
+        "runtime/m1-01",
+        "runtime/namespace-controls-01",
+        "runtime/offline-notifications-01"
+      ]
+    },
+    {
+      "id": "L6",
+      "name": "host/knowledge/output",
+      "evidence": [],
+      "boundary": "Real controlled local daemon/provider/CLI; deterministic fixture provider, distinct knowledge-on/off variants",
+      "variant_requirement": {
+        "file": "collaboration-knowledge-deployed.spec.ts",
+        "modes": [
+          "on",
+          "off"
+        ]
+      },
+      "status": "FAIL",
+      "original_skip_statuses": {
+        "PASS": 22,
+        "FAIL": 2
+      },
+      "variant_evidence": [
+        {
+          "lane": "runtime-supplement/knowledge-deployed-off-01",
+          "identity": "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+          "status": "PASS",
+          "enabled": false,
+          "integrity_issues": [],
+          "attachment_sha256": "abb9a9fc1e40972cdece992ce0014b648232ce5930ca38228b56d66fac995afe",
+          "completion_sha256": "e6fd2f3135ad121b6b91007d0ff0abe9f8e837d6bf60c5ffdcea7d8386f2e513",
+          "playwright_sha256": "326d8293b876283992d9c0d227a86594096f03e17b0d429b4f8b304d208db894",
+          "knowledge_events": {
+            "knowledge_claim": 0,
+            "knowledge_preparation": 0,
+            "knowledge_authorization": 0
+          },
+          "run": {
+            "id": "f11ae1c2-0369-4dcc-8bb8-0988149c7cbb",
+            "progress_state": "settled",
+            "proof_state": "host_exit_observed",
+            "business_outcome": "success",
+            "launch_count": "1"
+          },
+          "scope": "Actual deterministic Host input; paired configuration proof, one original identity"
+        },
+        {
+          "lane": "runtime-supplement/knowledge-deployed-on-01",
+          "identity": "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+          "status": "PASS",
+          "enabled": true,
+          "integrity_issues": [],
+          "attachment_sha256": "29a2c2aae87491e242be289d776b8fe171876703d7ced7ebbbe6420d58a9f19e",
+          "completion_sha256": "99dcc05f11312df0a56c2c2b65ec7c4d38d88952f74b8b384d99d09f51b71ced",
+          "playwright_sha256": "a49a4a994acb1789072e2d2a7e67488b674779e60af1e761e0a77f3ced4d6665",
+          "knowledge_events": {
+            "knowledge_claim": 1,
+            "knowledge_preparation": 1,
+            "knowledge_authorization": 1
+          },
+          "run": {
+            "id": "a03afa93-a89e-47c7-87dc-da081b12d2a4",
+            "progress_state": "settled",
+            "proof_state": "host_exit_observed",
+            "business_outcome": "success",
+            "launch_count": "1"
+          },
+          "scope": "Actual deterministic Host input; paired configuration proof, one original identity"
+        }
+      ],
+      "latest_skip_statuses": {
+        "PASS": 22,
+        "FAIL": 2
+      },
+      "retained_history_status": "FAIL",
+      "identities": [
+        "63a5c4fa296e099a1451-cda28dfe98eb1d2a7d58::chromium",
+        "63a5c4fa296e099a1451-0d8c7045854b15abdde4::chromium",
+        "63a5c4fa296e099a1451-198e4ec96b24149102ac::chromium",
+        "49e3411a966fddb17b9a-200bce7fedd3491208e3::chromium",
+        "cf7c9df06f6e4ea1db10-0f46104619ff101d221a::chromium",
+        "0e5cd2682e7c94e15948-a8b3ab0d75032729edb3::chromium",
+        "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+        "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac::chromium",
+        "7f6fc72c72ab8e0da549-24370a70f4356b84fb22::chromium",
+        "00c14b16591e46ce6a3d-c7c17b16d1e00d955492::chromium",
+        "b0157e4e1d2b2a19d912-8d3948bff83fd4fbf6da::chromium",
+        "9626b9bf672f93051bc7-67f468c0ec27efb1fb16::chromium",
+        "9626b9bf672f93051bc7-dfc54d49264cd5bf2562::chromium",
+        "9626b9bf672f93051bc7-b1549124e6dd772929b9::chromium",
+        "9626b9bf672f93051bc7-45f194ed1a914c7bd2c2::chromium",
+        "6aaa25148c0e1afd59f7-606d9c3aeb24e22fa529::chromium",
+        "6aaa25148c0e1afd59f7-3b82058b2fb1bf9f0ef2::chromium",
+        "d74346f239402bb917bf-ebf93d609e35e592d476::chromium",
+        "6bf57ddf04cc7754faff-ae9e1351914dd32300f6::chromium",
+        "6bf57ddf04cc7754faff-4f09eb913f69dad2952b::chromium",
+        "6bf57ddf04cc7754faff-0b698cff1192d5ac8f14::chromium",
+        "07c64dcce358dadb1f23-3156e7f0586da38869fb::chromium",
+        "57074c05651a53503057-866510320c6fc1bf98c0::chromium",
+        "57074c05651a53503057-2e88e48d0406a500d8f3::chromium"
+      ],
+      "completed_lanes": [
+        "knowledge-acceptance/knowledge-02",
+        "runtime-supplement/host-basic-01",
+        "runtime-supplement/knowledge-deployed-off-01",
+        "runtime-supplement/knowledge-deployed-on-01",
+        "runtime-supplement/memory-runtime-01",
+        "runtime-supplement/multi-account-timeout-01",
+        "runtime-supplement/order-export-01",
+        "runtime-supplement/order-export-leave-01",
+        "runtime-supplement/runtime-output-01",
+        "runtime-supplement/runtime-recovery-01",
+        "runtime-supplement/stage-approvals-01",
+        "runtime/business-scenarios-02",
+        "runtime/stage-02"
+      ]
+    },
+    {
+      "id": "L7",
+      "name": "packaged/installed Main",
+      "evidence": [
+        {
+          "file": "native-acceptance/current06-package.json",
+          "exists": true,
+          "sha256": "6a6f2a08a93bfd3354273b2d555fce4d77cad4c790a4621fe07e5e648e3865b9"
+        },
+        {
+          "file": "native-acceptance/current06-asar-verification.json",
+          "exists": true,
+          "sha256": "fb2342c39a42321cc35be0941b1eb0f8e66d12d7419ba4f07b87149bc8bd296e"
+        },
+        {
+          "file": "native-acceptance/current06-signature.json",
+          "exists": true,
+          "sha256": "4b945635826d39cc2e2c56c6816c54eecbb813109ebfe1b15d0c0cc0f14e6cb9"
+        }
+      ],
+      "boundary": "Full packaged journey result requires original named case and exact protocol/process restore; package assembly alone is preparation, failed boot/control attempts remain failed",
+      "status": "FAIL",
+      "original_skip_statuses": {
+        "FAIL": 3
+      },
+      "variant_evidence": [],
+      "latest_skip_statuses": {
+        "FAIL": 3
+      },
+      "retained_history_status": "FAIL",
+      "identities": [
+        "e481c356ede738d608ed-429067c898ab68cfd473::chromium",
+        "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d::chromium",
+        "6bb3c38027cdc912e0b7-7d0a58cb34e138e51c15::chromium"
+      ],
+      "completed_lanes": [
+        "runtime/installed-cli-02",
+        "runtime/installed-cli-03",
+        "runtime/installed-main-02",
+        "runtime/linux-main-03",
+        "runtime/linux-main-04"
+      ]
+    },
+    {
+      "id": "L8",
+      "name": "Firefox/WebKit",
+      "status": "BLOCKED",
+      "evidence": [],
+      "boundary": "Only Chromium installed/configured in inspected cache; no added browser dependencies",
+      "original_skip_statuses": {},
+      "variant_evidence": [],
+      "latest_skip_statuses": {},
+      "retained_history_status": "NOT_RUN",
+      "identities": [],
+      "completed_lanes": []
+    },
+    {
+      "id": "L9",
+      "name": "Mobile",
+      "status": "BLOCKED",
+      "evidence": [
+        {
+          "file": "frontend/04-mobile-typecheck.inventory.json",
+          "exists": true,
+          "sha256": "994fd9ec70748ba3a2ced2a81f98cb03c665e722a5f062f1f72e0b292bc7c428"
+        },
+        {
+          "file": "frontend/05-mobile-lint.inventory.json",
+          "exists": true,
+          "sha256": "11982fc1628ca1661bc9c643a38adca08c9eda9a54e0ff8ee0d513c109503652"
+        },
+        {
+          "file": "frontend/06-mobile-vitest.inventory.json",
+          "exists": true,
+          "sha256": "10ee6fce12e89cc421952b617ae04a3291b5a76ade1f2c44ee0e9b4dbb8205ea"
+        }
+      ],
+      "boundary": "Independent static and196headless tests PASS; native Xcode/simulator/driver absent",
+      "original_skip_statuses": {},
+      "variant_evidence": [],
+      "latest_skip_statuses": {},
+      "retained_history_status": "NOT_RUN",
+      "identities": [],
+      "completed_lanes": []
+    },
+    {
+      "id": "L10",
+      "name": "100-user performance",
+      "evidence": [],
+      "boundary": "Fresh100-account manifest/default API pool and sequential prepare→propagation→writeback; require complete10000 propagation and100×2 writeback samples plus original thresholds and cleanup",
+      "status": "PASS",
+      "original_skip_statuses": {
+        "PASS": 3
+      },
+      "variant_evidence": [],
+      "latest_skip_statuses": {
+        "PASS": 3
+      },
+      "retained_history_status": "PASS",
+      "identities": [
+        "2b202428f0634457c64e-7c2744cef183cc1fc894::chromium",
+        "2b202428f0634457c64e-e4b5ca2f6ae4c3b17306::chromium",
+        "2b202428f0634457c64e-40af1d2b6531e3786ed0::chromium"
+      ],
+      "completed_lanes": [
+        "performance/performance-01/prepare",
+        "performance/performance-01/propagation",
+        "performance/performance-01/writeback"
+      ]
+    }
+  ]
+}

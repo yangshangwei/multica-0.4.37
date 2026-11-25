@@ -1,0 +1,41 @@
+{
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "prepared_sha256": "2f9a43d2c5418580380265c0d7677f342e60efb4d76e75f1ca81bd8efe84801b",
+  "normal_only": true,
+  "canonical_named_pass": 4,
+  "canonical_top_level_pass": 3,
+  "canonical_leaf_assertions_pass": 3,
+  "canonical_fail": 0,
+  "canonical_skip": 0,
+  "canonical_missing": 0,
+  "supplemental_identities": [
+    {"package":"pkg/agent","test":"TestCodexExecuteRetriesAfterSignaledProcessIsReaped","status":"PASS","run":"process-r01","canonical_executed":true},
+    {"package":"pkg/agent","test":"TestPiExecuteAttachesStdinPipe","status":"PASS","run":"process-r01","canonical_executed":true},
+    {"package":"pkg/agent","test":"TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors","status":"PASS","run":"root-preflight-r01","canonical_executed":true},
+    {"package":"cmd/server","test":"TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux","status":"BLOCKED","canonical_executed":false},
+    {"package":"cmd/server","test":"TestCollaborationPartialResumeRoutesLinux","status":"BLOCKED","canonical_executed":false},
+    {"package":"cmd/server","test":"TestCollaborationSingleAgentRuntimeRoutesLinux","status":"BLOCKED","canonical_executed":false},
+    {"package":"cmd/server","test":"TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux","status":"BLOCKED","canonical_executed":false},
+    {"package":"cmd/server","test":"TestCollaborationRuntimeProofSurvivesOwnerDisableLinux","status":"BLOCKED","canonical_executed":false},
+    {"package":"cmd/server","test":"TestCollaborationSquadCapacityOneRoutesLinux","status":"BLOCKED","canonical_executed":false},
+    {"package":"internal/daemon","test":"TestCollaborationBatchPollerSlotsAndRunnerLinux","status":"BLOCKED","canonical_executed":false}
+  ],
+  "namespace_prerequisite": {
+    "status":"BLOCKED_IN_ADMITTED_CONFIGURATION",
+    "probe_is_canonical_test":false,
+    "user_run":"namespace-user-r01",
+    "root_run":"namespace-root-r01",
+    "both_exits":2,
+    "reason":"fork/exec /bin/true: operation not permitted",
+    "effective_capabilities":"0000000000000000",
+    "no_new_privileges":1,
+    "seccomp_mode":2,
+    "policy_relaxed":false,
+    "specific_refusing_rule_attributed":false
+  },
+  "final_bindings_match":true,
+  "owned_containers_remaining":0,
+  "database_used":false,
+  "external_network":"none",
+  "historical_failures_and_skips":"retained unchanged"
+}

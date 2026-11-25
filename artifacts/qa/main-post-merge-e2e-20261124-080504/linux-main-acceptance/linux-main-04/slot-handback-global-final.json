@@ -1,0 +1,179 @@
+{
+  "at": "2026-11-25T08:38:15.444861+00:00",
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "exclusive_service_slot_to": "parent/runtime for final global cleanup",
+  "canonical_result": {
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "retry": 0,
+    "duration_ms": 125487
+  },
+  "runtime_exit": 1,
+  "adapter_exit": 1,
+  "failure": "Canonical login heading Collaboration exact timeout45000ms after packaged Main init and real login200; no retry",
+  "main_actual_attempt": true,
+  "milestones": {
+    "packaged": true,
+    "platform": "linux",
+    "arch": "arm64",
+    "electron": "39.8.7",
+    "version": "0.6.7-890-g103e2bc32",
+    "bundled_cli": {
+      "sha256": "45ffab6462ce1411a49f782586a26521e10685ea65e680c803eae6945602d521",
+      "version": "0.6.7-890-g103e2bc32",
+      "command": [
+        "<packaged-bundled-cli>",
+        "version",
+        "--output",
+        "json"
+      ]
+    },
+    "actual_renderer": "file:///opt/multica/resources/app.asar/out/renderer/index.html",
+    "login_HTTP200_and_actor_verified": "Controller528 reached after real login200, actor ID match and username removal; no login return because heading assertion failed"
+  },
+  "downstream_not_run": [
+    "account detail navigation",
+    "information and acceptance handoffs",
+    "Stop/restart/unconfirmed Resume",
+    "later history/authority matrix"
+  ],
+  "containers_absent": [
+    {
+      "name": "multica-collaboration-main-97314619-034",
+      "id": "0b17eec1704b3540d16e87ceed1af6a4e8ceb533bf78de2f7e075fa6b7541126",
+      "absent": true
+    }
+  ],
+  "connectivity_container": {
+    "status": "pass",
+    "containers": [
+      {
+        "name": "multica-collaboration-main-97314619-034",
+        "absent": true
+      },
+      {
+        "name": "main-e2e-linux-route-8f722bc1bf9c",
+        "absent": true
+      }
+    ]
+  },
+  "fresh_owned_inventory": [
+    {
+      "argv": [
+        "ps",
+        "--all",
+        "--quiet",
+        "--no-trunc",
+        "--filter",
+        "label=multica.qa.owner=main-post-merge-e2e-20261124-080504/linux-main-04"
+      ],
+      "exit": 0,
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "volume",
+        "ls",
+        "--quiet",
+        "--filter",
+        "label=multica.qa.owner=main-post-merge-e2e-20261124-080504/linux-main-04"
+      ],
+      "exit": 0,
+      "stdout": ""
+    }
+  ],
+  "owned_processes": [],
+  "pg_other_clients": 0,
+  "pg_port": 49908,
+  "pg_owner": "runtime; preserved for global stop",
+  "ports_closed": {
+    "api": true,
+    "web": true,
+    "renderer": true
+  },
+  "runtime_locks_absent": true,
+  "protocol_exact_unchanged": true,
+  "protocol_default": "file:///Applications/Multica.app/",
+  "protocol_registration_count": 9,
+  "gate": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": 4
+  },
+  "source_after": {
+    "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_count": 32724,
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "generated_differences": [],
+    "support_materials": [
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/desktop.png",
+        "sha256": "31595c30f1b1bf285e6b07690af8bafc81bd313ef9228cd8658ec116da50867f",
+        "mode": 420,
+        "size": 121097,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile-dark-examples.png",
+        "sha256": "6db211e5fed14bbbc23dd1cdf0a9f35a19c6e2ee3d001cafd93a52ce6b48baf7",
+        "mode": 420,
+        "size": 50432,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile.png",
+        "sha256": "925eff4f0c988f32ff931d90f34b2f8ab0b403c946c6b48de1ee328a0a034ddf",
+        "mode": 420,
+        "size": 53094,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/narrow-english.png",
+        "sha256": "6e4ccbf9c0154c2a1943fca198e48fb0053c25b317c0c3dbcc44ec6802c01363",
+        "mode": 420,
+        "size": 35650,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/ews-runtimes-components-runtimes-page-tsx-939120c8.md",
+        "sha256": "14c21b8d0dde3a9b3c0c2217d54f38f7322a52f6c1638c34b787df7d8765a556",
+        "mode": 420,
+        "size": 3136,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/packages-views-marketplace-marketplace-page-tsx.md",
+        "sha256": "382edd046412f3de0e0bd8a6f13d80de0f541e97f71a281c6b55c803282b83db",
+        "mode": 420,
+        "size": 1470,
+        "uid": 501,
+        "kind": "non-executable support material"
+      }
+    ],
+    "support_sha256": "037ff3394ac7dfd9813cda75a22c1ba5a3ee4ad04467a254509fb1c01c1bd851"
+  },
+  "package_controller_registry_bindings_unchanged": true,
+  "evidence_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/completion.json": "1e37915808ce43986dec4f4afbf3bbb582a72307befc66a19ee380aaa86f4238",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/cleanup.json": "dafc1de5234d0be287dc273d0b1962570f0239f84cf6f854682e83144f9de703",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/docker-commands.json": "0df4418dbd24b8770103c604f9ba2696c757be243652bbbe582f7bf4aedbde26",
+    "/Users/artisan/.multica/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/resources.private.json": "1e4a45d8d2e7200a829194410b3764380f3d62cdf56ca6449b92d7e7d2dec93b",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/canonical-failure-attachment.json": "b4f948318b58844204ed586bfdd056d620961b5744e9d11c703300d8f51600ec",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/milestones.json": "5151c0c924e19dc2a7c760bc23e44196704a3aea6d42b1fb43a31c1798da1a80",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/completion.json": "ad5c6b2a5e6c984d18bd2abf73ce35511b22a2ed6783494256882440f5a2088e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/cleanup.json": "01cd7c8ee82aa661559a05fff4ce825450fd279c26854c71df79e0f035eb1808",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/named-inventory.json": "c0f0e957e70792507fc8f0b07bd942c0eff09722ed59c6f6650a1bb08097b2cc",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/playwright.json": "600892f40bdb54a8581aee42ef18e2878e2923f063e452f294e8f944a71d1929",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/native-acceptance/linux-main-04-protocol-before.json": "67de74f5071710fa8cd9b05719524ed8cd7edaa105429505b558a0eee77e3c4c",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/native-acceptance/linux-main-04-protocol-after.json": "bbb06630383afdbf18b31cff2617b0427076151205e34903d710182569aeb88b"
+  },
+  "no_further_lanes": true
+}

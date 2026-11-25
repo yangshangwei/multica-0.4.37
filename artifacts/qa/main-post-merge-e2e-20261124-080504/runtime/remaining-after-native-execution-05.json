@@ -1,0 +1,197 @@
+{
+  "plan": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/remaining-after-native-plan-05.json",
+  "plan_sha256": "95cab28f5021bdc3be20c1fe73931c5ade29311e9ff626c703b9e9db3565f267",
+  "driver_pid": 22803,
+  "slot_owner": "runtime; explicit parent handback",
+  "started_at": "2026-11-25T07:04:06.270158+00:00",
+  "results": [
+    {
+      "label": "recovery-extras-five-01",
+      "scope": "runtime-supplement",
+      "state": "complete",
+      "started_at": "2026-11-25T07:04:06.271124+00:00",
+      "command_exit": 1,
+      "ended_at": "2026-11-25T07:07:04.022400+00:00",
+      "completion_sha256": "e3fa110325b01e6221fb1a6d489e1d647aa7cf8e89e0d29e74784ecee57e9f7c",
+      "counts": {
+        "passed": 4,
+        "failed": 1
+      },
+      "inventory_complete": false,
+      "safe_cleanup": true
+    },
+    {
+      "label": "memory-runtime-01",
+      "scope": "runtime-supplement",
+      "state": "complete",
+      "started_at": "2026-11-25T07:07:04.023707+00:00",
+      "command_exit": 1,
+      "ended_at": "2026-11-25T07:11:56.018698+00:00",
+      "completion_sha256": "0a252552476944991b02a7729b18fac2b604f0145df6c658dc2943a1122a5d4d",
+      "counts": {
+        "failed": 1
+      },
+      "inventory_complete": false,
+      "safe_cleanup": true
+    },
+    {
+      "label": "order-export-01",
+      "scope": "runtime-supplement",
+      "state": "complete",
+      "started_at": "2026-11-25T07:11:56.022807+00:00",
+      "command_exit": 1,
+      "ended_at": "2026-11-25T07:17:53.610788+00:00",
+      "completion_sha256": "bed12fb7fcc850d3244b738065b56f0951a5afd17924607b7e88b17dd1bfb13e",
+      "counts": {
+        "failed": 1
+      },
+      "inventory_complete": false,
+      "safe_cleanup": true
+    },
+    {
+      "label": "order-export-leave-01",
+      "scope": "runtime-supplement",
+      "state": "complete",
+      "started_at": "2026-11-25T07:17:53.612692+00:00",
+      "command_exit": 0,
+      "ended_at": "2026-11-25T07:21:03.422133+00:00",
+      "completion_sha256": "1b02ca6fe35086fee3be7c38cd3deaae19f2c444a7359551357e79fba6f14a4a",
+      "counts": {
+        "passed": 1
+      },
+      "inventory_complete": true,
+      "safe_cleanup": true
+    },
+    {
+      "label": "cross-client-01",
+      "scope": "runtime",
+      "state": "complete",
+      "started_at": "2026-11-25T07:21:03.424451+00:00",
+      "command_exit": 1,
+      "ended_at": "2026-11-25T07:24:49.472312+00:00",
+      "completion_sha256": "cc00c985c710b9fce0d58c373691a2edbd841313db4fbca395b46fea07a0932f",
+      "counts": {
+        "failed": 1
+      },
+      "inventory_complete": false,
+      "adapter_completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 2,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:24:49.435083+00:00"
+      },
+      "safe_cleanup": true
+    },
+    {
+      "label": "lane-close-01",
+      "scope": "runtime",
+      "state": "complete",
+      "started_at": "2026-11-25T07:24:49.475220+00:00",
+      "command_exit": 1,
+      "ended_at": "2026-11-25T07:32:51.405591+00:00",
+      "completion_sha256": "f01b122c3712d8f63c35583cd4ad9d11a568d38a490e2728ad636ce050067c20",
+      "counts": {
+        "passed": 2,
+        "failed": 4
+      },
+      "inventory_complete": false,
+      "adapter_completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 8,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:32:51.218237+00:00"
+      },
+      "safe_cleanup": true
+    },
+    {
+      "label": "lifecycle-01",
+      "scope": "runtime",
+      "state": "complete",
+      "started_at": "2026-11-25T07:32:51.410660+00:00",
+      "command_exit": 1,
+      "ended_at": "2026-11-25T07:36:51.139025+00:00",
+      "completion_sha256": "fa94db5e94babbefc83b8666ae0937c3c4a6fbe56c2070b71fff8053e54effe5",
+      "counts": {
+        "failed": 2
+      },
+      "inventory_complete": false,
+      "adapter_completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 4,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:36:50.359954+00:00"
+      },
+      "safe_cleanup": true
+    },
+    {
+      "label": "offline-notifications-01",
+      "scope": "runtime",
+      "state": "complete",
+      "started_at": "2026-11-25T07:36:51.143292+00:00",
+      "command_exit": 1,
+      "ended_at": "2026-11-25T07:40:52.932942+00:00",
+      "completion_sha256": "e786eeaff806df984d562d5e05a02d24486fad8718ba7ab2d92fa12b80c63569",
+      "counts": {
+        "failed": 2
+      },
+      "inventory_complete": false,
+      "adapter_completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 4,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:40:52.816217+00:00"
+      },
+      "safe_cleanup": true
+    },
+    {
+      "label": "information-desktop-02",
+      "scope": "runtime-supplement",
+      "state": "complete",
+      "started_at": "2026-11-25T07:40:52.938637+00:00",
+      "command_exit": 0,
+      "ended_at": "2026-11-25T07:45:03.348368+00:00",
+      "completion_sha256": "f1d79d91182dc4ec36954788309377152be03b43e21e477bfad25631248092a7",
+      "counts": {
+        "passed": 1
+      },
+      "inventory_complete": true,
+      "safe_cleanup": true
+    },
+    {
+      "label": "business-scenarios-02",
+      "scope": "runtime",
+      "state": "complete",
+      "started_at": "2026-11-25T07:45:03.350899+00:00",
+      "command_exit": 0,
+      "ended_at": "2026-11-25T07:48:31.982162+00:00",
+      "completion_sha256": "e60b55b9c273d22657ab39bc10b6895a0caa746d2576b16f1de048570b3890e9",
+      "counts": {
+        "passed": 3
+      },
+      "inventory_complete": true,
+      "safe_cleanup": true
+    }
+  ],
+  "status": "complete",
+  "ended_at": "2026-11-25T07:48:31.983425+00:00"
+}

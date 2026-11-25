@@ -1,0 +1,139 @@
+{
+  "verdict": "ACCEPTANCE_WORK_CLOSURE_RECOMMENDED",
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "reviewed_at": "2026-11-25T09:00:04.454042+00:00",
+  "product_verdict": "FAIL",
+  "release_green": false,
+  "open_acceptance_work_blockers": [],
+  "mandatory_local_unattempted_items": [],
+  "final_snapshot": "snapshot-24",
+  "counts": {
+    "default": {
+      "total": 538,
+      "PASS": 400,
+      "SKIP": 138
+    },
+    "original138_latest": {
+      "PASS": 117,
+      "FAIL": 21,
+      "NOT_RUN": 0
+    },
+    "original138_all_failure_history": {
+      "PASS": 114,
+      "FAIL": 24
+    },
+    "merged_original538_latest": {
+      "PASS": 517,
+      "FAIL": 21
+    }
+  },
+  "AC01": {
+    "status": "SATISFIED",
+    "meaning": "Complete plan25domains11lanes, priorities, observables and evidence rules"
+  },
+  "AC02": {
+    "status": "SATISFIED_WITH_DISCLOSED_HISTORICAL_FAILURES",
+    "meaning": "Per-run sources/resources reviewed; finalpoststop32,724physicalsource/tool/asset/workspace bindings match,0generateddiffs. Current final resourcecleanupPASS; historicalCLI03fallbackcleanupFAIL retained."
+  },
+  "AC03": {
+    "status": "SATISFIED",
+    "meaning": "Allmandatorylocaloriginalidentities attempted with precisePASS/FAIL and unverifieddownstream boundaries; explicit unsupportedplatform/namespaceBLOCKED dispositions remain."
+  },
+  "AC04": {
+    "status": "SATISFIED",
+    "meaning": "Exact138skipdispositions and25domain11lanematrices complete; knowledgeon/off distinct; actualLinuxMain boundary proved; no renderer/simulation promoted to installer/model/mobile."
+  },
+  "AC05": {
+    "status": "SATISFIED",
+    "meaning": "ExactTS/Go/Playwrightnames/exits and allfailed/interrupted attempts retained. CLI timedOut1 remainsFAIL, parent/child and repeats not doublecounted. Historicalaudits exit1 remain."
+  },
+  "AC06": {
+    "status": "SATISFIED_FOR_FAIL_REPORT",
+    "meaning": "Report/defects deliver scope,evidence,unresolvedfailures and FAIL releaseverdict. Theconditionalgreenrequirement is NOT satisfied and no greenclaim made."
+  },
+  "final_resource_evidence": {
+    "path": "runtime/global-final-cleanup-receipt.json",
+    "sha256": "b209772d17237ba43a48c7139be59bd8027134f954ce8e488c8f2c05f688371a",
+    "current_status": "PASS_RESOURCE_CLEANUP_ONLY",
+    "stop_exit": 0,
+    "pre_stop_other_clients": 0,
+    "PG_stopped": true,
+    "backend_PG_Redis_stopped": true,
+    "all3containers_and_volumes_retained": true,
+    "service_ports_closed": 182,
+    "owned_processes": 0,
+    "locks": 0,
+    "extra_campaign_containers": 0,
+    "protocol_default": "file:///Applications/Multica.app/",
+    "protocol_registration_count": 9,
+    "historical_audit_exits": [
+      1,
+      1
+    ]
+  },
+  "historical_cleanup_failure": {
+    "lane": "installed-cli-03",
+    "status": "FAIL",
+    "cause_observed": "One fallback-volume deletion after original240005ms testtimeout",
+    "current_absence_does_not_rewrite_failure": true
+  },
+  "independent_final_source_check": {
+    "runtime": "pass",
+    "runtime-supplement": "pass",
+    "tracked_count": 32724,
+    "generated_differences": [],
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "database_access": false
+  },
+  "domain_statuses": {
+    "T01": "PASS",
+    "T02": "PASS",
+    "T03": "PASS",
+    "T04": "PASS",
+    "T05": "PASS",
+    "T06": "PASS",
+    "T07": "PASS",
+    "T08": "FAIL",
+    "T09": "FAIL",
+    "T10": "PASS",
+    "T11": "FAIL",
+    "T12": "FAIL",
+    "T13": "FAIL",
+    "T14": "FAIL",
+    "T15": "FAIL",
+    "T16": "FAIL",
+    "T17": "FAIL",
+    "T18": "FAIL",
+    "T19": "FAIL",
+    "T20": "BLOCKED",
+    "T21": "FAIL",
+    "T22": "FAIL",
+    "T23": "BLOCKED",
+    "T24": "PASS",
+    "T25": "PASS"
+  },
+  "lane_statuses": {
+    "L0": "FAIL",
+    "L1": "FAIL",
+    "L2": "FAIL",
+    "L3": "FAIL",
+    "L4": "PASS",
+    "L5": "FAIL",
+    "L6": "FAIL",
+    "L7": "FAIL",
+    "L8": "BLOCKED",
+    "L9": "BLOCKED",
+    "L10": "PASS"
+  },
+  "known_limits": "ProductFAIL and allunverifiedfailedjourney steps retained;7Go namespaceBLOCKED in approvedpolicy, nativeiOS/Windows/signedupdater/FirefoxWebKit/HelmPowerShell/pg_bigm gaps explicit. No additionaltest,retry,dependency,privilegedprobe,paidmodel,deploy orpublish is authorized/needed for this acceptance report.",
+  "parent_handoff": "Complete existing task in original path, preserve absolute run-context/evidence bindings; do not archive or commit. Parent owns finalreport/checklist/taskstate edits. Point finalmatrixlink at snapshot24; snapshot23counts are identical but T24 was pending there.",
+  "doc_hashes": {
+    "report.md": "db8bb87b0b82cd3f9f21b70130cdee07cbee70bc3f6d4bdf54421117352e167e",
+    "defects.md": "40f87819fe3cbcf4e7347916ef3ab13497936d6e5e222e486fb05b81c6bdcd44",
+    "prd.md": "8538a8c1aec527f18c5990e8c0d914434c61e036d7714653619b18e53ecf5ab6",
+    "implement.md": "707f746d699ebc7d7b9792f42c2f5e858e33835e1640d7a64d38ea55c70a3d4a",
+    "continuation-plan.md": "5b6d87e8e02268b3ecedb7d32378be8e875133ae841dc0c3af2b139a0307bb74"
+  },
+  "verification": "17offline auditregressions previouslyPASS; auditcodeunchanged since testedrevision23. Currentmap/data-onlyrefresh and existingreconciler; no new producttest runs. Productlint/typecheck recordedPASS on samebaseline; PythonASTPASS,noPythonstaticcheckeravailable.",
+  "task_status_changed_by_reviewer": false
+}

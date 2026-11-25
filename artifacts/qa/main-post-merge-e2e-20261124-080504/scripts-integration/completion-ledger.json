@@ -1,0 +1,107 @@
+{
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "run_id": "main-post-merge-e2e-20261124-080504",
+  "status": "PASS",
+  "scope": "Five original script integration skips only; current-asset runtime image assembly, not Dockerfile/app/installer/package acceptance",
+  "groups": [
+    {
+      "group": "compose",
+      "status": "PASS",
+      "file": "scripts/install-changelog.test.mjs",
+      "source_sha256": "13edae4d9b63c30fce0ab62e82961de2383028b9873c17c282ea389cd45e87d2",
+      "top_level": 1,
+      "named": 6,
+      "nested": 5,
+      "leaf": 5,
+      "command_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/compose-01/receipt.json",
+      "receipt_sha256": "8858a0a2fa433ba6e8952b112aa2a0858ad32740c3240001d567617fa4e6400a",
+      "events": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/compose-01/events.jsonl",
+      "events_sha256": "95190db55674a3c12bec2de9ada10ddda5a11cf1bf24e8bbb055910ce143d652",
+      "tap": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/compose-01/stdout.log",
+      "tap_sha256": "95baefa46bcb06c756497e1563d49eacb0ee1f82c0720726c9d15ea8d939b800",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/compose-01/inventory.json",
+      "inventory_sha256": "d781ff94076b0cc18f5fc60ad9a882ec75c261b043277bbb49024890d34307d2"
+    },
+    {
+      "group": "shell",
+      "status": "PASS",
+      "file": "scripts/offline-changelog.test.mjs",
+      "source_sha256": "a102d25abba85f891bc60545807f3cf742a62b145bc073613f06f405cd70943b",
+      "top_level": 3,
+      "named": 8,
+      "nested": 5,
+      "leaf": 6,
+      "command_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/shell-01/receipt.json",
+      "receipt_sha256": "f090a1eda281e48d288e048b4ff213328055a00bfc23d525327d4a9b6aafedab",
+      "events": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/shell-01/events.jsonl",
+      "events_sha256": "913e9c8df86754cde04b0047d4e81f0fe7403a1e269a2fcfbd231a68c49f9a81",
+      "tap": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/shell-01/stdout.log",
+      "tap_sha256": "3f9099b6ac3432186f63fd29c148f4a520961354a56137d19b4496ae69f08f92",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/shell-01/inventory.json",
+      "inventory_sha256": "9af679212200e1e6593cafe54796bd50644df918197425f4cc8ec0fad85792af"
+    },
+    {
+      "group": "seed",
+      "status": "PASS",
+      "file": "scripts/seed-rich-test-data.test.mjs",
+      "source_sha256": "99a8c02ffd3bddbedbb7c8ca52fa61134bf38f15c7aaefb9c307e4412f50aa62",
+      "top_level": 1,
+      "named": 9,
+      "nested": 8,
+      "leaf": 8,
+      "command_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/seed-01/receipt.json",
+      "receipt_sha256": "cce1b1e83cbacae9a8420897f4e5a86f10dc4bd49b5f7fa5341b8cfbba3e8c8c",
+      "events": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/seed-01/events.jsonl",
+      "events_sha256": "d87258a5030e8c2b599ce11339cfd158c8bce48e647a32100ab775166157b689",
+      "tap": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/seed-01/stdout.log",
+      "tap_sha256": "983361798ff61c2d4d53450d47aca495ad5cc2a89e6f8063eef43d78cb207389",
+      "inventory": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/seed-01/inventory.json",
+      "inventory_sha256": "547cdcfba7af114cd954d63a5c987229c0e1ce85a0322983eb8dda2f463e4af7"
+    }
+  ],
+  "counts": {
+    "top_level": 5,
+    "named": 23,
+    "nested": 18,
+    "leaf": 19
+  },
+  "all_groups_present": true,
+  "source": {
+    "head": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_files": 32724,
+    "allowed_generated_changes": []
+  },
+  "plan_sha256": "613f11a9eb86a3a86093c398dd4847cddd70aaf9a7c63ab3a503853e184965de",
+  "clearance_sha256": "de2103ee667cdb417a60effc6cc55bd8968c57b5b1e65e549249746430d3c126",
+  "asset_receipt_sha256": "e0a13cdc86531972e8da6381c5b77427f1e0588056e7a0f8e4615837d97fdce5",
+  "image_receipt_sha256": "61478cb8f725913f71a849b0860a528eefef96793decf264ac57d3fb05fd1ffc",
+  "final_audit_sha256": "6aa9559ffca3d6b9f61cbf90d3b52c5e1c1e91b981d228845f9df1979361c55c",
+  "owned_docker_runs": 9,
+  "docker_run_exits": {
+    "0": 6,
+    "1": 3
+  },
+  "container_ids": [
+    "a250414b9054dda8998712fbfa22eb1bf5e4333f6a9b75076ebb7ecd5660ad10",
+    "054d930dcbe68d51e614142607ccb3fb72a7e0dec725bc8be517b70acc4bd0ec",
+    "1bdf9d5ce645166c0f1951ebfc3f09ca105d8314f621f28707a95f2fa59d13c8",
+    "b61cfc5260ec65b29d2c38112cc578f14b5a954ec59a5186395386a4ab3b374a",
+    "c40b3964d527d535e0b9cf43f10264f13146e2898b3af8363a6a111a0633e83b",
+    "face4e348ecf0b336fb9939b6e98e7274d600465789bede8010c38f73c9dad3d",
+    "3e2d8999a59c710fb219fd1b5535eeb70087dba0479ef524df59e2a6a67ff061",
+    "b8af60f85f05862d23ff5f594a68918a9a0023061ce8bed75c274306b5bbfa6a",
+    "502df0e9c0d592b1415b2e039d4f19ac81ffcf9c3258816a54ea483897fe2c9e"
+  ],
+  "containers_remaining": 0,
+  "seed_database": "multica_seed_test_924fea80cfce_7874d8d24698",
+  "seed_clients": 0,
+  "retained_images": {
+    "current_tag": "main-e2e-changelog-current:7874d8d24698",
+    "current_id": "sha256:68718f8e505250173023cc96f01c69a79a07d6c7357594b669ec3b537d2159f7",
+    "base_alias": "main-e2e-changelog-base:7874d8d24698"
+  },
+  "retained_database": true,
+  "retained_preparation_failure": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/scripts-integration/preparation-failed01.json",
+  "audit_driver_limitation": "audit exit0 alone does not reject incomplete group set; this ledger independently checked all three groups and complete raw original identities; parent owns final campaign gate",
+  "verified_at": "2026-11-24T04:10:19.398326+00:00"
+}

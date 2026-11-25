@@ -1,0 +1,22 @@
+{
+  "status": "fail",
+  "exit": 1,
+  "runtime_exit": 1,
+  "error": null,
+  "cleanup_failures": [],
+  "runtime_report": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04",
+  "evidence_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/cleanup.json": "dafc1de5234d0be287dc273d0b1962570f0239f84cf6f854682e83144f9de703",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/docker-commands.json": "0df4418dbd24b8770103c604f9ba2696c757be243652bbbe582f7bf4aedbde26",
+    "/Users/artisan/.multica/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/resources.private.json": "1e4a45d8d2e7200a829194410b3764380f3d62cdf56ca6449b92d7e7d2dec93b",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/completion.json": "ad5c6b2a5e6c984d18bd2abf73ce35511b22a2ed6783494256882440f5a2088e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/cleanup.json": "01cd7c8ee82aa661559a05fff4ce825450fd279c26854c71df79e0f035eb1808",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/named-inventory.json": "c0f0e957e70792507fc8f0b07bd942c0eff09722ed59c6f6650a1bb08097b2cc",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/linux-main-04/source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b"
+  },
+  "evidence_problems": [
+    "nested runtime did not complete successfully"
+  ],
+  "scope": "One unchanged canonical Linux directory full-Main journey; no package manager installation or commercial model",
+  "at": "2026-11-25T08:30:58.497263+00:00"
+}

@@ -1,0 +1,19 @@
+{
+  "packaged": true,
+  "platform": "linux",
+  "arch": "arm64",
+  "electron": "39.8.7",
+  "version": "0.6.7-890-g103e2bc32",
+  "bundled_cli": {
+    "sha256": "45ffab6462ce1411a49f782586a26521e10685ea65e680c803eae6945602d521",
+    "version": "0.6.7-890-g103e2bc32",
+    "command": [
+      "<packaged-bundled-cli>",
+      "version",
+      "--output",
+      "json"
+    ]
+  },
+  "actual_renderer": "file:///opt/multica/resources/app.asar/out/renderer/index.html",
+  "login_HTTP200_and_actor_verified": "Controller528 reached after real login200, actor ID match and username removal; no login return because heading assertion failed"
+}

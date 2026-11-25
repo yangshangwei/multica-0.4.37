@@ -1,0 +1,1367 @@
+{
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "source": {
+    "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_count": 32724,
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "generated_differences": [],
+    "support_materials": [
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/desktop.png",
+        "sha256": "31595c30f1b1bf285e6b07690af8bafc81bd313ef9228cd8658ec116da50867f",
+        "mode": 420,
+        "size": 121097,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile-dark-examples.png",
+        "sha256": "6db211e5fed14bbbc23dd1cdf0a9f35a19c6e2ee3d001cafd93a52ce6b48baf7",
+        "mode": 420,
+        "size": 50432,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile.png",
+        "sha256": "925eff4f0c988f32ff931d90f34b2f8ab0b403c946c6b48de1ee328a0a034ddf",
+        "mode": 420,
+        "size": 53094,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/narrow-english.png",
+        "sha256": "6e4ccbf9c0154c2a1943fca198e48fb0053c25b317c0c3dbcc44ec6802c01363",
+        "mode": 420,
+        "size": 35650,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/ews-runtimes-components-runtimes-page-tsx-939120c8.md",
+        "sha256": "14c21b8d0dde3a9b3c0c2217d54f38f7322a52f6c1638c34b787df7d8765a556",
+        "mode": 420,
+        "size": 3136,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/packages-views-marketplace-marketplace-page-tsx.md",
+        "sha256": "382edd046412f3de0e0bd8a6f13d80de0f541e97f71a281c6b55c803282b83db",
+        "mode": 420,
+        "size": 1470,
+        "uid": 501,
+        "kind": "non-executable support material"
+      }
+    ],
+    "support_sha256": "037ff3394ac7dfd9813cda75a22c1ba5a3ee4ad04467a254509fb1c01c1bd851"
+  },
+  "clearance": {
+    "candidate_sha": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "resource_plan_sha256": "11522167b31a3282abe062485cacee7433e9a329831d9648c61531dbf0440732",
+    "source_env_sha256": "fe656f6246092eef930b822c017fd8220dc02d9f182f9434d9bae25b230127ed",
+    "bindings_sha256": "803ca60376c16ed52feb946861b824d1ca0a709f25ec9c646e38e5e5ac310237"
+  },
+  "runs": [
+    {
+      "label": "admin-access-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "9201b987c33e9a4b555e645b320a5a3d57aac4eabb24b470381c561e3d20743d",
+          "admission.json": "4c3f00295c9b20871204b081d9f8fdb46c4ac30b65581a6d237fdac102dc5487",
+          "run.json": "276f53daee88907d5b7afc4e65f2606b10d5379c080f805b8fa344edcfd0e5cd",
+          "collection.json": "676cbf5e78392ad5e103499a9c702fb8e59a04b5679fe41f260b9c2d3285a12a",
+          "playwright.json": "7558f401eb96a393804f89ce431be84d6534c5485f704f3e749a30b9aafc0829",
+          "named-inventory.json": "77af140201eeaa5339900737c77a9c8515582bd3ddf0c27c18a418391e634f8c",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "b54eefb4aef7dc1a16ce01d6b3f8ea970686c37fc747044b7933e13803e31557"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:50:36.815742+00:00"
+      },
+      "inventory_sha256": "77af140201eeaa5339900737c77a9c8515582bd3ddf0c27c18a418391e634f8c"
+    },
+    {
+      "label": "admin-accounts-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "12c02b9bc758e33b9189a76a0dee6a8382405cebd1da52e3829d21d3891595b7",
+          "admission.json": "b43e58aaf2a216f5c983da007e7e51c81181c15b6f94458be36d3746b31cd2ec",
+          "run.json": "fdff7c80d82334ac2c166b121a0d7d526a374223de86c77a9e3d46d0b03cd827",
+          "collection.json": "2f02cf54bab9515b20ce16d2343902ba75575a6b8d2ff7e5ba9828a835a7da3c",
+          "playwright.json": "47e4a9e43751fbf22c24d6b741d3dd8d634404b4c1c96c775412427d881d3c20",
+          "named-inventory.json": "797c1387ca7a67eee547ff7eae010283695979246f4cdc5c1f05c528cdd66231",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "25d39f8c7e400afaa7fff9e8fbb29eacc4dcf6973b62097b13b2fa1fc0b0ef2a"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:52:20.166606+00:00"
+      },
+      "inventory_sha256": "797c1387ca7a67eee547ff7eae010283695979246f4cdc5c1f05c528cdd66231"
+    },
+    {
+      "label": "admin-collaboration-desktop-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "04d202de90a5a15e1d692d9e04a0b3305bc935b812cf2c09ef00d5e92521ad68",
+          "admission.json": "43a3d7314579625af5ed528ad396a05bfb12ff73a75bfdd69c802416ae899c30",
+          "run.json": "275c83393283ee6a71f1281190b4d6c8f8996443a93ba64cd8f63b027f7a93e5",
+          "collection.json": "c57285d4f51a731542b522898e07f5384ef5bbe17cd0083fc72b2ec0bf303802",
+          "playwright.json": "a68e05df0864061cab807aa037ceeb7b251989c7177feff843ea1296d85edbe9",
+          "named-inventory.json": "466520222f31ede30f95f9b9cc68da62d644fec33df985df7a4110cb1b5bc852",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "f05fa6a940c280716176d8a5e8d42a0229df191440d2df21f45a22a9ae8a57d3"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T05:14:12.628834+00:00"
+      },
+      "inventory_sha256": "466520222f31ede30f95f9b9cc68da62d644fec33df985df7a4110cb1b5bc852"
+    },
+    {
+      "label": "admin-collaboration-web-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "1da84781fdc34111339df7a7ac08fb0766672ee59c662454f900d83399947be1",
+          "admission.json": "96a954734087aa99c58b386836edb67eb0f125b72fc90bddcb93d947092cdcc5",
+          "run.json": "48455087e6ea4e018de8902dc1b9ebf11c0d1870422950baa03c9093c6499277",
+          "collection.json": "d6026ceddc67b9ebf0f30c2788b9980556a9102da7a8ecd5a5da6142542f25b5",
+          "playwright.json": "61afa3632eac41c9a9385d5651e09190ba1da7b074e936160296230785c56dd2",
+          "named-inventory.json": "b0b836452319bdda8285320aa246bc7c4c05066758af1aaf2848c6a3eabba432",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "a6343e429d317318f238d3876254d85208e63676d7b721875fdb12878e800074"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T05:12:08.214586+00:00"
+      },
+      "inventory_sha256": "b0b836452319bdda8285320aa246bc7c4c05066758af1aaf2848c6a3eabba432"
+    },
+    {
+      "label": "admin-controls-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "67d8ce94a87601fdf3132fcfa44d5b889256b79f0a9907de52c1ce32eff28c0e",
+          "admission.json": "006a883a171b2c8b8ffb32cb23f52204b10713b681beba2e3c462d4b090b5841",
+          "run.json": "c5d30c1191a77286d109913d7735975fa9d917796d97bf2e05ad4e1a7068ddb4",
+          "collection.json": "b5c1bb815bfd0769ebc8e7da2776452b9365791afca47c496149a73112919268",
+          "playwright.json": "378dc8bc425fc056869e060b430dbf8ea1b84715b23a58219f2fca106904a1bc",
+          "named-inventory.json": "2e367c0b12f3c669c161dba63fd1c84e2e63cd3135d71752c600b7ec5f2a8e09",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "7a736ccc751693b7c48a083a8d3ffe9f0d6ca489d3598dd93a7a001242d38fd7"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:54:17.651955+00:00"
+      },
+      "inventory_sha256": "2e367c0b12f3c669c161dba63fd1c84e2e63cd3135d71752c600b7ec5f2a8e09"
+    },
+    {
+      "label": "admin-executions-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "63d0f4af24164d0e623457d32baab4c5ee329686e33ced17bd0018755fa8d1ed",
+          "admission.json": "b3f5cc417176f415b8866670a17266ac4c229365df35ee9ea91e214fe094172d",
+          "run.json": "cc646a3ec10efb6bc7885f8484b03e4f034c34124d9858d10cb3521b5f65b930",
+          "collection.json": "bac753c3cb8759e0eee0d192afbf4e252a945637f8caa93ab606bdf4d5abb870",
+          "playwright.json": "1fee20d5f6502450e3b99aed9bca59d1fd3a50a4483f9ab3fec690dad5a89f6c",
+          "named-inventory.json": "aeb4090a2a8f4c176ff2e9e70a213bd559836cce0c973e47e8b3f72044157e00",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "01928a939843c1c2b54fd15db82da363c096bee61634c9307828f4f18970ad6e"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:56:10.836338+00:00"
+      },
+      "inventory_sha256": "aeb4090a2a8f4c176ff2e9e70a213bd559836cce0c973e47e8b3f72044157e00"
+    },
+    {
+      "label": "admin-installations-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "05bd54102e45642fdde6f964386a873acea05cbac170760c69d2e9d7a6a155a7",
+          "admission.json": "4257e71002097e7461e00291aec3152923c4328bfe9505e9d6d8554e413b4fce",
+          "run.json": "66b3e3bb851d88267138089bed17609bc61635e6aeaba0f2c58df8c0ed93073e",
+          "collection.json": "a81af0a2cc38c3f42b1fba181fd5ae7bdde9add8684f6bd607e66058dbe5bc41",
+          "playwright.json": "834c1c5da6c4ca7cd6a5bc77ef3d18300ea6f12032631344ed010486c2d40921",
+          "named-inventory.json": "40ed926cb0d5c981c59b5b51fc71bee1c633da5f268e6c01f228beea78ee77c1",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "8bba572a906eefc9eb5dfe0c619b18f0ce2b07b46e7a1d71f4cb403f0e04cc05"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:58:11.106464+00:00"
+      },
+      "inventory_sha256": "40ed926cb0d5c981c59b5b51fc71bee1c633da5f268e6c01f228beea78ee77c1"
+    },
+    {
+      "label": "admin-observability-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "e401337e44ae64eaad5286934ecc4eddb286d924992663823494722caa99077e",
+          "admission.json": "35c4e45778c54537ba9b10151be2c100acc4e9a813f887b010b7068aacc081b5",
+          "run.json": "6deaea4534b7e6b9665a579884fe3cfda4808072db85621afd312be62e3b9174",
+          "collection.json": "dae43d8aafcd6606e0d05a609f5396e736092b79d19199a29be619cd35e8f86d",
+          "playwright.json": "8e1e679a5a54ab361a7bf756e9045e8e10602836e3dccef23d7248270ad35194",
+          "named-inventory.json": "e18e0c9c6ba92a8febf2aaee297308f0758f9096350ce2a200e478653ea73eae",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "7731c2d616df49508036724515863d4c5c16648ae59f1f049643d617420b3658"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:00:10.814045+00:00"
+      },
+      "inventory_sha256": "e18e0c9c6ba92a8febf2aaee297308f0758f9096350ce2a200e478653ea73eae"
+    },
+    {
+      "label": "admin-switches-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "c9093fa35e1341121a5b15d2c1c9acf6974a81f7d88033af9b3a96f7244a49d9",
+          "admission.json": "c75286b6abb219f4f0554e22dbdddbc293525d5fddedae67abc0341a9be39803",
+          "run.json": "0e8b59a94cf10f4bf40d3ea09b6bc6a45b1487ad35bf63ebc72686aebc7a2719",
+          "collection.json": "7a2d59d8ff48dbabcd87c954970a1a8580fe6746201e90cf1c8a289013a3ddf3",
+          "playwright.json": "22bc6d203d2d69aff1cffc5a5acc2332f490ad20be3292c741bcdcabc118b4aa",
+          "named-inventory.json": "c9d5bd96a1aad25f02c1e972516beca6406fdbbb77ff7e755793850b427cd605",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "8f7c49aed98c175ed8af4df59870d31df9ef3c06ef54bda0b95386c471635c66"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:02:07.073137+00:00"
+      },
+      "inventory_sha256": "c9d5bd96a1aad25f02c1e972516beca6406fdbbb77ff7e755793850b427cd605"
+    },
+    {
+      "label": "assist-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "858d6cf825b53ddfff66cc4318915ca492b4b1008c06fd10a78f7cf8cbe52fe2",
+          "admission.json": "44ab8a4f37e5578ebde701d257421675140ff787d7c7d9a4d89711faefcd1031",
+          "run.json": "52335925e88447523fce0ce55083d1a05a916bc7a51d5e07abae9d4e9608cc72",
+          "collection.json": "7b8839869f56dae17b2fa5f20c9d28d311e8e197fbfac1bd40f24d3aaf4ff950",
+          "playwright.json": "d697edc467ee218c2adb54904f8cc25a62871d3b32a30135a81b2f8b83f915c8",
+          "named-inventory.json": "e6f28f45bf3cce8498938277622cd0232382ae8d8b3be4ab591b3de932ef3479",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "12519417aa63e69e82b1e5ea8b54faf729206c4c69434d4e6385d0660945cbb9"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:42:47.893018+00:00"
+      },
+      "inventory_sha256": "e6f28f45bf3cce8498938277622cd0232382ae8d8b3be4ab591b3de932ef3479"
+    },
+    {
+      "label": "business-scenarios-02",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "9018a00b99651e972117cb04affa666ab80a5404159479ae3378b4872dd2228a",
+          "admission.json": "578de4ed192ecfbdfe8289c9bdc767994d98908facd2269ba4aa416fe689658e",
+          "run.json": "8b1c8ecd84f2d82dbfc904d4be29a6601f7c99b7f04a9375d9fdfcb53f5e5532",
+          "collection.json": "a60bc7f533f8339b52da71d68eb78e70eae52df2ad2ce6e6b09359a6baae75da",
+          "playwright.json": "7f67cee32281e09cb1dbcfb9af4a87697dc0a64afd52ef1d8f4a6bba72f62582",
+          "named-inventory.json": "c60956be0d14455d3862fe805327cbff8838c6bc6baf0e9663f68aa5d8519691",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "c93bd362afb34a3236bc67785c39276f10169450403b4e8beb1b317f909d3db4"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T07:48:31.962005+00:00"
+      },
+      "inventory_sha256": "c60956be0d14455d3862fe805327cbff8838c6bc6baf0e9663f68aa5d8519691"
+    },
+    {
+      "label": "comment-authority-legacy-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 2,
+        "source_and_resource_failures": [
+          "HTTP-only probe did not pass with a recorded report",
+          "Reviewed API probe failed"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": 2,
+        "probe_only": true,
+        "evidence_sha256": {
+          "run-intent.json": "bdfd07022beeac678bf8492052bb9507f809752e190136a7f3f15d58551bad0c",
+          "admission.json": "664f9466a8fd3fc2573fbdca05fde87a491ad046a160bb59687921d232a4fd13",
+          "run.json": "e58f5ff816e5514521c659a731288a65d44f4ee1a575b81ddd2fecaeb1a46b54",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "60cf8b011ddcbdcfb7822311adb55c7e0e9699dd3f3d2ff8dda19649b9f35385",
+          "probe.receipt.json": "1222d7e5e362a6d5d069a65cc2a8c33b63c2ca9ee7e839a346192b18278895b9"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-24T03:00:49.266578+00:00"
+      }
+    },
+    {
+      "label": "comment-authority-legacy-02",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 2,
+        "source_and_resource_failures": [
+          "HTTP-only probe did not pass with a recorded report",
+          "Reviewed API probe failed"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": 1,
+        "probe_only": true,
+        "evidence_sha256": {
+          "run-intent.json": "4dc1ae5b44abcc2e6606db9fd60834f25dcb43acb7d170d7354ab8cd395eb0bb",
+          "admission.json": "3f1025c4a786ecc80946b1797734190243b012b301e2a78559dfcd960967400e",
+          "run.json": "ab3f318c0b47b1af2401315e87c3c5fe53bc7bbdb14263a5dd78e42678a642dc",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "228fb8e8a830c9fd906edf3a540c3c8e64e01cb2b7223376e3f1b0b87efd32a7",
+          "probe-result.json": "fb47672ed92229089baa63659fcc955b9d4dcfdfcb93e6a5f52f38ba6b026f8b",
+          "probe.receipt.json": "cbbdbfe703e8f52e7ef5f8f0dffa1ce565f86ca98bd0cf3c0ce5bde4cb380fd0"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T02:24:03.172971+00:00"
+      }
+    },
+    {
+      "label": "comment-authority-password-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 2,
+        "source_and_resource_failures": [
+          "HTTP-only probe did not pass with a recorded report",
+          "Reviewed API probe failed"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": 1,
+        "probe_only": true,
+        "evidence_sha256": {
+          "run-intent.json": "4a279a51c62103bb79fc3a36031bd28ea67cf65bff81b2dc51f56451c4a9246d",
+          "admission.json": "9693469f8f9d4d373c3ec688d9f6469204edba0591b2fef7f1e2181dddfbd425",
+          "run.json": "c4715478681758e347e5f3d382d1eca726e3ba337b777c37607c7a7c1fa08e54",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "524a62b4ec0657e1dbd27ba11a1c298d33c250e8d4fba57931eccb8860eb22b7",
+          "probe-result.json": "7c62025c9bf72a4be7ee2f996a17355392caede2e36b9894e97dd844bfe0f862",
+          "probe.receipt.json": "f87fa6f1d062c49767e78da50d833555bc0066b18175d910580f625ee0b328fe"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T02:28:02.960069+00:00"
+      }
+    },
+    {
+      "label": "cross-client-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "345c8c134c24f57ac8b03e43e1ce5fa2cce363cdb466b5f2925b3fd8469ef660",
+          "admission.json": "c4d1a297f5b75f0f7ca39cb8ce8b7152e7b41b579fc3be757818526ce2807cd9",
+          "run.json": "8576c75722cc8e89075bc34919debd216f0ef1e8dec757c5081fa4f8fb0db0d6",
+          "collection.json": "f73f2b98ff5cbb5b00fd92c1d86475b9a3c80c0f886cb750ebe84e6df994a44d",
+          "playwright.json": "14de0b21381b53c29f99f1ebb6bf76f99791e367e6becd332f2c39e44cfb7177",
+          "named-inventory.json": "b457e47dbfb9e7d96c5abc9020df2dee23443d968ac0adc34bfbdf12e1e88705",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "a16b816140affa1979c817efb59972504d66071c36fa875ebc62fbaba365dc29"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T07:24:46.784232+00:00"
+      },
+      "inventory_sha256": "b457e47dbfb9e7d96c5abc9020df2dee23443d968ac0adc34bfbdf12e1e88705"
+    },
+    {
+      "label": "cross-client-01-adapter",
+      "completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 2,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:24:49.435083+00:00"
+      }
+    },
+    {
+      "label": "device-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "bce33f062ed197fb74ded3b1f889a36044408c67bef3a3d3dedd5f83f2cee4b1",
+          "admission.json": "9185d3dd6e633a98c2e83d67d46473fedeae0e7ef5877aa2a8c2e26d493cb4ef",
+          "run.json": "11e00b5f0b9cc3c40ef88734ac74cb41e061ff2cfdfc4375db07fb74896a56f2",
+          "collection.json": "455138b587a4029742654976e07c39500b6ef9fc990adb37e3100381e3d8dc2c",
+          "playwright.json": "b666f3f373af9544714be11415fecd17f1fbfe3f4e6ac5a650988bb178e26f97",
+          "named-inventory.json": "fc4632186fd58cb0a95373398f3a87546a793b798490eeb499f0430124884d68",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "851b1cf7faa9a27040a0dd7b0895d430090ccaf58295f7dd0e8419b66e29b2e3"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T02:33:38.469402+00:00"
+      },
+      "inventory_sha256": "fc4632186fd58cb0a95373398f3a87546a793b798490eeb499f0430124884d68"
+    },
+    {
+      "label": "inbox-snooze-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "6e3635f5e2c11b34f9e4d18f877865bb4e66a140729e126842fa5643e0f05d7c",
+          "admission.json": "3079cc9deede3cda23d35acf150390ad147fae55d260e2743259ae88961b04a5",
+          "run.json": "5cd29394b9d1e04a822d73a8d0088d7f6d4b7d5a4e75bda5136a7acf62b215db",
+          "collection.json": "760f9a0bb501d112d4345d65bc449ce53fdd6291768578506146bf6b351100db",
+          "playwright.json": "3a8f7f8b8cbc0b7d960778c50c04908d2c32ac2d011284aaa931d9f8912fd0e3",
+          "named-inventory.json": "cd10e717d615a3073181c274ad7ae71c354e73c4a7218aca3231d1921afec784",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "75efae32108350bdb4d2d1910d09ebd83509a9691ea30001e20d59fa42458ccc"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:33:51.514089+00:00"
+      },
+      "inventory_sha256": "cd10e717d615a3073181c274ad7ae71c354e73c4a7218aca3231d1921afec784"
+    },
+    {
+      "label": "installed-cli-02",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "f7a8cc63ae7730eb87a23312a383d5b9f67b12caa412807ef157df87de6dca25",
+          "admission.json": "4cc4c9db726f388301688cca0242d329fb751ac647655fdbf8c0598582c97e18",
+          "run.json": "376452a52b8564771cf9a5df067ed75d3903e659c1d5c331e6dc10a3e254d827",
+          "collection.json": "4bf29ffad37c08ea1d015409316057cf0339a3a1c2465e504effc5b6e3786282",
+          "playwright.json": "872c765d530c3e8c1dcb6fc1a8f42f247eebdd646939727a4c44a0e211195b12",
+          "named-inventory.json": "5b6e67ee204054df3bb2fdd4b01da711e909c252692bb33fa11ca6f253fe5481",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "0ba1ec7ae531d92f3ed9525140af7cc9268b5e1c54fe80e8515d956b0b54f407"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T05:20:16.600723+00:00"
+      },
+      "inventory_sha256": "5b6e67ee204054df3bb2fdd4b01da711e909c252692bb33fa11ca6f253fe5481"
+    },
+    {
+      "label": "installed-cli-03",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "b410f7cd6b0afee34fba777b8ae42409b5b5451d133bfab289b4688f5eb9a339",
+          "admission.json": "80c5ceedf322077cfca7e66b6750947de9dc8b6a2d3f337bf1d90f2998eaafc5",
+          "run.json": "e74a1ca84d99bf4c07cde5ec07ee251b8d59ddfbf9a6140deb8296e4c644cc0b",
+          "collection.json": "3d0dd3aae1f29771a7ddcd94762882689928ef8d74fe6ce3fc92d0cbdcd2dfd0",
+          "playwright.json": "8967caf8adbd757865131b3093c77a93e843d72931ced69638785dcef37428aa",
+          "named-inventory.json": "088fc6cf8212027597ba2ba9b2dd9384d13bd0507c1421f3a9cd6a1c4b1e793f",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "c3c4e29fd67965f4c8b1c5127a3e59187141d7ffed44d12c341660eea780daf0"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T08:09:44.496990+00:00"
+      },
+      "inventory_sha256": "088fc6cf8212027597ba2ba9b2dd9384d13bd0507c1421f3a9cd6a1c4b1e793f"
+    },
+    {
+      "label": "installed-main-02",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "ef42a4da0715768a51c03d25aa89812864d54a1ab174e5eb6b9f6c929e36327b",
+          "admission.json": "3141c26ec2ab036fa9a45e6f08815e1f741963dfb2aeb96bcfd9984b7758d9a8",
+          "run.json": "cf9c12e37df2b9ff1cb4cf52fbb1eb32b432e9c9094aa4daa6bb0845d071f407",
+          "collection.json": "0fa453c819f720ce627c5092bff61fb207fd925a2d76800f8a479910c36460fc",
+          "playwright.json": "2af0234e7bd35ed3098a3ba9da31994be417c8f9bd5c1b034b9522de5bc80ace",
+          "named-inventory.json": "cd54cd69544a5ed00affec6ba0c50fa454dd7a4d7232ae6d19784f34f7628153",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "3c63db9f277a1f72539406fd961c75b14934354d498ffa29b8df0925c0be1f67"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:38:45.725447+00:00"
+      },
+      "inventory_sha256": "cd54cd69544a5ed00affec6ba0c50fa454dd7a4d7232ae6d19784f34f7628153"
+    },
+    {
+      "label": "lane-close-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "1ec9f713178f472f7c0caad5a994972639206080b75cfa2c2656036e30abf4df",
+          "admission.json": "54aba27ed3f4803eac64ba3dffe6cb77f8047080ff74db2ffeee8726c8435b1c",
+          "run.json": "2e10d2703184b0ebc66837d671ef946df9e6670a3b1cb8a7a3e0f47ea6d37a94",
+          "collection.json": "7c5f24872532ffed55e5367e4c94a15eb7561fd4b6658825f5bd19851b1f50a1",
+          "playwright.json": "89d798797a1d4e1fda49b65f76061d540055329026f5b2578dd39c828aa7b706",
+          "named-inventory.json": "0bf13ee8d3b06068ff777a20f165056d3a27969b6fda09fc07e0e74fec817934",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "f2966a92d147657fd17e52ffcd06c62844e879996c37f4f2a4b68f8cb4fd2486"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T07:32:48.359085+00:00"
+      },
+      "inventory_sha256": "0bf13ee8d3b06068ff777a20f165056d3a27969b6fda09fc07e0e74fec817934"
+    },
+    {
+      "label": "lane-close-01-adapter",
+      "completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 8,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:32:51.218237+00:00"
+      }
+    },
+    {
+      "label": "legacy-broad-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 2,
+        "source_and_resource_failures": [
+          "No complete browser report was recorded"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "64e21925f009730385ac953b5251246be67eacf1b1ba46fe3c20b7e5274a37db",
+          "admission.json": "66c91c159fb908150a618a25ee2774896582e9b5f76dea55b6eaf8b96dd478d2",
+          "run.json": "bea7b111b3054d4db12ea7a2d50caebaaeb299ceea47fd36892972248df3bffb",
+          "collection.json": "992abc1fd6583663ed1d386c4838d9a3496bbefe46ad4899f78cb45e2b3462b3",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "1f7ee205efd98632a70e1bad966601a34501fabb86064526179cdbfd3415ac10"
+        },
+        "inputs_sha256": "a14fab1e4a4895bff757d7e41f8977c5e7ed8096071aa689cabed8e9c713592b",
+        "completed_at": "2026-11-24T01:51:03.236482+00:00"
+      }
+    },
+    {
+      "label": "legacy-broad-02",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "55bb3ec37a1dfbbccbfff40ea2e3eaea105f4638eeeeb1a6048085a906a9d47c",
+          "admission.json": "f825d51d958d5374a019427f59e7418beed72864273530941de31d0e8fb5445d",
+          "run.json": "9cf0962e6fae4fc9a70b6316e66e5480d4690df2e294dc63db5eb1572988c40f",
+          "collection.json": "aa0b708548fe5cbccc0651169f46038f320edfcf34a2077d4ee67a579305b6e3",
+          "playwright.json": "2e9b83c1d064e06af1a8465068cd217de294c1a619ddcfce2a851b6762eba9b3",
+          "named-inventory.json": "880acfe73009248bbbb0cfa0daa537239e8708a08390dfbe2871be8200cd60ee",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "11c3be48d7186646a5b8f82ef9505ddb82c24a8b59feedf25b5db9ce33647c18"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-24T02:43:50.576118+00:00"
+      },
+      "inventory_sha256": "880acfe73009248bbbb0cfa0daa537239e8708a08390dfbe2871be8200cd60ee"
+    },
+    {
+      "label": "lifecycle-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "03acb32f61a6b2ff898d967ca7d1be430d83b7ab1ab55398c30d238618ecd031",
+          "admission.json": "22455f4e253645ea82ade8b2ed23738fa28aebbb08c3e273e19591b53cd06a5f",
+          "run.json": "69b69dd6349be2791db506c904e6885b3377db96961e7c49b87350f956df0b0e",
+          "collection.json": "d63e0fc709dd6c415bab13b6a630b44e191cab31cb0d0ad7a1abe2d12a9fe0ae",
+          "playwright.json": "cbfa3b05957675aacc1b1a470de48ccdc369401362c46ea89fafc68e4c21f991",
+          "named-inventory.json": "7069c38225a33ff10c2a4ebb56a337539eafbea1393e7fd461f5f69af85beab0",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "27b5303c4e20296a47ae90fad2e457e7ee2ab2de5e3b454ae0a6e71c0f6ab967"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T07:36:49.526670+00:00"
+      },
+      "inventory_sha256": "7069c38225a33ff10c2a4ebb56a337539eafbea1393e7fd461f5f69af85beab0"
+    },
+    {
+      "label": "lifecycle-01-adapter",
+      "completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 4,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:36:50.359954+00:00"
+      }
+    },
+    {
+      "label": "linux-main-03",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "c8b5b32207aeeeedc6eaffc84c32b15df2abf19b5ae38dc1f074c2b655840441",
+          "admission.json": "0ee85c314da8142858a087f7fb1cfe352182b4900faad33bab7beaad51d5d03f",
+          "run.json": "2339d8c6fc34c3263e381de4d6bd938946571c6e5011a47ce2a3626bc26eb730",
+          "collection.json": "09d5fe7aff0feb2b2fd553aca94e7ee32abe33acde33eeeb8f0f4e2302686c3c",
+          "playwright.json": "235c78daeff3291465e7140d0cc30b34e4a55e2bf6420ed67e5b571cc3d4c02d",
+          "named-inventory.json": "7bc525056292a9d14c42932e0a0fc2b387b2dd8a4add5aab8bf4e16fcf323e9a",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "99034de8e7e4791cefb0ab006e741fdec5a012a2b0d54d49998e17b520bf2adb"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T08:16:04.289641+00:00"
+      },
+      "inventory_sha256": "7bc525056292a9d14c42932e0a0fc2b387b2dd8a4add5aab8bf4e16fcf323e9a"
+    },
+    {
+      "label": "linux-main-04",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "34f12e287e76abff32d638028184342eeef632993bf391f5fa5f19e66b285583",
+          "admission.json": "977ece93d757204e34b4ae10841a6499892e62eb377194a5ba025a1f7cd2328b",
+          "run.json": "d3687f41f97a9aaf5168665e1f9d76dd768b2ff33ea6d08f95e361777b88aaf6",
+          "collection.json": "059dc5240ab8021ad55abceea09637d5de11cec390d79049a31791895e7b9365",
+          "playwright.json": "600892f40bdb54a8581aee42ef18e2878e2923f063e452f294e8f944a71d1929",
+          "named-inventory.json": "c0f0e957e70792507fc8f0b07bd942c0eff09722ed59c6f6650a1bb08097b2cc",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "01cd7c8ee82aa661559a05fff4ce825450fd279c26854c71df79e0f035eb1808"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T08:30:44.977512+00:00"
+      },
+      "inventory_sha256": "c0f0e957e70792507fc8f0b07bd942c0eff09722ed59c6f6650a1bb08097b2cc"
+    },
+    {
+      "label": "m1-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "93dbd2c32abbca31c33f4c82df993739a35692e07884a9ebaa806c64bd84f2c2",
+          "admission.json": "2f98231838037bef959f2485459fdc909e919ecc0cb40e5015b4c5b9d5ed18e5",
+          "run.json": "05cbbbea73b4c73e7651321568ae793e88c6611be8bd6f8b28cb09c4560ae4ee",
+          "collection.json": "0dc47cbc820651f1925cecd0b4b2115dffd6c5f86a7542e509edf62c95b96852",
+          "playwright.json": "d003353c4bdd45302a5e3fe35a99c3e4e15f5d3e3dd3dbea44130a0e18758906",
+          "named-inventory.json": "1161694e46e041b9268cb16ddaaab13f7843dc8b9c5b87abaadbd7670309b180",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "471ce9d00261b080536409e29d2dbcc31d65ee7dd7d830282a12d5e0c0b8cb99"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:42:21.464929+00:00"
+      },
+      "inventory_sha256": "1161694e46e041b9268cb16ddaaab13f7843dc8b9c5b87abaadbd7670309b180"
+    },
+    {
+      "label": "namespace-controls-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "76e34175cd4e285cf27aa1df784e715e7ac9575431dbe9ddf365678af70c1b4b",
+          "admission.json": "7e739997a42f8bd4db23aac8bdf9f24c2fc534986e2d3edaedbc865399d193c6",
+          "run.json": "49bbb27629a9159066ba8ab9e8e256a2eb9770330b8ba6264ec81efbefa18e4a",
+          "collection.json": "7c067457a18219532e4760b1060086e7a2954eb55bfe804f34e7aebdf0d4d6a3",
+          "playwright.json": "fd86b17ddaadecd533382161b7029dc6a8faa07782faf5c0c509978a5c82fd7f",
+          "named-inventory.json": "4b405fb79214b3164636f5de617939d682671f6c597aa8997435d0216d4d1c89",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "d1d1a8026837ff1059bf5f6e9385a2b0d4df569e0c0b7da53665b27124cf0dba"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T05:16:55.276480+00:00"
+      },
+      "inventory_sha256": "4b405fb79214b3164636f5de617939d682671f6c597aa8997435d0216d4d1c89"
+    },
+    {
+      "label": "native-response-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 2,
+        "source_and_resource_failures": [
+          "HTTP-only probe did not pass with a recorded report",
+          "Reviewed API probe failed"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": 1,
+        "probe_only": true,
+        "evidence_sha256": {
+          "run-intent.json": "974303a188287f06cfe06276e3be280a8d47c974af1a5f5d8e915100e935a37d",
+          "admission.json": "0166246ab1ac27eb7239bdc491f6e7630bfd6092c6945453b39480fbf432501f",
+          "run.json": "f2ae5354c86aca16b818f84e9690a042d7e5fa82907e2dd7cfb4f168ad67765f",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "2214f07c399a5e6cc61dc55bdf59604f7858b6207fd4240fd8a0bb2659e7a259",
+          "probe.receipt.json": "6426c678aecb4001ccb4c5a16b0391a1d1d41dc653f8839bea8ca77ccd77b4f0"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:55:06.378185+00:00"
+      }
+    },
+    {
+      "label": "native-response-02",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": 0,
+        "probe_only": true,
+        "evidence_sha256": {
+          "run-intent.json": "8d0da348da52b060063d8f237175cb3c75094069146c68aa01781b955efcbd4d",
+          "admission.json": "17e3a42ada7faa7cabeb548c30f34dce2245a1c0c0f0267680b8f2f8b8ee509f",
+          "run.json": "7b568d84f39b44857d832d3fc17c31ab3c35ad49710c7f4cbb4f7713234b2777",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "98d49eb6ee37359fbf22312a01318002687c1508bff0ca89acca4088e59cad1e",
+          "probe-result.json": "7f27b8c5402ad0ff2c8edc368c9d055188dbb1df091542a83a6687369c820e66",
+          "probe.receipt.json": "5a200c4fd17dd383296c365d4d429b0d1e1906d1e34b1203ee7b9ea78187e40b"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T06:55:34.656045+00:00"
+      }
+    },
+    {
+      "label": "offline-notifications-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "ff756bd89c7b74db1c0840e9a6d608a2333a3d9ad6c77da128a01e8a22e6a006",
+          "admission.json": "e7cde68ab0837b2a781dfbc8bc8bba2069d1ee0b8242c2262dcaf42335a8538a",
+          "run.json": "63706eeaaeb3d87233fe37442dca61dd7c58387a870165ef7971bad4a9936202",
+          "collection.json": "03646eb85cef334647fb5058ca8ab1ad6b35be63f0cad3e471ebd13832e3101d",
+          "playwright.json": "7ec0f60b6f684d987358ea3f0ababe840165e8eb4cc4432edc24cf4275425ae5",
+          "named-inventory.json": "79c8f2040520be257738de45535cd0373e45f81ad61859b3b99e2900e5c9a94d",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "9af06bf3f787b42e97658b996673d31c371432d0ff3f637c2b8a682d919bd844"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T07:40:51.754513+00:00"
+      },
+      "inventory_sha256": "79c8f2040520be257738de45535cd0373e45f81ad61859b3b99e2900e5c9a94d"
+    },
+    {
+      "label": "offline-notifications-01-adapter",
+      "completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "process_cleanup": "pass",
+        "container_cleanup": "pass",
+        "expected_container_count": 4,
+        "scope": "Actual Web/Electron with controlled Linux namespace daemons; no model accounts",
+        "ended_at": "2026-11-25T07:40:52.816217+00:00"
+      }
+    },
+    {
+      "label": "password-branches-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "dcf6688547088d70cea2e75002836f1b24cc141f0e1ba5782e1418766f8047ef",
+          "admission.json": "f047ff121fc7854f68c3f52dfada2bc8c8f03494099ec89b64a035435f5ae6a8",
+          "run.json": "83f2dcb20ff6d3cc1d06ad494c632ab00cd409459623169ff62e7c2e399d2ad4",
+          "collection.json": "171218ba3f45a9051cbc7b4f4663e3842a92f2fbd05069e7a81609b3f164e8c4",
+          "playwright.json": "3b004dfb126fbe91569568ad875b895b9a28dce51eef13daa81d1eac4a932a97",
+          "named-inventory.json": "877d64f2cc93aa5da27c215d795be68e11f10b6f4a7042520a5667ac43b11bd4",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "ebc13a5750421a2edfc3b584033b504570801fe72dd65d96ec596c9941d69d55"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-24T03:39:29.579488+00:00"
+      },
+      "inventory_sha256": "877d64f2cc93aa5da27c215d795be68e11f10b6f4a7042520a5667ac43b11bd4"
+    },
+    {
+      "label": "password-manual-handoff-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "896ed84fcec853599f8ae65f9f459e8c1a7c975eb44e7121252574ad437b4d5a",
+          "admission.json": "c73c1e6dde1af5ba6d4eecea25e1b814bc67c1080d06e535d9b3f69ea0810ed9",
+          "run.json": "cfd8a6e5be1bc1d9db0a61293b60fa5e3bcfb7385d463d5e4fcdf1eb3db1d41b",
+          "collection.json": "d6860a763500b2b4a13e078597cc15b3f2f9fbf111029fd77fef2bbce3d33d9a",
+          "playwright.json": "d8e971156c55b60f4e7d29209f61cd9463df8ac4d564eb8f3676f8d99ddae391",
+          "named-inventory.json": "40e652d9e00ccee246ccf4571ff4c5f6a1e975dbbaa42016141beab722c8264a",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "52d5b804698aa31c623dc612aff3da9b2df896a1080cc7c039544c1181824415"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:53:49.019004+00:00"
+      },
+      "inventory_sha256": "40e652d9e00ccee246ccf4571ff4c5f6a1e975dbbaa42016141beab722c8264a"
+    },
+    {
+      "label": "password-manual-surfaces-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "91848a3a0c23775f4e5c79825c1cb3b122e38fa406221e82ecfa9ca3160dc2a9",
+          "admission.json": "a47ff30aba738ea295d5ef891c3c701422a92b3559daa325646040e93579c4cf",
+          "run.json": "014b5f2bb257a31763cd5c4fda98ec2c58931f40ae75c28a6d1b70018005e8d5",
+          "collection.json": "33d0a59613d6b7f8530eef5fd466e55958ca5a4d94d14d501ced94db5fd0e6e1",
+          "playwright.json": "df4065ccdda20e5faf583c14db0bdae9ea1469a474ec99b42ab4bf2bd1b6bdd8",
+          "named-inventory.json": "98ce761125145bb60cfa41f25ba1828490767e1c6e4578038f47bbe6c2c8bbe7",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "c778cab55aee90966654bdd1d18f5d665428c25abf006f1dfd9b7d54acb4c468"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T05:07:58.758321+00:00"
+      },
+      "inventory_sha256": "98ce761125145bb60cfa41f25ba1828490767e1c6e4578038f47bbe6c2c8bbe7"
+    },
+    {
+      "label": "password-native-switch-mcp-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "41f7786e1bcdddf6be56a44ab7f03cf1100b3701263553095d40d8eaeb9e9279",
+          "admission.json": "e99e391184abee490aa495f6e7bb504590beeda612d990ff0e926b3bbf8df0b8",
+          "run.json": "33431ea774dcbdc753c65524116fb078bb44f6e8e62555e9bec93fc264dae639",
+          "collection.json": "dddcd192a0d2cf8b7094ac8e95e23072d3467142bd9c37618d7b2f26eca9a892",
+          "playwright.json": "01b0c62d8aa630af315c9028ee7d50ada9be74c23593be44a6dbd96d7a641517",
+          "named-inventory.json": "a30db9d6727ed8f2c44f343a359a056b5c715d5b3c9dcd2f2ceea6889d3999b8",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "b5d8acdd2789f49764d4e08f40135f9cd1c9374cf59c4d0afdf9bad914e60170"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-24T03:52:59.853111+00:00"
+      },
+      "inventory_sha256": "a30db9d6727ed8f2c44f343a359a056b5c715d5b3c9dcd2f2ceea6889d3999b8"
+    },
+    {
+      "label": "password-registration-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "01dee646abdec69ebdae548c613287847b9f0e258238f8214c252f8766960d12",
+          "admission.json": "73e5a491cace36b54648a7e71eeb26c059d77a5fde5e35c2a615c595987ece0f",
+          "run.json": "666e505245c4a989cc64bac15f18d1ccc5d1eaec905b54049bda887fcd9fcd88",
+          "collection.json": "1ee3e15846549da85eaae00160352ed1b8ef4e6bf7a13ab56af0219b093baa98",
+          "playwright.json": "d47d0bc6b391e1d0e170a4f1f67770cc2383504e3b008e5868ce0cdb63b273f1",
+          "named-inventory.json": "823a60d9407e0860943490b6bc5af7c5b87597828673054b7099c0ec6dcbb1a8",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "55ec4fdfc2da8dcbe762ea6e8ea5b96a1f44d47d1079b73399170f9758919ce3"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-24T03:34:02.572406+00:00"
+      },
+      "inventory_sha256": "823a60d9407e0860943490b6bc5af7c5b87597828673054b7099c0ec6dcbb1a8"
+    },
+    {
+      "label": "password-retained-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "3aa8065054194e08447af27c7ce595f1a41ac1ded29cd32e6786a80a209c0639",
+          "admission.json": "4051768ca4e55a85d848d5594c6f4fa0ffaef59d156e435f392d3130236c5b91",
+          "run.json": "8a2a3568894d2c4d86dc9a7701a8e6e15c69f76bfb878a34deee2d16be72f374",
+          "collection.json": "130d1bcf5d9c77c6b1f4a8000e3f200a01f911b58d0000398ab3750933defa6a",
+          "playwright.json": "c4ac35f7b1268e3c76f07fbb0f62ed538c72ce0f5dd6be73a4110063d3575df6",
+          "named-inventory.json": "60d9f4b42a1559c17ded219dfb9a3ca72220ac7e0a8fabd5a2124a52911e4e24",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "117f9b886943bc28e48215efa4405be8cce55770a1e32deda46c051a708d0f24"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T05:10:10.976976+00:00"
+      },
+      "inventory_sha256": "60d9f4b42a1559c17ded219dfb9a3ca72220ac7e0a8fabd5a2124a52911e4e24"
+    },
+    {
+      "label": "recommendations-01",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "36ac86e5b1a73bca8e9d748c37ffbcf368bddd2030e331ef733abb48ee9def25",
+          "admission.json": "8698a34d1d93e0759de2c3164d6566e6dfcc97426a4ac006be739d948f45cbce",
+          "run.json": "ec6b4796ba1fb508609134c862357b6d5f98d1609e68e07e14260a6d5b176720",
+          "collection.json": "e9c6ca8af1875367b5cb32da2f11ddf1dcd80138c4413343e209c955e33fbf46",
+          "playwright.json": "8ffb0fc13c0b5398c0f3f44488bdb60cbd79ad46ae4d1318b22fcd451983f72a",
+          "named-inventory.json": "6e2662c8f9dcf28a510f155962fc6d3b483b97efa7ca70025eeb8a03aa1d377c",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "404968fa1a09cd3126719f63ff17de05a747e1b87197fa58d7fd5fc124e8ed1b"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T03:46:26.497938+00:00"
+      },
+      "inventory_sha256": "6e2662c8f9dcf28a510f155962fc6d3b483b97efa7ca70025eeb8a03aa1d377c"
+    },
+    {
+      "label": "recovery-extras-delayed-02",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "9960e48c6ed962f0d31cf95e293d9614cf6bbcf676a0878373127085611e6d55",
+          "admission.json": "d2ffb47da5921527025edc1323591a1dea09f5c3290f9ee8ef45d5e625188344",
+          "run.json": "da60ef1b5516d80fa45c946e3a8dfbaba835dff48dcd8b0fd0902bcd83628247",
+          "collection.json": "ee3666e1b8bfeeafd240040c1454f62918a8230bd8f7291766b939106631375d",
+          "playwright.json": "5f99e897303f307b7445a9464cbf9116bd9cc614815baf7958017badcc21ec75",
+          "named-inventory.json": "ae1125d9f93fcb3851ef11cd9d6ac1f917f04e0d3bcc0ad7d69d3c3758fd64aa",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "c4fbbf211c0394388d9c9f48487b1acb5205e5dc2563e93eef878963f0a1c89f"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T07:51:07.448036+00:00"
+      },
+      "inventory_sha256": "ae1125d9f93fcb3851ef11cd9d6ac1f917f04e0d3bcc0ad7d69d3c3758fd64aa"
+    },
+    {
+      "label": "resource-publishing-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 1,
+        "source_and_resource_failures": [
+          "Browser command or complete named inventory did not pass"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "c34273f482932ef825d23efefc2577f8f9d81fa2cb7ab6ae147f6a8e5850f965",
+          "admission.json": "d29ffa466f9bb821745dce94cc9820e76dd101283b08801739ae70849ed7fe5d",
+          "run.json": "224513094e9f7d7ea58b673ff67a85143b98d67c756c8aa977a29c93831743e9",
+          "collection.json": "d020ecd4d9e2b2eaece91c23bebba849444d4b84fd5c600fb0a3a46da51c487d",
+          "playwright.json": "ce71fa3f3898170ab3bfd24fd608ed1310be7f5db910dd1ed388f5f0cef6e052",
+          "named-inventory.json": "1e4e0547cbd3f379979c5306622075fc31d6c1c132069554273349af0267e082",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "743ff5bb1d27daedb75cd33c1bd8641e73350ab01fd8f34df95f75a899480799"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:28:30.507116+00:00"
+      },
+      "inventory_sha256": "1e4e0547cbd3f379979c5306622075fc31d6c1c132069554273349af0267e082"
+    },
+    {
+      "label": "resource-publishing-01-adapter",
+      "completion": {
+        "status": "fail",
+        "runtime_exit": 1,
+        "actual_browser_executions": 1,
+        "error": null,
+        "bindings_unchanged": true,
+        "owned_process_cleanup": "pass",
+        "report": "/Users/artisan/.multica/qa/main-post-merge-e2e-20261124-080504/resource-publishing/resource-publishing-01/cwd/.omx/reports/admin-resource-publishing/qa",
+        "ended_at": "2026-11-25T04:28:30.610554+00:00"
+      }
+    },
+    {
+      "label": "security-boundary-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 2,
+        "source_and_resource_failures": [
+          "HTTP-only probe did not pass with a recorded report",
+          "Reviewed API probe failed"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": 1,
+        "probe_only": true,
+        "evidence_sha256": {
+          "run-intent.json": "09870117c7af325f07d67d4949f7620e178454df7a1e61599a2d36ecd6cc99d8",
+          "admission.json": "5feaa7d3eb260dfd5731a699c8e18eab0378959c36c089a438acfca4160a6a4d",
+          "run.json": "0df8073c2e821b93ec6980b647190321d2c415028baf9cd3ae9217b249d6057a",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "4174a30f4864b3aa2c9b5832c7cd79a71434d570117b392ff3348d64394cdaff",
+          "probe-result.json": "4e87b99bbb50be07fcf72917d7b3fe7007e8d13d54e11959fb4cf1d8b7398bcf",
+          "probe.receipt.json": "bc01a92f7a5f650b6f3cea660f97e675ff5eac884c4fc180dac415d1b37a6c84"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:24:49.746032+00:00"
+      }
+    },
+    {
+      "label": "security-boundary-02",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": 0,
+        "probe_only": true,
+        "evidence_sha256": {
+          "run-intent.json": "22553e6e150feb32601ccd95752b95ef309125baf4d11eb06a735f2f2ac1e8cc",
+          "admission.json": "bc16b701187906900f71fcbcecf84119d169796ccf6c11fbd9439b5483f4f3dc",
+          "run.json": "f9ca8a72cf6816c642d419db5b4448b2b4c8fba81cea7bed1169b8366aeb0ce4",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "ea64acd413a167f12e3b5b08711a0e5a54d585cfbe7d4f3c45ac8e51ac8abc53",
+          "probe-result.json": "74cd2f89de469e7ab8efcdc589c27789a0b1d4bc6d2796d03c1b5a177e49f59d",
+          "probe.receipt.json": "dd9c5e3315178d64e38560bc4516622714f8e90422a3ca9c09116c3b1c08bcb7"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:37:26.989895+00:00"
+      }
+    },
+    {
+      "label": "stage-01",
+      "completion": {
+        "exit": 1,
+        "browser_exit": 2,
+        "source_and_resource_failures": [
+          "No complete browser report was recorded"
+        ],
+        "inventory_complete": false,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": false,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "59ee28c5a40c397fc79e23a3f49687df89ff419440da7a3a917dc9451a1e011c",
+          "admission.json": "0c1ed29024398ccdfa6ab81907531d12dc12aa224ebfb7dbc87e4d69bc4a2735",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "92b487420fa8940c84bd6b5ec0f24d2bf7fb3e1a4b608ed1f60fabfc9f4a47e2"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T04:39:10.444797+00:00"
+      }
+    },
+    {
+      "label": "stage-02",
+      "completion": {
+        "exit": 0,
+        "browser_exit": 0,
+        "source_and_resource_failures": [],
+        "inventory_complete": true,
+        "scope": "recorded executed cases only",
+        "all_collected_cases_passed": true,
+        "probe_exit": null,
+        "probe_only": false,
+        "evidence_sha256": {
+          "run-intent.json": "99b6112c202588afbbcf5bd9dcc100b13ecd887b7d474d47bb861c1fa8e820e2",
+          "admission.json": "b7a7ce964cc747be55cb7536b4d409073422d205ab7caf5754db1980fe1207fc",
+          "run.json": "c4f4e1833d7dd91d6c5a0aae39fce802f76d65aa16e72593fead1f0562e8caad",
+          "collection.json": "23c699d04af0835f2548370b84580600d87bb8a0bcb59665c0b8d6c1f2bde424",
+          "playwright.json": "67238fc2eb78d347d2b3d103ffc909ae1377b0725b48c94680cbe0621cabb5da",
+          "named-inventory.json": "293cef8ef72a355332bf4a86ac9e75ccb2b0fd2acb2f828395e44f6a48e58a5a",
+          "source-end.json": "382690cb838b7f922cd453dd5c730549936f0dd2fab6d629b6b6984dafd4e36b",
+          "cleanup.json": "fa5870d46cc30f622265344c8df695b17ac413b8ad0ebbacf56ad6f22355ef22"
+        },
+        "inputs_sha256": "80bc39dd1a392b93766074a752e3de24719898256732a04555558020af5191d0",
+        "completed_at": "2026-11-25T06:53:04.640220+00:00"
+      },
+      "inventory_sha256": "293cef8ef72a355332bf4a86ac9e75ccb2b0fd2acb2f828395e44f6a48e58a5a"
+    }
+  ],
+  "failures": [
+    "An attempted runtime lane has no completion: business-scenarios-01",
+    "Required runtime evidence was not bound: comment-authority-legacy-01",
+    "Runtime cleanup did not pass: comment-authority-legacy-01",
+    "Runtime cleanup did not pass: comment-authority-legacy-02",
+    "Runtime cleanup did not pass: comment-authority-password-01",
+    "Runtime cleanup did not pass: cross-client-01",
+    "Original browser evidence no longer reconciles: cross-client-01",
+    "Runtime completion has no matching input/evidence binding: cross-client-01-adapter",
+    "Required runtime evidence was not bound: cross-client-01-adapter",
+    "Original browser evidence is absent: cross-client-01-adapter",
+    "Runtime cleanup did not pass: inbox-snooze-01",
+    "Original browser evidence no longer reconciles: inbox-snooze-01",
+    "Runtime cleanup did not pass: installed-cli-02",
+    "Original browser evidence no longer reconciles: installed-cli-02",
+    "Runtime cleanup did not pass: installed-cli-03",
+    "Original browser evidence no longer reconciles: installed-cli-03",
+    "Runtime cleanup did not pass: installed-main-02",
+    "Original browser evidence no longer reconciles: installed-main-02",
+    "Runtime cleanup did not pass: lane-close-01",
+    "Original browser evidence no longer reconciles: lane-close-01",
+    "Runtime completion has no matching input/evidence binding: lane-close-01-adapter",
+    "Required runtime evidence was not bound: lane-close-01-adapter",
+    "Original browser evidence is absent: lane-close-01-adapter",
+    "Runtime completion has no matching input/evidence binding: legacy-broad-01",
+    "Required runtime evidence was not bound: legacy-broad-01",
+    "Runtime cleanup did not pass: legacy-broad-01",
+    "Recorded browser process exit differs: legacy-broad-01",
+    "Original browser evidence is absent: legacy-broad-01",
+    "Runtime cleanup did not pass: lifecycle-01",
+    "Original browser evidence no longer reconciles: lifecycle-01",
+    "Runtime completion has no matching input/evidence binding: lifecycle-01-adapter",
+    "Required runtime evidence was not bound: lifecycle-01-adapter",
+    "Original browser evidence is absent: lifecycle-01-adapter",
+    "Runtime cleanup did not pass: linux-main-03",
+    "Original browser evidence no longer reconciles: linux-main-03",
+    "Runtime cleanup did not pass: linux-main-04",
+    "Original browser evidence no longer reconciles: linux-main-04",
+    "Required runtime evidence was not bound: native-response-01",
+    "Runtime cleanup did not pass: native-response-01",
+    "Runtime cleanup did not pass: offline-notifications-01",
+    "Original browser evidence no longer reconciles: offline-notifications-01",
+    "Runtime completion has no matching input/evidence binding: offline-notifications-01-adapter",
+    "Required runtime evidence was not bound: offline-notifications-01-adapter",
+    "Original browser evidence is absent: offline-notifications-01-adapter",
+    "Runtime cleanup did not pass: recovery-extras-delayed-02",
+    "Original browser evidence no longer reconciles: recovery-extras-delayed-02",
+    "Runtime cleanup did not pass: resource-publishing-01",
+    "Original browser evidence no longer reconciles: resource-publishing-01",
+    "Runtime completion has no matching input/evidence binding: resource-publishing-01-adapter",
+    "Required runtime evidence was not bound: resource-publishing-01-adapter",
+    "Original browser evidence is absent: resource-publishing-01-adapter",
+    "Runtime cleanup did not pass: security-boundary-01",
+    "Required runtime evidence was not bound: stage-01",
+    "Runtime cleanup did not pass: stage-01",
+    "Recorded browser process exit differs: stage-01",
+    "Original browser evidence is absent: stage-01"
+  ],
+  "audited_at": "2026-11-25T08:45:12.111374+00:00",
+  "database": {
+    "id": "c7602a619c9bd0a870772dffff52dfea8b8c650545ef0d45b35d2ffdfdea80fe",
+    "owner": "main-e2e-runtime-7df2120a1b5b",
+    "other_clients": 0
+  },
+  "status": "fail"
+}

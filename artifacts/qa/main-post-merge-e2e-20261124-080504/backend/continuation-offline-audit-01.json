@@ -1,0 +1,2834 @@
+{
+  "candidate_sha": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "created_at": "2026-11-25T01:35:27.769836+00:00",
+  "evidence_integrity": "pass",
+  "source_before": {
+    "head": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_files": 32724,
+    "allowed_generated_changes": []
+  },
+  "source_after": {
+    "head": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_files": 32724,
+    "allowed_generated_changes": []
+  },
+  "inputs_sha256": "4e1de5ac4bd8c7d01e92631b060c994b4b7f6ea2fd58cd9d2bb3da582cc5a614",
+  "product_code_modified": false,
+  "new_product_tests_executed": 0,
+  "live_database_audit": "pending Docker restart/resource rebind",
+  "phases": [
+    {
+      "mode": "normal",
+      "expected_packages": 86,
+      "recorded_packages": 86,
+      "complete": true,
+      "tests_passed": true,
+      "counts": {
+        "named_counts": {
+          "pass": 25580,
+          "skip": 24
+        },
+        "top_counts": {
+          "pass": 11743,
+          "skip": 23
+        },
+        "leaf_counts": {
+          "pass": 23265,
+          "skip": 24
+        }
+      },
+      "compiled_no_named_packages": 9,
+      "failures": [],
+      "skips": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+          "output": [
+            "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm",
+            "    migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test",
+            "--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.01s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+            "    collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationPartialResumeRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationPartialResumeRoutesLinux",
+            "    collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+          "output": [
+            "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+            "    collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux",
+            "    collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+            "    collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux",
+            "    collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationStageExecutionHarness",
+          "output": [
+            "=== RUN   TestCollaborationStageExecutionHarness",
+            "    collaboration_stage_execution_control_test.go:375: dedicated coordinator-owned stage harness only",
+            "--- SKIP: TestCollaborationStageExecutionHarness (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestDeliveryCompletionM1BrowserFixture",
+          "output": [
+            "=== RUN   TestDeliveryCompletionM1BrowserFixture",
+            "    delivery_completion_preview_integration_test.go:103: opt-in M1 browser fixture",
+            "--- SKIP: TestDeliveryCompletionM1BrowserFixture (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/auth",
+          "test": "TestPasswordLimiterSharedAtomicAdmission",
+          "output": [
+            "=== RUN   TestPasswordLimiterSharedAtomicAdmission",
+            "    password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured",
+            "--- SKIP: TestPasswordLimiterSharedAtomicAdmission (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/cli",
+          "test": "TestCLIConfig_UnknownFieldsArePreserved",
+          "output": [
+            "=== RUN   TestCLIConfig_UnknownFieldsArePreserved",
+            "    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder",
+            "--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+          "output": [
+            "=== RUN   TestCollaborationBatchPollerSlotsAndRunnerLinux",
+            "    collaboration_test.go:189: requires real Linux kernel containment",
+            "--- SKIP: TestCollaborationBatchPollerSlotsAndRunnerLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "test": "TestIsDriveRoot",
+          "output": [
+            "=== RUN   TestIsDriveRoot",
+            "    local_directory_test.go:383: windows-only behaviour",
+            "--- SKIP: TestIsDriveRoot (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+          "output": [
+            "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration",
+            "    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test",
+            "--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestIterationI1DisableP95",
+          "output": [
+            "=== RUN   TestIterationI1DisableP95",
+            "    iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+            "--- SKIP: TestIterationI1DisableP95 (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestIterationI1P95",
+          "output": [
+            "=== RUN   TestIterationI1P95",
+            "    iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+            "--- SKIP: TestIterationI1P95 (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+          "output": [
+            "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle",
+            "    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes",
+            "--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestTriageQueueScaleBaseline",
+          "output": [
+            "=== RUN   TestTriageQueueScaleBaseline",
+            "    triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending",
+            "--- SKIP: TestTriageQueueScaleBaseline (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestTriageWireFixtures",
+          "output": [
+            "=== RUN   TestTriageWireFixtures",
+            "    triage_test.go:566: wire fixture export requested only by cross-package verification",
+            "--- SKIP: TestTriageWireFixtures (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+          "output": [
+            "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+            "    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant",
+            "--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+          "output": [
+            "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+            "    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows",
+            "--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+          "output": [
+            "=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+            "=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+            "=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+            "    claude_test.go:756: root-only preflight assertion",
+            "--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+          "output": [
+            "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+            "    codex_test.go:3198: Linux signal/reap semantics regression",
+            "--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestPiExecuteAttachesStdinPipe",
+          "output": [
+            "=== RUN   TestPiExecuteAttachesStdinPipe",
+            "=== PAUSE TestPiExecuteAttachesStdinPipe",
+            "=== CONT  TestPiExecuteAttachesStdinPipe",
+            "    pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0",
+            "--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)"
+          ]
+        }
+      ],
+      "data_race_warnings": [],
+      "packages": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/bb940f8eb38e/test.jsonl",
+          "raw_sha256": "75f80d187d10517891a391712eba06605087bf3305c140b4ee11824fe062848e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "3087f774f1d1a35155d0522c280dd5194ced824c1ff3ef56eae3c1d1786af833",
+          "named_identity_sha256": "540452f15e615e04bf3564ede78b1d3e8303989194ce86444209171236ef0a76"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/07eb79fa72b8/test.jsonl",
+          "raw_sha256": "4044f21e90cca9f5372bac5f165128bfae1a2399c37fa4ed08cda91d37745322",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "fb6c1008f515577c5c33a08cc4d55145ee36d8196c44180656ce7e91aad46941",
+          "named_identity_sha256": "0ea347b491464fef19d44343c09047ce5c39848573cdb965216c8704ae984ae6"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/f47ea76e9369/test.jsonl",
+          "raw_sha256": "a635dc3da1fec88767e31d05bc4b90a0dcf3519599410b93c6801cdfae9684f8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "dca3d7ef420b9d34470e59666728224b683377184c1241fbdf8ba5b8ce7e110c",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/f9a6f66e94fe/test.jsonl",
+          "raw_sha256": "9ccc6023e80444240a61c5079d5e0da3c23e00840af7e293857202b12e45c3fa",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6b1f8c496ce8505ff5d7cf90ec89561a86841bb735410b1006e19b25125a46aa",
+          "named_identity_sha256": "3674f51fc3ac3d4cab101b8834ef4c5ea53f9b776c834285f38ecc8b6da1278b"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/multica",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/b0ca13f2a1d5/test.jsonl",
+          "raw_sha256": "6804f0f057dbb16bd14f72ca294a4de691f49164606635ffaf914479f6f01865",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "953e595d5dbae4b103704ee05cc31a91dc5cfd9c9a97ce754f937c788afdcbcf",
+          "named_identity_sha256": "eecb9b24c914f0eb3fcafb9a7a159d923ad500e1b9e7ae9f67a857c94dd7c781"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/6f87875654d8/test.jsonl",
+          "raw_sha256": "493e0e3e0fb8265b1fdc75370a2fea77823de2632ca94bc6089934f03324aef3",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "349f53fc1ef30146abe147219a52bbe52b8f28efd51442e56e34d673db92dbf0",
+          "named_identity_sha256": "dc524b402c4d154baf798e43a0fa92d967a69e34783038c0b2590669c734b870"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/admission",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/7427887f8751/test.jsonl",
+          "raw_sha256": "f4212ce46def24d143fbfad28aa2061e1b6cb50b1e53859a35702a2b700c44ee",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "663a41c628d3f96dcf30df1da2953cd1286f93ab6f610a25f5a34e7903157a39",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/e243b33d7b90/test.jsonl",
+          "raw_sha256": "4710669f814d72267e82b5ee5dba4a3f338aaadf845335369d08d9a983e5e40b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "8929cbd64a56339158c82d006aebf00e91484dd9bbb27c45a558222f170f72eb",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/analytics",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/a33d11aa74fd/test.jsonl",
+          "raw_sha256": "429b3ca7e8d1c755173414570ea1493d5076aae72d284bde50d3d944b2878a31",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "9e323d952445cb20d364037ddef500ef8f17bca67e491d4b2474172c91cca42c",
+          "named_identity_sha256": "d439bd22f6c4377bf7bd6a2304a661dbf3dd4fc410aec059520e6f2c8b380f4e"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/artifact",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/1ebd75e227d7/test.jsonl",
+          "raw_sha256": "834b13fe2c861989002ba26f06e8687840646ab3f6185a0e0b6ed4435e3cba6c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "3c5bdeb91adbb57fbf2383bbca7fffda67d2849875b16864729d650134565c56",
+          "named_identity_sha256": "a39f5519b058d7eab4d79053ce0ead984277b94a38427480fde279253b495b92"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/attribution",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/8ec97853df30/test.jsonl",
+          "raw_sha256": "5a3bf23d433efd670f040db95ab631797d9ed92e96402ac32a0b8dc46b518a26",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "4ed84363b1cafbcd15576be05e695e90e516c9bd83f70cf0e764f826f505d68f",
+          "named_identity_sha256": "3169029aab3701635ba0a9c5dbadbd06f1890cc47c06067b58e8536419fa6d74"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/d642fc7111ff/test.jsonl",
+          "raw_sha256": "4a0f073a3d7636a32aae0bfa12d26e6cae238c3a3374605a966ca32d5c80d5c4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "945d21bd987914a3f570bdd6e6d8a651765a304894b63fee39cac8d96f5c03f0",
+          "named_identity_sha256": "362090f005539e1aca6d8504b9d95a48ef5d85fca7722ccec5a3a1acbfce19e2"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/auth",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/d4b8dc307441/test.jsonl",
+          "raw_sha256": "2fb977f3160754f9e089c3a6a83c18a837d16af878c86519554918b8ee04e657",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "0e76c05b79f0698f5bc55c8c09b43353d6c3e41e5ced8d077fba90e0e3187be0",
+          "named_identity_sha256": "caf4e5252ac1dc36148f94db6a551ef448bbb4acb2712bb303e12a9584d01a64"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/budget",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/c7584650097c/test.jsonl",
+          "raw_sha256": "1a19841d7d5e06a1ffa671c0842d307d8b54d9fecaaedaac6c41080712779696",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "3495f2cc8805e409076499586dd5d5480b79fad5c3f124f50a6dea8a892258e8",
+          "named_identity_sha256": "a1f2069b63fcf7f6a3ce7bc714bed29a28a60e7f9d1dd3c9b07c04e09f5f0892"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/changelog",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/cc1252fad4dc/test.jsonl",
+          "raw_sha256": "fbdebfa0ce622970a73a1a910fcf2569b325bc5facc3625a597e3b7b60dbac77",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "2cdf42e06c52c260aec824c4f0c00748bd912d4196cdf704edc1149ae9a518e1",
+          "named_identity_sha256": "9105249aaf80850dd73c49ca7ce6be2bf66c3110f84b88805fca31aaa95fdeab"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/4b76585c3aa4/test.jsonl",
+          "raw_sha256": "07ee6b20f77ce3609c1ff769980b01e1873a0db0aff1ae5e566b6b569a24d209",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "736f8ab07ae7a8c91b8a34cccaf671f2aeb77b5761506604f1a2c70106c645a5",
+          "named_identity_sha256": "ab56b3c3612cbad858739911445c2851565528589a63ae6e5bf141358ed4dec5"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/b8d431c478e1/test.jsonl",
+          "raw_sha256": "d42074ac3675584e252d6467a16268880a3b0e268805b1d45e0fc2ec64642f0e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "1141b81e3c31ca46f639c58dc7a1c2ec1bc316438d5e8884fcc8bafe2cb9a113",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/chattitle",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/f26ab7ece539/test.jsonl",
+          "raw_sha256": "7a1063ac0b10cde67ba43aeecf3bfff24bcff88cac4999e10d6872f0850d40b8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "8877ed8ecddde104b506f263657d6905c132669810de774663e5e09e23085792",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/cli",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/248934fbfb73/test.jsonl",
+          "raw_sha256": "015f3e0a23f7e8ad29518e0d3955ff55ad9679f287d5d0186c371aeaa9e85b60",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "248ac24d4c4ca876fa7983d147978dbe6bd8a2ccf30ee5afed90b6e5b4598d49",
+          "named_identity_sha256": "d7517e1afa825eab571ae8a4fe2764fc285e858196a183366123df82a7e17c00"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/cffe407cfbfc/test.jsonl",
+          "raw_sha256": "0fc9661c31bc5c0c97c6ccdb8e0ead0f9e5250e62c8966382086af32eb00e7db",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "61a3783c2f5caad66502e13eababc8f958a30cdfb097a60dc3aaa706b753ec77",
+          "named_identity_sha256": "ed90d20f444110a021a21e5e84b4460099b50e4534525f18c4b8dc68010ee7a8"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/collaboration",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/472bb8236d85/test.jsonl",
+          "raw_sha256": "7d67a676b541b94e8fef1742b519ac9a183e43f8d82e31f23ba376faea89d3ed",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "cb52f4550367b5143fdf8f50b6b0d5487f47a9b1b0ee80fe75e404e638a43767",
+          "named_identity_sha256": "eb12f8de9bad958f4c1477f45f5cd7346321a796eae24f9ccb9b8769b869f90f"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/7a21f045e560/test.jsonl",
+          "raw_sha256": "db161d0d71132ea6114079cc6d048555a80691926291ba4c8dae8175b5d487a0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "eff7003576bfcce99b186c314023c413d64686eeff7d55762b86657084a104ad",
+          "named_identity_sha256": "05e95212e057aeec3bd143c9e3ee37bd73bbc75e9c0627f6bc0d58b048f06147"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/e304ab6e77ff/test.jsonl",
+          "raw_sha256": "c9987b5f4d54c8c7f3612884a80730f885b1129da588cf9c1ce30c2f4b8c6cfb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f2d32bda794597676fc0806288753addc753b4fa5c1f78b4ac7e4500d2a8873c",
+          "named_identity_sha256": "4a8988c22d8435749c62177f2b72e186592c3b10706118043c55a83f7d104f06"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/443be4706fd4/test.jsonl",
+          "raw_sha256": "b5a0ed67591f1ef2b0745a60c41e0b5bd68d25f107fff632dd498e58bdd38148",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "820492acc0c9478959f66f4b92f13bb1fe0c5b03f03b449b29cd98a2b9d83ed5",
+          "named_identity_sha256": "6b5ab3ce430d27fb0e8f6f8d293d080c3d0f557ef6045c920a01d1a2f476805d"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/abe022601f40/test.jsonl",
+          "raw_sha256": "f21e8a747335d4cde248cab33fee372e8ccafdb4ac4736132f34e0e544880319",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "a3f982712c0d1d934553966ae64b25a79e2a23f4158b549d073926478e2fb4ff",
+          "named_identity_sha256": "9ec7fd9517097d70e27a00cae6780a1641339bb1f3236fcda519c085f47e4a19"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/9ae551c14945/test.jsonl",
+          "raw_sha256": "755b9408f8f7a3999b7562b11691e1e3a3e1974ada7873d3856991cfa4b56679",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "8b7432106d2b406ca3d5ae45574f3a6e3327f0fb97b03cfa211b19f555297281",
+          "named_identity_sha256": "08869812e838823573faba8e969a1e5ae4ba851aec3674057f7c566e78f82e9b"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemonws",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/a2993220b42d/test.jsonl",
+          "raw_sha256": "dba218a7a751f38d3e5f41e29137a43a37b2d72b5ac11fdcf7a14454241f4407",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e297b6ef9b546e631d46ceb00857b98ccfee549b7afa1c5431cd2724078cb4a9",
+          "named_identity_sha256": "8cceb35c76a6dffcf399103253f5feda8e34d9f12ee4d5f6670ac559f36e1457"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/2ec21eaa1b3e/test.jsonl",
+          "raw_sha256": "21f92d2b0c17651d1044c951dc33350cf2cac268bf53630a70b602bbea8e8e3c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "c647e5023e7104916331c297d976cba1c0427b45a25c33c4d57a7c01763519e1",
+          "named_identity_sha256": "638637b50d2f43f24d8f7c119c8b4d9ca849ab3e815f16cc86f0b07bf4f217c4"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/dispatch",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/2c99ee2c73c6/test.jsonl",
+          "raw_sha256": "e3a1b77b850f06ee30dfc5b53aca14cab0ffc7fa295232c786c41a8c03b93389",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "52b609dafdd6bdda18b744e10c5512873b6d35b9f5685cc6f92b812ec985b161",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/docs",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/0fb816f659c3/test.jsonl",
+          "raw_sha256": "524c9319f112b06e2449f6fd0371bea8392bdb318e97299e2e54af7196b9b1bb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "16c2bf4b95e0b4c110fef479790451dabd2330a77edd6d39a7557b63f277687e",
+          "named_identity_sha256": "f3839ea649b03340ae2e92411ddd347f6ea763a00d6aab957d52bb23d6206a70"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/entitlement",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/103bcb57d099/test.jsonl",
+          "raw_sha256": "df468699c3ef1a6e10b2d3849d525b9f1976218744021e74d722a458c294576f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "ef4f03260c73e48e35ca625b8a09183e17f51873bb8636e60ef2bdff12c0d98a",
+          "named_identity_sha256": "fdddbbd69a4fde6656ef51794fd5f5f2b8a66d3fe1f1cbe9917d531991a099f2"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/2f5af1a52539/test.jsonl",
+          "raw_sha256": "0dfdd33df9a157ea65877da32dde448e62a72034748654e36ea31f395364d731",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "5733ff4a723db49c3a6683dd3d5bb378377520e3dba9e69e35ad43ffb4c38e11",
+          "named_identity_sha256": "9e549349a8ca8a19140064203c46359c34eb09cac00695db14372f2df14543f3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/events",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/c824a98f5f50/test.jsonl",
+          "raw_sha256": "e713c3ac090b972a42931987467066c625718fafc6d6bcef43259a774a0e3382",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "d058759c0ea755100edb622eba10aac509344ae84a746c439e3ad773e8e1c018",
+          "named_identity_sha256": "9eca06564dd8d19e72179d8ba612c6174bed81e9ed209a3e7b730d84add23def"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/featureflags",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/5baa8458c611/test.jsonl",
+          "raw_sha256": "f85aef02654f42fd422242a75cbe7187e517b04d06b8eb362ef63447d94e0f07",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "1602b976f231d6204454341f22589ade4ead6a6f5d65d0a627ba2c5e1d30274d",
+          "named_identity_sha256": "e9fecee25c0086dd683e7c23852ace1cc02feb50abfa49eacda1f2b17b3caeeb"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/199d57419d78/test.jsonl",
+          "raw_sha256": "e6ff591f490361ad76802b6b173a77d816c6948ab059c6ab0f270b331b54899e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "281b9b278b041b65ad9af8f563aa7a82d9e3b0dbb183ceeb1695152ea0dfcca0",
+          "named_identity_sha256": "476f80367f381de93d1d0d3dd566611e549fdc2fccca04292b255958fa3b559b"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/inboxstate",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/e0f785088ae2/test.jsonl",
+          "raw_sha256": "2e0ba7af5c399ae13035ed3e87fc37ef89a4cf0df7090b00d6d58e65fd35a301",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "a2f97a7be152581f5b5bae3f051f12fa658d17209c0fab3e7e6393b0d2320b6c",
+          "named_identity_sha256": "ce022c058ed2f945953512a87d0141b4aec6bd4d17600aa63d1cecab04821c24"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/installation",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/f98f1babe5ae/test.jsonl",
+          "raw_sha256": "023669b8c1f284bed53119a0076bf47b00b0d8a26e90dc027a5b61c953fe9e25",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "1d4776fb3fdadf5c743bcef7751329a7ddeb0569118f680d0a2e0d3c262dc232",
+          "named_identity_sha256": "01e2bdcf54d0d4e49c56976b4b09e030e95b3c77bc1b57645cce10bb8cb5a1d6"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/bbd7303d32a6/test.jsonl",
+          "raw_sha256": "672b12ec5be11184994e9fdfc3bd17ecc8a0c9fa93f9ba88253b278761ca09f4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "89d5c3b7972d180da8af3e1ff05966c812a9295beceb68e68bfb2cbb3b446211",
+          "named_identity_sha256": "56278ce905c02cee2d9b291f4df30c15cb4da59dabe6c39c4d3e409181396bac"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/d01cb786d08e/test.jsonl",
+          "raw_sha256": "f212527aad4ddc56afa6e73dbee570017ed924f8b121ec138877a5efe85bb60e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f5b5322dc0c2a00c8fa0065b52a446417596ae31b96be9f30f61300f8da19d3d",
+          "named_identity_sha256": "eb75e40ba98d0672489fcdde6c967e0bd3b380a58dbc8a6ed8b800d91fe3e443"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/e133f82ee548/test.jsonl",
+          "raw_sha256": "9e268cb26fd546b257c26bf38ba68a6dc3d35d9a094cb41f577a65cd6a12b77e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "00985c83bd2b2ae03b5e3d07fc398cce31a9001d8dda2cd66847a4a63a0264cd",
+          "named_identity_sha256": "736a9fba258d26dc4bb1bb2a2d9822e7774c0ffcf395f928f422b7a23d56efdb"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/33991a652421/test.jsonl",
+          "raw_sha256": "351bbc856349627a4bb39a6a5c2fefcafed506274b17c6b003a7b9873a93ec50",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "aa82642dc7eb8b755a8f092189435a369014615011a6492c4930a20e7f434233",
+          "named_identity_sha256": "ec7f043dad49b30b440b6f6b897ad44e531abfca195326cfe12eb0b9697140aa"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/a384d9e70280/test.jsonl",
+          "raw_sha256": "ed45053a4dab00571f84416c20732aa91af3efd31ed954ffb5add6b0f83bc0b3",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "659f7e6d33bfb6e9d5a049e3f77a824581ebc076cbe43011dd9e9b9318416e31",
+          "named_identity_sha256": "fbe3b718282a113f614052c6a7c3aafc6658bfa671b80149ee3bac8bfa1063d3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/36f5a604ea4d/test.jsonl",
+          "raw_sha256": "6be7eebcab3a768e1f36d12bd1f51d327d05914b6f0d05c76c5e5d7cb6e59877",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "251e4f6c39b8d0100097395c278bf324babc26abaf0cc8b2ce1b154b09df7a84",
+          "named_identity_sha256": "148e3432b1df475f7e42d503b7e33004f47ef3704552e90dff97770ecc8a60d1"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/a57e8d23d980/test.jsonl",
+          "raw_sha256": "e55c38b0ee2239f95bd72d11de20f0f064d93966a87c6a8e583f6f931a64fde0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "8c331512bdea55196694584eb3837fcceffcd4d9bb9409f4cbb1c3fb33722ebe",
+          "named_identity_sha256": "9ced82a153a3d88b1cc11363dc186ace227e19149567c22a38539dfaedfc9b7f"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/72398aa1f6d0/test.jsonl",
+          "raw_sha256": "f02a409700497a43c0667a30d05549d699cafea4d7f5e9d3c87ef173489bc0e7",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "a993d070731c9b6870d095330b21190ece55e3befb478ce86d4e8f60b0a07b7d",
+          "named_identity_sha256": "0ccb7b6eea0e880683c03130113124a943fdf0508b4c986b314152515230a337"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/b565f47a53d0/test.jsonl",
+          "raw_sha256": "3ab973546c3d24641399dcc14265a9d030224b135d9304f97ece6ebcf8e46809",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "fbcf88d96634319efe520dc199d2686464c7a2aa262a5ff6edf6efb3aa7ab07e",
+          "named_identity_sha256": "f920f06cbda382ed722713209dd0c5302dc07a2c130751f2aac56497eec0bdb4"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/549757f027eb/test.jsonl",
+          "raw_sha256": "57c699e4a600226993ded866cc0c5e135b4fc82faf21b9a4465344f851d737bb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "767907275847796e04ca96ac10e3b25b69a0367bc40033dde143f1d7d481120f",
+          "named_identity_sha256": "9da483db733f35ca7df94e7381454b4ff71a99fe08cfd0a41be1ff2ffacbe075"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/6bdd179505c2/test.jsonl",
+          "raw_sha256": "620131765fe9e54db0f10d5807ee8be8f338c5cabf36faec28f9c163f23ce63e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "3ab04cbf2e7d7553a4a3b76d608119ccd51c954bed5acb53150ec55d3da3ad07",
+          "named_identity_sha256": "8e1e2076f5e8da9a52dd47e0554a2f6361fcd2a9f90ba452570933b6c62e1ce5"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issueguard",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/3202a0f12174/test.jsonl",
+          "raw_sha256": "a0404db7ea4d98612f9dfcd9107859dd7ea4b555d98e61ed775bdb00df239d24",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "2fc1675dcdb7a044758f9ec8f8ff7282f49c2135f986cec86826570c7b44c2b2",
+          "named_identity_sha256": "2f040c5380df93aa1483b85e964b1553943e5e44963c812c12cbd3bab5b3f812"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issueposition",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/7a51ef9d7409/test.jsonl",
+          "raw_sha256": "cdf64e1a2c4aefe8b38fda20b519808deef9cbb9f44d81f1fc1aed70aa9322ae",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "8bf27616936dc7c24a03d257d272fef64a676cb6f863ebbc991ed726c7b06a4f",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/3df108fbf701/test.jsonl",
+          "raw_sha256": "11ad6d01c0b79c4ccd68f8fc81a31885308fa715437ac0f90b39300dc7f4df9c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "2d38c32dc8c934904f662ffb44a7960bdb2097f744e962262be8fdc3d79d8c11",
+          "named_identity_sha256": "0f70a03766bed07831d6e59c5523e8dc10bb844e322232c29133b8694140eda7"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/iteration",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/fb52e0df1f83/test.jsonl",
+          "raw_sha256": "7e79b89b0f27c37334e0b258385e2ac9ba35519fc7680ac5c43d955f91625c54",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "d9830fa5fec75171e3e496c2b0014ab9793173a3c330b7f93ee9cb076b08eb12",
+          "named_identity_sha256": "b94dc66cc4c4002c2f178096e8f41392a041e116761e9798ac36fbde6df73fe0"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/logger",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/b3616ef0c58b/test.jsonl",
+          "raw_sha256": "a7018db4720ad04f34c0c6f666e2e359299ce17cffdac16c8e4c2e5651700223",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "a17717914860ebf2d506768d7a98bba4cc042bea9ca22fa6a04d2b3aa3f5930b",
+          "named_identity_sha256": "dc958a8e8ec3aa484c4490b6b49a42dab9243e7ea396b2b83ce0c825b4b5498e"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/metrics",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/734f4abb7b12/test.jsonl",
+          "raw_sha256": "8ff6de51f14c050db4f0722fef775909d0e77f4900aaa84947b5146d7bf979fe",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "fa4840ea47709c63090b336306f51f8a89106695a0f867bb2993f294dfc96735",
+          "named_identity_sha256": "1ab629c8b082e2c07d3ca7798982f5d7e0d25b0bbd8cc9ab0c97cdc4f0b3888b"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/middleware",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/919b30f55bea/test.jsonl",
+          "raw_sha256": "ee0103fcc6dd7623a307fa3f11ce98070f0392a6b620854354e2697a8ae37e5c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "40073ee57c5af9fffdb5692d93a0fe6f79d9c6f992e5047b39d8efdbd4f62f54",
+          "named_identity_sha256": "afd1fce07ea76bbe398247f957db0f0530250c3079c9ecf952eed59eaf5f6c52"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/migrations",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/33c023a139ab/test.jsonl",
+          "raw_sha256": "4b95601329288df32d8f8a5fe8a5cabe254a34a500b936fa74738e7bad52ce11",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "a9695c7a7d9fbe2fcbbeb68aa3f7b4d148e611ff49fc31ab229693cee7593b7d",
+          "named_identity_sha256": "bdcfc1e91d99435f4cc5ca1a75b0aa52f64d1bdb9968970a0ce98979f2733412"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/profiling",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/9f2c7589a33e/test.jsonl",
+          "raw_sha256": "85cd64ee02037210cbf52f2f81162767866ec90ef4c426c713d837d0bb693c83",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "3ca4273cada42a81aba7a1ef60277c1e1849ceca73fabeacee28edf954ab87f0",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/402988e4441d/test.jsonl",
+          "raw_sha256": "827170940eeb2824a887d4383937f8dd8f207c7c294292447940f13862367f22",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "5b72599dc4a6c85659566fab0fbd5df1638afc373437f7c2f75dfdebe38b69d5",
+          "named_identity_sha256": "5ed41ec02a65689f1a8d7c8386cae3d629cf6fc5837085a5cfedad481e50d05c"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/realtime",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/08997a7fa7fe/test.jsonl",
+          "raw_sha256": "b9b648304685f4348a37bc49cd69edd9b12b5e231ecc27b0fbdf5fb69c167992",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "46af8e6e9a197aeeda304372d8b7a8ded5a659977a062288cb638a0c36a025cb",
+          "named_identity_sha256": "9f0ed9f40e2c866435c9bb44e15a9592d87d5f918b8321cef3b52d50d9830451"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/reportsnapshot",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/e24ee4248d00/test.jsonl",
+          "raw_sha256": "438903ae7b259fe0545b2d17526982f04744460e11a1a06f00bd503e9ed92038",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "cf0ec7886411fc04eaccebf3d1dc183189358c6b296396c099bef53b6a442903",
+          "named_identity_sha256": "952c9a4f5eb0398c7c9fcf87698b1639ec7e0bcd364a5629b4e76b1bed60ccc6"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/6d7856d79665/test.jsonl",
+          "raw_sha256": "1b51dd729d785240abd6c8e332149328bd8853cdd2a10ba50977eb79a48367a1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "5d61405a62950ea1d5986e8347331ee4b844f8842434a69b69e75adc4bbf40e5",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/scheduler",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/b41f457af4f5/test.jsonl",
+          "raw_sha256": "dc63f201fd4263198905dd7238413af7b740c33a94e387948ed7556b3d0359db",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "c5dbbbdd824d85d9dd5fe160d8c46a73e97087600a2e9dc35e9612d8f069e105",
+          "named_identity_sha256": "dc58748be538a4094a745f48a76866baabb7d2ce00d0f26cc78610f9132920b3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/2f225990571e/test.jsonl",
+          "raw_sha256": "02bced4fd3f6279e062da05a4186a1b2cd6de861c605af706c081d590c416e0f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "a5074a3b2dc6930274f913970ea1909a5f5548d0ae8c6071eafa01438343394c",
+          "named_identity_sha256": "ad4d9831c4b7803c750c459ec767b3b79c1309f4a2983624c608383d56436a15"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/selfexec",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/0ee13f0d2884/test.jsonl",
+          "raw_sha256": "36061ead145a5655664ebd626dbbc1e0c70bbdd6f04c062731407a57426402a6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "9b2f56fc2a2c870700b2c13e6cee81c964ba9731bc8106d9f8ed346e4b74ca6d",
+          "named_identity_sha256": "567416273d0ee6dc6e5b8497d6a1b8535b3cc81f02ca32317c39d0bd0043bb28"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/986dfe9cbf73/test.jsonl",
+          "raw_sha256": "c5473e5211ad6577deaa63eb4cd703f47157303116156b57e50513aa027624a9",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "a9fbf877ad87e037a7de71773281b98260afb5a8505c5c46eb8a65b004ec60bb",
+          "named_identity_sha256": "7839ca1851fc098f8e0f208b605898595f932d6dd661e1b17f5b80708cfe72f9"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/skill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/c0b56fe05d44/test.jsonl",
+          "raw_sha256": "957d169842c9340187c816668a40378146d7506227ba0956591a40c2727f3735",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "cbd673490a4ebcb7be1c8bb9dd7905e4cb881b8522d415d953815f2415e0a82a",
+          "named_identity_sha256": "80fcfaf7401cea4b6e8a08c1d7d6df7ee29e04308d514a8da629cd17331979ac"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/storage",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/85091a8daf2c/test.jsonl",
+          "raw_sha256": "7787c0c31d98144fe580df17d9a2a1be94b3ee3be6d4500cc881323bd637962c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "16ea131362f9fe9eb184645d1339d466ff141f7404939f0d556d9bd9a45b8e47",
+          "named_identity_sha256": "ec049e4466a725a8d9cc41ad8d35bdab2320f4d1a4580d114aaa2adf6c3b32fa"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/0548817c3f9d/test.jsonl",
+          "raw_sha256": "6eb85e7c6b7aea500c9b2b3da0f3c4710e1bb5acaf4d7102e58191f131692384",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "9973dccdbe865522e6b521c950b60506c1dc3677af23e27fd476a122373a2187",
+          "named_identity_sha256": "dab5fbbbc23710f0317b8b06a6e603ee502b0f16e4d9d206ab69276e145b2ff3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/testutil",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/8c57f41cf87d/test.jsonl",
+          "raw_sha256": "b88bcfc0aae928925e5e65aee503ec6f1254a65e09db26e09514b179257dcf75",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "78abfec117b8e524c3dd6bef784a9656ffcd0b81f49d95ef8ab087325d07239a",
+          "named_identity_sha256": "f79865e48a8078390dbe13d6ea274bc4896cdc44a124b579031469687902dd36"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/c02d86db4237/test.jsonl",
+          "raw_sha256": "2813a80534605b53da08f3b0d4c2aed34ad67d22dce9d9f6e7b0765dac0ed3e2",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "80dab49ae3cc8bb3da05ba451ea368cce1b80460c934d77286923e6447e31ed0",
+          "named_identity_sha256": "6f7c8624dfea1cf3a76975b833c84954a552d411005ecc5ac75399cde621ea07"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/util",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/d763dfcd7176/test.jsonl",
+          "raw_sha256": "45ab444a7f6dd34bae5102b00111ed3b8554d91335359dcf82aebcc9e3a0f856",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "8c411be029f887063fd905f0faf93817c1bcfbfee2aef756b67cb6fcc1b2a9ec",
+          "named_identity_sha256": "c8c9e840c8f9d4cc75d640e30a248f20a098bc261c9eeedeb462769b0f44fe1a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/f8cc8b7af4e6/test.jsonl",
+          "raw_sha256": "5a3f4e418bf451b90a7f118a9c172afe7ffdc17172480267aaeae203096ebcbc",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "effcac6970f00e64dd135230c75a3ab9605fd73614eb0553e9df47a5fbafc3fb",
+          "named_identity_sha256": "69cd3a91d4e67bb289a298676bcd7edfea3370c7b0d71e4a7f46d89f06f24c77"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/composio",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/3b4cd4ae0d09/test.jsonl",
+          "raw_sha256": "d2bf537c9e870cad2ebc308f10b03fc296cfc4862ffe913b8d37a0f893fbb4a5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "20bc03b86bb1145c4d3ddcfe54cc9c5ea0dae3614b2352859c53e3863b8fa672",
+          "named_identity_sha256": "675a43228d21e6b8aeaeedf3ff105d80e3a2a37ab7b95b4fdde3a73b1e2487c0"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/fb47920ce532/test.jsonl",
+          "raw_sha256": "3ed34722d0485d7e1c18edb3c0242370350421cdf5e72dd185b43581217dbc73",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "c3cd27d1e0948a4d12ca5fb2c5f0fc6cea0e7470479d50d12b8e48eeaa4ae23b",
+          "named_identity_sha256": "3f2fc955338d86ab8fe70f1bd70bea3db727bc2283ea7e837b97a4789a8b1475"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/dbid",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/bd354a329a15/test.jsonl",
+          "raw_sha256": "0d0ab6281194c34cf2b062c014b9ae8809d08beb2d80f435cb6d38953039f5c4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f98d4f9df7bbd9a3cb8febc47a00da5438fda568a4dd93af6155ea9da8afa014",
+          "named_identity_sha256": "1736f02871af75555574f65b2a9ac5e8f527dcb1f727a4f9a646000a659e1545"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/d7ecdfa3f812/test.jsonl",
+          "raw_sha256": "c041dcbdedf91ac62eeafa7ecc906a796129b856345f6af956119899b88c43d8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "18e1dc7cfccb6cb97d5addff670bd3b72a6074b24f1e31a2effea19a6697cde1",
+          "named_identity_sha256": "4b2810b9ee15d54a824bdeb014e2adce752b44f04152ca5f99883e71c01cdba0"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/llm",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/e859efa47f08/test.jsonl",
+          "raw_sha256": "da333718cf00a27389edb00c9803f37b5269f329b8c93e4249fcc094ad8879e1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "801e6bde4beb3f245a0ba2923ac4d34e170cda277944eb44eb39bf89048c9bb3",
+          "named_identity_sha256": "ff89a0a55b9a7dfbba2168458eee0f99fd2144ed0afb3231f1c315b142d3c9b5"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/2801bc792e83/test.jsonl",
+          "raw_sha256": "49cbde861dfa6c65b9a0cda2c00ccb160d5bb187b250461fd3decc84d5fdb2ea",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6ede08e54c03ad21942da32bfd5d719cf6e43e70627ff9b2acf8e94745424661",
+          "named_identity_sha256": "961e9aa4dd527a7c2de9081826879cd87abad1e92bc974d5dc607000b4c6782d"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/protocol",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/b2f76499e952/test.jsonl",
+          "raw_sha256": "fd023a9f446258440baddc6aff67c1b78b6511fad2e369977e621c483757c431",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "0b5920d76c8eaf86341f00e2dcb3d4b0a2b70f6d251eb9b59abe7604609a4daa",
+          "named_identity_sha256": "453b91cbb1553b003af4d5a090a5969c09a12f560c0bd1c863d360e064706efb"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/4fc98d5f8acf/test.jsonl",
+          "raw_sha256": "4fb360f04a712d845de518b74fd4e760a84c42b4a108bd0f37a6886aec78f5ea",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "9cb0ad7cfb6ef7a3df394d9d1ccd8b98c994e03ae2339b2ce68e07f6ac75ce55",
+          "named_identity_sha256": "981de9c7f73d3adf44b9ab9062b40b6c3a65555aecc7e39c0815e106c40e7250"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/redact",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/4f0dde5e8035/test.jsonl",
+          "raw_sha256": "49451639e8f56daa635ea5165c0f387f7cbd0c736df24c23608962a3f63db2d1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "1ce0001c3c78725d8f97a1d383bd20675736bf09a611ac064e109582edcedc19",
+          "named_identity_sha256": "3c75d4a80e5542e7b4cbeb3d9ceed2fe82de1a266dced4cdd64d03161fc32d38"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/b541162c7d6d/test.jsonl",
+          "raw_sha256": "b9b2bf741a12455405314b52ec943a50d7cb9425677ec168c2b8ff416374f152",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f844b7593fb7e923c7b79f513bb6b29e1a71021bec08263333aa20a9e5a1be98",
+          "named_identity_sha256": "6b203f6e61b23b747722ee0ce28fb98987c397dcde2e18de897ddd84f9439f5a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/e6acddbc5503/test.jsonl",
+          "raw_sha256": "a87968837b3cae109292a2c4282967390a6a597974edb8a4c3fa3c0d46be67c2",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6c2189a120c50834137144cc51b2a6f750c10d9f9356ead0310c6f1d4bfdd630",
+          "named_identity_sha256": "0a6f0bc83df540e5e8feb23489522c4125da8df3b4bacc2311c52a361a279a65"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/2405237448a4/test.jsonl",
+          "raw_sha256": "adfe7b20edd252889d1175a73a3e3f50579a7e60e17ee37e5f3a7c45b5057e3c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f82a9893f2ef819ac17e6f366f5692cfdc1be0c31d061229885db56a6cc86d48",
+          "named_identity_sha256": "06d72ada2e62677e738b1de97603f6a4d5c45fe384b2bfe061136bf633719baa"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/d8de8e43c096/test.jsonl",
+          "raw_sha256": "4c93a356baa5a23a376b126cc2477d98aa9589077789695c9eaefac25042df8a",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6da93469d22ee9641984abffb14dcc5ba2ba50d178dfa3357e4784ef226c9f59",
+          "named_identity_sha256": "a9c2041d46f416729fcb11257d616d1d595f3ec5730217916c5ed3dc6b5cf343"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/normal/56802910400e/test.jsonl",
+          "raw_sha256": "d8b2945623302993e8871985f15ac733b261c7b4e2edf77432e18808d82bafc4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6f94a3bebc465f38650e17c0504d57e1c4c521033aeebb99fc28b7ffe818b4bc",
+          "named_identity_sha256": "c9143dce345d9ea24291769434ed996c9a09e8e426c4c1e6cca50f622694b24d"
+        }
+      ]
+    },
+    {
+      "mode": "race",
+      "expected_packages": 86,
+      "recorded_packages": 86,
+      "complete": true,
+      "tests_passed": false,
+      "counts": {
+        "named_counts": {
+          "pass": 25578,
+          "skip": 24,
+          "fail": 2
+        },
+        "top_counts": {
+          "pass": 11742,
+          "skip": 23,
+          "fail": 1
+        },
+        "leaf_counts": {
+          "pass": 23264,
+          "skip": 24,
+          "fail": 1
+        }
+      },
+      "compiled_no_named_packages": 9,
+      "failures": [
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt",
+          "output": [
+            "=== RUN   TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt",
+            "--- FAIL: TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt (8.35s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer",
+          "output": [
+            "=== RUN   TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer",
+            "    collaboration_stage_completion_tx_test.go:1272: actual M1 authorization: delivery_completion_conflict",
+            "--- FAIL: TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer (2.26s)"
+          ]
+        }
+      ],
+      "skips": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+          "output": [
+            "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm",
+            "    migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test",
+            "--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.02s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+            "    collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationPartialResumeRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationPartialResumeRoutesLinux",
+            "    collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+          "output": [
+            "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+            "    collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux",
+            "    collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+            "    collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+          "output": [
+            "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux",
+            "    collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment",
+            "--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestCollaborationStageExecutionHarness",
+          "output": [
+            "=== RUN   TestCollaborationStageExecutionHarness",
+            "    collaboration_stage_execution_control_test.go:375: dedicated coordinator-owned stage harness only",
+            "--- SKIP: TestCollaborationStageExecutionHarness (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "test": "TestDeliveryCompletionM1BrowserFixture",
+          "output": [
+            "=== RUN   TestDeliveryCompletionM1BrowserFixture",
+            "    delivery_completion_preview_integration_test.go:103: opt-in M1 browser fixture",
+            "--- SKIP: TestDeliveryCompletionM1BrowserFixture (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/auth",
+          "test": "TestPasswordLimiterSharedAtomicAdmission",
+          "output": [
+            "=== RUN   TestPasswordLimiterSharedAtomicAdmission",
+            "    password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured",
+            "--- SKIP: TestPasswordLimiterSharedAtomicAdmission (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/cli",
+          "test": "TestCLIConfig_UnknownFieldsArePreserved",
+          "output": [
+            "=== RUN   TestCLIConfig_UnknownFieldsArePreserved",
+            "    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder",
+            "--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+          "output": [
+            "=== RUN   TestCollaborationBatchPollerSlotsAndRunnerLinux",
+            "    collaboration_test.go:189: requires real Linux kernel containment",
+            "--- SKIP: TestCollaborationBatchPollerSlotsAndRunnerLinux (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "test": "TestIsDriveRoot",
+          "output": [
+            "=== RUN   TestIsDriveRoot",
+            "    local_directory_test.go:383: windows-only behaviour",
+            "--- SKIP: TestIsDriveRoot (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+          "output": [
+            "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration",
+            "    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test",
+            "--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestIterationI1DisableP95",
+          "output": [
+            "=== RUN   TestIterationI1DisableP95",
+            "    iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+            "--- SKIP: TestIterationI1DisableP95 (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestIterationI1P95",
+          "output": [
+            "=== RUN   TestIterationI1P95",
+            "    iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+            "--- SKIP: TestIterationI1P95 (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+          "output": [
+            "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle",
+            "    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes",
+            "--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestTriageQueueScaleBaseline",
+          "output": [
+            "=== RUN   TestTriageQueueScaleBaseline",
+            "    triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending",
+            "--- SKIP: TestTriageQueueScaleBaseline (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestTriageWireFixtures",
+          "output": [
+            "=== RUN   TestTriageWireFixtures",
+            "    triage_test.go:566: wire fixture export requested only by cross-package verification",
+            "--- SKIP: TestTriageWireFixtures (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+          "output": [
+            "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+            "    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant",
+            "--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+          "output": [
+            "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+            "    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows",
+            "--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+          "output": [
+            "=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+            "=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+            "=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+            "    claude_test.go:756: root-only preflight assertion",
+            "--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+          "output": [
+            "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+            "    codex_test.go:3198: Linux signal/reap semantics regression",
+            "--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)"
+          ]
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "test": "TestPiExecuteAttachesStdinPipe",
+          "output": [
+            "=== RUN   TestPiExecuteAttachesStdinPipe",
+            "=== PAUSE TestPiExecuteAttachesStdinPipe",
+            "=== CONT  TestPiExecuteAttachesStdinPipe",
+            "    pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0",
+            "--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)"
+          ]
+        }
+      ],
+      "data_race_warnings": [],
+      "packages": [
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/bb940f8eb38e/test.jsonl",
+          "raw_sha256": "c10bd56bc333a96423db078f3aecdea2daba7f5a6b595ab533341af6a5117b35",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "223052e3a0d5b7996feebc0e3edcac580e94ce997782196daaf452741ff166eb",
+          "named_identity_sha256": "540452f15e615e04bf3564ede78b1d3e8303989194ce86444209171236ef0a76"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/07eb79fa72b8/test.jsonl",
+          "raw_sha256": "24a2ae3924d85dd4665c7be0ec81b6d011e9a7a215628a2702d305a287d7d4f6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "0960e8dced3652488dffcc75c09218ed3582b6b5f1cb1ad4f6a1e3c6652608de",
+          "named_identity_sha256": "0ea347b491464fef19d44343c09047ce5c39848573cdb965216c8704ae984ae6"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/f47ea76e9369/test.jsonl",
+          "raw_sha256": "1ed6ed552523597da91b8d3dd21888792897434d4924e48ca5a8a2f67bd4ad38",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "407b13622b1aafd0b538218f304406c8531a73548a87e01df2a3118839163015",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/migrate",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/f9a6f66e94fe/test.jsonl",
+          "raw_sha256": "0618e3356294783210925e712037e55a284ae6c34891398a7deeebeaa5177402",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "85226991c7f8671aa67baa38cc307201c47879473ba09d9a21e9a1dfe1a365e8",
+          "named_identity_sha256": "3674f51fc3ac3d4cab101b8834ef4c5ea53f9b776c834285f38ecc8b6da1278b"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/multica",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/b0ca13f2a1d5/test.jsonl",
+          "raw_sha256": "d918046f052e69968dbd7a0266f274e52352840af114578f2f1aa514ed2cfa58",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "36eda62ee2c411c0b9c9b3c345451ac9cbbf2e8aa18b136a3416290a34da4921",
+          "named_identity_sha256": "cee2207074d51775e68002e3ddd6c4b0d63bd41b7ea24c50ff6921cca0318393"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/cmd/server",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/6f87875654d8/test.jsonl",
+          "raw_sha256": "715777a543b77a1b2c4932a3721034d4db16c96f732de0d88bc021f3212dd035",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "098c718331e0d1fd5eda77386b05784d0793438a2b885a013faaaf24bc14ba2c",
+          "named_identity_sha256": "660a3f20d94c1a5634d95440879b5d903f7552be2be7a35bcf43aec88cf06f0c"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/admission",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/7427887f8751/test.jsonl",
+          "raw_sha256": "981b84fd3d3f602fd0323fb8f9bcaa14cf045045ad5e788c3149926529574d31",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "45e22f9cb2f57022149b2cd40cb353b884d99d451af1245dfd1f5753d576bd00",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/e243b33d7b90/test.jsonl",
+          "raw_sha256": "1ddf68cf7c9310c2d0243312f3848dd35be935d57e5d4b1bc059a443d12b9cdc",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "1138c32ea52853521dfc44961dde50405a7576ce2bb3c2a0a2473534d4798e62",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/analytics",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/a33d11aa74fd/test.jsonl",
+          "raw_sha256": "ef9743d4bb324e29fcf4cc5f19ca367de98fd0008915158762115b8f9ba5cee5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "840c5ddbc5623e423f240d9d4e7422b4edb567d498a59fea64350e046cd8bfc4",
+          "named_identity_sha256": "d439bd22f6c4377bf7bd6a2304a661dbf3dd4fc410aec059520e6f2c8b380f4e"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/artifact",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/1ebd75e227d7/test.jsonl",
+          "raw_sha256": "8e2bcdcf966d9c88d3800934783b24edc47f894d80036f0c4a2df56c7ce60f00",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6e2c4514357874f192f847d087603d7f834aed6c93b5199ec81752ca72d5e179",
+          "named_identity_sha256": "a39f5519b058d7eab4d79053ce0ead984277b94a38427480fde279253b495b92"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/attribution",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/8ec97853df30/test.jsonl",
+          "raw_sha256": "30328f622cf2b717a259813595cea44bc3155bf0f9298d4adebe64e1a3755b14",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "69f7a7b697c6f9a0a3caa6009458470cd84abd70e9951435916ad057577a03fe",
+          "named_identity_sha256": "3169029aab3701635ba0a9c5dbadbd06f1890cc47c06067b58e8536419fa6d74"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/d642fc7111ff/test.jsonl",
+          "raw_sha256": "9eef21d2169bdfcddcd09b859d3eebaffe1536fc12ec2cbd782ee0b0da7b37f5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "b59d81686c463692dee7e69ed6ce6d1301248e07b8ea49b3120c0b4203b2095b",
+          "named_identity_sha256": "362090f005539e1aca6d8504b9d95a48ef5d85fca7722ccec5a3a1acbfce19e2"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/auth",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/d4b8dc307441/test.jsonl",
+          "raw_sha256": "51f66cfeb76dca8baf24a8e54c3b01f4587a3f2a7ee688bd0dea1a16781f894d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f182120f5a49817874d0468e563eb42abcbdfe34ddfb12bef35bdec7b7a17e59",
+          "named_identity_sha256": "caf4e5252ac1dc36148f94db6a551ef448bbb4acb2712bb303e12a9584d01a64"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/budget",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/c7584650097c/test.jsonl",
+          "raw_sha256": "bd1cae12c3d3d98f62daf49f557e20f46e15fd3ba2a7dadfc07934e9f99d372e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "27413c325544e96075f002365a7936b1a226c0e47be60615a378bde70c6cb692",
+          "named_identity_sha256": "a1f2069b63fcf7f6a3ce7bc714bed29a28a60e7f9d1dd3c9b07c04e09f5f0892"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/changelog",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/cc1252fad4dc/test.jsonl",
+          "raw_sha256": "c1eb21d1a33fd39ed4ca10104a31ff8d9bbb6c19c60d9a7b6aeb23e059ea0845",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "146f581385565776ec53707e0fa463224073e07a93ec857fe0d83e43078058a1",
+          "named_identity_sha256": "9105249aaf80850dd73c49ca7ce6be2bf66c3110f84b88805fca31aaa95fdeab"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/4b76585c3aa4/test.jsonl",
+          "raw_sha256": "398c47f24a68929b379d1ffb7487fd1ac4cdb9e934ff8cdf1821e6fae64ab6b6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "58e48d4f7340bb679cf632adcd3231928e310a5269d25c92b2c77fa540df9303",
+          "named_identity_sha256": "ab56b3c3612cbad858739911445c2851565528589a63ae6e5bf141358ed4dec5"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/b8d431c478e1/test.jsonl",
+          "raw_sha256": "d140e3da1ce3f522bd7075e9023bcf72d8cb79c70c9447a63b06165d0e592da4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "38634dc9cdbcabeb489a74757673e8fac996f2658b2569f7fd8f83882b8cbc11",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/chattitle",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/f26ab7ece539/test.jsonl",
+          "raw_sha256": "abd7d403e1d02080545b6f671486d8abeafd5149ce456f3427f52692b4573c3e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "36eaad9a50957f82f0b1fe0889292c8381d35c3c90ca8b54cd0a585d612aafd7",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/cli",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/248934fbfb73/test.jsonl",
+          "raw_sha256": "d80d9d8475a359241415bed53d1ee237c61848454e634738419cf9c7b14913c4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "81f02e69d8993f274b44f3ba219a61ec6c334a1ea526cd1a243752abd45de238",
+          "named_identity_sha256": "49626900f8fa0ea76a456696ad0dd2608928a9d494dbba02446ac2742909859f"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/cffe407cfbfc/test.jsonl",
+          "raw_sha256": "a5c2ba52d455a9b264259e3ac04db6322373e96e8e2a82ec8158ea8a763355c2",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "827d4ab1951180f118d024ced19107faf798cec6a5ba436684ad335e58a027f3",
+          "named_identity_sha256": "ed90d20f444110a021a21e5e84b4460099b50e4534525f18c4b8dc68010ee7a8"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/collaboration",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/472bb8236d85/test.jsonl",
+          "raw_sha256": "6ab922fdc4e9ab39fcf2abf568e4bdbae882126b0e1f3bceba36eb1bdd8a23a7",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6e3f2d705eb29bb69cd2a0a360f2e9b55bf813633f1e75775f5a49c32476e59a",
+          "named_identity_sha256": "eb12f8de9bad958f4c1477f45f5cd7346321a796eae24f9ccb9b8769b869f90f"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/7a21f045e560/test.jsonl",
+          "raw_sha256": "5d5d4ec3e0953de2a42a5399cbf24235844bef224373a2c302371bbdb126e9a5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "d3aeee2ecb9b1f6043ad844c3cb70fe1b011625e43ef7e0c4f45b0a8c3df41c9",
+          "named_identity_sha256": "b17c9451903d98b0b5c74088f51913c89daa8064fa055839e26d06fb930480cb"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/e304ab6e77ff/test.jsonl",
+          "raw_sha256": "0e686c2fafca3cd912c0f5a0fda98e8e6f7ec20746fe723b55c2b8c0b3c0a356",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "dbf4d18eb3fcc0feecb99f91cc5797522701589010ac2906049a10efb1fc0a40",
+          "named_identity_sha256": "4a8988c22d8435749c62177f2b72e186592c3b10706118043c55a83f7d104f06"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/443be4706fd4/test.jsonl",
+          "raw_sha256": "16f4cd7774628665dc5e5734fc936b0b169ef54d67f54736d0ecade9f125cb5e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e249e32221e370b2c81a5adda2c7d536ccab54be511e3733df05257723b650d9",
+          "named_identity_sha256": "6b5ab3ce430d27fb0e8f6f8d293d080c3d0f557ef6045c920a01d1a2f476805d"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/abe022601f40/test.jsonl",
+          "raw_sha256": "21570b093e9f285d80faa4e5ab5c8e8a218bc51e1f5b2c129076d762802f25c8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "4e627acc56b1d728d4779e0e9c61398f34cb7fa1685687570a842af81763b46a",
+          "named_identity_sha256": "9ec7fd9517097d70e27a00cae6780a1641339bb1f3236fcda519c085f47e4a19"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/9ae551c14945/test.jsonl",
+          "raw_sha256": "a6c3af1a6e487dc2088522cc6d3b6a83a17224f4711a23efb3c5b1d5ebff9ac7",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "fe4c6233d7b829fd0303f6ac6dea36d05c76c338bf9c8ac67df1509eeec104b1",
+          "named_identity_sha256": "08869812e838823573faba8e969a1e5ae4ba851aec3674057f7c566e78f82e9b"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/daemonws",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/a2993220b42d/test.jsonl",
+          "raw_sha256": "c9204570253d7c8d8526de6e25d0b4724acb6a55d7c792f4e7a720eef22f0072",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "2f7ade9f7e93bc48c4f67b9da358d4f1d871488b723e369151222374fb39dbf2",
+          "named_identity_sha256": "8cceb35c76a6dffcf399103253f5feda8e34d9f12ee4d5f6670ac559f36e1457"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/2ec21eaa1b3e/test.jsonl",
+          "raw_sha256": "667d6486f67117e965fd9909d9d70abfb2402f7f504b8fcfe4f618cd46a62dd5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e36e257baf901daffd64aec3762f6ebda471735176618522007d72ac82d2dcac",
+          "named_identity_sha256": "638637b50d2f43f24d8f7c119c8b4d9ca849ab3e815f16cc86f0b07bf4f217c4"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/dispatch",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/2c99ee2c73c6/test.jsonl",
+          "raw_sha256": "ada79880adad46ea8ad1f14d36ac08e43f1a49e433ebb7363aab3534d6929aca",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "41ceaddbbd28c02f056cd4ff6d312182d8af5d7d7b431d0b894cf6506629a3cf",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/docs",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/0fb816f659c3/test.jsonl",
+          "raw_sha256": "c5f0816e6173b7a029702a7cd3ab2b5af2ad819bcb4d76c2c30cc4356a5c3cbb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "d516830f6bc33019140d283758f9095360af6ade504091cbec30a6a4d531a1f8",
+          "named_identity_sha256": "f3839ea649b03340ae2e92411ddd347f6ea763a00d6aab957d52bb23d6206a70"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/entitlement",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/103bcb57d099/test.jsonl",
+          "raw_sha256": "bbfe259819cacc63c7d344db6f8e0014eba9a5e93ca55146f0f33fb94c358db6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e9cda80af1effc075aacc7ba4308b9802d966bf6f89f42a3f5a275a2db7b5abd",
+          "named_identity_sha256": "fdddbbd69a4fde6656ef51794fd5f5f2b8a66d3fe1f1cbe9917d531991a099f2"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/2f5af1a52539/test.jsonl",
+          "raw_sha256": "63bfa397d72c4e8014e9e9feca058b4e8896efdda2401120efbd38b97b865dd9",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "5fa4779ce0ae7499e9974c7870bedcac8114f3d91965f01e34ced5701e222510",
+          "named_identity_sha256": "9e549349a8ca8a19140064203c46359c34eb09cac00695db14372f2df14543f3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/events",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/c824a98f5f50/test.jsonl",
+          "raw_sha256": "a396c2e4dc7751e6617e4ad1133db7a4501b00e9fcf8b4c879518eb7d1f4cb77",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "bf6a78c49fb76c025338202292ef31f404471bdb4ad89ab1853ac58cda6ecfc9",
+          "named_identity_sha256": "9eca06564dd8d19e72179d8ba612c6174bed81e9ed209a3e7b730d84add23def"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/featureflags",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/5baa8458c611/test.jsonl",
+          "raw_sha256": "297e0bd0e0f18bb3790e729038b3bf1f7a34a85dac78e6638e73d4eaecb2ce0a",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6491b3d64ba5ff10826805393e1b9983970c7a63246b39909a1fd952e40b1d3f",
+          "named_identity_sha256": "e9fecee25c0086dd683e7c23852ace1cc02feb50abfa49eacda1f2b17b3caeeb"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/199d57419d78/test.jsonl",
+          "raw_sha256": "fb72422c9d0412722d822017c781049264dd6eb6b21085091f4b043798a7189c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "4d9041dfe10c0314ea67ee5338d082b0d27e6e25181dc72059db526a6e83422b",
+          "named_identity_sha256": "ea81d44818667d6347bd7c73d13140174c0db1a7c51fede74d7ee0476b570085"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/inboxstate",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/e0f785088ae2/test.jsonl",
+          "raw_sha256": "daa899c213daa4c4ccf4da370e1fa92cd3e786cb1315fee34d2404395c32a235",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "344f0fa29bdaea2214821e22fc6e6294222fed604df7ce42658352dac388a129",
+          "named_identity_sha256": "ce022c058ed2f945953512a87d0141b4aec6bd4d17600aa63d1cecab04821c24"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/installation",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/f98f1babe5ae/test.jsonl",
+          "raw_sha256": "dadec4b3c663a9ad6f6d68f3a1a134034372a79196176073dfc897a95a430e69",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "4221248957415c87c7cf189bb995cb937e2892e7bbc09a3d907b281772bc8645",
+          "named_identity_sha256": "01e2bdcf54d0d4e49c56976b4b09e030e95b3c77bc1b57645cce10bb8cb5a1d6"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/bbd7303d32a6/test.jsonl",
+          "raw_sha256": "9eb34d0eebdd49dbe56e5af39b03500370beb947ce94760904f5deffa9101b2e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "67cd1b4fd665c72ce0e3f761437cceda5a36d0c91f1018f9806925b74f7a0a7f",
+          "named_identity_sha256": "56278ce905c02cee2d9b291f4df30c15cb4da59dabe6c39c4d3e409181396bac"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/d01cb786d08e/test.jsonl",
+          "raw_sha256": "f23bb346a782d3fe1f504ab2aa16df3f4d15a4fdccea12c8f1632df569afe816",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f8a7cd1ba6f3dcb9ca353da4371974699e00c9b83b52ea257a12c92990d73fc5",
+          "named_identity_sha256": "eb75e40ba98d0672489fcdde6c967e0bd3b380a58dbc8a6ed8b800d91fe3e443"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/e133f82ee548/test.jsonl",
+          "raw_sha256": "fa9fe6367e00de62f0dd70b743ab266d7c00a27942867948cff43d4c7fac1881",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "bb16a72f65c7d4ec9dfe4964d7e1ca79f15a66e3d0b8856bb1001a79ce4b3a3c",
+          "named_identity_sha256": "736a9fba258d26dc4bb1bb2a2d9822e7774c0ffcf395f928f422b7a23d56efdb"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/33991a652421/test.jsonl",
+          "raw_sha256": "c49f6377d58cc63149d2c6522ca1eeaac63229584ec9d73fd2acf6bebe6f3cd5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "73c15466ef7b509895876d9ed65b9ece5743726c672ef76f27d39ab1f5d56010",
+          "named_identity_sha256": "ec7f043dad49b30b440b6f6b897ad44e531abfca195326cfe12eb0b9697140aa"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/a384d9e70280/test.jsonl",
+          "raw_sha256": "0ed36d2f92f7a54e553cb194e97c6016849120bdb2dd8b66434c2278e55500ff",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "c999dc3a5ec7db3f73c69a5d7633064c50fe871a18de7623895f5623e5b01686",
+          "named_identity_sha256": "fbe3b718282a113f614052c6a7c3aafc6658bfa671b80149ee3bac8bfa1063d3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/36f5a604ea4d/test.jsonl",
+          "raw_sha256": "bcb524b5ba122687cdb513b967ed0a82689834d90f9c005474835102c8033f56",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "4c1f7391856a3f9685e39b1455e30540facc053bd47e9005e207146eecc9d9a2",
+          "named_identity_sha256": "148e3432b1df475f7e42d503b7e33004f47ef3704552e90dff97770ecc8a60d1"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/a57e8d23d980/test.jsonl",
+          "raw_sha256": "3283358c8d568633d3af37c2545dc3dfdab95c7da3753d478b0230af642321e3",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "4d2ef691b71903ca9f09cfb961e07d257da4d693f13aa319b3ce014e898a04fb",
+          "named_identity_sha256": "9ced82a153a3d88b1cc11363dc186ace227e19149567c22a38539dfaedfc9b7f"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/72398aa1f6d0/test.jsonl",
+          "raw_sha256": "46dffde84f89549e28108922ded5c442df83ebd76ea17593f8180c28e9ab356f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "9c93670810895729d23f4cdc74359c8ba46c7dde9c843d19cfd525954d716976",
+          "named_identity_sha256": "0ccb7b6eea0e880683c03130113124a943fdf0508b4c986b314152515230a337"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/b565f47a53d0/test.jsonl",
+          "raw_sha256": "2d4a43d33bbbd34ed84157d22b20dbcb080e4dd2bf36134b3f77ca5fe47bd8c0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "3519c36b01ab343549ed94597d9d119127b61bd85d7e16327a2b975aa9b6be7f",
+          "named_identity_sha256": "f920f06cbda382ed722713209dd0c5302dc07a2c130751f2aac56497eec0bdb4"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/549757f027eb/test.jsonl",
+          "raw_sha256": "d467999177b1f4ddf74404e622d3f87817cc8d59730599c2b89f1a2555b1ec8e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e2ba65b7ed69fff6b5bd603bd9f46933ab6dc5219a629163220d5571113c3d49",
+          "named_identity_sha256": "9da483db733f35ca7df94e7381454b4ff71a99fe08cfd0a41be1ff2ffacbe075"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/6bdd179505c2/test.jsonl",
+          "raw_sha256": "c70218f684b889896b4b5bf89000283f6e88eb7f05d11f3d9097bea9a8f9d541",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "2c09f6c4946aa1c6f852726d829cb647c0e1be3b3431479ec040d814dc807fa6",
+          "named_identity_sha256": "8e1e2076f5e8da9a52dd47e0554a2f6361fcd2a9f90ba452570933b6c62e1ce5"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issueguard",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/3202a0f12174/test.jsonl",
+          "raw_sha256": "3044b299534c678414443e36f1e2b1a8b512406f353d428e379bb3d85c5372af",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "be93190d76f1dd4ca60d2f0fca8e7d54ea84026af8c3a4e2dc37c6f84729ba11",
+          "named_identity_sha256": "2f040c5380df93aa1483b85e964b1553943e5e44963c812c12cbd3bab5b3f812"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issueposition",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/7a51ef9d7409/test.jsonl",
+          "raw_sha256": "092e0206ae4f5d0d014995cd1e03569277d92e75bcd4687ea7171b809492055c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "0c707fe538ac2e7f9087a23cd17ce1d72c53a5efe394af357d6473f48d3dac48",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/3df108fbf701/test.jsonl",
+          "raw_sha256": "d288f6e3b91e63ce9ef92414c43f966122d512096dd5a753889402dded86eecb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "b765be0d587110aa6e45e78c396c793da2000fffc054b084d45e6332a0e9d265",
+          "named_identity_sha256": "0f70a03766bed07831d6e59c5523e8dc10bb844e322232c29133b8694140eda7"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/iteration",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/fb52e0df1f83/test.jsonl",
+          "raw_sha256": "2d5bddf094c468d151a3e55f434f5e2f6b6c2559298361af4ad1f8fab00d1610",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "c1176d6c47cbc0c68aef032a14d6312fd40e916b27ba12bf96cf815b8a577db5",
+          "named_identity_sha256": "b94dc66cc4c4002c2f178096e8f41392a041e116761e9798ac36fbde6df73fe0"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/logger",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/b3616ef0c58b/test.jsonl",
+          "raw_sha256": "dae85acbc6ab617ad3f60ffb7c60db0821af1a787e44fada75e2fad4a48a1958",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "2b6f68bf0408304c38add3d8d057fcb6fbc62077e991855c5445d8cea127c57c",
+          "named_identity_sha256": "dc958a8e8ec3aa484c4490b6b49a42dab9243e7ea396b2b83ce0c825b4b5498e"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/metrics",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/734f4abb7b12/test.jsonl",
+          "raw_sha256": "c4fc33e3343fd90c7a6372d089515da6b6b275c84d47c03dbd48aada522d539a",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "830de1eb027506840408306c9e15e829c72a8651dbcb5117a0b84a1ac70e87c6",
+          "named_identity_sha256": "1ab629c8b082e2c07d3ca7798982f5d7e0d25b0bbd8cc9ab0c97cdc4f0b3888b"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/middleware",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/919b30f55bea/test.jsonl",
+          "raw_sha256": "38f15179e808fe6bbd1dd0750bed79eabb237f295e696fce4e9859241416cc83",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "38d8c238038c9ca51da0c76a5870df3e190deeea5aa8816388df57e6638aff5e",
+          "named_identity_sha256": "afd1fce07ea76bbe398247f957db0f0530250c3079c9ecf952eed59eaf5f6c52"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/migrations",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/33c023a139ab/test.jsonl",
+          "raw_sha256": "bf8dbf8f773c43206280e76f9f34e5c775a172d75375b0280c89f1525e1a0dbd",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f61ea1ed8c4981a73429737621b99e9bd85c1404a34c856fcb80a30f73cc8159",
+          "named_identity_sha256": "bdcfc1e91d99435f4cc5ca1a75b0aa52f64d1bdb9968970a0ce98979f2733412"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/profiling",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/9f2c7589a33e/test.jsonl",
+          "raw_sha256": "20f956caf4a333abc4e1e826ccc5e1026ebcf05fb175ed86fdad5acc2b482d6e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "34a722734cc787e03e18e0f53a05d7e4e199c68d9a2379bd9c2fc959b4d8a669",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/402988e4441d/test.jsonl",
+          "raw_sha256": "fcf5ae334f352a3e7e1a27e91dfc994f3cf768a0ec2957076e2cb9b1ce3b0c0f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "d4f6ea7ec4be54a7da5940ca8082c2cb878c4d4466fe8f5f0cd6d22c78f97620",
+          "named_identity_sha256": "5ed41ec02a65689f1a8d7c8386cae3d629cf6fc5837085a5cfedad481e50d05c"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/realtime",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/08997a7fa7fe/test.jsonl",
+          "raw_sha256": "74be3aed21aff9ef2f9c723d4f4d1d29939535664b2915fadbc316501afd8bab",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "eceaf24a540fbbd0c79ce0d2552fa4184b402f1d85290b612994d5085b916a6f",
+          "named_identity_sha256": "9f0ed9f40e2c866435c9bb44e15a9592d87d5f918b8321cef3b52d50d9830451"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/reportsnapshot",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/e24ee4248d00/test.jsonl",
+          "raw_sha256": "e51dd6b8a337238d6535b4e2d4193cb6fa1b5666b8d5e25ae0c749649cbd24bb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f49e635f549ed95a3d2f1ec001e82c934dd7f2f9336d80055e9dbb1641015814",
+          "named_identity_sha256": "952c9a4f5eb0398c7c9fcf87698b1639ec7e0bcd364a5629b4e76b1bed60ccc6"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/6d7856d79665/test.jsonl",
+          "raw_sha256": "bd5939035e9b3f5497958764e1df1a45ccfa6ada268b77d9d12ffbec026afddc",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "10853c76a0a73afc55dfe6af4ff8ce97ef02998fc951fdc165d658fd1019b39d",
+          "named_identity_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/scheduler",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/b41f457af4f5/test.jsonl",
+          "raw_sha256": "f2032c0d8e29045f4e5f06dc6cde17aeeedc1fb75405888a04d8b3ca7c34497c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "1f55b32ee1b7024a518acef08639a5b167e28de3ef4132e5410b59f789f6fcc8",
+          "named_identity_sha256": "dc58748be538a4094a745f48a76866baabb7d2ce00d0f26cc78610f9132920b3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/2f225990571e/test.jsonl",
+          "raw_sha256": "ee411e8e1c938dd57196e9c1a4ba162c57ad7e5983d23c9dc1b55bbe61be3efd",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f7b39f0bf42d60b12f07ce70851a579f46a6b741aa4209bf29b7c6e79d52b35e",
+          "named_identity_sha256": "ad4d9831c4b7803c750c459ec767b3b79c1309f4a2983624c608383d56436a15"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/selfexec",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/0ee13f0d2884/test.jsonl",
+          "raw_sha256": "b273ca1af3b45c6b7147688bd4a5292c0da2dce23459fa8cd2f0c0366c075a33",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "739aeb6b357260eb744a443d62af3613f268b290a9c65bd953b7c00620bc377d",
+          "named_identity_sha256": "567416273d0ee6dc6e5b8497d6a1b8535b3cc81f02ca32317c39d0bd0043bb28"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "exit": 1,
+          "complete": true,
+          "passed": false,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/986dfe9cbf73/test.jsonl",
+          "raw_sha256": "59d5e3ac34168eacbae2c03a530999e41cdd88aefe069bf201afdbd48fabbf75",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "fe540a3c7f889019834fa84df2d300a5ff066fd5ea1f51663cbe4e61d7e77f79",
+          "named_identity_sha256": "760a5889bd5a967be81d6e4beec27e713102df6fbb5f0ff1eefb9c1d5913fbf9"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/skill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/c0b56fe05d44/test.jsonl",
+          "raw_sha256": "b5976dc95b598e2b05daadc2dd66cd578a27964752b9fa881cff18e0818cb6a0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "26a485489867e3e91b29b151e060137dce9d8d6f168b85c65fb799cd3d91f3bc",
+          "named_identity_sha256": "80fcfaf7401cea4b6e8a08c1d7d6df7ee29e04308d514a8da629cd17331979ac"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/storage",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/85091a8daf2c/test.jsonl",
+          "raw_sha256": "1c2c34edc5ba0fdb11b15fbdeba65f7838133f393c147578af6e17a2723dd23d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "521272422ebb267a56bc796142712323ba63af30f1c4bc7240fa64dbbd00cadc",
+          "named_identity_sha256": "ec049e4466a725a8d9cc41ad8d35bdab2320f4d1a4580d114aaa2adf6c3b32fa"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/0548817c3f9d/test.jsonl",
+          "raw_sha256": "3161371fedfb8a21fbb3563001c666bbeeaae8fd37648026a8cf89481ae6f0ba",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "d254b1948380679b0e3991a5b95a3a0569023ec759a65ddcc1059d39651a8819",
+          "named_identity_sha256": "dab5fbbbc23710f0317b8b06a6e603ee502b0f16e4d9d206ab69276e145b2ff3"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/testutil",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/8c57f41cf87d/test.jsonl",
+          "raw_sha256": "63bca126d4a039ca918beb947b941883665b5ba532edc60868d64899dc79a31d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6ff894baa720d1c8ac1fd934071cca7519979e043207c3903b28c4661d0b6852",
+          "named_identity_sha256": "f79865e48a8078390dbe13d6ea274bc4896cdc44a124b579031469687902dd36"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/c02d86db4237/test.jsonl",
+          "raw_sha256": "4f193264f2118e4a8d9ecfe2721d90511c58f4689ad0947c2653930ff1970d0d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "d28bf48c998e11bcdccdc2b8864c9161116b91d8733ae6c2181235b19edca414",
+          "named_identity_sha256": "6f7c8624dfea1cf3a76975b833c84954a552d411005ecc5ac75399cde621ea07"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/util",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/d763dfcd7176/test.jsonl",
+          "raw_sha256": "6df978c244e212b030703c91b88e0d57d710410dd79f46d57f709c5628d62266",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "95a2de4f53cd9f15ba008574ecd3889b50bcf8225393dbfc02cd10eaef806668",
+          "named_identity_sha256": "c8c9e840c8f9d4cc75d640e30a248f20a098bc261c9eeedeb462769b0f44fe1a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/f8cc8b7af4e6/test.jsonl",
+          "raw_sha256": "a7960d4347c609e9b1b6ed9d87d125a011013591405d0f2d0f08cef9b5465801",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "10dc7d5042cd0939cd1911108eca7e2ebb520392a1aca56aa6da9bb903558795",
+          "named_identity_sha256": "69cd3a91d4e67bb289a298676bcd7edfea3370c7b0d71e4a7f46d89f06f24c77"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/composio",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/3b4cd4ae0d09/test.jsonl",
+          "raw_sha256": "501119706e1d22c8e08b86da491a1add2f4e3fd0ce45123f29022457308f5a94",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "52845e4dc637b4f2113140426f56591e8a75577a37fe04a94657c5324e702e61",
+          "named_identity_sha256": "675a43228d21e6b8aeaeedf3ff105d80e3a2a37ab7b95b4fdde3a73b1e2487c0"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/fb47920ce532/test.jsonl",
+          "raw_sha256": "6407798f118e94d5c9a4ce5d92abd1319e92dec84fc4c7dfb62f16120fc1beb6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e64fa880a34fffadf363da93e772e34293340d602b25b295dd39ebf3732f8814",
+          "named_identity_sha256": "3f2fc955338d86ab8fe70f1bd70bea3db727bc2283ea7e837b97a4789a8b1475"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/dbid",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/bd354a329a15/test.jsonl",
+          "raw_sha256": "078e5c272f6237ffc1879fbffb5c9eba4bf2fb2c29d879ce294943fa1d200622",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "fe63a50c0883cd09cda6f24bd06d7b3de439a221a7f4886ea839c67f52f3b23c",
+          "named_identity_sha256": "1736f02871af75555574f65b2a9ac5e8f527dcb1f727a4f9a646000a659e1545"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/d7ecdfa3f812/test.jsonl",
+          "raw_sha256": "2046b47f0bc5d8d9f35643d0d5b64b8b99274adb4bacf8a963570f37a9da3449",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e52373cec224cb5aa3a0b84f96a54bfa3ce77bff3f0c08fa8e6b22ff7c578bbd",
+          "named_identity_sha256": "4b2810b9ee15d54a824bdeb014e2adce752b44f04152ca5f99883e71c01cdba0"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/llm",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/e859efa47f08/test.jsonl",
+          "raw_sha256": "f32761009480737f348784daf2f2b1775d9882792d6b44b733350cbcf08fed15",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "51326bb9227b9e813f3dfd9f9743ec366314f79d6bc32bf60067700e97dbf27a",
+          "named_identity_sha256": "ff89a0a55b9a7dfbba2168458eee0f99fd2144ed0afb3231f1c315b142d3c9b5"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/2801bc792e83/test.jsonl",
+          "raw_sha256": "379bdb907b7bfc693a88060a059d56cfefedee41c95bcb82a183d44f157940bb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "4fcead5117723a2c0b39c6258bef90f4aa712973bf695a529029e9366a5acd9b",
+          "named_identity_sha256": "961e9aa4dd527a7c2de9081826879cd87abad1e92bc974d5dc607000b4c6782d"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/protocol",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/b2f76499e952/test.jsonl",
+          "raw_sha256": "096b70401d27e3e29bd40ea7884bbd827b62f23fb102c8db334562f4901b99d2",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "45b489ae0a5cc4f560286f0bea7a4b2e5d74ac91f25c6537290a649f99819d9a",
+          "named_identity_sha256": "453b91cbb1553b003af4d5a090a5969c09a12f560c0bd1c863d360e064706efb"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/4fc98d5f8acf/test.jsonl",
+          "raw_sha256": "139ab0a0d5fc2ceb3531acc5dc01a3f1652141712ca92937d652d8a7ebc4ae01",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "01aef26f164f50eb13606a7a2c76c07cad636fe3e33efc7666f2bab3ea983a39",
+          "named_identity_sha256": "981de9c7f73d3adf44b9ab9062b40b6c3a65555aecc7e39c0815e106c40e7250"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/redact",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/4f0dde5e8035/test.jsonl",
+          "raw_sha256": "30c8d0587539ae093cec991d94e546a1f0441ae2d271aa5dacfd1263443d1416",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "2a0654ab107a4d54e90fdc1763c0e16ce307abaea7d474fef62cf2e9fc620566",
+          "named_identity_sha256": "3c75d4a80e5542e7b4cbeb3d9ceed2fe82de1a266dced4cdd64d03161fc32d38"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/b541162c7d6d/test.jsonl",
+          "raw_sha256": "bfb07bfba37fd51bee78a4e9bcc0b42fa7daaceef3995e7318fd69194f001758",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "f55967744ab2cc769f5dcbfbff740ce4a082dd8721d6b0761842bfa1e3705fac",
+          "named_identity_sha256": "6b203f6e61b23b747722ee0ce28fb98987c397dcde2e18de897ddd84f9439f5a"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/e6acddbc5503/test.jsonl",
+          "raw_sha256": "e0069f6e973fba4c8541519e3c2fb698f09691d1474c609070bcdc7efae25e79",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "39ed148ada51fca57937bbe9c8fd4e64820026aa354e63a1c5bed170b772ade7",
+          "named_identity_sha256": "0a6f0bc83df540e5e8feb23489522c4125da8df3b4bacc2311c52a361a279a65"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/2405237448a4/test.jsonl",
+          "raw_sha256": "988594ac6a7768317723faf44183a975b188eb0e867508d85544d4da5d2c26b6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "e96e597b66be9476965bb96e1863499a8fa6f8247c328cb65c6de06b33fb7c76",
+          "named_identity_sha256": "06d72ada2e62677e738b1de97603f6a4d5c45fe384b2bfe061136bf633719baa"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/d8de8e43c096/test.jsonl",
+          "raw_sha256": "e7aea02601567510f0e163ea0c3335cf4a686a2fad100bc0bdbee5e23910e343",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "9f9295f52b66c4113d6639ea808f08790b8e97d39725abfca080bd1b5ccd0831",
+          "named_identity_sha256": "a9c2041d46f416729fcb11257d616d1d595f3ec5730217916c5ed3dc6b5cf343"
+        },
+        {
+          "package": "github.com/multica-ai/multica/server/pkg/agent",
+          "exit": 0,
+          "complete": true,
+          "passed": true,
+          "remaining_clients_at_completion": 0,
+          "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/runs/race/56802910400e/test.jsonl",
+          "raw_sha256": "2693391115f0e14b0fca48d79952c254e109509ce852fc13ed110456ca04bb50",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary_sha256": "6f9d2488f61c3e3d54774bfb508ccacd8b91a8008e7941a72862ecd001ded83e",
+          "named_identity_sha256": "c9143dce345d9ea24291769434ed996c9a09e8e426c4c1e6cca50f622694b24d"
+        }
+      ]
+    }
+  ],
+  "static": [
+    {
+      "label": "whole-module-build",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "build",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "started_at": "2026-11-24T03:28:24.298801+00:00",
+      "exit": 0,
+      "finished_at": "2026-11-24T03:28:38.508095+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-build.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "integrity_verified": true
+    },
+    {
+      "label": "whole-module-vet",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "started_at": "2026-11-24T03:28:38.509424+00:00",
+      "exit": 0,
+      "finished_at": "2026-11-24T03:28:43.030725+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "integrity_verified": true
+    },
+    {
+      "label": "whole-module-vulnerability",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "tool",
+        "govulncheck",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "started_at": "2026-11-24T03:28:43.031260+00:00",
+      "exit": 3,
+      "finished_at": "2026-11-24T03:29:00.983978+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-vulnerability.log",
+      "log_sha256": "20f757c80d3f828b5aa3b1b992df2be990800ef326895371f4909743243192cf",
+      "integrity_verified": true
+    },
+    {
+      "label": "wrapper-test",
+      "exit": 0,
+      "log_sha256": "a01cbecf6343b7c02ca46a5116b40b28bcb6c0d6d53858ae111829b15066a43d",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/wrapper-test.log",
+      "integrity_verified": true
+    }
+  ],
+  "static_accepted": false,
+  "vulnerability_advisories": [
+    {
+      "id": "GO-2026-6859",
+      "details": "1: GO-2026-6859\n    HTTP/1 server crash due to MaxBytesReader header race in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6859\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.4",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6809",
+      "details": "2: GO-2026-6809\n    Distrust compromised intermediate certificates in crypto/x509\n  More info: https://pkg.go.dev/vuln/GO-2026-6809\n  Standard library\n    Found in: crypto/x509@go1.27\n    Fixed in: crypto/x509@go1.27.3",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6617",
+      "details": "3: GO-2026-6617\n    HTTP/2 server crash due to HPACK encoder race in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6617\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6613",
+      "details": "4: GO-2026-6613\n    HTTP/1 server connection desynchronization after 2xx CONNECT response in\n    net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6613\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6612",
+      "details": "5: GO-2026-6612\n    Double flow control refund on HTTP/2 server streams in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6612\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6611",
+      "details": "6: GO-2026-6611\n    Excessive CPU consumption from repeated initial window changes in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6611\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6610",
+      "details": "7: GO-2026-6610\n    HTTP/2 transport accepts malformed framing-related headers in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6610\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6609",
+      "details": "8: GO-2026-6609\n    Lack of limit on size of parsed Range headers in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6609\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6608",
+      "details": "9: GO-2026-6608\n    Memory limit bypass when parsing MIME headers in net/textproto,\n    mime/multipart\n  More info: https://pkg.go.dev/vuln/GO-2026-6608\n  Standard library\n    Found in: net/textproto@go1.27\n    Fixed in: net/textproto@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6607",
+      "details": "10: GO-2026-6607\n    Reject malformed ECH outer extension references in crypto/tls\n  More info: https://pkg.go.dev/vuln/GO-2026-6607\n  Standard library\n    Found in: crypto/tls@go1.27\n    Fixed in: crypto/tls@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6605",
+      "details": "11: GO-2026-6605\n    HTTP/1 client connection desynchronization after CONNECT rejection in\n    net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6605\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6604",
+      "details": "12: GO-2026-6604\n    Root.Mkdir(All) can follow junctions out of the root on Windows in os\n  More info: https://pkg.go.dev/vuln/GO-2026-6604\n  Standard library\n    Found in: os@go1.27\n    Fixed in: os@go1.27.2\n    Platforms: windows",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6603",
+      "details": "13: GO-2026-6603\n    HTTP/2 server memory exhaustion due to Trailer headers in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6603\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    },
+    {
+      "id": "GO-2026-6278",
+      "details": "14: GO-2026-6278\n    Gorilla WebSocket Uses Cryptographically Weak PRNG for WebSocket Mask Key in\n    github.com/gorilla/websocket\n  More info: https://pkg.go.dev/vuln/GO-2026-6278\n  Module: github.com/gorilla/websocket\n    Found in: github.com/gorilla/websocket@v1.5.3\n    Fixed in: github.com/gorilla/websocket@v1.5.4-0.20240701034025-d67f41855da4",
+      "note": "Symbol reachability finding, not an exploit reproduction"
+    }
+  ],
+  "diagnostics": [
+    {
+      "job": "redis-shared-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 1
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 1
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/redis-shared-01/receipt.json",
+      "receipt_sha256": "d583843437f5bfb63e6ee5972338191a0ceb2dab200aebd07f219c50c0a7684b"
+    },
+    {
+      "job": "redis-shared-race-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 1
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 1
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/redis-shared-race-01/receipt.json",
+      "receipt_sha256": "89be10204b5fde72090401cc09409fe8df1ef2e576a981f53fa1ef8aab0f1b8f"
+    },
+    {
+      "job": "skills-public-01",
+      "exit": 1,
+      "accepted": false,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "fail": 1
+        },
+        "top_counts": {
+          "fail": 1
+        },
+        "leaf_counts": {
+          "fail": 1
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/skills-public-01/receipt.json",
+      "receipt_sha256": "2add1e1f2f5db7c314e8efc9dd5dfe5c3832f3f1780e69f903d62b3fb9b6f6ba"
+    },
+    {
+      "job": "stage-normal-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 5
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 4
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/stage-normal-01/receipt.json",
+      "receipt_sha256": "b76c65940dd9cf6d184904a168f5f0994585534a8199dd6e8794b4f09785ce9d"
+    },
+    {
+      "job": "stage-race-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 5
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 4
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/stage-race-01/receipt.json",
+      "receipt_sha256": "4015ac312843df14f1da98d64d54b54cbb2d63acf5831225123ab46bc9616ea7"
+    }
+  ],
+  "limitations": [
+    "Original race failure remains failed despite selected normal/race diagnostic passing",
+    "Current Go1.27.0 darwin/arm64 is not CI Go1.26 latest patch evidence",
+    "Scan reachability does not demonstrate runtime exploitability or deployed binary version"
+  ]
+}

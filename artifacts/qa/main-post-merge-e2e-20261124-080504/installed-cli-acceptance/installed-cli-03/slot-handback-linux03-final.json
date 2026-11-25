@@ -1,0 +1,70 @@
+{
+  "at": "2026-11-25T08:11:30.256124+00:00",
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "exclusive_service_slot_to": "parent for LinuxMain03 next",
+  "cli_result": "timedOut at original240000ms; FAIL retained; no retry",
+  "current_resources_closed": true,
+  "historical_cleanup_status": "fail",
+  "historical_fallback_volumes": [
+    "multica-installed-cli-d4bec3b5-c50f-495f-898c-1007a94b93d5-relay"
+  ],
+  "owned_containers_absent": 20,
+  "owned_volumes_absent": 10,
+  "fresh_docker_inventory": [
+    {
+      "argv": [
+        "ps",
+        "--all",
+        "--quiet",
+        "--no-trunc",
+        "--filter",
+        "label=multica.qa.owner=main-post-merge-e2e-20261124-080504/installed-cli-03"
+      ],
+      "exit": 0,
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "volume",
+        "ls",
+        "--quiet",
+        "--filter",
+        "label=multica.qa.owner=main-post-merge-e2e-20261124-080504/installed-cli-03"
+      ],
+      "exit": 0,
+      "stdout": ""
+    }
+  ],
+  "pg_other_clients": 0,
+  "pg_port": 49908,
+  "pg_running": true,
+  "pg_owner_retained": "main-e2e-runtime-7df2120a1b5b",
+  "runtime_locks_absent": true,
+  "ports_closed": {
+    "api": true,
+    "web": true,
+    "renderer": true
+  },
+  "owned_processes": [],
+  "bindings_unchanged": true,
+  "no_further_cli_launch_without_new_slot": true,
+  "evidence_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/installed-cli-acceptance/installed-cli-03/completion.json": "44157a66c3318d16bf937299141099c63b3c30845b90d2a7e16d706d898c658c",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/installed-cli-acceptance/installed-cli-03/resource-cleanup.json": "5e371b45231924792bebb68455921f575373f333e46fec3caac20999da253808",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/installed-cli-acceptance/installed-cli-03/process-cleanup.json": "46844008ee479ae66dbf0e0d69b928d14edc2134f73f8bdec7770ea5c0248536",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-03/completion.json": "6c161c0c21869fa4feae7607fbd81f5fd5878d07574deab5a16fcda30d4f3598",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-03/named-inventory.json": "088fc6cf8212027597ba2ba9b2dd9384d13bd0507c1421f3a9cd6a1c4b1e793f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-03/playwright.json": "8967caf8adbd757865131b3093c77a93e843d72931ced69638785dcef37428aa",
+    "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/installed-cli-03/cleanup.json": "c3c4e29fd67965f4c8b1c5127a3e59187141d7ffed44d12c341660eea780daf0"
+  },
+  "docker_operation_counts": {
+    "version": 1,
+    "volume_create": 10,
+    "create": 19,
+    "cp": 10,
+    "rm": 10,
+    "start": 9,
+    "rm_many": 9,
+    "volume_rm": 9
+  }
+}

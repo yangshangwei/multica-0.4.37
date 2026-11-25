@@ -1,0 +1,151 @@
+{
+  "at": "2026-11-25T08:52:53.606826+00:00",
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "status": "PASS_RESOURCE_CLEANUP_ONLY",
+  "business_acceptance_green": false,
+  "cleanup_command_exit": 0,
+  "original_stop_receipt_sha256": "25c606c51d58f2896e4d2dd55d568aca0bf9ebe787259891e69e4aa543ebc1f9",
+  "database_cleanup_sha256": "3dc05b99137e36cb99859c6cda6256392a0df4aca4caeb7c96e24391474ed707",
+  "preflight_sha256": "bdf25a177a50efd441bee5637937cddf4d99d816f66027f88a68729ac5234396",
+  "historical_audits": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime/final-audit-terminal-01.json",
+      "exit": 1,
+      "status": "fail",
+      "historical_failures": 56,
+      "runs": 49,
+      "other_clients": 0,
+      "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/runtime-supplement/final-audit-terminal-01.json",
+      "exit": 1,
+      "status": "fail",
+      "historical_failures": 14,
+      "runs": 22,
+      "other_clients": 0,
+      "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f"
+    }
+  ],
+  "source": {
+    "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_count": 32724,
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "generated_differences": [],
+    "support_materials": [
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/desktop.png",
+        "sha256": "31595c30f1b1bf285e6b07690af8bafc81bd313ef9228cd8658ec116da50867f",
+        "mode": 420,
+        "size": 121097,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile-dark-examples.png",
+        "sha256": "6db211e5fed14bbbc23dd1cdf0a9f35a19c6e2ee3d001cafd93a52ce6b48baf7",
+        "mode": 420,
+        "size": 50432,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile.png",
+        "sha256": "925eff4f0c988f32ff931d90f34b2f8ab0b403c946c6b48de1ee328a0a034ddf",
+        "mode": 420,
+        "size": 53094,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/narrow-english.png",
+        "sha256": "6e4ccbf9c0154c2a1943fca198e48fb0053c25b317c0c3dbcc44ec6802c01363",
+        "mode": 420,
+        "size": 35650,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/ews-runtimes-components-runtimes-page-tsx-939120c8.md",
+        "sha256": "14c21b8d0dde3a9b3c0c2217d54f38f7322a52f6c1638c34b787df7d8765a556",
+        "mode": 420,
+        "size": 3136,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/packages-views-marketplace-marketplace-page-tsx.md",
+        "sha256": "382edd046412f3de0e0bd8a6f13d80de0f541e97f71a281c6b55c803282b83db",
+        "mode": 420,
+        "size": 1470,
+        "uid": 501,
+        "kind": "non-executable support material"
+      }
+    ],
+    "support_sha256": "037ff3394ac7dfd9813cda75a22c1ba5a3ee4ad04467a254509fb1c01c1bd851"
+  },
+  "source_tool_asset_bindings": "pass_after_stop",
+  "containers": [
+    {
+      "id": "c7602a619c9bd0a870772dffff52dfea8b8c650545ef0d45b35d2ffdfdea80fe",
+      "name": "/main-e2e-runtime-7df2120a1b5b-pg",
+      "owner": "main-e2e-runtime-7df2120a1b5b",
+      "running": false,
+      "image": "sha256:215ae4d47393a980e9ef7ff7760f7dad53ec3e84bceb9fbd45cef34e50b5ba0f",
+      "volumes": [
+        {
+          "name": "main-e2e-runtime-7df2120a1b5b-pg-data",
+          "present": true,
+          "owner": "main-e2e-runtime-7df2120a1b5b"
+        }
+      ],
+      "finished_at": "2026-11-25T08:51:31.654612299Z"
+    },
+    {
+      "id": "fd5e59e207f2b2273760854f7f95623881e66795ee9ac918eea628ecbafacbe2",
+      "name": "/main-e2e-backend-924fea80cfce-redis",
+      "owner": "main-e2e-backend-924fea80cfce",
+      "running": false,
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "volumes": [
+        {
+          "name": "82015e11b3b2a9f708a7fa1c219a5477824ee954490f7047db8fcb971af2c5e9",
+          "present": true,
+          "owner": null
+        }
+      ],
+      "finished_at": "2026-11-25T03:39:30.455575468Z"
+    },
+    {
+      "id": "5bc6b2a4dd3c7743148d807de799a54854a4abc9ea94f6c0e38b273320f967fb",
+      "name": "/main-e2e-backend-924fea80cfce-pg",
+      "owner": "main-e2e-backend-924fea80cfce",
+      "running": false,
+      "image": "sha256:215ae4d47393a980e9ef7ff7760f7dad53ec3e84bceb9fbd45cef34e50b5ba0f",
+      "volumes": [
+        {
+          "name": "main-e2e-backend-924fea80cfce-pg-data",
+          "present": true,
+          "owner": "main-e2e-backend-924fea80cfce"
+        }
+      ],
+      "finished_at": "2026-11-25T03:39:30.770816052Z"
+    }
+  ],
+  "extra_campaign_containers": [],
+  "shared_pg_other_clients_immediately_before_stop": 0,
+  "shared_pg_stopped": true,
+  "shared_pg_volume_retained": "main-e2e-runtime-7df2120a1b5b-pg-data",
+  "backend_pg_redis_remain_stopped": true,
+  "service_ports_checked": 182,
+  "all_service_ports_closed": true,
+  "owned_processes": [],
+  "locks": [],
+  "protocol_exact_unchanged": true,
+  "protocol_default": "file:///Applications/Multica.app/",
+  "protocol_registration_count": 9,
+  "protocol_after_sha256": "7c60eea1417fb2b068572a01eb41f365696772a6ecbbc2e348f8a1cb8677abc3",
+  "preserved": "All3containers and volumes, sharedPG databases inclperformance, privateconfigs, buildartifacts and historical evidence retained. No drop/remove/prune/unregister.",
+  "failure_note": "Both original audits exit1 retained. Historical failed/interrupted/evidence-shape runs are not converted to pass; CLI03 fallback cleanup failure retained despite current absence.",
+  "ownership": "Final runtime service slot closed; no more tests/restarts. Parent+coverage can finalize task."
+}

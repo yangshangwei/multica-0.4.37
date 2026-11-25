@@ -1,0 +1,48 @@
+[
+  {
+    "lane": "runtime-supplement/knowledge-deployed-off-01",
+    "identity": "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+    "status": "PASS",
+    "enabled": false,
+    "integrity_issues": [],
+    "attachment_sha256": "abb9a9fc1e40972cdece992ce0014b648232ce5930ca38228b56d66fac995afe",
+    "completion_sha256": "e6fd2f3135ad121b6b91007d0ff0abe9f8e837d6bf60c5ffdcea7d8386f2e513",
+    "playwright_sha256": "326d8293b876283992d9c0d227a86594096f03e17b0d429b4f8b304d208db894",
+    "knowledge_events": {
+      "knowledge_claim": 0,
+      "knowledge_preparation": 0,
+      "knowledge_authorization": 0
+    },
+    "run": {
+      "id": "f11ae1c2-0369-4dcc-8bb8-0988149c7cbb",
+      "progress_state": "settled",
+      "proof_state": "host_exit_observed",
+      "business_outcome": "success",
+      "launch_count": "1"
+    },
+    "scope": "Actual deterministic Host input; paired configuration proof, one original identity"
+  },
+  {
+    "lane": "runtime-supplement/knowledge-deployed-on-01",
+    "identity": "d814fd936e4ae4f6acfe-fbd6745f598ba9178fdc::chromium",
+    "status": "PASS",
+    "enabled": true,
+    "integrity_issues": [],
+    "attachment_sha256": "29a2c2aae87491e242be289d776b8fe171876703d7ced7ebbbe6420d58a9f19e",
+    "completion_sha256": "99dcc05f11312df0a56c2c2b65ec7c4d38d88952f74b8b384d99d09f51b71ced",
+    "playwright_sha256": "a49a4a994acb1789072e2d2a7e67488b674779e60af1e761e0a77f3ced4d6665",
+    "knowledge_events": {
+      "knowledge_claim": 1,
+      "knowledge_preparation": 1,
+      "knowledge_authorization": 1
+    },
+    "run": {
+      "id": "a03afa93-a89e-47c7-87dc-da081b12d2a4",
+      "progress_state": "settled",
+      "proof_state": "host_exit_observed",
+      "business_outcome": "success",
+      "launch_count": "1"
+    },
+    "scope": "Actual deterministic Host input; paired configuration proof, one original identity"
+  }
+]

@@ -1,0 +1,478 @@
+{
+  "scope": "Plan-to-evidence map; overlapping domain counts must never be added as independent tests",
+  "domains": [
+    {
+      "id": "T01",
+      "priority": "P0",
+      "name": "启动、配置、迁移",
+      "files": "^$",
+      "extra": [
+        "backend/normal-summary.json",
+        "backend/race-summary.json",
+        "scripts-integration/completion-ledger.json"
+      ],
+      "boundary": "Fresh per-package PostgreSQL integration, actual runtime health/provenance and script fixtures; no production deployment",
+      "gaps": []
+    },
+    {
+      "id": "T02",
+      "priority": "P0",
+      "name": "认证与账号",
+      "files": "^(auth|password|missing-user-session|onboarding|main-supplemental-qa)",
+      "extra": [
+        "frontend/result.json",
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Real auth/browser journeys plus synthetic native Server-switch and session fixtures; injected login helpers alone do not prove login",
+      "gaps": [
+        {
+          "status": "NOT_RUN",
+          "scope": "Live missing/forged/foreign-bound CSRF and hostile HTTP/WS Origin negative witnesses",
+          "required": "Cookie-only real mutation with before/after state, browser CORS preflight/no mutation, live WS allowed-auth and hostile403 controls; owning-layer tests alone do not close this",
+          "resolver": "security_boundary_probe"
+        }
+      ]
+    },
+    {
+      "id": "T03",
+      "priority": "P0",
+      "name": "工作区、组织、成员",
+      "files": "^(workspace-|global-scope-navigation|main-supplemental-qa)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Actual browser/API workspace flows and backend authorization matrix",
+      "gaps": []
+    },
+    {
+      "id": "T04",
+      "priority": "P0",
+      "name": "任务生命周期",
+      "files": "^(issue-|issues\\.|core-business|task-lifecycle|lifecycle-handoff|canonical-issue-interaction|quick-actions)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Real CRUD/API/DB; core Agent journeys use SimulatedDaemon; M1 and deterministic assist need their own permits",
+      "gaps": []
+    },
+    {
+      "id": "T05",
+      "priority": "P1",
+      "name": "项目与小队默认",
+      "files": "^(projects-|project-squad|progress-reporting)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Current canonical Web/Electron-renderer project lifecycle, goals, health, risk and progress cases",
+      "gaps": []
+    },
+    {
+      "id": "T06",
+      "priority": "P1",
+      "name": "迭代",
+      "files": "^iteration",
+      "extra": [
+        "utc/result.json",
+        "backend-diagnostics/iteration-perf-01/summary.json",
+        "frontend/06-mobile-vitest.inventory.json"
+      ],
+      "boundary": "Real Web/native-renderer flows, database timezone round trips and handler P95; mobile is headless data only",
+      "gaps": []
+    },
+    {
+      "id": "T07",
+      "priority": "P1",
+      "name": "筛选、搜索、分页、导航",
+      "files": "^(issue-table|navigation|sidebar-|global-scope-navigation|canonical-issue-interaction|collaboration-account-desktop|iteration-history-navigation)",
+      "extra": [
+        "frontend/result.json"
+      ],
+      "boundary": "Canonical browser/renderer navigation and pagination; mocked large actor lists are not server load evidence",
+      "gaps": []
+    },
+    {
+      "id": "T08",
+      "priority": "P0",
+      "name": "评论、附件、引用",
+      "files": "^(upstream-selected-fixes|comments|chat-attachments|collaboration-retained-attachment|collaboration-runtime-output|collaboration-mention|upstream-backports-cli)",
+      "extra": [
+        "runtime/comment-authority-legacy-02/probe-result.json",
+        "runtime/comment-authority-password-01/probe-result.json",
+        "native-file-access/current-01/native-result.json"
+      ],
+      "known_failure": "Machine owner/admin task credentials changed other human authors' comments through real HTTP; separate generic-upload observations remain policy questions",
+      "boundary": "Ordinary live comments, real credential probes and native file-access fixtures; immutable runtime output requires actual controlled runtime lane",
+      "gaps": []
+    },
+    {
+      "id": "T09",
+      "priority": "P1",
+      "name": "Inbox、Triage",
+      "files": "^(upstream-selected-fixes|inbox-snooze|triage|collaboration-notifications-page|collaboration-offline-result-notifications)",
+      "extra": [
+        "utc/result.json",
+        "backend-diagnostics/triage-perf-01/summary.json"
+      ],
+      "boundary": "Browser and actual database snooze/triage, explicit native renderer; first snooze attempt refused incomplete allocation before business setup",
+      "gaps": []
+    },
+    {
+      "id": "T10",
+      "priority": "P1",
+      "name": "Agent、角色、小队",
+      "files": "^(upstream-selected-fixes|agent|squad|builtin-agent|autopilot|quick-create|localized-template-defaults|security-remediation-squad)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Real API/UI controls; recommendation and assist providers are deterministic local fixtures, not commercial model quality",
+      "gaps": []
+    },
+    {
+      "id": "T11",
+      "priority": "P0",
+      "name": "协作创建与信息",
+      "files": "^collaboration-(account|command-history|preparation-records|preview|records|runtime-handoff|boundaries|creation|detail|drawer|editing|information|pay-creation|recipient|requirements|resources|resource-offers|selection|source-surface|workbench|recovery|retained-attachment)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Actual API/production browser and fixture Main, exact original-key/history/permission recovery",
+      "gaps": []
+    },
+    {
+      "id": "T12",
+      "priority": "P0",
+      "name": "协作审批与交付",
+      "files": "^collaboration-(delivery|detail|handoff|stage|offline-handoff|administration|terminal-reopen)",
+      "extra": [
+        "backend/continuation-result-01.json",
+        "backend-diagnostics/stage-race-01/summary.json"
+      ],
+      "known_failure": "Original full Go race wrong_consumer scenario failed during legal M1 setup on a NOWAIT table-lock conflict; narrower diagnostic pass does not close it",
+      "boundary": "Canonical live human workflows plus actual service/router integration; stage signed proofs require explicit fixture configuration",
+      "gaps": []
+    },
+    {
+      "id": "T13",
+      "priority": "P0",
+      "name": "协作执行与控制",
+      "files": "^collaboration-(business|control|cross-client|host|lane-close|leave|lifecycle-controls|live-revoke|memory-runtime|multi-account|offline-result|order-export|recovery-runtime|runtime-output|terminal-reopen|timeout)",
+      "extra": [
+        "runtime/binary-builds.json",
+        "backend/normal-summary.json",
+        "backend/race-summary.json",
+        "coverage-audit/linux-go-feasibility-20261125.json",
+        "coverage-audit/linux-go-evidence-20261125.json"
+      ],
+      "boundary": "Controlled real daemon/provider/CLI only when named host tests execute; compilation and namespace simulation alone do not prove that path",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Seven original Linux Go namespace identities blocked under tested default container policy; two original process identities passed, root-only subcase passed separately",
+          "required": "A separately authorized supported namespace environment is needed; UID1000/root probes both exit2 and no privileged/unconfined retry is authorized. Probe outcomes are not canonical test failures.",
+          "resolver": "linux_go_owning_layer"
+        }
+      ]
+    },
+    {
+      "id": "T14",
+      "priority": "P0",
+      "name": "知识全生命周期",
+      "files": "^(collaboration-knowledge|project-knowledge-automation|collaboration-memory|collaboration-business-scenarios)",
+      "extra": [
+        "backend/normal-summary.json"
+      ],
+      "boundary": "Human knowledge API/browser and service integration; automatic knowledge and deployed on/off Host input need dedicated runs",
+      "gaps": [
+        {
+          "status": "NOT_RUN",
+          "scope": "Both deployment knowledge flag values must be witnessed; a single same-name PASS only establishes its recorded configuration",
+          "required": "knowledge-on and knowledge-off complete controlled Host receipts",
+          "resolver": "knowledge_deployed_both"
+        }
+      ]
+    },
+    {
+      "id": "T15",
+      "priority": "P0",
+      "name": "全局权限与隔离",
+      "files": "^(workspace-access|auth|password|platform-admin|admin-|collaboration-(boundaries|machine-boundary|administration|recovery|live-revoke|leave)|upstream-backports-cli|cli-forbidden-reason)",
+      "extra": [
+        "runtime/comment-authority-legacy-02/probe-result.json",
+        "runtime/comment-authority-password-01/probe-result.json",
+        "backend/continuation-result-01.json"
+      ],
+      "known_failure": "Comment machine-principal authority defect reproduced; govulncheck also reports 14 reachable findings with toolchain/platform limitations",
+      "boundary": "Exact legal-principal live HTTP witnesses plus canonical browser/backend refusals; generic comment upload observations are not an adjudicated policy violation",
+      "gaps": [
+        {
+          "status": "NOT_RUN",
+          "scope": "Live missing/forged/foreign-bound CSRF and hostile HTTP/WS Origin negative witnesses",
+          "required": "Cookie-only real mutation with before/after state, browser CORS preflight/no mutation, live WS allowed-auth and hostile403 controls; owning-layer tests alone do not close this",
+          "resolver": "security_boundary_probe"
+        }
+      ]
+    },
+    {
+      "id": "T16",
+      "priority": "P0",
+      "name": "实时与一致性",
+      "files": "^(core-business|global-scope-navigation|inbox-snooze|projects-p1-lifecycle|collaboration-(recovery|cross-client|host-runtime|information-recovery|requirements-history))",
+      "extra": [
+        "backend/normal-summary.json",
+        "utc/result.json"
+      ],
+      "boundary": "Actual clients/WS where exercised; core daemon is simulated and live recovery/host paths remain separate",
+      "gaps": []
+    },
+    {
+      "id": "T17",
+      "priority": "P1",
+      "name": "设置与资源",
+      "files": "^(settings|desktop-settings|mcp|skill|capability|runtime-welcome|retained-languages|changelog)",
+      "extra": [
+        "backend-diagnostics/skills-public-01/summary.json"
+      ],
+      "known_failure": "Fresh public GitHub skill-import integration returned HTTP403; no headers establish rate-limiting as the cause",
+      "boundary": "Local catalog/resource/settings behavior; remote public source failure retained without using personal credentials",
+      "gaps": []
+    },
+    {
+      "id": "T18",
+      "priority": "P0",
+      "name": "管理、安装与观测",
+      "files": "^(admin-|platform-admin|collaboration-administration)",
+      "extra": [
+        "backend/normal-summary.json",
+        "scripts-integration/completion-ledger.json"
+      ],
+      "boundary": "Dedicated real password admin/enrollment/runtime lanes; unit and Compose contract results cannot replace their UI actions",
+      "gaps": []
+    },
+    {
+      "id": "T19",
+      "priority": "P1",
+      "name": "桌面原生与持久化",
+      "files": "(desktop|password-server-switch|password-session-persistence|collaboration-host-installed|collaboration-installed-main)",
+      "extra": [
+        "native-file-access/current-01/native-result.json",
+        "native-acceptance/current06-package.json",
+        "native-acceptance/current06-signature.json"
+      ],
+      "boundary": "Renderer/preload/fixture Main and actual packaged production Main reported separately; ad-hoc signing is not distribution/notarization",
+      "gaps": []
+    },
+    {
+      "id": "T20",
+      "priority": "P1",
+      "name": "移动端",
+      "files": "^$",
+      "extra": [
+        "frontend/04-mobile-typecheck.inventory.json",
+        "frontend/05-mobile-lint.inventory.json",
+        "frontend/06-mobile-vitest.inventory.json",
+        "frontend/07-mobile-ios-script.inventory.json"
+      ],
+      "boundary": "196 Node headless tests and independent static/script gates only",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Native iOS/RN login, keyboard, foreground/background and network recovery",
+          "required": "Installed full Xcode, iOS simulator/device and native driver; absent in retained local prerequisite inspection"
+        }
+      ]
+    },
+    {
+      "id": "T21",
+      "priority": "P1",
+      "name": "CLI、daemon、安装/升级",
+      "files": "^(upstream-backports-cli|cli-forbidden-reason|core-business-agent-loops|collaboration-(host|installed|cross-client|memory-runtime))",
+      "extra": [
+        "runtime/binary-builds.json",
+        "backend/normal-summary.json",
+        "backend/race-summary.json",
+        "scripts-integration/completion-ledger.json",
+        "coverage-audit/linux-go-feasibility-20261125.json",
+        "coverage-audit/linux-go-evidence-20261125.json"
+      ],
+      "boundary": "Current fake-protected Go/native Host/CLI; fixed legacy OCI compatibility separate from package installation and updater",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Native Windows installer/Jobs/ACL and signed OS updater/restart",
+          "required": "Native matching runner or signing/updater conditions; current macOS ad-hoc package does not establish them"
+        },
+        {
+          "status": "BLOCKED",
+          "scope": "Seven original Linux Go namespace identities blocked under tested default container policy; two original process identities passed, root-only subcase passed separately",
+          "required": "A separately authorized supported namespace environment is needed; UID1000/root probes both exit2 and no privileged/unconfined retry is authorized. Probe outcomes are not canonical test failures.",
+          "resolver": "linux_go_owning_layer"
+        }
+      ]
+    },
+    {
+      "id": "T22",
+      "priority": "P2",
+      "name": "多语言、主题、可访问性",
+      "files": "^(upstream-selected-fixes|retained-languages|localized-template-defaults|quick-create-blocked-feedback|skill-library-accessibility|triage-layout|iteration-scope|collaboration-mention|property-icons|desktop-settings|inbox-snooze)",
+      "extra": [
+        "frontend/result.json"
+      ],
+      "boundary": "Only named viewport/theme/keyboard/layout assertions and saved captures; no blanket claim of every UI surface or native mobile accessibility",
+      "gaps": []
+    },
+    {
+      "id": "T23",
+      "priority": "P1",
+      "name": "文档、插件、自托管",
+      "files": "^(plugin-|iframe-|changelog)",
+      "extra": [
+        "builds/commands.json",
+        "scripts/recovery-review-01.json",
+        "scripts-integration/completion-ledger.json"
+      ],
+      "boundary": "Current docs production build, plugin/iframe browser assertions and local Compose/Docker/Postgres script integration; no deployment/publish",
+      "gaps": [
+        {
+          "status": "BLOCKED",
+          "scope": "Four declared platform script entry points: one Helm, three PowerShell",
+          "required": "Helm/PowerShell runtime absent; no new dependency installation authorized"
+        }
+      ]
+    },
+    {
+      "id": "T24",
+      "priority": "P1",
+      "name": "性能、规模、清理",
+      "files": "^collaboration-performance",
+      "extra": [
+        "backend-diagnostics/iteration-perf-01/summary.json",
+        "backend-diagnostics/triage-perf-01/summary.json",
+        "backend/continuation-result-01.json",
+        "backend/root-cleanup-result-20261125.json",
+        "runtime/global-final-cleanup-receipt.json"
+      ],
+      "boundary": "Performance thresholds and final current-resource closure verified: PG/Redis stopped, retained data,182ports closed,0owned processes/locks/extra containers; CLI03 historical fallback cleanupFAIL retained separately and not rewritten.",
+      "gaps": [],
+      "historical_cleanup_failure": {
+        "status": "FAIL",
+        "lane": "installed-cli-03",
+        "evidence": "installed-cli-acceptance/installed-cli-03/resource-cleanup.json",
+        "note": "Current final cleanup PASS is separate from original fallback-volume deletion FAIL."
+      }
+    },
+    {
+      "id": "T25",
+      "priority": "P1",
+      "name": "Chat 会话与消息",
+      "files": "^chat-",
+      "extra": [
+        "frontend/result.json",
+        "backend/normal-summary.json"
+      ],
+      "boundary": "10 current browser cases plus canonical headless/backend tests; injected failure responses remain labeled fixture recovery, not arbitrary network/device proof",
+      "gaps": []
+    }
+  ],
+  "lanes": [
+    {
+      "id": "L0",
+      "name": "静态、TS、Go、脚本、UTC",
+      "status": "FAIL",
+      "evidence": [
+        "frontend/result.json",
+        "backend/continuation-result-01.json",
+        "utc/result.json",
+        "scripts/recovery-review-01.json",
+        "scripts-integration/completion-ledger.json",
+        "coverage-audit/linux-go-feasibility-20261125.json",
+        "coverage-audit/linux-go-evidence-20261125.json"
+      ],
+      "boundary": "Lint/typecheck/TS and normal Go passed; original race and govulncheck failed; Linux normal supplement closes2 original process skips +1 root preflight subcase;7 namespace identities BLOCKED in tested default policy; remaining platform/script gaps retained"
+    },
+    {
+      "id": "L1",
+      "name": "默认 legacy 与补充",
+      "evidence": [
+        "runtime/legacy-broad-02/completion.json"
+      ],
+      "boundary": "Original538 complete:400PASS138SKIP; assist/recommendation/manual detail supplements tracked separately; fixture Main only"
+    },
+    {
+      "id": "L2",
+      "name": "password",
+      "evidence": [
+        "runtime/password-registration-01/completion.json",
+        "runtime/password-branches-01/completion.json",
+        "runtime/password-native-switch-mcp-01/completion.json"
+      ],
+      "boundary": "Independent compatible password suites, real auth flows and separately declared native fixtures"
+    },
+    {
+      "id": "L3",
+      "name": "admin/managed",
+      "evidence": [],
+      "boundary": "Fresh synthetic admins, actual enrollment/resource/observability, no inherited production account"
+    },
+    {
+      "id": "L4",
+      "name": "device auth",
+      "evidence": [
+        "runtime/device-01/completion.json"
+      ],
+      "boundary": "One exact live device login case; independent device API"
+    },
+    {
+      "id": "L5",
+      "name": "namespace/control",
+      "evidence": [],
+      "boundary": "Namespace-only gate, explicit fixture binaries; not real commercial-model/host proof"
+    },
+    {
+      "id": "L6",
+      "name": "host/knowledge/output",
+      "evidence": [],
+      "boundary": "Real controlled local daemon/provider/CLI; deterministic fixture provider, distinct knowledge-on/off variants",
+      "variant_requirement": {
+        "file": "collaboration-knowledge-deployed.spec.ts",
+        "modes": [
+          "on",
+          "off"
+        ]
+      }
+    },
+    {
+      "id": "L7",
+      "name": "packaged/installed Main",
+      "evidence": [
+        "native-acceptance/current06-package.json",
+        "native-acceptance/current06-asar-verification.json",
+        "native-acceptance/current06-signature.json"
+      ],
+      "boundary": "Full packaged journey result requires original named case and exact protocol/process restore; package assembly alone is preparation, failed boot/control attempts remain failed"
+    },
+    {
+      "id": "L8",
+      "name": "Firefox/WebKit",
+      "status": "BLOCKED",
+      "evidence": [],
+      "boundary": "Only Chromium installed/configured in inspected cache; no added browser dependencies"
+    },
+    {
+      "id": "L9",
+      "name": "Mobile",
+      "status": "BLOCKED",
+      "evidence": [
+        "frontend/04-mobile-typecheck.inventory.json",
+        "frontend/05-mobile-lint.inventory.json",
+        "frontend/06-mobile-vitest.inventory.json"
+      ],
+      "boundary": "Independent static and196headless tests PASS; native Xcode/simulator/driver absent"
+    },
+    {
+      "id": "L10",
+      "name": "100-user performance",
+      "evidence": [],
+      "boundary": "Fresh100-account manifest/default API pool and sequential prepare→propagation→writeback; require complete10000 propagation and100×2 writeback samples plus original thresholds and cleanup"
+    }
+  ]
+}

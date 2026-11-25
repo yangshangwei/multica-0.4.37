@@ -1,0 +1,1233 @@
+{
+  "at": "2026-11-25T08:44:14.676864+00:00",
+  "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "handback": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/linux-main-acceptance/linux-main-04/slot-handback-global-final.json",
+  "handback_sha256": "377fce79f5af3480e52401d5852cd03dd98c6206468e0a4e6c8d2c16fd0b0466",
+  "handback_evidence_files_verified": 13,
+  "source": {
+    "candidate": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_count": 32724,
+    "source_fingerprint": "3ee5bc8f9244d76f142e0fb39cdf5db45446f67f76f8893e82ad1abfbd75297f",
+    "generated_differences": [],
+    "support_materials": [
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/desktop.png",
+        "sha256": "31595c30f1b1bf285e6b07690af8bafc81bd313ef9228cd8658ec116da50867f",
+        "mode": 420,
+        "size": 121097,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile-dark-examples.png",
+        "sha256": "6db211e5fed14bbbc23dd1cdf0a9f35a19c6e2ee3d001cafd93a52ce6b48baf7",
+        "mode": 420,
+        "size": 50432,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/mobile.png",
+        "sha256": "925eff4f0c988f32ff931d90f34b2f8ab0b403c946c6b48de1ee328a0a034ddf",
+        "mode": 420,
+        "size": 53094,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/review/runtime-welcome/narrow-english.png",
+        "sha256": "6e4ccbf9c0154c2a1943fca198e48fb0053c25b317c0c3dbcc44ec6802c01363",
+        "mode": 420,
+        "size": 35650,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/ews-runtimes-components-runtimes-page-tsx-939120c8.md",
+        "sha256": "14c21b8d0dde3a9b3c0c2217d54f38f7322a52f6c1638c34b787df7d8765a556",
+        "mode": 420,
+        "size": 3136,
+        "uid": 501,
+        "kind": "non-executable support material"
+      },
+      {
+        "path": "packages/views/.impeccable/surfaces/packages-views-marketplace-marketplace-page-tsx.md",
+        "sha256": "382edd046412f3de0e0bd8a6f13d80de0f541e97f71a281c6b55c803282b83db",
+        "mode": 420,
+        "size": 1470,
+        "uid": 501,
+        "kind": "non-executable support material"
+      }
+    ],
+    "support_sha256": "037ff3394ac7dfd9813cda75a22c1ba5a3ee4ad04467a254509fb1c01c1bd851"
+  },
+  "protocol": {
+    "scheme": "multica",
+    "default_application_url": "file:///Applications/Multica.app/",
+    "handlers": [
+      "ai.multica.desktop"
+    ],
+    "registrations": {
+      "ai.multica.desktop": [
+        "file:///Applications/Multica.app/",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r2/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/mac-package/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app/",
+        "file:///Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app/"
+      ]
+    }
+  },
+  "containers": [
+    {
+      "id": "c7602a619c9bd0a870772dffff52dfea8b8c650545ef0d45b35d2ffdfdea80fe",
+      "name": "/main-e2e-runtime-7df2120a1b5b-pg",
+      "owner": "main-e2e-runtime-7df2120a1b5b",
+      "running": true,
+      "image": "sha256:215ae4d47393a980e9ef7ff7760f7dad53ec3e84bceb9fbd45cef34e50b5ba0f",
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "main-e2e-runtime-7df2120a1b5b-pg-data",
+          "destination": "/var/lib/postgresql/data"
+        }
+      ]
+    },
+    {
+      "id": "fd5e59e207f2b2273760854f7f95623881e66795ee9ac918eea628ecbafacbe2",
+      "name": "/main-e2e-backend-924fea80cfce-redis",
+      "owner": "main-e2e-backend-924fea80cfce",
+      "running": false,
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "82015e11b3b2a9f708a7fa1c219a5477824ee954490f7047db8fcb971af2c5e9",
+          "destination": "/data"
+        }
+      ]
+    },
+    {
+      "id": "5bc6b2a4dd3c7743148d807de799a54854a4abc9ea94f6c0e38b273320f967fb",
+      "name": "/main-e2e-backend-924fea80cfce-pg",
+      "owner": "main-e2e-backend-924fea80cfce",
+      "running": false,
+      "image": "sha256:215ae4d47393a980e9ef7ff7760f7dad53ec3e84bceb9fbd45cef34e50b5ba0f",
+      "mounts": [
+        {
+          "type": "volume",
+          "name": "main-e2e-backend-924fea80cfce-pg-data",
+          "destination": "/var/lib/postgresql/data"
+        }
+      ]
+    }
+  ],
+  "runtimepg": {
+    "id": "c7602a619c9bd0a870772dffff52dfea8b8c650545ef0d45b35d2ffdfdea80fe",
+    "port": 49908,
+    "other_clients": 0
+  },
+  "cli_all20containers10volumes_currently_absent": true,
+  "cli_original_fallback_cleanup_failure_preserved": true,
+  "linux04_containers_currently_absent": true,
+  "locks": [],
+  "owned_processes": [],
+  "historical_service_ports": [
+    {
+      "run": "runtime/installed-main-02",
+      "name": "api",
+      "port": 49866,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-main-02",
+      "name": "web",
+      "port": 49867,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-main-02",
+      "name": "renderer",
+      "port": 49868,
+      "closed": true
+    },
+    {
+      "run": "runtime/m1-01",
+      "name": "api",
+      "port": 65343,
+      "closed": true
+    },
+    {
+      "run": "runtime/m1-01",
+      "name": "web",
+      "port": 65344,
+      "closed": true
+    },
+    {
+      "run": "runtime/namespace-controls-01",
+      "name": "api",
+      "port": 56710,
+      "closed": true
+    },
+    {
+      "run": "runtime/namespace-controls-01",
+      "name": "web",
+      "port": 56711,
+      "closed": true
+    },
+    {
+      "run": "runtime/namespace-controls-01",
+      "name": "renderer",
+      "port": 56712,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-manual-handoff-01",
+      "name": "api",
+      "port": 51484,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-manual-handoff-01",
+      "name": "web",
+      "port": 51485,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-manual-handoff-01",
+      "name": "renderer",
+      "port": 51486,
+      "closed": true
+    },
+    {
+      "run": "runtime/recovery-extras-delayed-02",
+      "name": "api",
+      "port": 63037,
+      "closed": true
+    },
+    {
+      "run": "runtime/recovery-extras-delayed-02",
+      "name": "web",
+      "port": 63038,
+      "closed": true
+    },
+    {
+      "run": "runtime/recovery-extras-delayed-02",
+      "name": "renderer",
+      "port": 63039,
+      "closed": true
+    },
+    {
+      "run": "runtime/native-response-01",
+      "name": "api",
+      "port": 52299,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-collaboration-desktop-01",
+      "name": "api",
+      "port": 56362,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-collaboration-desktop-01",
+      "name": "web",
+      "port": 56363,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-collaboration-desktop-01",
+      "name": "renderer",
+      "port": 56364,
+      "closed": true
+    },
+    {
+      "run": "runtime/legacy-broad-01",
+      "name": "api",
+      "port": 62487,
+      "closed": true
+    },
+    {
+      "run": "runtime/legacy-broad-01",
+      "name": "web",
+      "port": 62488,
+      "closed": true
+    },
+    {
+      "run": "runtime/legacy-broad-01",
+      "name": "renderer",
+      "port": 62489,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-installations-01",
+      "name": "api",
+      "port": 54892,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-installations-01",
+      "name": "web",
+      "port": 54893,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-installations-01",
+      "name": "renderer",
+      "port": 54894,
+      "closed": true
+    },
+    {
+      "run": "runtime/security-boundary-02",
+      "name": "api",
+      "port": 64450,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-access-01",
+      "name": "api",
+      "port": 53038,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-access-01",
+      "name": "web",
+      "port": 53039,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-access-01",
+      "name": "renderer",
+      "port": 53040,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-registration-01",
+      "name": "api",
+      "port": 50651,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-registration-01",
+      "name": "web",
+      "port": 50652,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-registration-01",
+      "name": "renderer",
+      "port": 50653,
+      "closed": true
+    },
+    {
+      "run": "runtime/linux-main-03",
+      "name": "api",
+      "port": 50296,
+      "closed": true
+    },
+    {
+      "run": "runtime/linux-main-03",
+      "name": "web",
+      "port": 50297,
+      "closed": true
+    },
+    {
+      "run": "runtime/linux-main-03",
+      "name": "renderer",
+      "port": 50298,
+      "closed": true
+    },
+    {
+      "run": "runtime/linux-main-04",
+      "name": "api",
+      "port": 52152,
+      "closed": true
+    },
+    {
+      "run": "runtime/linux-main-04",
+      "name": "web",
+      "port": 52153,
+      "closed": true
+    },
+    {
+      "run": "runtime/linux-main-04",
+      "name": "renderer",
+      "port": 52154,
+      "closed": true
+    },
+    {
+      "run": "runtime/lifecycle-01",
+      "name": "api",
+      "port": 55566,
+      "closed": true
+    },
+    {
+      "run": "runtime/lifecycle-01",
+      "name": "web",
+      "port": 55567,
+      "closed": true
+    },
+    {
+      "run": "runtime/lifecycle-01",
+      "name": "renderer",
+      "port": 55568,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-collaboration-web-01",
+      "name": "api",
+      "port": 55991,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-collaboration-web-01",
+      "name": "web",
+      "port": 55992,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-collaboration-web-01",
+      "name": "renderer",
+      "port": 55993,
+      "closed": true
+    },
+    {
+      "run": "runtime/comment-authority-legacy-01",
+      "name": "api",
+      "port": 63602,
+      "closed": true
+    },
+    {
+      "run": "runtime/business-scenarios-01",
+      "name": "api",
+      "port": 55800,
+      "closed": true
+    },
+    {
+      "run": "runtime/business-scenarios-01",
+      "name": "web",
+      "port": 55801,
+      "closed": true
+    },
+    {
+      "run": "runtime/business-scenarios-01",
+      "name": "renderer",
+      "port": 55802,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-native-switch-mcp-01",
+      "name": "api",
+      "port": 53177,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-native-switch-mcp-01",
+      "name": "web",
+      "port": 53178,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-native-switch-mcp-01",
+      "name": "renderer",
+      "port": 53179,
+      "closed": true
+    },
+    {
+      "run": "runtime/device-01",
+      "name": "api",
+      "port": 55663,
+      "closed": true
+    },
+    {
+      "run": "runtime/device-01",
+      "name": "web",
+      "port": 55664,
+      "closed": true
+    },
+    {
+      "run": "runtime/stage-02",
+      "name": "api",
+      "port": 57739,
+      "closed": true
+    },
+    {
+      "run": "runtime/stage-02",
+      "name": "web",
+      "port": 57740,
+      "closed": true
+    },
+    {
+      "run": "runtime/stage-02",
+      "name": "renderer",
+      "port": 57741,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-executions-01",
+      "name": "api",
+      "port": 54493,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-executions-01",
+      "name": "web",
+      "port": 54494,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-executions-01",
+      "name": "renderer",
+      "port": 54495,
+      "closed": true
+    },
+    {
+      "run": "runtime/resource-publishing-01",
+      "name": "api",
+      "port": 61532,
+      "closed": true
+    },
+    {
+      "run": "runtime/resource-publishing-01",
+      "name": "web",
+      "port": 61533,
+      "closed": true
+    },
+    {
+      "run": "runtime/resource-publishing-01",
+      "name": "renderer",
+      "port": 61534,
+      "closed": true
+    },
+    {
+      "run": "runtime/lane-close-01",
+      "name": "api",
+      "port": 52459,
+      "closed": true
+    },
+    {
+      "run": "runtime/lane-close-01",
+      "name": "web",
+      "port": 52460,
+      "closed": true
+    },
+    {
+      "run": "runtime/lane-close-01",
+      "name": "renderer",
+      "port": 52461,
+      "closed": true
+    },
+    {
+      "run": "runtime/recommendations-01",
+      "name": "api",
+      "port": 52008,
+      "closed": true
+    },
+    {
+      "run": "runtime/recommendations-01",
+      "name": "web",
+      "port": 52009,
+      "closed": true
+    },
+    {
+      "run": "runtime/recommendations-01",
+      "name": "renderer",
+      "port": 52010,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-accounts-01",
+      "name": "api",
+      "port": 53498,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-accounts-01",
+      "name": "web",
+      "port": 53499,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-accounts-01",
+      "name": "renderer",
+      "port": 53500,
+      "closed": true
+    },
+    {
+      "run": "runtime/cross-client-01",
+      "name": "api",
+      "port": 51499,
+      "closed": true
+    },
+    {
+      "run": "runtime/cross-client-01",
+      "name": "web",
+      "port": 51500,
+      "closed": true
+    },
+    {
+      "run": "runtime/cross-client-01",
+      "name": "renderer",
+      "port": 51501,
+      "closed": true
+    },
+    {
+      "run": "runtime/native-response-02",
+      "name": "api",
+      "port": 61381,
+      "closed": true
+    },
+    {
+      "run": "runtime/assist-01",
+      "name": "api",
+      "port": 51052,
+      "closed": true
+    },
+    {
+      "run": "runtime/assist-01",
+      "name": "web",
+      "port": 51053,
+      "closed": true
+    },
+    {
+      "run": "runtime/assist-01",
+      "name": "renderer",
+      "port": 51054,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-controls-01",
+      "name": "api",
+      "port": 53853,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-controls-01",
+      "name": "web",
+      "port": 53854,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-controls-01",
+      "name": "renderer",
+      "port": 53855,
+      "closed": true
+    },
+    {
+      "run": "runtime/legacy-broad-02",
+      "name": "api",
+      "port": 51759,
+      "closed": true
+    },
+    {
+      "run": "runtime/legacy-broad-02",
+      "name": "web",
+      "port": 51760,
+      "closed": true
+    },
+    {
+      "run": "runtime/legacy-broad-02",
+      "name": "renderer",
+      "port": 51761,
+      "closed": true
+    },
+    {
+      "run": "runtime/security-boundary-01",
+      "name": "api",
+      "port": 61048,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-branches-01",
+      "name": "api",
+      "port": 51518,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-branches-01",
+      "name": "web",
+      "port": 51519,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-branches-01",
+      "name": "renderer",
+      "port": 51520,
+      "closed": true
+    },
+    {
+      "run": "runtime/offline-notifications-01",
+      "name": "api",
+      "port": 56143,
+      "closed": true
+    },
+    {
+      "run": "runtime/offline-notifications-01",
+      "name": "web",
+      "port": 56144,
+      "closed": true
+    },
+    {
+      "run": "runtime/offline-notifications-01",
+      "name": "renderer",
+      "port": 56145,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-cli-02",
+      "name": "api",
+      "port": 58485,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-cli-02",
+      "name": "web",
+      "port": 58486,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-cli-02",
+      "name": "renderer",
+      "port": 58487,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-manual-surfaces-01",
+      "name": "api",
+      "port": 54038,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-manual-surfaces-01",
+      "name": "web",
+      "port": 54039,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-manual-surfaces-01",
+      "name": "renderer",
+      "port": 54040,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-switches-01",
+      "name": "api",
+      "port": 55776,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-switches-01",
+      "name": "web",
+      "port": 55777,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-switches-01",
+      "name": "renderer",
+      "port": 55778,
+      "closed": true
+    },
+    {
+      "run": "runtime/comment-authority-legacy-02",
+      "name": "api",
+      "port": 53773,
+      "closed": true
+    },
+    {
+      "run": "runtime/inbox-snooze-01",
+      "name": "api",
+      "port": 65473,
+      "closed": true
+    },
+    {
+      "run": "runtime/inbox-snooze-01",
+      "name": "web",
+      "port": 65474,
+      "closed": true
+    },
+    {
+      "run": "runtime/inbox-snooze-01",
+      "name": "renderer",
+      "port": 65475,
+      "closed": true
+    },
+    {
+      "run": "runtime/business-scenarios-02",
+      "name": "api",
+      "port": 58589,
+      "closed": true
+    },
+    {
+      "run": "runtime/business-scenarios-02",
+      "name": "web",
+      "port": 58590,
+      "closed": true
+    },
+    {
+      "run": "runtime/business-scenarios-02",
+      "name": "renderer",
+      "port": 58591,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-cli-03",
+      "name": "api",
+      "port": 65410,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-cli-03",
+      "name": "web",
+      "port": 65411,
+      "closed": true
+    },
+    {
+      "run": "runtime/installed-cli-03",
+      "name": "renderer",
+      "port": 65412,
+      "closed": true
+    },
+    {
+      "run": "runtime/comment-authority-password-01",
+      "name": "api",
+      "port": 54697,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-observability-01",
+      "name": "api",
+      "port": 55306,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-observability-01",
+      "name": "web",
+      "port": 55307,
+      "closed": true
+    },
+    {
+      "run": "runtime/admin-observability-01",
+      "name": "renderer",
+      "port": 55308,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-retained-01",
+      "name": "api",
+      "port": 55310,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-retained-01",
+      "name": "web",
+      "port": 55311,
+      "closed": true
+    },
+    {
+      "run": "runtime/password-retained-01",
+      "name": "renderer",
+      "port": 55312,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/information-desktop-02",
+      "name": "api",
+      "port": 57012,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/information-desktop-02",
+      "name": "web",
+      "port": 57013,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/information-desktop-02",
+      "name": "renderer",
+      "port": 57014,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/pay-creation-01",
+      "name": "api",
+      "port": 60580,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/pay-creation-01",
+      "name": "web",
+      "port": 60581,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/pay-creation-01",
+      "name": "renderer",
+      "port": 60582,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/information-recovery-01",
+      "name": "api",
+      "port": 63144,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/information-recovery-01",
+      "name": "web",
+      "port": 63145,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/information-recovery-01",
+      "name": "renderer",
+      "port": 63146,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/requirements-history-01",
+      "name": "api",
+      "port": 60936,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/requirements-history-01",
+      "name": "web",
+      "port": 60937,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/requirements-history-01",
+      "name": "renderer",
+      "port": 60938,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/runtime-output-01",
+      "name": "api",
+      "port": 58480,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/runtime-output-01",
+      "name": "web",
+      "port": 58481,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/runtime-output-01",
+      "name": "renderer",
+      "port": 58482,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/recovery-extras-five-01",
+      "name": "api",
+      "port": 62695,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/recovery-extras-five-01",
+      "name": "web",
+      "port": 62696,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/recovery-extras-five-01",
+      "name": "renderer",
+      "port": 62697,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/knowledge-deployed-off-01",
+      "name": "api",
+      "port": 54982,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/knowledge-deployed-off-01",
+      "name": "web",
+      "port": 54983,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/knowledge-deployed-off-01",
+      "name": "renderer",
+      "port": 54984,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/multi-account-timeout-01",
+      "name": "api",
+      "port": 53120,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/multi-account-timeout-01",
+      "name": "web",
+      "port": 53121,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/multi-account-timeout-01",
+      "name": "renderer",
+      "port": 53122,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/password-migration-binding-01",
+      "name": "api",
+      "port": 49663,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/password-migration-binding-01",
+      "name": "web",
+      "port": 49664,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/password-migration-binding-01",
+      "name": "renderer",
+      "port": 49665,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/ordinary-ui-recovery-01",
+      "name": "api",
+      "port": 65213,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/ordinary-ui-recovery-01",
+      "name": "web",
+      "port": 65214,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/ordinary-ui-recovery-01",
+      "name": "renderer",
+      "port": 65215,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/host-basic-01",
+      "name": "api",
+      "port": 50063,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/host-basic-01",
+      "name": "web",
+      "port": 50064,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/host-basic-01",
+      "name": "renderer",
+      "port": 50065,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/knowledge-deployed-on-01",
+      "name": "api",
+      "port": 54224,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/knowledge-deployed-on-01",
+      "name": "web",
+      "port": 54225,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/knowledge-deployed-on-01",
+      "name": "renderer",
+      "port": 54226,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/order-export-leave-01",
+      "name": "api",
+      "port": 50105,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/order-export-leave-01",
+      "name": "web",
+      "port": 50106,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/order-export-leave-01",
+      "name": "renderer",
+      "port": 50107,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/inbox-snooze-02",
+      "name": "api",
+      "port": 50564,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/inbox-snooze-02",
+      "name": "web",
+      "port": 50565,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/inbox-snooze-02",
+      "name": "renderer",
+      "port": 50566,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/memory-runtime-01",
+      "name": "api",
+      "port": 63827,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/memory-runtime-01",
+      "name": "web",
+      "port": 63828,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/memory-runtime-01",
+      "name": "renderer",
+      "port": 63829,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/stage-approvals-01",
+      "name": "api",
+      "port": 56206,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/stage-approvals-01",
+      "name": "web",
+      "port": 56207,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/stage-approvals-01",
+      "name": "renderer",
+      "port": 56208,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/order-export-01",
+      "name": "api",
+      "port": 65014,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/order-export-01",
+      "name": "web",
+      "port": 65015,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/order-export-01",
+      "name": "renderer",
+      "port": 65016,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/manual-detail-01",
+      "name": "api",
+      "port": 59297,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/manual-detail-01",
+      "name": "web",
+      "port": 59298,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/manual-detail-01",
+      "name": "renderer",
+      "port": 59299,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/runtime-recovery-01",
+      "name": "api",
+      "port": 65035,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/runtime-recovery-01",
+      "name": "web",
+      "port": 65036,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/runtime-recovery-01",
+      "name": "renderer",
+      "port": 65037,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/admin-auto-init-01",
+      "name": "api",
+      "port": 50156,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/admin-auto-init-01",
+      "name": "web",
+      "port": 50157,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/admin-auto-init-01",
+      "name": "renderer",
+      "port": 50158,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/recovery-01",
+      "name": "api",
+      "port": 61521,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/recovery-01",
+      "name": "web",
+      "port": 61522,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/recovery-01",
+      "name": "renderer",
+      "port": 61523,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/subscriptions-recovery-01",
+      "name": "api",
+      "port": 49542,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/subscriptions-recovery-01",
+      "name": "web",
+      "port": 49543,
+      "closed": true
+    },
+    {
+      "run": "runtime-supplement/subscriptions-recovery-01",
+      "name": "renderer",
+      "port": 49544,
+      "closed": true
+    }
+  ],
+  "all_current_resource_checks_pass": true
+}

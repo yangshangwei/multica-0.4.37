@@ -1,0 +1,973 @@
+{
+  "candidate_sha": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+  "created_at": "2026-11-25T02:23:55.474547+00:00",
+  "status": "FAIL",
+  "report_scope": "backend acceptance evidence closure, not complete browser/platform campaign",
+  "source_audit": {
+    "head": "103e2bc329a9fb845d9f45c20b2a9bb3ebb54625",
+    "tracked_files": 32724,
+    "allowed_generated_changes": []
+  },
+  "product_source_changed": false,
+  "new_execution": [
+    {
+      "label": "iteration-perf-01",
+      "counts": {
+        "named_counts": {
+          "pass": 2
+        },
+        "top_counts": {
+          "pass": 2
+        },
+        "leaf_counts": {
+          "pass": 2
+        }
+      },
+      "command_exit": 0,
+      "accepted": true,
+      "database": "qa_924fea80cfce_diag_iteration_perf_01",
+      "remaining_clients": 0,
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/iteration-perf-01/receipt.json",
+      "receipt_sha256": "c0b1b09a2d2a11eb276576b78f7d1625f714a586587193cb250db5d6a2273970",
+      "allocation_sha256": "bcc91dc740223af92fd4caa884f296f3fe7e202e09de97e8a95f3d93dc74596a",
+      "results": {
+        "TestIterationI1P95": {
+          "p95_ms": {
+            "closure": 536.588,
+            "detail": 58.649,
+            "preview": 119.215
+          },
+          "threshold_ms": 2000,
+          "payload": {
+            "cache": "first access then warm; OS/PG cache not flushed",
+            "distribution": "1000 todo; 10 projects; owner assignee; five priorities; three of six labels per task; real membership, baseline and repeated carryover",
+            "go": "go1.27.0",
+            "lock_wait": {
+              "blocked_samples": 0,
+              "events": {},
+              "sampled_blocked_ms": 0,
+              "samples": 67308
+            },
+            "measured_samples": 30,
+            "postgres": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+            "samples_ms": {
+              "closure": [
+                952.495,
+                436.234,
+                425.216,
+                440.279,
+                428.593,
+                443.256,
+                420.571,
+                452.894,
+                502.449,
+                435.221,
+                441.23,
+                445.928,
+                428.488,
+                485.348,
+                465.037,
+                461.88,
+                436.858,
+                442.909,
+                447.816,
+                436.495,
+                453.179,
+                462.202,
+                483.887,
+                536.588,
+                460.282,
+                449.139,
+                444.775,
+                467.763,
+                467.373,
+                558.867,
+                457.493,
+                473.263,
+                448.949,
+                431.451,
+                499.989
+              ],
+              "detail": [
+                74.82,
+                77.088,
+                49.775,
+                60.428,
+                49.257,
+                50.385,
+                49.177,
+                47.268,
+                49.414,
+                50.765,
+                48.145,
+                49.287,
+                50.498,
+                49.654,
+                48.753,
+                57.404,
+                55.44,
+                48.664,
+                49.261,
+                51.47,
+                46.986,
+                50.777,
+                52.986,
+                52.705,
+                71.457,
+                49.769,
+                58.284,
+                49.679,
+                50.398,
+                58.649,
+                48.542,
+                52.351,
+                49.513,
+                50.271,
+                53.041
+              ],
+              "preview": [
+                99.197,
+                90.212,
+                85.702,
+                91.52,
+                90.825,
+                98.052,
+                85.739,
+                93.274,
+                92.289,
+                91.841,
+                88.579,
+                88.132,
+                90.851,
+                96.136,
+                88.728,
+                93.353,
+                86.426,
+                93.876,
+                89.236,
+                89.585,
+                89.771,
+                92.091,
+                89.879,
+                115.139,
+                90.018,
+                148.37,
+                91.033,
+                88.391,
+                89.009,
+                119.215,
+                86.874,
+                88.322,
+                85.227,
+                86.829,
+                87.125
+              ]
+            },
+            "sql_statements": 501511,
+            "tasks_per_cycle": 1000,
+            "warmup_samples": 5
+          }
+        },
+        "TestIterationI1DisableP95": {
+          "p95_ms": {
+            "disable_preview": 242.006,
+            "disable_apply": 463.499
+          },
+          "threshold_ms": 2000,
+          "payload": {
+            "disable_ms": [
+              482.224,
+              348.744,
+              364.227,
+              350.673,
+              365.141,
+              350.513,
+              373.484,
+              461.902,
+              412.592,
+              359.162,
+              372.652,
+              463.499,
+              364.394,
+              362.856,
+              412.005,
+              401.82,
+              379.167,
+              583.218,
+              454.837,
+              360.625,
+              401.222,
+              338.569,
+              347.011,
+              388.275,
+              372.114,
+              406.397,
+              431.492,
+              428.666,
+              336.736,
+              414.286,
+              404.24,
+              367.132,
+              370.667,
+              429.859,
+              377.218
+            ],
+            "measured_samples": 30,
+            "members": 1530,
+            "plans": 51,
+            "preview_ms": [
+              227.577,
+              154.017,
+              150.544,
+              149.244,
+              153.834,
+              157.19,
+              139.434,
+              157.097,
+              145.637,
+              150.315,
+              163.9,
+              152.323,
+              143.77,
+              161.612,
+              149.582,
+              148.248,
+              143.383,
+              267.993,
+              242.006,
+              204.339,
+              150.854,
+              126.686,
+              132.906,
+              129.506,
+              135.168,
+              152.452,
+              148.237,
+              150.442,
+              127.486,
+              147.991,
+              134.8,
+              134.509,
+              140.776,
+              139.977,
+              136.981
+            ],
+            "warmup_samples": 5
+          }
+        }
+      }
+    },
+    {
+      "label": "triage-perf-01",
+      "counts": {
+        "named_counts": {
+          "pass": 1
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 1
+        }
+      },
+      "command_exit": 0,
+      "accepted": true,
+      "database": "qa_924fea80cfce_diag_triage_perf_01",
+      "remaining_clients": 0,
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/triage-perf-01/receipt.json",
+      "receipt_sha256": "f7f8f91564eec7d4d775b5864ef5591f96eae8513fc7aa838405f02a2c3f8990",
+      "allocation_sha256": "bcc91dc740223af92fd4caa884f296f3fe7e202e09de97e8a95f3d93dc74596a",
+      "results": {
+        "TestTriageQueueScaleBaseline": {
+          "p95_ms": {
+            "action": 161.068,
+            "filter": 59.43,
+            "list": 66.671
+          },
+          "threshold_ms": 2000,
+          "payload": {
+            "formal_issues": 10000,
+            "measured_at": "2026-11-25T02:15:28Z",
+            "p95_ms": {
+              "action": 161.068,
+              "filter": 59.43,
+              "list": 66.671
+            },
+            "page_size": 50,
+            "pending_issues": 2000,
+            "samples_ms": {
+              "action": [
+                10.435,
+                6.25,
+                161.068,
+                7.592,
+                5.007,
+                6.317,
+                5.058,
+                5.088,
+                5.026,
+                4.812
+              ],
+              "filter": [
+                56.83,
+                56.397,
+                56.693,
+                56.656,
+                57.342,
+                57.176,
+                50.626,
+                53.716,
+                59.43,
+                52.433
+              ],
+              "list": [
+                66.671,
+                59.646,
+                60.875,
+                54.532,
+                52.488,
+                54.026,
+                53.981,
+                54.175,
+                53.967,
+                54.476
+              ]
+            },
+            "samples_per_operation": 10,
+            "scope": "local Go handler plus isolated PostgreSQL; excludes browser and HTTP network",
+            "units": "milliseconds"
+          }
+        }
+      }
+    }
+  ],
+  "baseline_modes": [
+    {
+      "mode": "normal",
+      "expected_packages": 86,
+      "recorded_packages": 86,
+      "complete": true,
+      "tests_passed": true,
+      "counts": {
+        "named_counts": {
+          "pass": 25580,
+          "skip": 24
+        },
+        "top_counts": {
+          "pass": 11743,
+          "skip": 23
+        },
+        "leaf_counts": {
+          "pass": 23265,
+          "skip": 24
+        }
+      },
+      "compiled_no_named_packages": 9
+    },
+    {
+      "mode": "race",
+      "expected_packages": 86,
+      "recorded_packages": 86,
+      "complete": true,
+      "tests_passed": false,
+      "counts": {
+        "named_counts": {
+          "pass": 25578,
+          "skip": 24,
+          "fail": 2
+        },
+        "top_counts": {
+          "pass": 11742,
+          "skip": 23,
+          "fail": 1
+        },
+        "leaf_counts": {
+          "pass": 23264,
+          "skip": 24,
+          "fail": 1
+        }
+      },
+      "compiled_no_named_packages": 9
+    }
+  ],
+  "full_named_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend/continuation-offline-audit-01.json",
+  "full_named_evidence_sha256": "bf2dfc6b03c1c28f9680681a9d55a240e8fddec67cae2d7854d604eacdb5c882",
+  "diagnostics_previous": [
+    {
+      "job": "redis-shared-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 1
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 1
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/redis-shared-01/receipt.json",
+      "receipt_sha256": "d583843437f5bfb63e6ee5972338191a0ceb2dab200aebd07f219c50c0a7684b"
+    },
+    {
+      "job": "redis-shared-race-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 1
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 1
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/redis-shared-race-01/receipt.json",
+      "receipt_sha256": "89be10204b5fde72090401cc09409fe8df1ef2e576a981f53fa1ef8aab0f1b8f"
+    },
+    {
+      "job": "skills-public-01",
+      "exit": 1,
+      "accepted": false,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "fail": 1
+        },
+        "top_counts": {
+          "fail": 1
+        },
+        "leaf_counts": {
+          "fail": 1
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/skills-public-01/receipt.json",
+      "receipt_sha256": "2add1e1f2f5db7c314e8efc9dd5dfe5c3832f3f1780e69f903d62b3fb9b6f6ba"
+    },
+    {
+      "job": "stage-normal-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 5
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 4
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/stage-normal-01/receipt.json",
+      "receipt_sha256": "b76c65940dd9cf6d184904a168f5f0994585534a8199dd6e8794b4f09785ce9d"
+    },
+    {
+      "job": "stage-race-01",
+      "exit": 0,
+      "accepted": true,
+      "remaining_clients": 0,
+      "counts": {
+        "named_counts": {
+          "pass": 5
+        },
+        "top_counts": {
+          "pass": 1
+        },
+        "leaf_counts": {
+          "pass": 4
+        }
+      },
+      "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/stage-race-01/receipt.json",
+      "receipt_sha256": "4015ac312843df14f1da98d64d54b54cbb2d63acf5831225123ab46bc9616ea7"
+    }
+  ],
+  "static": [
+    {
+      "label": "whole-module-build",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "build",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "started_at": "2026-11-24T03:28:24.298801+00:00",
+      "exit": 0,
+      "finished_at": "2026-11-24T03:28:38.508095+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-build.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "integrity_verified": true
+    },
+    {
+      "label": "whole-module-vet",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "started_at": "2026-11-24T03:28:38.509424+00:00",
+      "exit": 0,
+      "finished_at": "2026-11-24T03:28:43.030725+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "integrity_verified": true
+    },
+    {
+      "label": "whole-module-vulnerability",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "tool",
+        "govulncheck",
+        "./..."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "started_at": "2026-11-24T03:28:43.031260+00:00",
+      "exit": 3,
+      "finished_at": "2026-11-24T03:29:00.983978+00:00",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-vulnerability.log",
+      "log_sha256": "20f757c80d3f828b5aa3b1b992df2be990800ef326895371f4909743243192cf",
+      "integrity_verified": true
+    },
+    {
+      "label": "wrapper-test",
+      "exit": 0,
+      "log_sha256": "a01cbecf6343b7c02ca46a5116b40b28bcb6c0d6d53858ae111829b15066a43d",
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/wrapper-test.log",
+      "integrity_verified": true
+    }
+  ],
+  "utc": {
+    "result": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/utc/result.json",
+    "sha256": "cc495991904f5abadcc27bd06ad43a40b91723c9d3b919659f1ece7206a304e9",
+    "counts": {
+      "top_counts": {
+        "pass": 41
+      },
+      "named_counts": {
+        "pass": 93
+      },
+      "leaf_counts": {
+        "pass": 76
+      }
+    }
+  },
+  "defects": [
+    {
+      "id": "BACKEND-RACE-01",
+      "severity": "P1",
+      "status": "FAIL",
+      "kind": "full-suite setup conflict; exact relation-lock refusal established, competing holder unknown",
+      "test": "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt/wrong_consumer",
+      "source_location": "server/internal/service/collaboration_stage_completion_tx_test.go:1272",
+      "production_boundary": "server/internal/service/delivery_evidence.go:132",
+      "observed": "PG PID16586 at2026-11-24T02:49:02.224Z could not obtain lock on relation github_pull_request; Go failure at02:49:02.225Z",
+      "statement": "LOCK TABLE github_pull_request, issue_pull_request, issue_vcs_pull_request, vcs_pull_request IN SHARE MODE NOWAIT",
+      "original_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/stage-original-pg-window-01.log",
+      "original_evidence_sha256": "fe4f6b306922225ed214736fc13953a2f7cdafa3004e48cc25174a52b7d24bbb",
+      "negative_authority_assertion_executed": false,
+      "go_data_race_warning_observed": false,
+      "isolated_diagnostics": [
+        {
+          "job": "stage-normal-01",
+          "exit": 0,
+          "accepted": true,
+          "remaining_clients": 0,
+          "counts": {
+            "named_counts": {
+              "pass": 5
+            },
+            "top_counts": {
+              "pass": 1
+            },
+            "leaf_counts": {
+              "pass": 4
+            }
+          },
+          "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/stage-normal-01/receipt.json",
+          "receipt_sha256": "b76c65940dd9cf6d184904a168f5f0994585534a8199dd6e8794b4f09785ce9d"
+        },
+        {
+          "job": "stage-race-01",
+          "exit": 0,
+          "accepted": true,
+          "remaining_clients": 0,
+          "counts": {
+            "named_counts": {
+              "pass": 5
+            },
+            "top_counts": {
+              "pass": 1
+            },
+            "leaf_counts": {
+              "pass": 4
+            }
+          },
+          "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/stage-race-01/receipt.json",
+          "receipt_sha256": "4015ac312843df14f1da98d64d54b54cbb2d63acf5831225123ab46bc9616ea7"
+        }
+      ],
+      "limitations": [
+        "PG log has no competing-holder identity; do not assert autovacuum/test concurrency cause",
+        "Selected diagnostic passes do not replace complete owning race failure"
+      ],
+      "recommendation": "Capture first DB error and actual blocker in a separately scoped diagnostic/fix; preserve nonblocking production refusal and original test constraints."
+    },
+    {
+      "id": "BACKEND-SECURITY-01",
+      "severity": "P1",
+      "status": "FAIL",
+      "command_exit": 3,
+      "advisory_count": 14,
+      "advisories": [
+        {
+          "id": "GO-2026-6859",
+          "details": "1: GO-2026-6859\n    HTTP/1 server crash due to MaxBytesReader header race in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6859\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.4",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6809",
+          "details": "2: GO-2026-6809\n    Distrust compromised intermediate certificates in crypto/x509\n  More info: https://pkg.go.dev/vuln/GO-2026-6809\n  Standard library\n    Found in: crypto/x509@go1.27\n    Fixed in: crypto/x509@go1.27.3",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6617",
+          "details": "3: GO-2026-6617\n    HTTP/2 server crash due to HPACK encoder race in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6617\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6613",
+          "details": "4: GO-2026-6613\n    HTTP/1 server connection desynchronization after 2xx CONNECT response in\n    net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6613\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6612",
+          "details": "5: GO-2026-6612\n    Double flow control refund on HTTP/2 server streams in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6612\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6611",
+          "details": "6: GO-2026-6611\n    Excessive CPU consumption from repeated initial window changes in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6611\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6610",
+          "details": "7: GO-2026-6610\n    HTTP/2 transport accepts malformed framing-related headers in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6610\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6609",
+          "details": "8: GO-2026-6609\n    Lack of limit on size of parsed Range headers in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6609\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6608",
+          "details": "9: GO-2026-6608\n    Memory limit bypass when parsing MIME headers in net/textproto,\n    mime/multipart\n  More info: https://pkg.go.dev/vuln/GO-2026-6608\n  Standard library\n    Found in: net/textproto@go1.27\n    Fixed in: net/textproto@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6607",
+          "details": "10: GO-2026-6607\n    Reject malformed ECH outer extension references in crypto/tls\n  More info: https://pkg.go.dev/vuln/GO-2026-6607\n  Standard library\n    Found in: crypto/tls@go1.27\n    Fixed in: crypto/tls@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6605",
+          "details": "11: GO-2026-6605\n    HTTP/1 client connection desynchronization after CONNECT rejection in\n    net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6605\n  Standard library\n    Found in: net/http@go1.27\n    Fixed in: net/http@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6604",
+          "details": "12: GO-2026-6604\n    Root.Mkdir(All) can follow junctions out of the root on Windows in os\n  More info: https://pkg.go.dev/vuln/GO-2026-6604\n  Standard library\n    Found in: os@go1.27\n    Fixed in: os@go1.27.2\n    Platforms: windows",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6603",
+          "details": "13: GO-2026-6603\n    HTTP/2 server memory exhaustion due to Trailer headers in net/http\n  More info: https://pkg.go.dev/vuln/GO-2026-6603\n  Module: golang.org/x/net\n    Found in: golang.org/x/net@v0.57.0\n    Fixed in: golang.org/x/net@v0.60.0\n\n  Standard library\n    Found in: net/http/internal/http2@go1.27\n    Fixed in: net/http/internal/http2@go1.27.2",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        },
+        {
+          "id": "GO-2026-6278",
+          "details": "14: GO-2026-6278\n    Gorilla WebSocket Uses Cryptographically Weak PRNG for WebSocket Mask Key in\n    github.com/gorilla/websocket\n  More info: https://pkg.go.dev/vuln/GO-2026-6278\n  Module: github.com/gorilla/websocket\n    Found in: github.com/gorilla/websocket@v1.5.3\n    Fixed in: github.com/gorilla/websocket@v1.5.4-0.20240701034025-d67f41855da4",
+          "note": "Symbol reachability finding, not an exploit reproduction"
+        }
+      ],
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/logs/whole-module-vulnerability.log",
+      "sha256": "20f757c80d3f828b5aa3b1b992df2be990800ef326895371f4909743243192cf",
+      "toolchain": "go1.27.0 darwin/arm64",
+      "limits": [
+        "Symbol reachability is not exploit reproduction",
+        "Windows-only GO-2026-6604 is not local macOS exploit evidence",
+        "Local Go1.27.0 is not CI latest Go1.26 patch or deployed-binary version proof",
+        "Tool lists x/net mappings but its summary counts one external module plus stdlib; do not double-count"
+      ],
+      "recommendation": "Review supported patched Go toolchain plus declared gorilla/websocket and x/net dependency fixes in separate change scope, then rebuild and rescan."
+    },
+    {
+      "id": "BACKEND-EXTERNAL-01",
+      "severity": "P2",
+      "status": "FAIL",
+      "kind": "external public source unavailable",
+      "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+      "observed": "GitHub anthropics/skills repository tree HTTP403",
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend-diagnostics/skills-public-01/test.jsonl",
+      "sha256": "74a7b7abc9a58ce099f90693587832954e71f435ee2c9dbe25337c226e8deda1",
+      "limits": [
+        "Response proves403; rate-limit cause unconfirmed without response-header evidence",
+        "No user GitHub credential borrowed; original failure not retried away"
+      ]
+    }
+  ],
+  "remaining_default_skips_after_disposition": {
+    "original_named": 24,
+    "resolved_local": 4,
+    "attempted_external_failed": 1,
+    "explicit_remaining": 19,
+    "note": "Baseline24SKIP retained in each raw mode; normal/race duplicates are not new behaviors"
+  },
+  "live_audit": {
+    "original_auditor_exit": 0,
+    "original_audit": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/audit-e0f69472493f.json",
+    "original_audit_sha256": "d0bd077ee8ef8d237b17dcb3653bb352bdc71a0138792ef6607ccdefeef82bef",
+    "normal_complete": true,
+    "race_complete": true,
+    "race_passed": false,
+    "all_cluster_other_client_connections": 0,
+    "database_names": [
+      "multica_seed_test_924fea80cfce_7874d8d24698",
+      "postgres",
+      "qa_924fea80cfce_diag_iteration_perf_01",
+      "qa_924fea80cfce_diag_redis_shared_01",
+      "qa_924fea80cfce_diag_redis_shared_race_01",
+      "qa_924fea80cfce_diag_skills_public_01",
+      "qa_924fea80cfce_diag_stage_normal_01",
+      "qa_924fea80cfce_diag_stage_race_01",
+      "qa_924fea80cfce_diag_triage_perf_01",
+      "qa_924fea80cfce_normal_0548817c3f9d",
+      "qa_924fea80cfce_normal_07eb79fa72b8",
+      "qa_924fea80cfce_normal_08997a7fa7fe",
+      "qa_924fea80cfce_normal_0ee13f0d2884",
+      "qa_924fea80cfce_normal_0fb816f659c3",
+      "qa_924fea80cfce_normal_103bcb57d099",
+      "qa_924fea80cfce_normal_199d57419d78",
+      "qa_924fea80cfce_normal_1ebd75e227d7",
+      "qa_924fea80cfce_normal_2405237448a4",
+      "qa_924fea80cfce_normal_248934fbfb73",
+      "qa_924fea80cfce_normal_2801bc792e83",
+      "qa_924fea80cfce_normal_2c99ee2c73c6",
+      "qa_924fea80cfce_normal_2ec21eaa1b3e",
+      "qa_924fea80cfce_normal_2f225990571e",
+      "qa_924fea80cfce_normal_2f5af1a52539",
+      "qa_924fea80cfce_normal_3202a0f12174",
+      "qa_924fea80cfce_normal_33991a652421",
+      "qa_924fea80cfce_normal_33c023a139ab",
+      "qa_924fea80cfce_normal_36f5a604ea4d",
+      "qa_924fea80cfce_normal_3b4cd4ae0d09",
+      "qa_924fea80cfce_normal_3df108fbf701",
+      "qa_924fea80cfce_normal_402988e4441d",
+      "qa_924fea80cfce_normal_443be4706fd4",
+      "qa_924fea80cfce_normal_472bb8236d85",
+      "qa_924fea80cfce_normal_4b76585c3aa4",
+      "qa_924fea80cfce_normal_4f0dde5e8035",
+      "qa_924fea80cfce_normal_4fc98d5f8acf",
+      "qa_924fea80cfce_normal_549757f027eb",
+      "qa_924fea80cfce_normal_56802910400e",
+      "qa_924fea80cfce_normal_5baa8458c611",
+      "qa_924fea80cfce_normal_6bdd179505c2",
+      "qa_924fea80cfce_normal_6d7856d79665",
+      "qa_924fea80cfce_normal_6f87875654d8",
+      "qa_924fea80cfce_normal_72398aa1f6d0",
+      "qa_924fea80cfce_normal_734f4abb7b12",
+      "qa_924fea80cfce_normal_7427887f8751",
+      "qa_924fea80cfce_normal_7a21f045e560",
+      "qa_924fea80cfce_normal_7a51ef9d7409",
+      "qa_924fea80cfce_normal_85091a8daf2c",
+      "qa_924fea80cfce_normal_8c57f41cf87d",
+      "qa_924fea80cfce_normal_8ec97853df30",
+      "qa_924fea80cfce_normal_919b30f55bea",
+      "qa_924fea80cfce_normal_986dfe9cbf73",
+      "qa_924fea80cfce_normal_9ae551c14945",
+      "qa_924fea80cfce_normal_9f2c7589a33e",
+      "qa_924fea80cfce_normal_a2993220b42d",
+      "qa_924fea80cfce_normal_a33d11aa74fd",
+      "qa_924fea80cfce_normal_a384d9e70280",
+      "qa_924fea80cfce_normal_a57e8d23d980",
+      "qa_924fea80cfce_normal_abe022601f40",
+      "qa_924fea80cfce_normal_b0ca13f2a1d5",
+      "qa_924fea80cfce_normal_b2f76499e952",
+      "qa_924fea80cfce_normal_b3616ef0c58b",
+      "qa_924fea80cfce_normal_b41f457af4f5",
+      "qa_924fea80cfce_normal_b541162c7d6d",
+      "qa_924fea80cfce_normal_b565f47a53d0",
+      "qa_924fea80cfce_normal_b8d431c478e1",
+      "qa_924fea80cfce_normal_bb940f8eb38e",
+      "qa_924fea80cfce_normal_bbd7303d32a6",
+      "qa_924fea80cfce_normal_bd354a329a15",
+      "qa_924fea80cfce_normal_c02d86db4237",
+      "qa_924fea80cfce_normal_c0b56fe05d44",
+      "qa_924fea80cfce_normal_c7584650097c",
+      "qa_924fea80cfce_normal_c824a98f5f50",
+      "qa_924fea80cfce_normal_cc1252fad4dc",
+      "qa_924fea80cfce_normal_cffe407cfbfc",
+      "qa_924fea80cfce_normal_d01cb786d08e",
+      "qa_924fea80cfce_normal_d4b8dc307441",
+      "qa_924fea80cfce_normal_d642fc7111ff",
+      "qa_924fea80cfce_normal_d763dfcd7176",
+      "qa_924fea80cfce_normal_d7ecdfa3f812",
+      "qa_924fea80cfce_normal_d8de8e43c096",
+      "qa_924fea80cfce_normal_e0f785088ae2",
+      "qa_924fea80cfce_normal_e133f82ee548",
+      "qa_924fea80cfce_normal_e243b33d7b90",
+      "qa_924fea80cfce_normal_e24ee4248d00",
+      "qa_924fea80cfce_normal_e304ab6e77ff",
+      "qa_924fea80cfce_normal_e6acddbc5503",
+      "qa_924fea80cfce_normal_e859efa47f08",
+      "qa_924fea80cfce_normal_f26ab7ece539",
+      "qa_924fea80cfce_normal_f47ea76e9369",
+      "qa_924fea80cfce_normal_f8cc8b7af4e6",
+      "qa_924fea80cfce_normal_f98f1babe5ae",
+      "qa_924fea80cfce_normal_f9a6f66e94fe",
+      "qa_924fea80cfce_normal_fb47920ce532",
+      "qa_924fea80cfce_normal_fb52e0df1f83",
+      "qa_924fea80cfce_race_0548817c3f9d",
+      "qa_924fea80cfce_race_07eb79fa72b8",
+      "qa_924fea80cfce_race_08997a7fa7fe",
+      "qa_924fea80cfce_race_0ee13f0d2884",
+      "qa_924fea80cfce_race_0fb816f659c3",
+      "qa_924fea80cfce_race_103bcb57d099",
+      "qa_924fea80cfce_race_199d57419d78",
+      "qa_924fea80cfce_race_1ebd75e227d7",
+      "qa_924fea80cfce_race_2405237448a4",
+      "qa_924fea80cfce_race_248934fbfb73",
+      "qa_924fea80cfce_race_2801bc792e83",
+      "qa_924fea80cfce_race_2c99ee2c73c6",
+      "qa_924fea80cfce_race_2ec21eaa1b3e",
+      "qa_924fea80cfce_race_2f225990571e",
+      "qa_924fea80cfce_race_2f5af1a52539",
+      "qa_924fea80cfce_race_3202a0f12174",
+      "qa_924fea80cfce_race_33991a652421",
+      "qa_924fea80cfce_race_33c023a139ab",
+      "qa_924fea80cfce_race_36f5a604ea4d",
+      "qa_924fea80cfce_race_3b4cd4ae0d09",
+      "qa_924fea80cfce_race_3df108fbf701",
+      "qa_924fea80cfce_race_402988e4441d",
+      "qa_924fea80cfce_race_443be4706fd4",
+      "qa_924fea80cfce_race_472bb8236d85",
+      "qa_924fea80cfce_race_4b76585c3aa4",
+      "qa_924fea80cfce_race_4f0dde5e8035",
+      "qa_924fea80cfce_race_4fc98d5f8acf",
+      "qa_924fea80cfce_race_549757f027eb",
+      "qa_924fea80cfce_race_56802910400e",
+      "qa_924fea80cfce_race_5baa8458c611",
+      "qa_924fea80cfce_race_6bdd179505c2",
+      "qa_924fea80cfce_race_6d7856d79665",
+      "qa_924fea80cfce_race_6f87875654d8",
+      "qa_924fea80cfce_race_72398aa1f6d0",
+      "qa_924fea80cfce_race_734f4abb7b12",
+      "qa_924fea80cfce_race_7427887f8751",
+      "qa_924fea80cfce_race_7a21f045e560",
+      "qa_924fea80cfce_race_7a51ef9d7409",
+      "qa_924fea80cfce_race_85091a8daf2c",
+      "qa_924fea80cfce_race_8c57f41cf87d",
+      "qa_924fea80cfce_race_8ec97853df30",
+      "qa_924fea80cfce_race_919b30f55bea",
+      "qa_924fea80cfce_race_986dfe9cbf73",
+      "qa_924fea80cfce_race_9ae551c14945",
+      "qa_924fea80cfce_race_9f2c7589a33e",
+      "qa_924fea80cfce_race_a2993220b42d",
+      "qa_924fea80cfce_race_a33d11aa74fd",
+      "qa_924fea80cfce_race_a384d9e70280",
+      "qa_924fea80cfce_race_a57e8d23d980",
+      "qa_924fea80cfce_race_abe022601f40",
+      "qa_924fea80cfce_race_b0ca13f2a1d5",
+      "qa_924fea80cfce_race_b2f76499e952",
+      "qa_924fea80cfce_race_b3616ef0c58b",
+      "qa_924fea80cfce_race_b41f457af4f5",
+      "qa_924fea80cfce_race_b541162c7d6d",
+      "qa_924fea80cfce_race_b565f47a53d0",
+      "qa_924fea80cfce_race_b8d431c478e1",
+      "qa_924fea80cfce_race_bb940f8eb38e",
+      "qa_924fea80cfce_race_bbd7303d32a6",
+      "qa_924fea80cfce_race_bd354a329a15",
+      "qa_924fea80cfce_race_c02d86db4237",
+      "qa_924fea80cfce_race_c0b56fe05d44",
+      "qa_924fea80cfce_race_c7584650097c",
+      "qa_924fea80cfce_race_c824a98f5f50",
+      "qa_924fea80cfce_race_cc1252fad4dc",
+      "qa_924fea80cfce_race_cffe407cfbfc",
+      "qa_924fea80cfce_race_d01cb786d08e",
+      "qa_924fea80cfce_race_d4b8dc307441",
+      "qa_924fea80cfce_race_d642fc7111ff",
+      "qa_924fea80cfce_race_d763dfcd7176",
+      "qa_924fea80cfce_race_d7ecdfa3f812",
+      "qa_924fea80cfce_race_d8de8e43c096",
+      "qa_924fea80cfce_race_e0f785088ae2",
+      "qa_924fea80cfce_race_e133f82ee548",
+      "qa_924fea80cfce_race_e243b33d7b90",
+      "qa_924fea80cfce_race_e24ee4248d00",
+      "qa_924fea80cfce_race_e304ab6e77ff",
+      "qa_924fea80cfce_race_e6acddbc5503",
+      "qa_924fea80cfce_race_e859efa47f08",
+      "qa_924fea80cfce_race_f26ab7ece539",
+      "qa_924fea80cfce_race_f47ea76e9369",
+      "qa_924fea80cfce_race_f8cc8b7af4e6",
+      "qa_924fea80cfce_race_f98f1babe5ae",
+      "qa_924fea80cfce_race_f9a6f66e94fe",
+      "qa_924fea80cfce_race_fb47920ce532",
+      "qa_924fea80cfce_race_fb52e0df1f83",
+      "qa_924fea80cfce_template",
+      "qa_924fea80cfce_utc_cc8c4662_handler",
+      "qa_924fea80cfce_utc_cc8c4662_inboxstate",
+      "qa_924fea80cfce_utc_cc8c4662_service"
+    ],
+    "database_count": 185,
+    "connection_budget_max_clients_total": "90|1|6",
+    "allocation": {
+      "owner": "main-e2e-backend-924fea80cfce",
+      "pg": {
+        "id": "5bc6b2a4dd3c7743148d807de799a54854a4abc9ea94f6c0e38b273320f967fb",
+        "name": "main-e2e-backend-924fea80cfce-pg",
+        "image": "sha256:215ae4d47393a980e9ef7ff7760f7dad53ec3e84bceb9fbd45cef34e50b5ba0f",
+        "port": 50172,
+        "pid": 2566,
+        "running": true
+      },
+      "redis": {
+        "id": "fd5e59e207f2b2273760854f7f95623881e66795ee9ac918eea628ecbafacbe2",
+        "name": "main-e2e-backend-924fea80cfce-redis",
+        "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+        "port": 50173,
+        "pid": 2625,
+        "running": true
+      },
+      "template": "qa_924fea80cfce_template"
+    },
+    "allocation_sha256": "bcc91dc740223af92fd4caa884f296f3fe7e202e09de97e8a95f3d93dc74596a",
+    "resources_stopped": false,
+    "root_owns_final_stop": true
+  },
+  "recovery": {
+    "before": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend/continuation-recovery-before-01.json",
+    "after": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/main-post-merge-e2e-20261124-080504/backend/continuation-recovery-after-01.json",
+    "old_allocation": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-post-merge-e2e-20261124-080504/backend/allocation-before-continuation-20261125.json"
+  },
+  "acceptance": {
+    "inventory_complete": true,
+    "source_passed": true,
+    "normal_passed": true,
+    "race_passed": false,
+    "static_security_passed": false,
+    "all_local_perf_passed": true,
+    "resource_clients_zero": true,
+    "resources_stopped": false,
+    "backend_release_green": false
+  }
+}
