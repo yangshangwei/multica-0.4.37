@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { promisify } from "node:util";
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page, type TestInfo } from "@playwright/test";
 import type {
   CollaborationCommentInput, CollaborationCommentReceipt, CollaborationControlInput, CollaborationControlReceipt,
   CollaborationIssue, CollaborationTriggerPreview,
@@ -34,6 +34,16 @@ function hostComment(write: InstalledComment, issue: HostIssue, marker: string, 
 test.use({ actionTimeout: 20_000, trace: "off", screenshot: "off", video: "off" });
 
 test("Packaged full Main controls a real native host run and explicitly resumes the shared Agent", async ({ page }, testInfo) => {
+  await runPackagedHostJourney(page, testInfo, false);
+});
+
+test("Packaged full Main with default knowledge ON isolates each native run through Stop, restart and Resume", async ({ page }, testInfo) => {
+  test.skip(process.env.COLLABORATION_INSTALLED_KNOWLEDGE_ON !== "1", "Requires the separately bound default knowledge ON native journey");
+  expect(process.env.MULTICA_KNOWLEDGE_CONTEXT_ENABLED ?? "").toBe("");
+  await runPackagedHostJourney(page, testInfo, true);
+});
+
+async function runPackagedHostJourney(page: Page, testInfo: TestInfo, knowledgeEnabled: boolean) {
   test.setTimeout(480_000);
   const nativeExecutable = process.env.COLLABORATION_INSTALLED_MAIN_EXECUTABLE;
   const image = process.env.COLLABORATION_HOST_INSTALLED_IMAGE;
@@ -67,7 +77,7 @@ test("Packaged full Main controls a real native host run and explicitly resumes 
   const evidence: Record<string, unknown> = { client: nativeExecutable ? `${process.platform} ${process.arch} packaged production Main/preload/renderer` : "Linux arm64 packaged production Main/preload/renderer", image_id: inspected,
     source_sha: process.env.COLLABORATION_INSTALLED_SOURCE_SHA ?? null,
     scope: nativeExecutable ? "Packaged native client controls the separately running native host fixture with an isolated acceptance home." : "Packaged Linux client controls the separately running native host fixture; this does not establish Linux daemon execution support.",
-    realProviderAccounts: false, nativeIPCStubs: false, authInjection: false, homeOverride: Boolean(nativeExecutable) };
+    realProviderAccounts: false, nativeIPCStubs: false, authInjection: false, homeOverride: Boolean(nativeExecutable), knowledge_context_enabled: knowledgeEnabled };
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   try {
@@ -124,8 +134,17 @@ test("Packaged full Main controls a real native host run and explicitly resumes 
     await waitHostSettlement(f, issue, first);
     const second = await f.daemon.waitForVisit(2);
     assertHostVisit(second, f, issue, [interrupted]);
-    expect(second.session_hash).toBe(first.session_hash);
-    expect(second.workdir_hash).toBe(first.workdir_hash);
+    if (knowledgeEnabled) {
+      expect(second.session_hash).not.toBe(first.session_hash);
+      expect(second.workdir_hash).not.toBe(first.workdir_hash);
+      for (const visit of [first, second]) {
+        expect(visit.resumed).toBe(false);
+        expect(visit.knowledge_observation?.no_session_persistence).toBe(true);
+      }
+    } else {
+      expect(second.session_hash).toBe(first.session_hash);
+      expect(second.workdir_hash).toBe(first.workdir_hash);
+    }
     const control = (action: "stop" | "resume") => native.command<InstalledMainWrite<CollaborationControlReceipt, CollaborationControlInput>>("control", {
       issueId: issue.id, resourceId: issue.agentId, action, status: 200,
     });
@@ -173,6 +192,12 @@ test("Packaged full Main controls a real native host run and explicitly resumes 
     expect(resume.receipt).toMatchObject({ code: "resumed", target_id: issue.targetId, queue_state: "active" });
     const third = await f.daemon.waitForVisit(3);
     assertHostVisit(third, f, issue, [nextWeb, nextPackage]);
+    if (knowledgeEnabled) {
+      expect(new Set([first, second, third].map((visit) => visit.session_hash)).size).toBe(3);
+      expect(new Set([first, second, third].map((visit) => visit.workdir_hash)).size).toBe(3);
+      expect(third.resumed).toBe(false);
+      expect(third.knowledge_observation?.no_session_persistence).toBe(true);
+    }
     expect(third.inputs.some((input) => input.command_id === interrupted.commandId)).toBe(false);
     f.daemon.release(third);
     await waitHostSettlement(f, issue, third);
@@ -244,4 +269,4 @@ test("Packaged full Main controls a real native host run and explicitly resumes 
       }
     }
   }
-});
+}

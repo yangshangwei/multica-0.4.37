@@ -23,21 +23,35 @@ func newKnowledgeInvalidationFixture(t *testing.T) (*collaborationQueueFixture, 
 	t.Helper()
 	f := newCollaborationMemoryFixture(t)
 	knowledgeInvalidationCleanup(t, f)
+	isolateKnowledgeTestHistory(t, f)
 	worker := &CollaborationKnowledgeInvalidation{Queries: f.svc.Queries, TxStarter: f.pool, Publisher: &collaborationPublisher{}}
-	// Pending rows intentionally survive fixture parent deletion. Finish those
-	// older jobs through the real drainer before observing this test's frames.
-	finishKnowledgeTestScans(t, f, worker)
-	for {
-		n, err := worker.DeliverPending(f.ctx, 100)
-		if err != nil {
+	return f, worker
+}
+
+func isolateKnowledgeTestHistory(t *testing.T, f *collaborationQueueFixture) {
+	t.Helper()
+	// Retained outbox rows belong to earlier fixtures. Reserve them with the
+	// worker's existing SKIP LOCKED contract instead of processing their global
+	// scans here. New work, including another fixture's work in this test, stays
+	// visible to the real worker; no history or production selection is changed.
+	tx, err := f.pool.Begin(f.ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		if err := tx.Rollback(context.Background()); err != nil && !errors.Is(err, pgx.ErrTxClosed) {
+			t.Errorf("release retained knowledge fixture history: %v", err)
+		}
+	})
+	locked, err := tx.Exec(f.ctx, `SELECT id FROM collaboration_knowledge_invalidation WHERE state='pending' FOR UPDATE SKIP LOCKED`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if locked.RowsAffected() == 0 {
+		if err := tx.Rollback(f.ctx); err != nil {
 			t.Fatal(err)
 		}
-		if n == 0 {
-			break
-		}
 	}
-	worker.Publisher = &collaborationPublisher{}
-	return f, worker
 }
 
 func knowledgeInvalidationCleanup(t *testing.T, f *collaborationQueueFixture) {
@@ -121,6 +135,75 @@ func TestKnowledgePendingChangesDoNotSignalTarget(t *testing.T) {
 	}
 }
 
+func TestKnowledgeInvalidationFixturePreservesUnrelatedPendingHistory(t *testing.T) {
+	previous := newCollaborationMemoryFixture(t)
+	knowledgeInvalidationCleanup(t, previous)
+	isolateKnowledgeTestHistory(t, previous)
+	for range 8 {
+		seedKnowledgeInvalidationCandidate(t, previous, true, pgtype.UUID{})
+	}
+	ids := make([]pgtype.UUID, 0, 5)
+	for range 4 {
+		cause := enqueueKnowledgeTestScan(t, previous, "all_sources", pgtype.UUID{})
+		ids = append(ids, knowledgeInvalidationID(cause, "scan"))
+	}
+	hint := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	if _, err := previous.svc.Queries.EnqueueKnowledgeTargetHint(previous.ctx, db.EnqueueKnowledgeTargetHintParams{
+		ID: hint, CauseID: pgtype.UUID{Bytes: uuid.New(), Valid: true},
+		TargetKind: pgtype.Text{String: "workspace", Valid: true}, TargetID: util.MustParseUUID(previous.workspace),
+		TargetWorkspaceID: util.MustParseUUID(previous.workspace), KnowledgeRevision: pgtype.Int8{Int64: 8, Valid: true},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	ids = append(ids, hint)
+	snapshot := func(t *testing.T) string {
+		t.Helper()
+		var value string
+		previous.fx.QueryRow(t, `SELECT jsonb_build_object(
+			'jobs', (SELECT jsonb_agg(to_jsonb(j) ORDER BY id) FROM collaboration_knowledge_invalidation j WHERE id=ANY($1::uuid[])),
+			'candidates', (SELECT jsonb_agg(to_jsonb(c) ORDER BY id) FROM collaboration_knowledge_candidate c WHERE source_issue_id=$2),
+			'target', (SELECT to_jsonb(k) FROM collaboration_knowledge_target k WHERE target_kind='workspace' AND target_id=$3)
+		)::text`, ids, previous.issue.Issue.ID, previous.workspace).Scan(&value)
+		return value
+	}
+	before := snapshot(t)
+	if !t.Run("current_fixture", func(t *testing.T) {
+		started := time.Now()
+		f, worker := newKnowledgeInvalidationFixture(t)
+		t.Logf("new fixture with four unrelated global scans and eight candidates took %s", time.Since(started))
+		if after := snapshot(t); before != after {
+			t.Fatal("fixture bootstrap processed unrelated retained pending history")
+		}
+		seedKnowledgeInvalidationCandidate(t, f, true, pgtype.UUID{})
+		cause := enqueueKnowledgeTestScan(t, f, "source_issue", f.issue.Issue.ID)
+		finishKnowledgeTestScans(t, f, worker)
+		if _, err := worker.DeliverPending(f.ctx, 100); err != nil {
+			t.Fatal(err)
+		}
+		if after := snapshot(t); before != after {
+			t.Fatal("fixture worker changed unrelated retained history")
+		}
+		frames := worker.Publisher.(*collaborationPublisher).frames
+		if len(frames) != 1 || frames[0].id != f.workspace ||
+			f.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE cause_id=$1 AND kind='scan' AND state='done'`, cause) != 1 {
+			t.Fatal("isolated fixture failed to complete and publish its own scan")
+		}
+	}) {
+		return
+	}
+	if after := snapshot(t); before != after {
+		t.Fatal("fixture cleanup changed unrelated retained history")
+	}
+	worker := &CollaborationKnowledgeInvalidation{Queries: previous.svc.Queries, TxStarter: previous.pool, Publisher: &collaborationPublisher{}}
+	finishKnowledgeTestScans(t, previous, worker)
+	if _, err := worker.DeliverPending(previous.ctx, 100); err != nil {
+		t.Fatal(err)
+	}
+	if previous.fx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE id=ANY($1::uuid[]) AND state='pending'`, ids) != 0 {
+		t.Fatal("fixture cleanup did not release unrelated pending history for its owner")
+	}
+}
+
 func TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks(t *testing.T) {
 	for _, admin := range []bool{false, true} {
 		t.Run(map[bool]string{false: "human", true: "admin"}[admin], func(t *testing.T) {
@@ -133,6 +216,7 @@ func TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks(t *testing.T) {
 				})
 				f = af.collaborationQueueFixture
 				knowledgeInvalidationCleanup(t, f)
+				isolateKnowledgeTestHistory(t, f)
 				f.fx.Exec(t, `UPDATE "user" SET disabled_at=now() WHERE id=$1`, f.creator)
 			} else {
 				f, _ = newKnowledgeInvalidationFixture(t)
@@ -631,6 +715,7 @@ func TestKnowledgeInvalidationRunSchedulesScannerAndDrainer(t *testing.T) {
 func TestKnowledgeAdministrativeDisableAppendsBeforeReconciliation(t *testing.T) {
 	f := newAdminCollaborationFixture(t)
 	knowledgeInvalidationCleanup(t, f.collaborationQueueFixture)
+	isolateKnowledgeTestHistory(t, f.collaborationQueueFixture)
 	seedKnowledgeInvalidationCandidate(t, f.collaborationQueueFixture, true, pgtype.UUID{})
 	p := PlatformAccountChangeParams{OrganizationID: f.org, TargetUserID: util.MustParseUUID(f.handler), IdempotencyKey: pgtype.UUID{Bytes: uuid.New(), Valid: true}, Action: "disable", ExpectedAuthVersion: 1, Reason: "Disable departed account", Password: platformAdminTestPassword, RequestID: uuid.NewString()}
 	svc := NewPlatformAdminService(f.svc.Queries, f.pool)

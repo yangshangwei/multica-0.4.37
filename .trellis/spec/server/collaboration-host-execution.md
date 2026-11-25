@@ -382,3 +382,42 @@ failed receipts and downstream unverified steps.
 Wrong: raise timeout/pool size or print raw transport/helper errors to get evidence.
 Correct: capture safe boundary facts first, distinguish hypotheses and change only
 the demonstrated cause. Diagnostic-only changes are not proof of a historical fix.
+
+### Attempted HTTP status versus canceled reads
+
+`middleware.RequestLogger` records `request_context` as `none`, `canceled`, or
+`deadline` after the handler returns. This field supplements the attempted HTTP
+status and preserves its existing severity; it never logs context causes,
+credentials or response bodies. A client-canceled request can produce an attempted
+503 after a canceled authentication or projection query without delivering that
+response to the client. Conversely, `none` with503 must not be dismissed as a
+benign cancellation. Client delivery and server context are separate facts.
+
+Verify actual HTTP cancellation, deadline/canceled contexts, an uncanceled genuine
+503, unchanged status/body/severity and exclusion of sensitive context causes.
+A passive browser observer should correlate the existing `X-Request-ID` with
+server completion; distinguish response503 from requestfailed and drain accepted
+response reads before closing the context. Missing IDs remain unmatched. Do not
+mutate network requests or suppress error counts to obtain acceptance.
+
+Repeated collaboration and workbench hints currently cancel/refetch private
+knowledge projections. A controlled reproduction establishes that mechanism; it
+does not assign every historical503 to cancellation. Preserve original route
+counts and permit results, and capture a newly bound full journey to classify
+current failures.
+
+### Capability reads under account-write contention
+
+`RuntimeCapabilities` takes the managed account's existing shared authority lock
+through `LockArtifactUsers` (`FOR SHARE NOWAIT`). Ordinary managed-runtime claim
+uses `auth.LockPasswordSession` and the same user's `FOR UPDATE` lock. Concurrent
+account writes can therefore cause the read to return `collaboration_busy` after
+the existing three retryable-conflict attempts. Do not remove either fence or
+raise its budget to erase the503.
+
+A bounded real-transaction control must hold the exact fixture user's password
+lock, observe three55P03 results at `LockArtifactUsers` with a live context, then
+release the holder and require an equivalent capability summary. This proves
+the current conflict mechanism; response-code-only browser/Host logs do not prove
+which transaction held the lock for a particular recorded refusal. The50ms Host
+test dispatch poll can expose contention more often than ordinary operation.

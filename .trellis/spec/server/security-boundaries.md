@@ -408,10 +408,18 @@ not prove the author performed the latest edit: human administrators may still
 change it. Event actor metadata remains the existing operator witness; this
 change does not introduce a durable per-edit audit record.
 
-Generic `UploadFile` with `comment_id` remains a separate association contract:
-current membership and same-workspace comment checks plus independent uploader
-provenance. Do not infer a new author/admin requirement from comment edit/delete
-permissions or classify historical upload observations as fixed by this gate.
+Generic `UploadFile` with `comment_id` is a separate member-contribution contract,
+confirmed by the product owner on 2026-11-25: a current workspace member may append
+an upload to another author's ordinary comment in the same workspace. Preserve
+independent uploader provenance and the original comment author/body. Comment
+edit/delete authority does not govern this append operation. Nonmembers and
+foreign-workspace comments are refused before storage or attachment writes;
+collaboration comments continue to require their private draft/bind flow. This
+confirms the existing behavior; it is not a historical security-fix claim. Regression
+`TestUploadFileCommentMembershipContract` asserts cross-author member append,
+independent persisted uploader, unchanged author/body, and nonmember/foreign
+refusals with unchanged rows, storage and event publication. Keep
+`TestLegacyUploadCannotAttachToCollaboration` as the private-flow boundary.
 
 Regressions: `TestCommentManagementMachineHandlerBackstop` verifies direct
 handler task/Cloud-source denial; `TestCommentManagementAuthorityHTTP` drives an
