@@ -186,6 +186,24 @@ function Install-AndVerify {
     $step.status = 'passed'
 }
 
+function Test-OwnedProtocolCommand {
+    param($Command, [string]$Executable)
+    if ($Command -isnot [string] -or -not [IO.Path]::IsPathFullyQualified($Executable) -or $Executable -match '["\r\n]') { return $false }
+    # Packaged Electron passes no extra arguments before its literal URL slot.
+    if ($Command -ceq ('"' + $Executable + '" "%1"')) { return $true }
+    return $Executable -notmatch '\s' -and $Command -ceq ($Executable + ' "%1"')
+}
+
+function Remove-OwnedProtocolFixture {
+    param([string]$Key, [string]$Command, [string]$Owner)
+    if ([string]::IsNullOrEmpty($Command) -or [string]::IsNullOrEmpty($Owner) -or -not (Test-Path -LiteralPath $Key)) { return $false }
+    $root = Get-Item -LiteralPath $Key
+    $handler = Get-Item -LiteralPath "$Key\shell\open\command" -ErrorAction SilentlyContinue
+    if ($null -eq $handler -or $root.GetValue('MulticaAcceptanceOwner', '') -cne $Owner -or $handler.GetValue('') -cne $Command) { return $false }
+    Remove-Item -LiteralPath $Key -Recurse
+    return $true
+}
+
 function Uninstall-AndVerify {
     param([string]$Label, [string]$ExpectedOtherProtocol)
     $step = [ordered]@{ name = $Label; status = 'failed' }
@@ -202,8 +220,8 @@ function Uninstall-AndVerify {
         $actual = (Get-Item -LiteralPath "$key\shell\open\command").GetValue('')
         if ($actual -cne $ExpectedOtherProtocol) { throw 'Uninstall changed a protocol owned by another installation' }
         $step.other_protocol_preserved = $true
-        # Remove only the exact fixture created immediately before this uninstall.
-        Remove-Item -LiteralPath $key -Recurse
+        # Remove only the exact command and ownership marker installed by this test.
+        if (-not (Remove-OwnedProtocolFixture $key $ExpectedOtherProtocol $protocolFixtureOwner)) { throw 'Foreign protocol fixture ownership changed before cleanup' }
     }
     $remaining = @(Get-MulticaRegistration)
     if ($remaining.Count -gt 0) {
@@ -216,6 +234,8 @@ function Uninstall-AndVerify {
     $step.status = 'passed'
 }
 
+$protocolFixtureCommand = $null
+$protocolFixtureOwner = $null
 $report = [ordered]@{
     schema_version = 1; scope = 'native_windows_x64_nsis_lifecycle'; status = 'failed'
     source_commit = $env:GITHUB_SHA; started_at = [DateTime]::UtcNow.ToString('o'); finished_at = $null
@@ -256,17 +276,33 @@ try {
     Install-AndVerify $report.installer 'reinstall_candidate'
     if ($BusinessAcceptance) {
         $key = 'HKCU:\Software\Classes\multica'
-        if (Test-Path -LiteralPath $key) { throw 'Protocol fixture refuses existing registration' }
-        $otherCommand = '"' + (Join-Path $testRoot 'other-handler.exe') + '" "%1"'
+        $prior = 'missing'
+        if (Test-Path -LiteralPath $key) {
+            $handler = Get-Item -LiteralPath "$key\shell\open\command" -ErrorAction SilentlyContinue
+            if ($null -eq $handler -or -not (Test-OwnedProtocolCommand $handler.GetValue('') (Join-Path $installDirectory 'Multica.exe'))) { throw 'Protocol fixture refuses registration not owned by this installed candidate' }
+            $backup = Join-Path $testRoot 'owned-protocol-before-foreign.reg'
+            & reg.exe export 'HKCU\Software\Classes\multica' $backup /y | Out-Null
+            if ($LASTEXITCODE -ne 0) { throw 'Owned protocol backup failed' }
+            $prior = 'owned_candidate'
+        }
+        $report.protocol_fixture = [ordered]@{ prior_registration = $prior; prior_owned_command_verified = ($prior -eq 'owned_candidate'); backup_saved = ($prior -eq 'owned_candidate') }
+        $protocolFixtureCommand = '"' + (Join-Path $testRoot 'other-handler.exe') + '" "%1"'
+        $protocolFixtureOwner = [guid]::NewGuid().ToString('N')
         New-Item -Path "$key\shell\open\command" -Force | Out-Null
-        Set-Item -LiteralPath "$key\shell\open\command" -Value $otherCommand
-        Uninstall-AndVerify 'final_uninstall' -ExpectedOtherProtocol $otherCommand
+        Set-Item -LiteralPath "$key\shell\open\command" -Value $protocolFixtureCommand
+        New-ItemProperty -LiteralPath $key -Name 'MulticaAcceptanceOwner' -PropertyType String -Value $protocolFixtureOwner -Force | Out-Null
+        Uninstall-AndVerify 'final_uninstall' -ExpectedOtherProtocol $protocolFixtureCommand
     } else { Uninstall-AndVerify 'final_uninstall' }
     $report.status = 'passed'
 } catch {
     $report.error = $_.Exception.Message
     throw
 } finally {
+    # Never delete another handler if the test command or ownership marker changed.
+    if ($protocolFixtureCommand -and $protocolFixtureOwner) {
+        try { $null = Remove-OwnedProtocolFixture 'HKCU:\Software\Classes\multica' $protocolFixtureCommand $protocolFixtureOwner }
+        catch { $report.protocol_fixture.cleanup_failed = $true }
+    }
     # Preserve temporary files on failure; runner disposal performs cleanup.
     $report.finished_at = [DateTime]::UtcNow.ToString('o')
     $fullReportPath = [IO.Path]::GetFullPath($ReportPath)

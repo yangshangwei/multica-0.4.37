@@ -7,7 +7,7 @@ $tokens = $null
 $errors = $null
 $ast = [Management.Automation.Language.Parser]::ParseFile($scriptPath, [ref]$tokens, [ref]$errors)
 if ($errors.Count -gt 0) { throw ($errors | Out-String) }
-foreach ($name in @('Assert-X64Binary', 'Get-InstallerEvidence', 'Assert-DisposableRunner')) {
+foreach ($name in @('Assert-X64Binary', 'Get-InstallerEvidence', 'Assert-DisposableRunner', 'Test-OwnedProtocolCommand', 'Remove-OwnedProtocolFixture')) {
     $definition = $ast.Find({ param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $name }, $false)
     if ($null -eq $definition) { throw "Missing function: $name" }
     . ([scriptblock]::Create($definition.Extent.Text))
@@ -59,6 +59,29 @@ try {
     [IO.File]::WriteAllBytes($path, $bytes)
     Assert-Throws { Assert-X64Binary $path } 'Missing DOS header'
     Assert-Throws { Get-InstallerEvidence $path '0.5.2' } 'Expected exact versioned'
+    $installed = Join-Path $fixtureRoot 'installed with spaces\Multica.exe'
+    $quoted = '"' + $installed + '" "%1"'
+    if (-not (Test-OwnedProtocolCommand $quoted $installed)) { throw 'Exact packaged Electron protocol rejected' }
+    $plain = 'C:\fixture\Multica.exe'
+    if (-not (Test-OwnedProtocolCommand ($plain + ' "%1"') $plain)) { throw 'Exact unquoted no-space protocol rejected' }
+    foreach ($invalid in @($null, '', ('"' + $installed + '" --extra "%1"'), ('"' + $installed + '" "%1" --extra'),
+        ('"' + $installed + '.other" "%1"'), ('"C:\other\Multica.exe" "%1"'), ($installed + ' "%1"'), ($quoted + "`n"), '"C:\fixture\Multica.exe" "%2"')) {
+        if (Test-OwnedProtocolCommand $invalid $installed) { throw 'Foreign or malformed protocol accepted' }
+    }
+    $fixtureKey = 'HKCU:\Software\MulticaAcceptanceFixture-' + [guid]::NewGuid().ToString('N')
+    try {
+        if (Remove-OwnedProtocolFixture $fixtureKey $quoted 'owner') { throw 'Missing fixture reported removed' }
+        New-Item -Path "$fixtureKey\shell\open\command" -Force | Out-Null
+        Set-Item -LiteralPath "$fixtureKey\shell\open\command" -Value $quoted
+        New-ItemProperty -LiteralPath $fixtureKey -Name 'MulticaAcceptanceOwner' -PropertyType String -Value 'owner' | Out-Null
+        if (Remove-OwnedProtocolFixture $fixtureKey $quoted 'foreign-owner') { throw 'Foreign owner removed' }
+        if (Remove-OwnedProtocolFixture $fixtureKey 'foreign-command' 'owner') { throw 'Foreign command removed' }
+        if (-not (Test-Path -LiteralPath $fixtureKey)) { throw 'Mismatched fixture was changed' }
+        if (-not (Remove-OwnedProtocolFixture $fixtureKey $quoted 'owner')) { throw 'Owned fixture was not removed' }
+        if (Test-Path -LiteralPath $fixtureKey) { throw 'Owned fixture remains after cleanup' }
+    } finally {
+        if (Test-Path -LiteralPath $fixtureKey) { Remove-Item -LiteralPath $fixtureKey -Recurse }
+    }
     $current = Get-Process -Id $PID
     $stamp = $current.StartTime.ToUniversalTime().ToString('o')
     if (-not (Test-ServiceStartTime $current.StartTime $stamp)) { throw 'Round-trip string start time rejected' }
