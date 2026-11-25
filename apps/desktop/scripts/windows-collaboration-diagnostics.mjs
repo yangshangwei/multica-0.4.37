@@ -1,3 +1,5 @@
+import { projectDaemonStartupDiagnostic } from "../../../e2e/fixtures/collaboration-daemon-startup-diagnostics.mjs";
+
 const sourceFiles = [
   "e2e/collaboration-host-installed.spec.ts",
   "e2e/fixtures/collaboration-installed-main.ts",
@@ -88,7 +90,7 @@ export function daemonFailureProjection(failures) {
                 ...(key === "config" ? { server_matches: boolean(file?.serverMatches), deployment_matches: boolean(file?.deploymentMatches),
                   deployment_present: boolean(file?.deploymentPresent), credential_present: boolean(file?.credentialPresent) } : {}),
                 ...(key === "owner" ? { user_matches: boolean(file?.userMatches) } : {}),
-                ...(["log", "err_log"].includes(key) ? { error_codes: allowedValues(file?.errorCodes, daemonCodes), markers: allowedValues(file?.markers, daemonMarkers) } : {}) }];
+                ...(["log", "err_log"].includes(key) ? { error_codes: allowedValues(file?.errorCodes, daemonCodes), markers: allowedValues(file?.markers, daemonMarkers), startup: projectDaemonStartupDiagnostic(file?.startup) } : {}) }];
             })),
         };
       }

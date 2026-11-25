@@ -8,6 +8,7 @@ import process from "node:process";
 import { createInterface } from "node:readline";
 import { _electron as electron, expect } from "@playwright/test";
 import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
+import { daemonStartupDiagnostic } from "./collaboration-daemon-startup-diagnostics.mjs";
 import { selectCollaborationRecipient } from "./collaboration-recipient-picker.mjs";
 
 // This process controls the packaged executable. It never imports an alternate
@@ -330,6 +331,7 @@ async function daemonFailureDiagnostic(main, expectedState) {
       else if (name === "daemon.pid") files[name].pid = /^\d+$/.test(text.trim()) ? Number(text.trim()) : null;
       else if (name.endsWith(".log")) {
         files[name].tail_sha256 = sha256Text(text);
+        files[name].startup = daemonStartupDiagnostic(text);
         files[name].errorCodes = [...new Set((text.match(/\b[A-Za-z_]+\b/g) ?? []).filter(code => diagnosticCodes.has(code)))].slice(-20);
         files[name].markers = ["no agent runtimes could be registered", "not logged in", "permission denied", "read-only file system", "exec format error", "address already in use", "no such file or directory", "daemon-managed task"]
           .filter(marker => text.toLowerCase().includes(marker));

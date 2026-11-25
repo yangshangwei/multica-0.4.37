@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { daemonStartupDiagnostic, projectDaemonStartupDiagnostic } from "../../../e2e/fixtures/collaboration-daemon-startup-diagnostics.mjs";
 import assert from "node:assert/strict";
 import test from "node:test";
 import http from "node:http";
@@ -237,4 +239,65 @@ test("Main-derived startup codes remain public without broadening log vocabulary
   assert.deepEqual(result.main_error_codes, [...derived, "EPERM"]);
   assert.deepEqual(result.files.err_log.error_codes, ["EPERM"]);
   assert(!JSON.stringify(result).includes(secret));
+});
+
+
+test("startup classification locates prelogger gates without emitting log paths or values", () => {
+  const secret = "mct_private-fixture-token";
+  const cases = [
+    ["read CLI config: open C:/private/config.json: secret", "profile_config_read"], ["parse CLI config: secret", "profile_config_parse"],
+    ["OS boot identity unavailable", "os_boot_identity"], ["invalid management lock owner", "lock_owner"],
+    ["installation identity has a live lock owner", "lock_busy"], ["invalid managed daemon PID evidence", "pid_invalid"],
+    ["managed daemon process exit is not confirmed", "pid_live"], ["managed control process exit is not confirmed", "control_live"],
+    ["managed startup handoff size is invalid", "handoff_size"], ["invalid managed startup handoff", "handoff_json"],
+    ["noncanonical management JSON envelope", "noncanonical_json"], ["invalid managed startup scope", "handoff_scope"],
+    ["invalid managed startup account version", "handoff_account"], ["invalid management server URL", "handoff_server"],
+    ["invalid or duplicated managed workspace", "handoff_workspace"], ["unknown flag: --private", "command_flag"],
+    ["panic: private", "go_panic"], ["fatal error: private", "go_fatal"],
+  ];
+  for (const [message, expected] of cases) {
+    const result = daemonStartupDiagnostic(`${message} ${secret}`);
+    assert(result.categories.includes(expected)); assert(!JSON.stringify(result).includes(secret));
+  }
+  const io = daemonStartupDiagnostic(`open C:/private/.installation-locks/${secret}.json: confidential OS message`);
+  assert.deepEqual(io.io, [{ operation: "open", target: "lock" }]);
+  assert(!JSON.stringify(io).includes(secret)); assert(!JSON.stringify(io).includes("private"));
+  assert.deepEqual(daemonStartupDiagnostic(""), { output_present: false, categories: [], io: [] });
+  assert.deepEqual(daemonStartupDiagnostic(secret), { output_present: true, categories: [], io: [] });
+  const forged = projectDaemonStartupDiagnostic({ output_present: true, categories: [secret, "handoff_size"],
+    io: [{ operation: "open", target: "pid", path: secret }, { operation: secret, target: "other" }], raw: secret });
+  assert.deepEqual(forged, { output_present: true, categories: ["handoff_size"], io: [{ operation: "open", target: "pid" }] });
+});
+
+
+test("startup classifier covers every stable error literal in the three prelogger managed gates", () => {
+  const files = ["server/internal/daemon/managed_pid.go", "server/internal/daemon/managed_lock.go", "server/internal/daemon/managed_handoff.go",
+    "server/internal/daemon/managed_process.go", "server/cmd/multica/managed_handoff.go", "server/cmd/multica/managed_control.go",
+    "server/internal/daemon/managed_control.go", "server/internal/daemon/managed_identity.go", "server/internal/daemon/managed_lifecycle.go"];
+  for (const file of files) {
+    let source = readFileSync(new URL(`../../../${file}`, import.meta.url), "utf8");
+    if (file === "server/cmd/multica/managed_control.go") source = source.slice(source.indexOf("func managedProcessProfile("));
+    if (file === "server/internal/daemon/managed_control.go") source = source.slice(source.indexOf("func readManagementControlFile("));
+    if (file.endsWith("managed_identity.go")) source = source.slice(0, source.indexOf("func readManagedIdentity("));
+    if (file.endsWith("managed_lifecycle.go")) source = source.slice(0, source.indexOf("func managedProfileUser("));
+    for (const match of source.matchAll(/errors\.New\("([^"\n]+)"\)/g)) {
+      // Handoff.Validate also emits errors after logger startup; the same fixed vocabulary covers them.
+      assert(daemonStartupDiagnostic(match[1]).categories.length > 0, `${file}: stable error is not classified`);
+    }
+  }
+});
+
+
+test("startup IO classification uses only exact path components before the error separator", () => {
+  for (const [line, operation, target] of [
+    ["open C:/fixture/config.json.backup: error", "open", "other"],
+    ["open C:/fixture/other: error mentions /daemon.pid", "open", "other"],
+    ["open C:\\Runner Temp\\profile\\config.json: private OS message", "open", "config"],
+    ["lstat D:/Runner Temp/profile/daemon.pid: private OS message", "lstat", "pid"],
+    ["mkdir D:\\Runner Temp\\profile\\.installation-locks: private OS message", "mkdir", "lock"],
+    ["open D:/Runner Temp/.installation-locks/id.json: private OS message", "open", "lock"],
+    ["open D:/Runner Temp/.installation-locks.backup/id.json: private OS message", "open", "other"],
+    ["rename C:/one/config.json C:/two/config.json: private OS message", "rename", "other"],
+    ["open C:/fixture/config.json", "open", "other"],
+  ]) assert.deepEqual(daemonStartupDiagnostic(line).io, [{ operation, target }]);
 });
