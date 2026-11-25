@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { windowsCollaborationPlan, windowsCollaborationTestPattern } from "./windows-collaboration-config.mjs";
 
-import { collaborationDiagnostic, collaborationResults } from "./windows-collaboration-diagnostics.mjs";
+import { collaborationDiagnostic, collaborationResults, daemonFailureProjection } from "./windows-collaboration-diagnostics.mjs";
 
 import { collaborationProcessEvidence, probeCollaborationApi } from "./windows-collaboration-services.mjs";
 
@@ -142,4 +142,49 @@ test("API preflight binds health/config to the owned process and exposes only fi
     assert.equal(item.valid, false); assert.equal(item.status, null); assert(["ECONNREFUSED", "ECONNRESET", "UND_ERR_SOCKET"].includes(item.cause_code), "A stopped listener must expose only its fixed transport failure code");
   }
   assert(!JSON.stringify(stopped).includes(setup.api));
+});
+
+
+test("daemon failure marker projects only fixed state and ownership booleans", () => {
+  const secret = "mct_private-fixture-secret";
+  const value = { expectedState: "running", expectedProfile: secret, authenticated: true, managedDeploymentAdvertised: true,
+    actual: { state: "stopped", profileMatches: false, serverMatches: true, pid: 12345, token: secret,
+      installation: { present: true, serverMatches: false, userMatches: true, user: secret } },
+    profileFiles: { "config.json": { exists: true, outside_expected_home: false, diagnostic_read_failed: false, text: secret },
+      ".desktop-user-id": { exists: false }, "daemon.pid": { diagnostic_read_failed: true, pid: 12345 },
+      "daemon.log": { text: secret }, [secret]: { exists: true } }, password: secret };
+  const result = daemonFailureProjection([{ message: `${secret}\nInstalled daemon diagnostic: ${JSON.stringify(value)}\n${secret}` }]);
+  assert.equal(result.status, "parsed"); assert.equal(result.expected_state, "running"); assert.equal(result.actual_state, "stopped");
+  assert.equal(result.profile_matches, false); assert.equal(result.installation_user_matches, true);
+  assert.deepEqual(result.files.config, { exists: true, outside_home: false, read_failed: false });
+  assert.deepEqual(result.files.pid, { exists: null, outside_home: null, read_failed: true });
+  assert(!JSON.stringify(result).includes(secret)); assert(!JSON.stringify(result).includes("12345"));
+  const publicReport = collaborationDiagnostic({ stage: "playwright", repo: "D:/repo", stdout: JSON.stringify({
+    suites: [{ specs: [{ tests: [{ results: [{ error: { message: `Installed daemon diagnostic: ${JSON.stringify(value)}` } }] }] }] }],
+  }) });
+  assert.deepEqual(publicReport.daemon, result);
+
+  const wrongTypes = daemonFailureProjection([{ stack: 'Installed daemon diagnostic: {"expectedState":"private","actual":{"state":"private","profileMatches":"true"}}' }]);
+  assert.equal(wrongTypes.expected_state, "unknown"); assert.equal(wrongTypes.actual_state, "unknown"); assert.equal(wrongTypes.profile_matches, null);
+});
+
+test("daemon diagnostics retain every emitted state and reject unsupported states", () => {
+  for (const state of ["stopped", "starting", "running", "stopping", "installing_cli", "cli_not_found", "recovery_paused", "auth_expired"]) {
+    const result = daemonFailureProjection([{ message: `Installed daemon diagnostic: ${JSON.stringify({ expectedState: state, actual: { state } })}` }]);
+    assert.equal(result.expected_state, state); assert.equal(result.actual_state, state);
+  }
+  for (const state of ["error", "private-unknown-state", true, null]) {
+    const result = daemonFailureProjection([{ message: `Installed daemon diagnostic: ${JSON.stringify({ expectedState: state, actual: { state } })}` }]);
+    assert.equal(result.expected_state, "unknown"); assert.equal(result.actual_state, "unknown");
+  }
+});
+
+test("daemon failure projection rejects malformed and oversized markers and ignores unrelated text", () => {
+  for (const json of ["not-json", "null", "[]", JSON.stringify({ ignored: "x".repeat(65536) })]) {
+    assert.deepEqual(daemonFailureProjection([{ message: `Installed daemon diagnostic: ${json}` }]), { status: "invalid" });
+  }
+  assert.deepEqual(daemonFailureProjection([{ message: 'prefix Installed daemon diagnostic: {"authenticated":true}' }]), { status: "unavailable" });
+  const result = collaborationDiagnostic({ stage: "playwright", repo: "D:/repo", stdout: 'Installed daemon diagnostic: {"authenticated":true}',
+    stderr: 'Installed daemon diagnostic: {"authenticated":true}' });
+  assert.deepEqual(result.daemon, { status: "unavailable" });
 });

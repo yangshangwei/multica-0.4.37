@@ -107,7 +107,8 @@ export class InstalledMainClient {
       this.child = spawn(process.execPath, [path.join(repo, "e2e/fixtures/collaboration-installed-main.mjs")], {
         stdio: "pipe",
         detached: process.platform !== "win32",
-        env: { ...process.env, COLLABORATION_INSTALLED_MAIN_EXECUTABLE: realpathSync(options.executablePath),
+        env: { ...process.env, HOME: acceptanceHome, USERPROFILE: acceptanceHome,
+          COLLABORATION_INSTALLED_MAIN_EXECUTABLE: realpathSync(options.executablePath),
           MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: acceptanceHome },
       });
       this.attachProtocolHandlers();

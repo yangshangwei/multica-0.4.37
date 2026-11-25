@@ -39,6 +39,43 @@ export function collaborationResults(report) {
   return results.filter(result => result && typeof result === "object").slice(0, 16);
 }
 
+const daemonStates = new Set(["stopped", "starting", "running", "stopping", "installing_cli", "cli_not_found", "recovery_paused", "auth_expired"]);
+const boolean = value => typeof value === "boolean" ? value : null;
+
+export function daemonFailureProjection(failures) {
+  const marker = "Installed daemon diagnostic: ";
+  for (const failure of failures.slice(0, 16)) {
+    for (const text of [failure?.message, failure?.stack]) {
+      if (typeof text !== "string") continue;
+      // Each eligible input is already a bounded Playwright error, not stdout/stderr.
+      for (const line of text.slice(0, 128 * 1024).split(/\r?\n/).slice(0, 128)) {
+        if (!line.startsWith(marker)) continue;
+        if (line.length > 64 * 1024) return { status: "invalid" };
+        let value;
+        try { value = JSON.parse(line.slice(marker.length)); } catch { return { status: "invalid" }; }
+        if (!value || typeof value !== "object" || Array.isArray(value)) return { status: "invalid" };
+        const actual = value.actual;
+        return {
+          status: "parsed",
+          expected_state: daemonStates.has(value.expectedState) ? value.expectedState : "unknown",
+          actual_state: daemonStates.has(actual?.state) ? actual.state : "unknown",
+          profile_matches: boolean(actual?.profileMatches), server_matches: boolean(actual?.serverMatches),
+          authenticated: boolean(value.authenticated), managed_deployment_advertised: boolean(value.managedDeploymentAdvertised),
+          installation_present: boolean(actual?.installation?.present),
+          installation_server_matches: boolean(actual?.installation?.serverMatches), installation_user_matches: boolean(actual?.installation?.userMatches),
+          capture_failed: boolean(value.capture_failed), capture_timed_out: boolean(value.capture_timed_out),
+          files: Object.fromEntries([["config", "config.json"], ["owner", ".desktop-user-id"], ["pid", "daemon.pid"], ["log", "daemon.log"], ["err_log", "daemon.err.log"]]
+            .map(([key, name]) => {
+              const file = value.profileFiles?.[name];
+              return [key, { exists: boolean(file?.exists), outside_home: boolean(file?.outside_expected_home), read_failed: boolean(file?.diagnostic_read_failed) }];
+            })),
+        };
+      }
+    }
+  }
+  return { status: "unavailable" };
+}
+
 /** Public failure data is a projection, never a scrubbed copy of private text. */
 export function collaborationDiagnostic({ stage, error, stdout = "", stderr = "", repo, journey }) {
   const report = parseCollaborationReport(stdout);
@@ -84,6 +121,7 @@ export function collaborationDiagnostic({ stage, error, stdout = "", stderr = ""
     stats: Object.fromEntries(["expected", "unexpected", "skipped", "flaky"].map(key => [key, integer(report?.stats?.[key])])),
     result_statuses: results.map(result => statuses.has(result.status) ? result.status : "unknown"),
     error_kinds: [...kinds], error_codes: [...codes], locations,
+    daemon: daemonFailureProjection(failures),
     milestones: Object.fromEntries(["boot", "runtime", "login", "stop", "restart_while_paused", "resume", "final", "packaged_status", "transport"]
       .map(key => [key, Boolean(journey && Object.hasOwn(journey, key))])),
   };

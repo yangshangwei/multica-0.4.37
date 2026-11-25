@@ -4,10 +4,11 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { PassThrough } from "node:stream";
 import vm from "node:vm";
-import { mkdtempSync, readFileSync, statSync, existsSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, statSync, existsSync, rmSync, mkdirSync, writeFileSync, realpathSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
-import { nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
+import path, { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
 import { InstalledMainClient, createInstalledMachineIdentity, finishInstalledMainJourney, installedTimelineEvent } from "./collaboration-installed-main.ts";
 
 test("native controller shutdown preserves a failed close command after its owned child exits", async () => {
@@ -269,4 +270,46 @@ test("container launch retains its exact Linux packaged pathname check", async (
     await rendererAssertion(`file://${packagePath}/out/renderer/index.html`, null, packagePath);
     await assert.rejects(rendererAssertion(`file://${packagePath}/out/renderer/other.html`, null, packagePath), assert.AssertionError);
   }
+});
+
+
+test("native controller children and their descendants share the validated home without changing parent state", () => {
+  const source = readFileSync(new URL("./collaboration-installed-main.ts", import.meta.url), "utf8");
+  const start = source.indexOf("    if (options.executablePath) {");
+  const end = source.indexOf("      this.attachProtocolHandlers();", start);
+  assert(start > 0 && end > start, "Read the actual native controller spawn boundary");
+  const spawnNative = vm.compileFunction(`${source.slice(start, end).replace("import.meta.dirname", "fixtureDirectory")} }`,
+    ["options", "process", "nativeInstalledLayout", "nativeAcceptanceHome", "realpathSync", "path", "spawn", "fixtureDirectory"]);
+  const root = realpathSync(mkdtempSync(join(tmpdir(), "installed native home-")));
+  const parent = { HOME: process.env.HOME, USERPROFILE: process.env.USERPROFILE };
+  const platform = process.platform === "win32" ? "win32" : "darwin";
+  const executable = platform === "win32" ? join(root, "Multica.exe") : join(root, "Multica.app", "Contents", "MacOS", "Multica");
+  mkdirSync(dirname(executable), { recursive: true }); writeFileSync(executable, "fixture executable path");
+  const home = join(root, "owned home %20");
+  const profileModule = new URL("../../apps/desktop/src/main/daemon-profile.ts", import.meta.url).href;
+  const probe = `import { homedir } from "node:os"; import { profileDir } from ${JSON.stringify(profileModule)}; process.stdout.write(JSON.stringify({ home: homedir(), profile: profileDir("desktop-loopback") }));`;
+  const child = `import { homedir } from "node:os"; import { spawnSync } from "node:child_process"; import { profileDir } from ${JSON.stringify(profileModule)};
+    const descendant = spawnSync(process.execPath, ["--experimental-strip-types", "--input-type=module", "-e", ${JSON.stringify(probe)}], { env: { ...process.env }, encoding: "utf8" });
+    if (descendant.status !== 0) throw new Error(descendant.stderr);
+    process.stdout.write(JSON.stringify({ home: homedir(), profile: profileDir("desktop-loopback"), descendant: JSON.parse(descendant.stdout) }));`;
+  let launches = 0;
+  const spawnProbe = (_command, _args, options) => {
+    launches++;
+    const result = spawnSync(process.execPath, ["--experimental-strip-types", "--input-type=module", "-e", child], { ...options, detached: false, encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    const observed = JSON.parse(result.stdout);
+    assert.equal(observed.home, home);
+    assert.equal(observed.profile, join(home, ".multica", "profiles", "desktop-loopback"));
+    assert.deepEqual(observed.descendant, { home: observed.home, profile: observed.profile });
+    assert.equal(options.env.HOME, home); assert.equal(options.env.USERPROFILE, home);
+  };
+  try {
+    const run = acceptanceHome => spawnNative.call({}, { executablePath: executable, acceptanceHome }, process,
+      value => nativeInstalledLayout(value, platform), value => nativeAcceptanceHome(value, platform),
+      realpathSync, path, spawnProbe, dirname(fileURLToPath(import.meta.url)));
+    run(home);
+    for (const invalid of [undefined, "relative-home", "bad\nhome"]) assert.throws(() => run(invalid), /absolute/);
+    assert.equal(launches, 1, "Invalid homes must fail before spawning");
+    assert.deepEqual({ HOME: process.env.HOME, USERPROFILE: process.env.USERPROFILE }, parent);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
