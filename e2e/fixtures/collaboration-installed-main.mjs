@@ -403,6 +403,11 @@ async function metadata() {
     errors: [...errors], accountRequests: [...accountRequests], responses: [...responses], writes: [...writes], ...(installation ? { installation } : {}) };
 }
 
+async function expectInstalledRenderer() {
+  await expect.poll(() => nativeLayout ? new URL(page.url()).href : new URL(page.url()).pathname)
+    .toBe(nativeLayout?.rendererUrl ?? `${packagePath}/out/renderer/index.html`);
+}
+
 async function launch() {
   app = await electron.launch({ executablePath: executable, args: nativeMode ? [] : ["--no-sandbox"],
     env: nativeMode ? { ...process.env, MULTICA_PACKAGED_ACCEPTANCE: "1", MULTICA_PACKAGED_ACCEPTANCE_HOME: process.env.MULTICA_PACKAGED_ACCEPTANCE_HOME }
@@ -426,7 +431,7 @@ async function launch() {
       clientOS: headers["x-client-os"] ?? null });
   });
   await expect.poll(() => new URL(page.url()).protocol).toBe("file:");
-  await expect.poll(() => new URL(page.url()).pathname).toBe(`${packagePath}/out/renderer/index.html`);
+  await expectInstalledRenderer();
   // A fresh packaged acceptance home has no locale preference. The journey
   // uses English labels and must initialize that preference before the first
   // password-form interaction, including after a packaged restart.
@@ -435,7 +440,7 @@ async function launch() {
     localStorage.setItem("multica:chat:isOpen", "false");
   });
   await page.reload();
-  await expect.poll(() => new URL(page.url()).pathname).toBe(`${packagePath}/out/renderer/index.html`);
+  await expectInstalledRenderer();
   await expect.poll(() => page.evaluate(() => typeof window.daemonAPI?.getPrefs)).toBe("function");
   const expectedDaemonState = authenticatedUserId && managedDeploymentId ? "running" : "stopped";
   await expect.poll(() => page.evaluate(() => window.daemonAPI.getStatus().then((status) => status.state)), { timeout: 90_000 }).toBe(expectedDaemonState);

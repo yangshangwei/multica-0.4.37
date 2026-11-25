@@ -7,6 +7,7 @@ import vm from "node:vm";
 import { mkdtempSync, readFileSync, statSync, existsSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import { nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
 import { InstalledMainClient, createInstalledMachineIdentity, finishInstalledMainJourney, installedTimelineEvent } from "./collaboration-installed-main.ts";
 
 test("native controller shutdown preserves a failed close command after its owned child exits", async () => {
@@ -232,4 +233,40 @@ test("controller aggregate failure replies retain member errors while scrubbing 
   assert(text.includes("TypeError: primary <private-fixture-value>"));
   assert(text.includes("Error: cleanup <private-fixture-value>"));
   assert(!text.includes(secret));
+});
+
+
+function rendererAssertion(url, nativeLayout, packagePath) {
+  const source = readFileSync(new URL("./collaboration-installed-main.mjs", import.meta.url), "utf8");
+  const start = source.indexOf("async function expectInstalledRenderer(");
+  const end = source.indexOf("\nasync function launch(", start);
+  assert(start >= 0 && end > start, "Read the actual installed renderer assertion");
+  const expect = { poll: read => ({ toBe: async expected => assert.equal(await read(), expected) }) };
+  return vm.compileFunction(`${source.slice(start, end)}; return expectInstalledRenderer();`,
+    ["URL", "expect", "page", "nativeLayout", "packagePath"])(URL, expect, { url: () => url }, nativeLayout, packagePath);
+}
+
+test("native launch pins the exact encoded renderer URL including Windows drive and literal percent paths", async () => {
+  for (const [platform, executable] of [
+    ["win32", "D:\\runner\\installed\\Multica.exe"],
+    ["win32", "D:\\Runner %20 #\\installed\\Multica.exe"],
+    ["darwin", "/task %20 #/Multica Candidate.app/Contents/MacOS/Multica"],
+  ]) {
+    const layout = nativeInstalledLayout(executable, platform);
+    await rendererAssertion(layout.rendererUrl, layout, layout.asar);
+    for (const wrong of [layout.rendererUrl.replace("index.html", "other.html"), layout.rendererUrl.replace("app.asar/", "other.asar/"),
+      layout.rendererUrl.replace("file:///", "file://foreign/"), layout.rendererUrl + "?foreign=1", layout.rendererUrl + "#foreign"]) {
+      await assert.rejects(rendererAssertion(wrong, layout, layout.asar), assert.AssertionError);
+    }
+    if (layout.rendererUrl.includes("%2520")) {
+      await assert.rejects(rendererAssertion(layout.rendererUrl.replace("%2520", "%20"), layout, layout.asar), assert.AssertionError);
+    }
+  }
+});
+
+test("container launch retains its exact Linux packaged pathname check", async () => {
+  for (const packagePath of ["/opt/multica/resources/app.asar", "/opt/Multica/resources/app.asar"]) {
+    await rendererAssertion(`file://${packagePath}/out/renderer/index.html`, null, packagePath);
+    await assert.rejects(rendererAssertion(`file://${packagePath}/out/renderer/other.html`, null, packagePath), assert.AssertionError);
+  }
 });
