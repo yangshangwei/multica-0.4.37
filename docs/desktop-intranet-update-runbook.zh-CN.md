@@ -1,10 +1,12 @@
 # 桌面端内网部署与升级操作手册
 
-更新日期：2026-10-13。
+更新日期：2026-11-26。本次版本：V0.8.8（`0.8.8`），桌面交付目标：Windows x64。
 
 本手册用于首次部署桌面下载页和更新文件服务，以及后续发布新版本。内网服务器通过 Nginx 提供静态页面和文件下载，首次安装用户访问 `/desktop/`，已安装客户端使用固定的 `updateUrl`。以后升级只发布新文件并切换更新元数据和下载页版本信息，不需要逐台修改客户端 URL，也不需要重启 Nginx。
 
 业务服务、数据库和独立安装的 CLI 按[服务端离线升级文档](offline-upgrade.zh-CN.md)执行。下载页的安装指导面向启用密码认证和自助注册的环境；页面不会修改业务服务的认证设置。
+
+**V0.8.8 必须先完成匹配服务端/Web 的数据库迁移、`/healthz` 和原认证方式登录验收，再切换桌面更新源并升级 daemon。** 桌面浏览器登录依赖匹配 Web 返回的一次性 `desktop_state`。
 
 设备自动注册和用户名密码注册由业务服务端统一选择。切换配置、旧账号迁移和验收步骤见[认证方式配置与迁移](offline-upgrade.zh-CN.md#authentication-mode)。仅升级桌面程序或修改 `updateUrl` 不会切换认证模式；升级时保留用户数据目录中的 `device-identity.json` 和登录数据。
 
@@ -40,6 +42,12 @@ bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env stat
 
 `collect` 和 `publish` 仅在明确测试预发布包时追加 `--allow-prerelease`。`verify` 默认检查 `latest.yml`，可以检查测试版本，但不会把测试版本认定为正式发布。
 
+### V0.8.8 与最近交付的比较
+
+比较基线为 v0.6.7（源码 `9caea35808afc8d05fb6135bfc74d4bfb0b45cf1`）。下载服务的 Compose、Nginx 配置、管理脚本、配置模板和收集/发布/校验工具没有功能变化；`download.html` 仅两处注释变化，操作手册已更新。已有 v0.6.7 下载服务无需仅为此次版本重新导入 Nginx 镜像。
+
+已有站点按第 4 节发布完整 V0.8.8 Windows 更新文件即可。若同步本次同源页面和手册，备份部署文件后更新对应文件，运行 `start` 原子安装页面；保留 `updates.env`、持久安装包、`download-config.json` 和业务地址，不从模板覆盖它们。新站点仍按第 2 节准备完整部署文件及目标架构镜像。逐文件比较摘要和本次实际验证结果见随包发布记录。
+
 ## 1. 部署约定
 
 以下均为示例，请替换为实际环境的值：
@@ -53,8 +61,8 @@ bash scripts/desktop-updates.sh --env-file /opt/multica-updates/updates.env stat
 | 页面展示的业务服务器地址 | `http://10.10.10.30:8080`，单独配置为实际业务入口 |
 | Nginx 部署配置目录 | `/opt/multica-updates` |
 | 安装包持久化存储 | `/srv/multica-updates` |
-| 待发布文件目录 | `/srv/incoming/desktop-0.5.1-windows-x64` |
-| 本次示例版本 | `0.5.1`，应高于客户端已安装版本 |
+| 待发布文件目录 | `/srv/incoming/desktop-0.8.8-windows-x64` |
+| 本次示例版本 | `0.8.8`，应高于客户端已安装版本 |
 
 下载服务器需要 Docker Engine 和 Docker Compose 插件。Nginx 本身不需要 Node.js；使用仓库里的收集、发布工具时，执行工具的机器需要仓库和已经准备好的项目依赖。完全隔离的环境应提前准备镜像、依赖和安装包。
 
@@ -228,10 +236,10 @@ Nginx 对外提供 `/srv/multica-updates/public/` 下的文件。以 Windows x64
 │   ├── download.html
 │   ├── download-config.json
 │   ├── download.json
-│   ├── multica-desktop-0.5.0-windows-x64.exe
-│   ├── multica-desktop-0.5.0-windows-x64.exe.blockmap
-│   ├── multica-desktop-0.5.1-windows-x64.exe
-│   └── multica-desktop-0.5.1-windows-x64.exe.blockmap
+│   ├── multica-desktop-0.6.7-windows-x64.exe
+│   ├── multica-desktop-0.6.7-windows-x64.exe.blockmap
+│   ├── multica-desktop-0.8.8-windows-x64.exe
+│   └── multica-desktop-0.8.8-windows-x64.exe.blockmap
 ├── staging/
 └── backups/
 ```
@@ -246,8 +254,8 @@ Nginx 对外提供 `/srv/multica-updates/public/` 下的文件。以 Windows x64
 /srv/multica-updates/public/latest.yml
 → http://10.10.10.20:18080/desktop/latest.yml
 
-/srv/multica-updates/public/multica-desktop-0.5.1-windows-x64.exe
-→ http://10.10.10.20:18080/desktop/multica-desktop-0.5.1-windows-x64.exe
+/srv/multica-updates/public/multica-desktop-0.8.8-windows-x64.exe
+→ http://10.10.10.20:18080/desktop/multica-desktop-0.8.8-windows-x64.exe
 ```
 
 `latest*.yml` 包含版本号、安装包文件名、大小和校验值，必须使用本次构建生成的文件。不要只复制安装器，也不要手工修改 YAML 的版本号或校验值。
@@ -268,19 +276,19 @@ macOS 自动更新需要 ZIP，只有 DMG 不够。Linux 安装权限和升级�
 
 ### 4.1 构建并收集完整产物
 
-在具备构建工具链和依赖的机器上，从仓库根目录执行。下面以稳定版本 `0.5.1`、Windows x64 为例：
+在具备构建工具链和依赖的机器上，从仓库根目录执行。下面以稳定版本 `0.8.8`、Windows x64 为例：
 
 ```bash
-MULTICA_DESKTOP_VERSION=0.5.1 \
+MULTICA_DESKTOP_VERSION=0.8.8 \
   pnpm --filter @multica/desktop package -- --win --x64 --publish never
 
 bash scripts/desktop-updates.sh collect \
-  apps/desktop/dist dist/desktop-release-0.5.1-windows-x64
+  apps/desktop/dist dist/desktop-release-0.8.8-windows-x64
 ```
 
-`--publish never` 不上传公网发布源。构建签名仍按目标平台的正式发布要求准备，指定版本号不能替代签名和安装验收。
+`--publish never` 不上传公网发布源。此 fork 的正式发布目标为 `yangshangwei/multica-0.4.37`；不要直接使用仍指向上游的默认发布配置。若安装包来自已验收的 CI 工件，直接收集该工件的原始字节，不重新构建并冒称同一验收结果。构建签名仍按目标平台的要求准备，指定版本号不能替代签名和安装验收；未签名必须明确记录。
 
-收集工具会验证元数据引用、大小和 SHA-512，为有效的 Windows x64 发布生成 `download.json`。把收集出的整个目录转入内网，例如 `/srv/incoming/desktop-0.5.1-windows-x64`，不要漏掉该 JSON。多架构应逐次构建、收集到不同目录，避免后续构建清空之前的产物。
+收集工具会验证元数据引用、大小和 SHA-512，为有效的 Windows x64 发布生成 `download.json`。把收集出的整个目录转入内网，例如 `/srv/incoming/desktop-0.8.8-windows-x64`，不要漏掉该 JSON。多架构应逐次构建、收集到不同目录，避免后续构建清空之前的产物。
 
 正式升级使用高于客户端当前版本的稳定版本。`-dirty` 等预发布包仅用于明确的开发验证，不应作为正式稳定升级包。
 
@@ -291,7 +299,7 @@ bash scripts/desktop-updates.sh collect \
 ```bash
 bash scripts/desktop-updates.sh \
   --env-file /opt/multica-updates/updates.env \
-  publish /srv/incoming/desktop-0.5.1-windows-x64
+  publish /srv/incoming/desktop-0.8.8-windows-x64
 ```
 
 脚本读取 `DESKTOP_UPDATES_STORAGE`，工具写入其 `public/` 子目录。它必须与 Nginx 挂载的是同一份存储；如果工具在另一台机器执行，需要挂载下载服务器的同一目录，并用该机器专用的 env 文件填写实际挂载路径。该存储需要支持硬链接和同目录原子重命名。不要仅因为两台机器都存在 `/srv/multica-updates`，就认为它们指向同一份文件。
@@ -321,7 +329,7 @@ bash scripts/desktop-updates.sh \
   test ! -d "$download_public/download.json"
   download_projection_tmp=$(mktemp "$download_public/.download-json.XXXXXX")
   trap 'rm -f "$download_projection_tmp"' EXIT
-  cp /srv/incoming/desktop-0.5.1-windows-x64/download.json "$download_projection_tmp"
+  cp /srv/incoming/desktop-0.8.8-windows-x64/download.json "$download_projection_tmp"
   chmod 0644 "$download_projection_tmp"
   mv -f "$download_projection_tmp" "$download_public/download.json"
 )
@@ -331,12 +339,12 @@ bash scripts/desktop-updates.sh \
 
 ### 4.4 验证发布结果
 
-在具备仓库依赖且能访问下载服务的内网机器执行自动校验，下面使用 Windows x64 和预期版本 `0.5.1`：
+在具备仓库依赖且能访问下载服务的内网机器执行自动校验，下面使用 Windows x64 和预期版本 `0.8.8`：
 
 ```bash
 bash scripts/desktop-updates.sh \
   --env-file /opt/multica-updates/updates.env \
-  verify latest.yml --expected-version 0.5.1
+  verify latest.yml --expected-version 0.8.8
 ```
 
 验证机器没有 Docker Compose 时，可以直接调用 Node 工具，不读取服务器 env 文件：
@@ -345,12 +353,12 @@ bash scripts/desktop-updates.sh \
 node apps/desktop/scripts/verify-updates.mjs \
   --url http://10.10.10.20:18080/desktop \
   --metadata latest.yml \
-  --expected-version 0.5.1
+  --expected-version 0.8.8
 ```
 
 脚本校验元数据、预期版本、HEAD、Range 和完整下载的大小及 SHA-512，拒绝跳转和不安全的引用。成功输出 JSON 证据，失败返回非零退出码。每个实际发布通道分别执行；Windows ia32 改用 `latest-ia32.yml`。检查会完整下载元数据引用的文件，需要相应时间和带宽。
 
-blockmap 若存在，脚本检查其可读取性和传输一致性；没有元数据中的预期摘要时，不能把这个结果当成“已与原始构建 blockmap 校验值比对”。自动下载验证也不等于客户端安装验收。
+blockmap 若存在，脚本检查其可读取性和传输一致性；没有元数据中的预期摘要时，不能把这个结果当成“已与原始构建 blockmap 校验值比对”。另外将交付的 blockmap 与原始构建文件逐字节或按 SHA-256 比对，并将其列入校验清单。自动下载验证也不等于客户端安装验收。
 
 排查问题时，也可以从内网客户端所在网络手工验证，下面使用 Windows x64 示例文件名：
 
@@ -358,23 +366,23 @@ blockmap 若存在，脚本检查其可读取性和传输一致性；没有元�
 curl -fsS http://10.10.10.20:18080/desktop/latest.yml
 
 curl -fsSI \
-  http://10.10.10.20:18080/desktop/multica-desktop-0.5.1-windows-x64.exe
+  http://10.10.10.20:18080/desktop/multica-desktop-0.8.8-windows-x64.exe
 
 curl -fsS -D - -o /dev/null -H 'Range: bytes=0-1023' \
-  http://10.10.10.20:18080/desktop/multica-desktop-0.5.1-windows-x64.exe
+  http://10.10.10.20:18080/desktop/multica-desktop-0.8.8-windows-x64.exe
 ```
 
 检查 YAML 中是预期版本，HEAD 返回 `200`，Range 返回 `206` 和 `Content-Range`，元数据响应包含 `Cache-Control: no-cache`。元数据中的所有引用文件都应能下载。
 
-Windows x64 还需访问 `/desktop/download.json`，确认 `version`、`file`、`size` 对应此次已验证安装包。刷新 `/desktop/` 后下载按钮应指向该包。`verify` 的 JSON 证据验证更新通道及传输，不能代替下载页交互测试；同时检查服务器地址复制、常见问题键盘展开，以及断开公网后所有内容仍可使用。内网 HTTP 或剪贴板权限被拒绝时，页面应如实反馈，并允许选中地址手动复制。
+`verify` 不校验下载页的 JSON。Windows x64 还需访问 `/desktop/download.json`，确认 `schemaVersion=1`、`platform=windows`、`arch=x64`，以及 `version=0.8.8`、`file`、`size` 与 `latest.yml` 和此次已验证安装包一致。刷新 `/desktop/` 后下载按钮应指向该包。`verify` 的 JSON 证据验证更新通道及传输，不能代替下载页交互测试；同时检查服务器地址复制、常见问题键盘展开，以及断开公网后所有内容仍可使用。内网 HTTP 或剪贴板权限被拒绝时，页面应如实反馈，并允许选中地址手动复制。
 
 至少完整下载一次安装器并核对 SHA-512。以下需验证机安装 OpenSSL，输出值应等于 YAML 中该文件的 Base64 `sha512`：
 
 ```bash
-curl -fS -o /tmp/multica-desktop-0.5.1-windows-x64.exe \
-  http://10.10.10.20:18080/desktop/multica-desktop-0.5.1-windows-x64.exe
+curl -fS -o /tmp/multica-desktop-0.8.8-windows-x64.exe \
+  http://10.10.10.20:18080/desktop/multica-desktop-0.8.8-windows-x64.exe
 
-openssl dgst -sha512 -binary /tmp/multica-desktop-0.5.1-windows-x64.exe \
+openssl dgst -sha512 -binary /tmp/multica-desktop-0.8.8-windows-x64.exe \
   | openssl base64 -A
 ```
 
@@ -475,10 +483,10 @@ flowchart TD
 mkdir -p /srv/multica-updates/release-records
 if bash scripts/desktop-updates.sh \
   --env-file /opt/multica-updates/updates.env \
-  verify latest.yml --expected-version 0.5.1 \
-  > /srv/multica-updates/release-records/0.5.1-windows-x64.verify.tmp; then
-  mv /srv/multica-updates/release-records/0.5.1-windows-x64.verify.tmp \
-    /srv/multica-updates/release-records/0.5.1-windows-x64.verify.json
+  verify latest.yml --expected-version 0.8.8 \
+  > /srv/multica-updates/release-records/0.8.8-windows-x64.verify.tmp; then
+  mv /srv/multica-updates/release-records/0.8.8-windows-x64.verify.tmp \
+    /srv/multica-updates/release-records/0.8.8-windows-x64.verify.json
 else
   exit 1
 fi
@@ -554,7 +562,9 @@ bash scripts/desktop-updates.sh stop
 
 ## 9. 当前验证边界与参考资料
 
-截至 2026-09-24，任务已完成本机 Nginx 部署、产物校验发布、完整 HTTP 下载、SHA-512、Range 和重启持久化验证。现有 `0.4.48-dirty` Windows ia32 包是下载测试材料，真实内网跨版本安装、签名、权限提升及用户状态保留仍待验收。本文中的 IP、目录和 `0.5.1` 均是操作示例，不表示已完成该内网部署或正式发布。
+2026-09-24 的历史记录覆盖本机 Nginx 部署、产物校验发布、完整 HTTP 下载、SHA-512、Range 和重启持久化；其中 `0.4.48-dirty` Windows ia32 包只是当时的下载测试材料，不是 V0.8.8 的验收证据。
+
+V0.8.8 的构件来源、Windows 实际升级起点、安装/自动更新结果、签名状态和未测范围，以本次发布记录为准。本手册不预先宣告上述验证通过。原生 CI 的安装或更新结果不能代替客户内网终端、权限提升、Authenticode/SmartScreen 信任及断网使用验收；如果任一项未执行，应明确标为未测。本文 IP 和目录是操作示例，不能原样覆盖已有业务配置。
 
 - [桌面端内网升级方案](desktop-intranet-update-plan.zh-CN.md)：设计约定、平台差异和验收标准。
 - [本机桌面更新下载服务](desktop-updates-local.zh-CN.md)：开发机上的启动、发布及配置工具。
