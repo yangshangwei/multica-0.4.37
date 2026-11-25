@@ -740,6 +740,7 @@ function CommentRow({
         >
           <div className="text-body leading-relaxed">
             <ContentEditor
+              mentionPicker="categorized"
               ref={edit.editorRef}
               defaultValue={edit.initialValue}
               placeholder={t(($) => $.comment.edit_placeholder)}
@@ -1078,6 +1079,7 @@ function CommentCardImpl({
               >
                 <div className="text-body leading-relaxed">
                   <ContentEditor
+              mentionPicker="categorized"
                     ref={edit.editorRef}
                     defaultValue={edit.initialValue}
                     placeholder={t(($) => $.comment.edit_placeholder)}

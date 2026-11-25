@@ -10,7 +10,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { useT } from "../i18n";
 import type { ContentEditorRef } from "../editor/content-editor";
 import { AI_ASSIST_BUTTON_TONE } from "./issue-description-assist";
-import { actorKey, type ActorCatalogEntry } from "./quick-create-actor-picker-model";
+import { actorKey, type ActorCatalogEntry } from "../common/actor-discovery";
 
 type Context = { text: string; projectId: string | null; actorKey: string; identityKey: string };
 type Request = { controller: AbortController; context: Context; scope: QuickCreateScope; descriptions: Map<string, string> };

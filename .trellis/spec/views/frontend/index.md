@@ -32,6 +32,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Agent Discovery](./agent-discovery.md) | Squad complete-membership contract, role provenance from template_key, template/member separation, preference & scope composition | Active |
 | [Issue Description Assist](./issue-description-assist.md) | Text-only AI suggestions, editor snapshots, protected Markdown and cancellation | Active |
 | [Quick-create Actor Picker](./quick-create-actor-picker.md) | Local favorites/recent actors, scoped hydration, full-description search and nested-picker focus | Active |
+| [Issue Mention Picker](./issue-mention-picker.md) | Explicit comment/reply discovery, complete local filtering, scope-aware candidates and editor-preserving controls | Active |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Core StoreApi injection through navigation plumbing; local/server state boundaries | Active contracts; general guide pending |
 | [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Unified sidebar, scoped creation, account feedback, restored collaboration state and direct-link focus | Active |

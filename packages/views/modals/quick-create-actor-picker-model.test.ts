@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
-import { projectActorSections, actorKey, buildActorCatalog, actorShortcuts, searchActors, actorPage } from "./quick-create-actor-picker-model";
+import { projectActorSections, actorShortcuts } from "./quick-create-actor-picker-model";
+import { actorKey, buildActorCatalog, searchActors, actorPage } from "../common/actor-discovery";
 
 const agents = Array.from({ length: 500 }, (_, index) => ({
   id: String(index), name: `Agent ${String(index).padStart(3, "0")}`,

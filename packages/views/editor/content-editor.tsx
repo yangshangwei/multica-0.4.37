@@ -192,6 +192,7 @@ interface ContentEditorBaseProps {
    */
   disableMentions?: boolean;
   /** Chat can surface current/recent issue/project suggestions. Other editors use default mention behavior. */
+  mentionPicker?: "default" | "categorized";
   mentionMode?: "default" | "context";
   mentionContextItems?: MentionItem[];
   /** Enable the `/` command picker. Defaults false. */
@@ -383,6 +384,7 @@ const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
       currentIssueId,
       disableMentions = false,
       mentionMode = "default",
+      mentionPicker = "default",
       mentionContextItems,
       enableSlashCommands = false,
       slashCommandMode = "skill",
@@ -621,6 +623,7 @@ const ContentEditor = forwardRef<ContentEditorRef, ContentEditorProps>(
         pasteAsFileThresholdRef,
         disableMentions,
         mentionMode,
+        mentionPicker,
         getMentionContextItems: () => mentionContextItemsRef.current,
         enableSlashCommands,
         slashCommandMode,

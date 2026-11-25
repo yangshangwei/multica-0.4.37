@@ -13,16 +13,11 @@ import {
 import type { QueryClient } from "@tanstack/react-query";
 import { getCurrentWsId } from "@multica/core/platform";
 import { flattenIssueBuckets, issueKeys } from "@multica/core/issues/queries";
-import { issueStatusCategory } from "@multica/core/issues";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { useAuthStore } from "@multica/core/auth";
 import { canAssignAgentToIssue } from "@multica/core/permissions";
 import { isAgentRuntimeBound } from "@multica/core/agents";
 import { api } from "@multica/core/api";
-import {
-  isIssueDirectHit,
-  isProjectDirectHit,
-} from "@multica/core/search/cancelled-rank";
 import { isImeComposing } from "@multica/core/utils";
 import type {
   Issue,
@@ -61,6 +56,8 @@ import {
   pickerNavigationDirection,
 } from "../../common/picker-keys";
 import { isTriggerArmedAt } from "./suggestion-trigger-arming";
+import { demoteCancelledItems, isDemotedCancelled, issueToMention } from "./mention-ranking";
+import { CategorizedMentionList } from "./categorized-mention-list";
 import { blockedReasonLabel } from "../../issues/blocked-trigger-copy";
 
 // ---------------------------------------------------------------------------
@@ -200,65 +197,6 @@ function mergeMentionItems(
  *   than relevance hits, and "Current" has to survive the truncation even when
  *   the issue being viewed is itself cancelled.
  */
-function isDemotedCancelled(item: MentionItem, query: string): boolean {
-  if (isPinnedAboveTruncation(item, query)) return false;
-  if (item.type === "issue") return item.statusCategory === "cancelled";
-  if (item.type === "project") return item.projectStatus === "cancelled";
-  return false;
-}
-
-/**
- * Rows that must survive the MAX_ITEMS truncation: curated context and direct
- * hits. Exempting a direct hit from the demotion is not enough on its own —
- * `slice(0, MAX_ITEMS)` runs on the merged list, so a direct hit sitting behind
- * 20 cached candidates would still be cut. Pinning it to the front is what
- * actually keeps the record the user typed in full reachable, and it mirrors the
- * server, which already ranks direct hits first.
- *
- * Issue mention rows carry the identifier in `label` and the title in
- * `description`; project rows carry the title in `label`.
- */
-function isPinnedAboveTruncation(item: MentionItem, query: string): boolean {
-  if (item.group === "current" || item.group === "recent") return true;
-  if (!query) return false;
-  if (item.type === "issue") {
-    return isIssueDirectHit(
-      { identifier: item.label, title: item.description },
-      query,
-    );
-  }
-  if (item.type === "project") {
-    return isProjectDirectHit({ title: item.label }, query);
-  }
-  return false;
-}
-
-/**
- * Stable three-tier partition applied BEFORE the MAX_ITEMS truncation, so
- * cancelled rows give up their slot rather than merely their position:
- *
- *   pinned (curated context + direct hits) → live → cancelled
- *
- * Relative order within each tier is untouched, leaving the backend ranking in
- * charge of everything else. groupItems() then renders the cancelled tier as the
- * trailing section.
- */
-function demoteCancelledItems(items: MentionItem[], query: string): MentionItem[] {
-  const pinned: MentionItem[] = [];
-  const live: MentionItem[] = [];
-  const cancelled: MentionItem[] = [];
-
-  for (const item of items) {
-    if (isPinnedAboveTruncation(item, query)) pinned.push(item);
-    else if (isDemotedCancelled(item, query)) cancelled.push(item);
-    else live.push(item);
-  }
-
-  return pinned.length > 0 || cancelled.length > 0
-    ? [...pinned, ...live, ...cancelled]
-    : items;
-}
-
 export const MentionList = forwardRef<MentionListRef, MentionListProps>(
   function MentionList({ items, query, command, includeProjectSearch = false }, ref) {
     const { t } = useT("editor");
@@ -652,19 +590,6 @@ function MentionRow({
 // Suggestion config factory
 // ---------------------------------------------------------------------------
 
-function issueToMention(
-  i: Pick<Issue, "id" | "identifier" | "title" | "status"> & Partial<Pick<Issue, "status_category">>,
-): MentionItem {
-  return {
-    id: i.id,
-    label: i.identifier,
-    type: "issue" as const,
-    description: i.title,
-    status: i.status as IssueStatus,
-    statusCategory: issueStatusCategory(i) ?? undefined,
-  };
-}
-
 function projectToMention(p: { id: string; title: string; description?: string | null; icon?: string | null; status?: ProjectStatus }): MentionItem {
   return {
     id: p.id,
@@ -689,6 +614,7 @@ function matchesMentionQuery(item: MentionItem, query: string): boolean {
 
 interface MentionSuggestionOptions {
   mode?: "default" | "context";
+  picker?: "default" | "categorized";
   getContextItems?: () => MentionItem[];
 }
 
@@ -817,7 +743,15 @@ export function createMentionSuggestion(
       return buildSyncItems(query);
     },
 
-    render: createSuggestionPopupRender<MentionItem, MentionItem, MentionListRef, MentionListProps>({
+    render: options.picker === "categorized" && options.mode !== "context"
+      ? createSuggestionPopupRender({
+        pluginKey,
+        component: CategorizedMentionList,
+        getProps: (props) => ({ query: props.query, command: props.command, editor: props.editor, qc, pluginKey, buildItems: buildSyncItems }),
+        onKeyDown: (ref: MentionListRef | null | undefined, props) => ref?.onKeyDown(props) ?? false,
+        guardComposition: true,
+      })
+      : createSuggestionPopupRender<MentionItem, MentionItem, MentionListRef, MentionListProps>({
       pluginKey,
       component: MentionList,
       getProps: (props) => ({

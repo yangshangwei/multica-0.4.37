@@ -12,6 +12,7 @@ interface SuggestionPopupRenderOptions<
   TRef = unknown,
   TComponentProps extends object = object,
 > {
+  guardComposition?: boolean;
   pluginKey: PluginKey;
   component: ComponentType<TComponentProps>;
   getProps: (props: SuggestionProps<TItem, TSelected>) => TComponentProps;
@@ -28,6 +29,7 @@ export function createSuggestionPopupRender<
   TComponentProps extends object = object,
 >({
   pluginKey,
+  guardComposition,
   component,
   getProps,
   onKeyDown,
@@ -76,15 +78,23 @@ export function createSuggestionPopupRender<
         requestExit(props);
       };
 
+      const onCompositionKey = (event: KeyboardEvent) => {
+        if (guardComposition && (event.isComposing || event.keyCode === 229 || props.editor.view.composing)) {
+          event.stopImmediatePropagation();
+        }
+      };
+
       const onWindowBlur = () => {
         requestExit(props);
       };
 
+      if (guardComposition) props.editor.view.dom.addEventListener("keydown", onCompositionKey, true);
       doc.addEventListener("pointerdown", onPointerDown, true);
       doc.addEventListener("focusin", onFocusIn, true);
       win.addEventListener("blur", onWindowBlur);
 
       removeOutsideListeners = () => {
+        props.editor.view.dom.removeEventListener("keydown", onCompositionKey, true);
         doc.removeEventListener("pointerdown", onPointerDown, true);
         doc.removeEventListener("focusin", onFocusIn, true);
         win.removeEventListener("blur", onWindowBlur);
@@ -190,6 +200,7 @@ export function createSuggestionPopupRender<
       },
 
       onKeyDown: (props: SuggestionKeyDownProps) => {
+        if (guardComposition && (props.event.isComposing || props.event.keyCode === 229 || props.view.composing)) return false;
         // `Esc` is the legacy alias the suggestion plugin also matches on.
         if (props.event.key === "Escape" || props.event.key === "Esc") {
           // Escape while a picker is open must close ONLY the picker. Returning

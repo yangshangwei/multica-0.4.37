@@ -73,7 +73,7 @@ afterEach(() => {
   document.body.innerHTML = "";
 });
 
-function makeEditor(char: "@" | "/") {
+function makeEditor(char: "@" | "/", guardComposition = false) {
   const pluginKey = new PluginKey(`test-${char}-suggestion`);
   const item = char === "@"
     ? { id: "u1", label: "Alice" }
@@ -93,6 +93,7 @@ function makeEditor(char: "@" | "/") {
           },
           render: createSuggestionPopupRender<TestItem, TestItem, TestListRef, TestListProps>({
             pluginKey,
+            guardComposition,
             component: TestSuggestionList,
             getProps: (props: SuggestionProps<TestItem, TestItem>) => ({
               items: props.items,
@@ -414,4 +415,16 @@ describe("suggestion Tab priority over the list-item keymap", () => {
     // Shift+Tab is not an accept key, so the suggestion never committed.
     expect(ed.getText()).not.toContain("@Alice");
   });
+});
+
+
+it("keeps the real suggestion plugin active during IME Escape in the opted-in popup", async () => {
+  const ed = makeEditor("@", true);
+  await triggerSuggestion(ed, "@a");
+  fireEvent.keyDown(ed.view.dom, { key: "Escape", isComposing: true });
+  expect(screen.getByTestId("suggestion-popup")).toBeInTheDocument();
+  fireEvent.keyDown(ed.view.dom, { key: "Escape", keyCode: 229 });
+  expect(screen.getByTestId("suggestion-popup")).toBeInTheDocument();
+  fireEvent.keyDown(ed.view.dom, { key: "Escape" });
+  await expectPopupClosed();
 });

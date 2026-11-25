@@ -9,9 +9,10 @@ import { useLocale, useT } from "../i18n";
 import { PickerItem, PropertyPicker } from "../issues/components/pickers/property-picker";
 import { matchesPinyin } from "../editor/extensions/pinyin-match";
 import {
-  ACTOR_PAGE_SIZE, actorKey, actorPage, actorShortcuts, projectActorSections, buildActorCatalog, searchActors, matchesActorFilter,
-  type ActorCatalogEntry, type ActorPickerView, type ActorTypeFilter,
-} from "./quick-create-actor-picker-model";
+  ACTOR_PAGE_SIZE, actorKey, actorPage, buildActorCatalog, searchActors, matchesActorFilter,
+  type ActorCatalogEntry, type ActorTypeFilter,
+} from "../common/actor-discovery";
+import { actorShortcuts, projectActorSections, type ActorPickerView } from "./quick-create-actor-picker-model";
 
 type QueryState = { pending: boolean; error: boolean; hasData: boolean; onRetry: () => void };
 type AgentSummary = Pick<Agent, "id" | "name" | "description" | "system_key">;

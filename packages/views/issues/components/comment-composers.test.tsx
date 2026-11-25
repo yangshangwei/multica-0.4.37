@@ -102,6 +102,7 @@ vi.mock("../../editor", async () => ({
   ContentEditor: forwardRef(function MockContentEditor(
     {
       defaultValue,
+      mentionPicker,
       onUpdate,
       placeholder,
       "aria-label": ariaLabel,
@@ -112,6 +113,7 @@ vi.mock("../../editor", async () => ({
       quickActionMenu,
     }: {
       defaultValue?: string;
+      mentionPicker?: string;
       onUpdate?: (markdown: string) => void;
       placeholder?: string;
       "aria-label"?: string;
@@ -123,6 +125,7 @@ vi.mock("../../editor", async () => ({
     },
     ref: Ref<unknown>,
   ) {
+    expect(mentionPicker).toBe("categorized");
     editorDefaultValues.values.push(defaultValue);
     editorQuickActionMenu.last = quickActionMenu;
     editorUploadSignal.notify = onUploadingChange;

@@ -73,6 +73,7 @@ vi.mock("../../editor", async () => ({
   ContentEditor: forwardRef(function MockContentEditor(
     {
       defaultValue,
+      mentionPicker,
       onUpdate,
       onUploadFile,
       onUploadingChange,
@@ -80,6 +81,7 @@ vi.mock("../../editor", async () => ({
       placeholder,
     }: {
       defaultValue?: string;
+      mentionPicker?: string;
       onUpdate?: (markdown: string) => void;
       onUploadFile?: (file: File, uploadId: string) => Promise<UploadResult | null>;
       onUploadingChange?: (uploading: boolean) => void;
@@ -88,6 +90,7 @@ vi.mock("../../editor", async () => ({
     },
     ref: Ref<unknown>,
   ) {
+    expect(mentionPicker).toBe("categorized");
     editorDefaultValues.values.push(defaultValue);
     const valueRef = useRef(defaultValue ?? "");
     const textareaRef = useRef<HTMLTextAreaElement>(null);

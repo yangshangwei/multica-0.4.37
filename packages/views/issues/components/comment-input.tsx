@@ -218,6 +218,7 @@ function CommentInput({ issueId, onSubmit, onAccepted, executionAllowed = true }
         aria-busy={submitting || undefined}
       >
         <ContentEditor
+              mentionPicker="categorized"
           ref={editorRef}
           defaultValue={initialDraft}
           onReady={lazy.onReady}

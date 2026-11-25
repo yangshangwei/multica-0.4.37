@@ -85,7 +85,7 @@ import { useIssueCreateUploads } from "./use-issue-create-uploads";
 import { FileUploadButton } from "@multica/ui/components/common/file-upload-button";
 import { useT } from "../i18n";
 import { QuickCreateActorPicker } from "./quick-create-actor-picker";
-import { actorKey, buildActorCatalog } from "./quick-create-actor-picker-model";
+import { actorKey, buildActorCatalog } from "../common/actor-discovery";
 import { CreatorRecommendations } from "./creator-recommendations";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";

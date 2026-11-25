@@ -240,6 +240,7 @@ function ReplyInput({
           aria-busy={submitting || undefined}
         >
           <ContentEditor
+              mentionPicker="categorized"
             ref={editorRef}
             defaultValue={initialDraft}
             onReady={lazy.onReady}
