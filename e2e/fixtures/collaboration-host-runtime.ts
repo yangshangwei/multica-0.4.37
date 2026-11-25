@@ -58,7 +58,40 @@ export interface HostVisit {
   started_ms: number; released_ms: number | null; closed_ms: number | null;
   socket: Socket;
   replies: HostActionReply[];
+  pending_actions: number;
 }
+// Preserve every callback failure. A Windows reset can leave the error view only
+// after a prior Stop intent and the matching closed socket's termination proof.
+function createHostCallbackErrors(platform: string) {
+  const expectedStops = new Set<HostVisit>();
+  const confirmedStops = new Set<HostVisit>();
+  const failures: { visit: HostVisit | undefined; code: string; afterStopIntent: boolean; idleAtError: boolean }[] = [];
+  return {
+    record(visit: HostVisit | undefined, code: string | undefined) {
+      failures.push({ visit, code: code === "ECONNRESET" ? code : "other", afterStopIntent: visit !== undefined && expectedStops.has(visit), idleAtError: visit !== undefined && visit.pending_actions === 0 && visit.released_ms === null });
+    },
+    expectStop(visit: HostVisit) {
+      if (visit.socket.destroyed || visit.closed_ms !== null || visit.released_ms !== null || visit.pending_actions !== 0 ||
+        expectedStops.has(visit) || failures.some(failure => failure.visit === visit)) throw new Error("Controlled Stop requires one open, unreleased callback without errors or pending actions");
+      expectedStops.add(visit);
+    },
+    confirmStop(visit: HostVisit, run: { id: string; progress_state: string; proof_state: string; forced_disposition: string | null }, receipt: { code: string; target_id: string | null }) {
+      if (!expectedStops.has(visit)) return;
+      if (receipt.code !== "stop_requested" || !visit.identity.target_id || receipt.target_id !== visit.identity.target_id || run.id !== visit.identity.run_id || run.progress_state !== "settled" || run.proof_state !== "host_exit_observed" || run.forced_disposition !== "stopped" ||
+        !visit.socket.destroyed || visit.closed_ms === null || visit.released_ms !== null || visit.pending_actions !== 0) throw new Error("Controlled Stop requires the same closed callback and proven stopped run");
+      confirmedStops.add(visit);
+    },
+    errors() {
+      return failures.filter(failure => !(platform === "win32" && failure.code === "ECONNRESET" && failure.afterStopIntent && failure.idleAtError &&
+        failure.visit !== undefined && confirmedStops.has(failure.visit))).map(() => "Provider callback socket failed");
+    },
+    evidence() {
+      return failures.map(failure => ({ run_id: failure.visit?.identity.run_id ?? null, code: failure.code,
+        after_stop_intent: failure.afterStopIntent, idle_at_error: failure.idleAtError, stop_confirmed: failure.visit !== undefined && confirmedStops.has(failure.visit) }));
+    },
+  };
+}
+
 /** A business write the fake provider performs through its run-local CLI. */
 export type HostAction =
   | { kind: "comment"; request_id: string; content: string }
@@ -276,6 +309,8 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
   }
   const visits: HostVisit[] = [];
   const errors: string[] = [];
+  const callbackErrors = createHostCallbackErrors(process.platform);
+  const allErrors = () => [...errors, ...callbackErrors.errors()];
   const sockets = new Set<Socket>();
   const started = process.hrtime.bigint();
   const now = () => Number(process.hrtime.bigint() - started) / 1_000_000;
@@ -288,7 +323,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     socket.setEncoding("utf8");
     let body = "";
     let complete = false;
-    socket.on("error", () => errors.push("Provider callback socket failed"));
+    socket.on("error", (error: NodeJS.ErrnoException) => callbackErrors.record(visits.find(visit => visit.socket === socket), error.code));
     socket.on("close", () => {
       sockets.delete(socket);
       const visit = visits.find((item) => item.socket === socket);
@@ -312,7 +347,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
       const first = body.slice(0, end);
       body = body.slice(end + 1);
       try {
-        const visit: Omit<HostVisit, "socket" | "started_ms" | "released_ms" | "closed_ms" | "replies"> = JSON.parse(first);
+        const visit: Omit<HostVisit, "socket" | "started_ms" | "released_ms" | "closed_ms" | "replies" | "pending_actions"> = JSON.parse(first);
         expect(visit.protocol_version).toBe(3);
         expect(visit.execution_mode).toBe(hostMode);
         expect(visit.identity.deployment_id).toBe(runtime.deploymentId);
@@ -333,7 +368,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
           if (!observed.section_present) expect(observed.contributions).toEqual([]);
         }
         if (visits.some((item) => item.identity.run_id === visit.identity.run_id)) throw new Error("A run launched more than once");
-        visits.push({ ...visit, socket, started_ms: now(), released_ms: null, closed_ms: null, replies: [] });
+        visits.push({ ...visit, socket, started_ms: now(), released_ms: null, closed_ms: null, replies: [], pending_actions: 0 });
       } catch { errors.push("Provider callback identity or payload was invalid"); socket.destroy(); }
     });
   });
@@ -399,10 +434,10 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     // The local ledger contains retained credentials. Only its allowlisted
     // summary is attached; the test-owned directory is removed after shutdown.
     rmSync(directory, { recursive: true, force: true });
-    return { exit_code: exitCode, messages, ledger, errors, stderr, timeline };
+    return { exit_code: exitCode, messages, ledger, errors: allErrors(), callback_errors: callbackErrors.evidence(), stderr, timeline };
   };
   try {
-    await expect.poll(() => ({ errors, exit: child.exitCode, ready: messages.find((item): item is HostReady => "ready" in item) !== undefined }),
+    await expect.poll(() => ({ errors: allErrors(), exit: child.exitCode, ready: messages.find((item): item is HostReady => "ready" in item) !== undefined }),
       { timeout: 20_000, message: "The real daemon must register host capabilities before consent" }).toEqual({ errors: [], exit: null, ready: true });
     const ready = messages.find((item): item is HostReady => "ready" in item)!;
     expect(ready).toMatchObject({ protocol_version: 3, execution_mode: hostMode, preparation_version: 2, max_concurrent_tasks: 1,
@@ -411,7 +446,12 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
     if (options.agentTimeoutMs !== undefined) expect(ready.agent_timeout_ms).toBe(options.agentTimeoutMs);
     if (options.holdReceiptACKs === true) expect(ready.hold_receipt_acks).toBe(true);
     if (options.git) expect(ready.git).toEqual({ object_format: options.git.object_format, commit_oid: options.git.commit_oid, bundle_digest: options.git.bundle_digest });
-    return { ready, visits, errors, close, cliHash,
+    return { ready, visits, get errors() { return allErrors(); }, close, cliHash,
+      expectControlledStop: (visit: HostVisit) => {
+        if (!visits.includes(visit)) throw new Error("Controlled Stop callback does not belong to this poller");
+        callbackErrors.expectStop(visit);
+      },
+      confirmControlledStop: callbackErrors.confirmStop,
       ledgerEvidence: () => hostLedgerEvidence(ledgerDirectory),
       /** Stop this poller only; keep the exact run ledger and callback owner. */
       async stopPreservingState() {
@@ -422,7 +462,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
         const killTimer = setTimeout(() => child.kill("SIGKILL"), 20_000);
         const exitCode = await exit;
         clearTimeout(killTimer);
-        return { pid: child.pid, exit_code: exitCode, messages: [...messages], ledger: hostLedgerEvidence(ledgerDirectory), errors: [...errors], stderr, timeline: [...timeline] };
+        return { pid: child.pid, exit_code: exitCode, messages: [...messages], ledger: hostLedgerEvidence(ledgerDirectory), errors: allErrors(), callback_errors: callbackErrors.evidence(), stderr, timeline: [...timeline] };
       },
       /** Recover in a new process with the same directory, managed identity and original requests. */
       async restart() {
@@ -431,7 +471,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
         const firstMessage = messages.length;
         output = "";
         ({ child, exit } = launchDaemon(false));
-        await expect.poll(() => ({ errors, exit: child.exitCode, ready: messages.slice(firstMessage).some((item) => "ready" in item) }),
+        await expect.poll(() => ({ errors: allErrors(), exit: child.exitCode, ready: messages.slice(firstMessage).some((item) => "ready" in item) }),
           { timeout: 20_000, message: "The restarted poller must reuse its registered runtime" }).toEqual({ errors: [], exit: null, ready: true });
         const currentReady = messages.slice(firstMessage).find((item): item is HostReady => "ready" in item)!;
         expect(currentReady.runtime_config_epoch).toBe(ready.runtime_config_epoch);
@@ -443,7 +483,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
       async waitForVisit(count: number) {
         mark("visit_wait_started", { visit_count: count });
         try {
-          await expect.poll(() => ({ errors, exit: child.exitCode, count: visits.length }), { timeout: 30_000 })
+          await expect.poll(() => ({ errors: allErrors(), exit: child.exitCode, count: visits.length }), { timeout: 30_000 })
             .toEqual({ errors: [], exit: null, count });
           mark("visit_wait_succeeded", { visit_count: count });
         } catch (error) {
@@ -474,13 +514,16 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
       /** Has the running provider perform business writes through its run-local CLI, then keep the turn open. */
       async act(visit: HostVisit, actions: HostAction[]) {
         if (visit.released_ms !== null || visit.socket.destroyed) throw new Error("Provider cannot act after release or Stop");
-        const before = visit.replies.length;
-        visit.socket.write(`a${JSON.stringify(actions)}\n`);
-        await expect.poll(() => ({ errors, closed: visit.socket.destroyed, replies: visit.replies.length }), { timeout: 30_000 })
-          .toEqual({ errors: [], closed: false, replies: before + 1 });
-        const receipts = visit.replies[before]!.receipts;
-        expect(receipts.map((receipt) => receipt.error ?? null)).toEqual(actions.map(() => null));
-        return receipts;
+        visit.pending_actions += 1;
+        try {
+          const before = visit.replies.length;
+          visit.socket.write(`a${JSON.stringify(actions)}\n`);
+          await expect.poll(() => ({ errors: allErrors(), closed: visit.socket.destroyed, replies: visit.replies.length }), { timeout: 30_000 })
+            .toEqual({ errors: [], closed: false, replies: before + 1 });
+          const receipts = visit.replies[before]!.receipts;
+          expect(receipts.map((receipt) => receipt.error ?? null)).toEqual(actions.map(() => null));
+          return receipts;
+        } finally { visit.pending_actions -= 1; }
       },
       evidence: () => visits.map(({ socket: _socket, ...visit }) => visit),
     };
@@ -662,7 +705,7 @@ export async function seedHostRuntime(options: HostDaemonOptions = {}) {
       })();
       return closePromise;
     };
-    return { ...env, webActor, desktopActor, sourceWorkspace, workspace, runtime, daemon: { ...daemon, close }, main: issues[0]!, separate: issues[1]! };
+    return { ...env, webActor, desktopActor, sourceWorkspace, workspace, runtime, daemon: { ...daemon, get errors() { return daemon!.errors; }, close }, main: issues[0]!, separate: issues[1]! };
   } catch (error) {
     try { await closeCurrentDaemon(); } finally { await restoreGate(); }
     throw error;

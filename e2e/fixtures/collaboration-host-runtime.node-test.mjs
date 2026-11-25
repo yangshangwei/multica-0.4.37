@@ -1,3 +1,6 @@
+import ts from "typescript";
+import { createServer, createConnection } from "node:net";
+import { once } from "node:events";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
@@ -33,12 +36,12 @@ function closeFixture(platform, forceFallback = false) {
   let fallback;
   const timer = { callback: null, cleared: false };
   const factory = vm.compileFunction(`let closed = false; ${closeSource}; return close;`,
-    ["process", "child", "exit", "sockets", "server", "directory", "runtime", "messages", "errors", "stderr", "hostLedgerEvidence", "rmSync", "join", "setTimeout", "clearTimeout", "mark", "timeline"]);
+    ["process", "child", "exit", "sockets", "server", "directory", "runtime", "messages", "errors", "stderr", "hostLedgerEvidence", "rmSync", "join", "setTimeout", "clearTimeout", "mark", "timeline", "allErrors", "callbackErrors"]);
   const close = factory({ platform }, child, exit, new Set([{ destroy() { actions.push("socket_closed"); } }]),
     { close(done) { actions.push("callback_closed"); done(); } }, "/fixture", { deploymentId: "deployment", installationId: "installation" }, messages, [], "",
     () => ledger, () => actions.push("private_directory_removed"), (...parts) => parts.join("/"),
     (callback, milliseconds) => { assert.equal(milliseconds, 20_000); fallback = callback; return timer; },
-    value => { assert.equal(value, timer); timer.cleared = true; }, mark, timeline);
+    value => { assert.equal(value, timer); timer.cleared = true; }, mark, timeline, () => [], { evidence: () => [] });
   return { close, signals, actions, messages, ledger, timer, timeline, fireFallback: () => fallback() };
 }
 
@@ -211,4 +214,87 @@ test("Host control refuses duplicate resource controls before any control submis
   await assert.rejects(f.control("resume", "target"), /strict mode violation|exactly one control row/);
   assert.equal(f.writes.length, 0);
   assert.deepEqual([...f.states.values()], ["paused", "paused"]);
+});
+
+
+function callbackTracker(platform = "win32") {
+  const start = source.indexOf("function createHostCallbackErrors(");
+  const end = source.indexOf("/** A business write", start);
+  assert(start > 0 && end > start);
+  const javascript = ts.transpileModule(source.slice(start, end), { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None } }).outputText;
+  return vm.compileFunction(`${javascript}; return createHostCallbackErrors;`, [])()(platform);
+}
+function callbackVisit(id = "run-one") {
+  return { identity: { run_id: id, target_id: "target-one" }, socket: { destroyed: false }, closed_ms: null, released_ms: null, pending_actions: 0 };
+}
+const stopReceipt = { code: "stop_requested", target_id: "target-one" };
+const stoppedProof = id => ({ id, progress_state: "settled", proof_state: "host_exit_observed", forced_disposition: "stopped" });
+
+test("callback reset is qualified only after requested Stop and same-run closed proof", () => {
+  const tracker = callbackTracker(), visit = callbackVisit();
+  tracker.expectStop(visit); tracker.record(visit, "ECONNRESET");
+  assert.equal(tracker.errors().length, 1, "Reset remains an error until termination is proven");
+  assert.throws(() => tracker.confirmStop(visit, stoppedProof("run-one"), stopReceipt), /same closed callback/);
+  const sameRunDifferentSocket = callbackVisit();
+  sameRunDifferentSocket.socket.destroyed = true; sameRunDifferentSocket.closed_ms = 10;
+  tracker.confirmStop(sameRunDifferentSocket, stoppedProof("run-one"), stopReceipt);
+  assert.equal(tracker.errors().length, 1, "A different socket with the same run ID cannot qualify the failed callback");
+  visit.socket.destroyed = true; visit.closed_ms = 10;
+  assert.throws(() => tracker.confirmStop(visit, { ...stoppedProof("run-one"), proof_state: "unknown" }, stopReceipt), /same closed callback/);
+  assert.throws(() => tracker.confirmStop(visit, stoppedProof("other-run"), stopReceipt), /same closed callback/);
+  assert.throws(() => tracker.confirmStop(visit, { ...stoppedProof("run-one"), forced_disposition: null }, stopReceipt), /same closed callback/);
+  assert.throws(() => tracker.confirmStop(visit, stoppedProof("run-one"), { ...stopReceipt, target_id: "foreign-target" }), /same closed callback/);
+  tracker.confirmStop(visit, stoppedProof("run-one"), stopReceipt);
+  assert.equal(tracker.errors().length, 0);
+  assert.deepEqual(tracker.evidence(), [{ run_id: "run-one", code: "ECONNRESET", after_stop_intent: true, idle_at_error: true, stop_confirmed: true }]);
+});
+
+test("ordinary callback failures and resets before Stop are never erased by later proof", () => {
+  for (const [platform, code] of [["win32", "EPIPE"], ["darwin", "ECONNRESET"]]) {
+    const tracker = callbackTracker(platform), visit = callbackVisit();
+    tracker.expectStop(visit); tracker.record(visit, code); visit.socket.destroyed = true; visit.closed_ms = 10;
+    tracker.confirmStop(visit, stoppedProof("run-one"), stopReceipt); assert.equal(tracker.errors().length, 1);
+  }
+  const tracker = callbackTracker(), visit = callbackVisit();
+  tracker.record(visit, "ECONNRESET");
+  assert.throws(() => tracker.expectStop(visit), /without errors/);
+  visit.socket.destroyed = true; visit.closed_ms = 10; tracker.confirmStop(visit, stoppedProof("run-one"), stopReceipt);
+  assert.equal(tracker.errors().length, 1);
+  tracker.record(undefined, "ECONNRESET"); assert.equal(tracker.errors().length, 2);
+  const actingTracker = callbackTracker(), acting = callbackVisit();
+  actingTracker.expectStop(acting); acting.pending_actions = 1; actingTracker.record(acting, "ECONNRESET");
+  acting.pending_actions = 0; acting.socket.destroyed = true; acting.closed_ms = 10;
+  actingTracker.confirmStop(acting, stoppedProof("run-one"), stopReceipt);
+  assert.equal(actingTracker.errors().length, 1, "A pending action at reset cannot be erased by its later cleanup");
+  for (const field of ["released_ms", "pending_actions", "closed_ms"]) {
+    const busy = callbackVisit(); busy[field] = 1; assert.throws(() => callbackTracker().expectStop(busy));
+  }
+});
+
+test("real callback FIN and RST preserve the distinction between ordinary failure and controlled Stop", async () => {
+  for (const mode of ["graceful", "unexpected_reset", "controlled_reset"]) {
+    const tracker = callbackTracker(); let visit; let received;
+    const frame = new Promise(resolve => { received = resolve; });
+    const server = createServer(socket => {
+      socket.setEncoding("utf8");
+      socket.once("data", body => { assert.equal(body, "validated-first-frame\n"); visit = { ...callbackVisit(), socket }; received(); });
+      socket.on("error", error => tracker.record(visit, error.code));
+      socket.on("close", () => { if (visit) visit.closed_ms = 1; });
+    });
+    server.listen(0, "127.0.0.1"); await once(server, "listening");
+    const client = createConnection(server.address().port, "127.0.0.1");
+    try {
+      await once(client, "connect"); client.write("validated-first-frame\n"); await frame;
+      if (mode === "controlled_reset") tracker.expectStop(visit);
+      const closed = new Promise(resolve => visit.socket.once("close", resolve));
+      if (mode === "graceful") client.end(); else client.resetAndDestroy();
+      await closed;
+      if (mode === "graceful") { assert.equal(tracker.errors().length, 0); assert.equal(tracker.evidence().length, 0); }
+      else {
+        assert.equal(tracker.errors().length, 1); assert.equal(tracker.evidence()[0].code, "ECONNRESET");
+        tracker.confirmStop(visit, stoppedProof("run-one"), stopReceipt);
+        assert.equal(tracker.errors().length, mode === "controlled_reset" ? 0 : 1);
+      }
+    } finally { client.destroy(); await new Promise(resolve => server.close(resolve)); }
+  }
 });

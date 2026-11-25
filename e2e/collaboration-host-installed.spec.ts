@@ -148,12 +148,14 @@ async function runPackagedHostJourney(page: Page, testInfo: TestInfo, knowledgeE
     const control = (action: "stop" | "resume") => native.command<InstalledMainWrite<CollaborationControlReceipt, CollaborationControlInput>>("control", {
       issueId: issue.id, resourceId: issue.agentId, action, status: 200,
     });
+    f.daemon.expectControlledStop(second);
     const stop = await control("stop");
     expect(stop.input).toMatchObject({ action: "stop", scope: "target", execution_view_version: 6 });
     expect(stop.receipt).toMatchObject({ code: "stop_requested", target_id: issue.targetId, queue_state: "paused" });
-    await waitHostSettlement(f, issue, second, true);
+    const stoppedRun = await waitHostSettlement(f, issue, second, true);
     expect(second.released_ms).toBeNull();
     await expect.poll(() => second.closed_ms).not.toBeNull();
+    f.daemon.confirmControlledStop(second, stoppedRun, stop.receipt);
     evidence.stop = stop;
 
     const capture = async (name: string) => {
@@ -219,6 +221,7 @@ async function runPackagedHostJourney(page: Page, testInfo: TestInfo, knowledgeE
     daemonClosed = true;
     evidence.daemon = summary;
     expect(summary.exit_code).toBe(0);
+    expect(summary.errors).toEqual([]);
     expect(summary.messages.find((message) => "claims" in message)).toMatchObject({ claims: 3, invalid_capacity: false, available_slots: 1, active_tasks: 0 });
     expect(summary.ledger).toHaveLength(3);
     for (const run of summary.ledger) expect(run).toMatchObject({ version: 2, sealed: true, phase: "proof_acknowledged", proof_state: "host_exit_observed",
