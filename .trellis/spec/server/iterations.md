@@ -116,6 +116,14 @@ batch clock sample and record changed assignee/project facts in the cleanup
 transaction. Project deletion refuses malformed cross-workspace legacy FK
 references (issue, autopilot and project_resource) before invoking any cleanup.
 
+Autopilot `run_only` preparation resolves the agent before reading its runtime.
+Runtime teardown can commit between those reads, including after a rolled-back
+NOWAIT attempt. Classify only `pgx.ErrNoRows` at that dispatch boundary as
+`target_unavailable` and persist a skipped run; preserve ordinary lookup failures.
+Keep the final transaction's runtime/agent/project and invocation-authority fences.
+`TestProjectAutopilotRunOnlyRuntimeReadinessRace` forces the real teardown in that
+read gap; the existing contention and commit-order tests still cover both writers.
+
 Ordinary issue deletion locks the selected/direct-child set globally, writes a
 single delete/leave event per current participation and retains original facts.
 Participant leave time follows the event's clamped time. Pre-existing task

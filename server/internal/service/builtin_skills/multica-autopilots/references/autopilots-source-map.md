@@ -9,6 +9,7 @@
 - `create_issue` calls `dispatchCreateIssue`; `run_only` calls `dispatchRunOnly`.
 - `resolveAutopilotLeader` resolves squad-assigned autopilots to the squad leader.
 - `AgentReadiness` blocks archived/runtime-unready agents before enqueue.
+- `dispatchRunOnlyOnce` classifies a runtime `pgx.ErrNoRows` after leader resolution as `errDispatchSkipped` / `target_unavailable`; `handleDispatchSkip` persists the skipped run without a task. Other runtime lookup errors remain failures. `project_association_dispatch_test.go` forces a real teardown between those reads and retains the ordinary-error control, concurrent teardown, owner-lock and permission-fence coverage.
 - `server/cmd/server/router.go` exposes authenticated `/api/autopilots` routes and unauthenticated webhook ingress `/api/webhooks/autopilots/{token}`.
 - `POST /api/autopilots` (`CreateAutopilot` in `server/internal/handler/autopilot.go`) takes an optional `status`. Omitted or `active` creates an active row; `paused` creates a paused one so triggers can be added before it can run; any other value is a 400. A paused create still validates the assignee but skips the runtime-readiness check, the same rule `UpdateAutopilot` applies. The CLI `autopilot create` does not send `status`. Covered by `internal/handler/autopilot_create_status_test.go`.
 - `server/internal/handler/autopilot_webhook.go` durably stores public webhook deliveries, synchronously admits an idempotent run for the compatible `200 accepted|skipped` + `run_id` response, and wakes the worker.

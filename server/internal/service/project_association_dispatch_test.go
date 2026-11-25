@@ -10,8 +10,10 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/multica-ai/multica/server/internal/dispatch"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 func TestProjectDeletionStopsStaleAutopilotDispatch(t *testing.T) {
@@ -256,6 +258,98 @@ func TestProjectAutopilotRunOnlyRacesRealRuntimeTeardown(t *testing.T) {
 			name = "with_project"
 		}
 		t.Run(name, func(t *testing.T) { testProjectAutopilotRunOnlyRuntimeTeardown(t, bound) })
+	}
+}
+
+type autopilotReadinessBoundaryDB struct {
+	db.DBTX
+	beforeRuntimeRead func(context.Context) error
+	runtimeReads      int
+}
+
+func (q *autopilotReadinessBoundaryDB) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	if strings.Contains(sql, "-- name: GetAgentRuntime :one") {
+		q.runtimeReads++
+		if err := q.beforeRuntimeRead(ctx); err != nil {
+			return errRow{err: err}
+		}
+	}
+	return q.DBTX.QueryRow(ctx, sql, args...)
+}
+
+func TestProjectAutopilotRunOnlyRuntimeReadinessRace(t *testing.T) {
+	for _, removed := range []bool{true, false} {
+		name := "runtime_deleted"
+		if !removed {
+			name = "lookup_failure"
+		}
+		t.Run(name, func(t *testing.T) {
+			fx, tasks, agentID, runtimeID := triageBoundaryFixture(t)
+			projectID := fx.Project(t, "Readiness race project")
+			autopilotID := util.MustParseUUID(fx.Insert(t, "autopilot", testutil.Cols{"workspace_id": fx.WorkspaceID, "title": "Readiness race", "assignee_type": "agent", "assignee_id": agentID, "status": "active", "execution_mode": "run_only", "created_by_type": "member", "created_by_id": fx.UserID, "project_id": projectID}))
+			fx.Cleanup(t, `DELETE FROM autopilot_run WHERE autopilot_id=$1`, autopilotID)
+			fx.Cleanup(t, `DELETE FROM agent_task_queue WHERE agent_id=$1`, agentID)
+			ap, err := tasks.Queries.GetAutopilot(t.Context(), autopilotID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			runID := util.MustParseUUID(fx.Insert(t, "autopilot_run", testutil.Cols{"autopilot_id": autopilotID, "source": "manual", "status": "running"}))
+			run, err := tasks.Queries.GetAutopilotRun(t.Context(), runID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			lookupFailure := errors.New("runtime lookup unavailable")
+			boundary := &autopilotReadinessBoundaryDB{DBTX: fx.Pool, beforeRuntimeRead: func(ctx context.Context) error {
+				if !removed {
+					return lookupFailure
+				}
+				// The leader was already resolved. Commit the actual teardown before
+				// its stale runtime ID is used by the separate readiness query.
+				tx, err := fx.Pool.Begin(ctx)
+				if err != nil {
+					return err
+				}
+				defer tx.Rollback(ctx)
+				if _, err = TeardownRuntime(ctx, tasks.Queries.WithTx(tx), runtimeID, RuntimeTeardownOptions{CancelNonTerminalTasks: true}); err != nil {
+					return err
+				}
+				if _, err = tx.Exec(ctx, `DELETE FROM agent_runtime WHERE id=$1`, runtimeID); err != nil {
+					return err
+				}
+				return tx.Commit(ctx)
+			}}
+			svc := NewAutopilotService(db.New(boundary), fx.Pool, tasks.Bus, tasks)
+			err = svc.dispatchRunOnly(t.Context(), ap, &run, util.MustParseUUID(fx.UserID))
+			if boundary.runtimeReads != 1 {
+				t.Fatalf("expected one pre-transaction runtime read, got %d", boundary.runtimeReads)
+			}
+			var skipped *errDispatchSkipped
+			if removed {
+				if !errors.As(err, &skipped) || skipped.code != dispatch.ReasonTargetUnavailable {
+					t.Fatalf("deleted runtime must skip with target_unavailable, got %v", err)
+				}
+				if n := fx.Count(t, `SELECT count(*) FROM agent_runtime WHERE id=$1`, runtimeID); n != 0 {
+					t.Fatal("runtime was not deleted")
+				}
+				if n := fx.Count(t, `SELECT count(*) FROM agent WHERE id=$1 AND runtime_id IS NULL`, agentID); n != 1 {
+					t.Fatal("teardown did not preserve and unbind the agent")
+				}
+				updated, code := svc.handleDispatchSkip(t.Context(), ap, &run, err)
+				if updated == nil || updated.Status != "skipped" || code != dispatch.ReasonTargetUnavailable {
+					t.Fatalf("late runtime deletion must persist a skipped run, got %v / %q", updated, code)
+				}
+			} else {
+				if !errors.Is(err, lookupFailure) || errors.As(err, &skipped) {
+					t.Fatalf("database failure must remain an error, got %v", err)
+				}
+				if updated, _ := svc.handleDispatchSkip(t.Context(), ap, &run, err); updated != nil {
+					t.Fatal("database failure was persisted as a skip")
+				}
+			}
+			if n := fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id=$1`, agentID); n != 0 {
+				t.Fatalf("readiness refusal enqueued %d tasks", n)
+			}
+		})
 	}
 }
 

@@ -1031,6 +1031,11 @@ func (s *AutopilotService) dispatchRunOnlyOnce(ctx context.Context, ap db.Autopi
 	}
 	verdict, err := AgentReadiness(ctx, s.runtimeLookup(), agent)
 	if err != nil {
+		// Teardown can commit after leader resolution, including between
+		// NOWAIT retries. A deleted runtime is unavailable, not a DB failure.
+		if errors.Is(err, pgx.ErrNoRows) {
+			return &errDispatchSkipped{reason: "autopilot runtime was removed", code: dispatch.ReasonTargetUnavailable}
+		}
 		return fmt.Errorf("check agent readiness: %w", err)
 	}
 	if !verdict.Ready() {
