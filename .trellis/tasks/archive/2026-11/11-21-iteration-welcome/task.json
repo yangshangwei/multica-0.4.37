@@ -1,0 +1,41 @@
+{
+  "id": "iteration-welcome",
+  "name": "iteration-welcome",
+  "title": "迭代首次使用欢迎页",
+  "description": "为尚无任何迭代的工作区增加首次使用介绍与创建引导。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-21",
+  "completedAt": "2026-11-26",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "Implementation and scoped work commit approved; navigation/locale tests pass (133 total). See verification.md. Remains in_progress pending production browser/visual acceptance and full-package verification.\n2026-11-26：用户明确要求“这几个任务归档吧”，按指定主线连同未归档子任务关闭归档。归档仅表示停止活跃跟踪，不代表未完成开发或验收已通过。保留已实现与 133 项相关测试通过的记录；生产浏览器/视觉验收及完整包验证仍未完成，本轮未补测。",
+  "meta": {
+    "archive_disposition": {
+      "date": "2026-11-26",
+      "reason": "user_requested_archive",
+      "user_instruction": "这几个任务归档吧",
+      "root_task": "11-21-iteration-welcome",
+      "previous_status": "in_progress",
+      "previous_completed_at": null,
+      "acceptance_reassessed": false,
+      "product_tests_run": false,
+      "remaining_work": "保留已实现与 133 项相关测试通过的记录；生产浏览器/视觉验收及完整包验证仍未完成，本轮未补测。",
+      "resume_requires": "new_explicit_user_direction",
+      "original_path": ".trellis/tasks/11-21-iteration-welcome",
+      "archive_path": ".trellis/tasks/archive/2026-11/11-21-iteration-welcome"
+    }
+  }
+}

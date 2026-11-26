@@ -3,7 +3,7 @@
   "name": "security-remediation-v2-real-model-acceptance",
   "title": "安全漏洞修复小队 v2：真实模型验收与漏洞验证座位试点",
   "description": "续做维护：测试临时仓库不再写入历史证据根，50项原控制通过；正式访问状态仍未核实，C1续接与D1真实验收未恢复。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-18",
-  "completedAt": null,
+  "completedAt": "2026-11-26",
   "branch": "codex/secrem-v2-maintenance-20261120t124811z",
   "base_branch": "codex/cross-workspace-collaboration",
   "worktree_path": null,
@@ -21,7 +21,7 @@
   "children": [],
   "parent": "11-18-security-remediation-squad-v2",
   "relatedFiles": [],
-  "notes": "SDK拒绝是旧队列；官方CLI身份真实未伪造。继续不限累计预算授权。",
+  "notes": "SDK拒绝是旧队列；官方CLI身份真实未伪造。继续不限累计预算授权。\n2026-11-26：用户明确要求“这几个任务归档吧”，按指定主线连同未归档子任务关闭归档。归档仅表示停止活跃跟踪，不代表未完成开发或验收已通过。模板交付与既有验证结论保留；真实模型验收的 C1/D1 及人工 G1/G2 未因本次归档获得完成结论，不自动恢复真实调用。",
   "meta": {
     "real_model_authorized": true,
     "provider": "codex",
@@ -142,6 +142,20 @@
       "integration_base": "1861f2aab5d2d7a4d6db927a43b6cf66a10de653",
       "unrelated_dirty_paths_unchanged_during_merge": 13243,
       "cleanup_report": "research/maintenance-checkpoint-cleanup-20261120.md"
+    },
+    "archive_disposition": {
+      "date": "2026-11-26",
+      "reason": "user_requested_archive",
+      "user_instruction": "这几个任务归档吧",
+      "root_task": "11-18-security-remediation-squad-v2",
+      "previous_status": "in_progress",
+      "previous_completed_at": null,
+      "acceptance_reassessed": false,
+      "product_tests_run": false,
+      "remaining_work": "模板交付与既有验证结论保留；真实模型验收的 C1/D1 及人工 G1/G2 未因本次归档获得完成结论，不自动恢复真实调用。",
+      "resume_requires": "new_explicit_user_direction",
+      "original_path": ".trellis/tasks/11-18-security-remediation-v2-real-model-acceptance",
+      "archive_path": ".trellis/tasks/archive/2026-11/11-18-security-remediation-v2-real-model-acceptance"
     }
   }
 }

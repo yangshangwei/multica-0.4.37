@@ -835,3 +835,37 @@ Released v0.8.8 with 40 matching local and GitHub assets. Formal Linux password/
 ### Status
 
 [OK] **Completed**
+
+
+## Session 197: 按用户要求归档四条任务主线
+<!-- trellis-session: v=2 fp=bbaebd600bc21cd5 -->
+
+**Date**: 2026-11-26
+**Task**: 按用户要求归档四条任务主线
+**Branch**: `codex/git-engineering-material-workflow`
+
+### Summary
+
+按用户明确要求归档 main 合并后验收修复、安全漏洞修复小队 v2、智能体与 AI 小队后续能力建设、迭代首次使用欢迎页，共 12 条任务记录（4 条主线与 8 条子任务）。保留历史验收结论、未完成项与停止决定，归档不等于产品验收通过。
+
+### Main Changes
+
+- 12 个任务目录迁入 .trellis/tasks/archive/2026-11/；各 task.json 记录归档依据、原状态、剩余事项与原始路径。
+- 保留父子关系和已归档的 F3-S1 子任务；其他 7 条活跃目录记录及现有产品代码改动保持不变。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] 通过归档完整性检查：12 份任务元数据、565 个文档/证据文件 SHA-256、父子关系和其他任务记录均符合预期。
+- [OK] 仅归档与日志操作，未运行产品 lint、typecheck 或测试，也未重新判定历史验收。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 这四条主线停止活跃跟踪，后续仅按新的明确指示恢复。

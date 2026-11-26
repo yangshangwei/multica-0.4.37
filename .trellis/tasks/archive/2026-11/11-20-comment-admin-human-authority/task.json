@@ -1,0 +1,45 @@
+{
+  "id": "comment-admin-human-authority",
+  "name": "comment-admin-human-authority",
+  "title": "评论管理权限：阻止机器凭据借用管理员身份修改他人评论",
+  "description": "核查 UpdateComment/DeleteComment 的管理员越权分支，保留合法人类管理员操作，并阻止机器凭据改写或删除他人评论。来源 security-remediation v2 14.2。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-20",
+  "completedAt": "2026-11-26",
+  "branch": "codex/main-post-merge-acceptance-fixes",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": "/Users/artisan/.codex/worktrees/main-acceptance-fixes/multica-0.4.37",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-25-main-post-merge-acceptance-fixes",
+  "relatedFiles": [
+    ".trellis/tasks/11-18-security-remediation-v2-template/design.md"
+  ],
+  "notes": "2026-11-26：用户明确要求“这几个任务归档吧”，按指定主线连同未归档子任务关闭归档。归档仅表示停止活跃跟踪，不代表未完成开发或验收已通过。保留原报告中的发布 HOLD、平台/外部验收条件及历史证据限制；本轮未重跑验收，也未根据归档改变发布结论。",
+  "meta": {
+    "origin_task": "11-18-security-remediation-squad-v2",
+    "authorization": "2026-11-25 parent planning review accepted; implementation authorized; fresh per-package databases and frozen run identity required",
+    "archive_disposition": {
+      "date": "2026-11-26",
+      "reason": "user_requested_archive",
+      "user_instruction": "这几个任务归档吧",
+      "root_task": "11-25-main-post-merge-acceptance-fixes",
+      "previous_status": "in_progress",
+      "previous_completed_at": null,
+      "acceptance_reassessed": false,
+      "product_tests_run": false,
+      "remaining_work": "保留原报告中的发布 HOLD、平台/外部验收条件及历史证据限制；本轮未重跑验收，也未根据归档改变发布结论。",
+      "resume_requires": "new_explicit_user_direction",
+      "original_path": ".trellis/tasks/11-20-comment-admin-human-authority",
+      "archive_path": ".trellis/tasks/archive/2026-11/11-20-comment-admin-human-authority"
+    }
+  }
+}

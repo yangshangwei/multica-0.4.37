@@ -3,7 +3,7 @@
   "name": "main-post-merge-acceptance-fixes",
   "title": "main 合并后验收失败定位与修复",
   "description": "main剩余验收阻塞的已验证修复与独立复核；用户于2026-11-26授权提交、推送并合并main，发布HOLD保留",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-25",
-  "completedAt": null,
+  "completedAt": "2026-11-26",
   "branch": "codex/main-acceptance-root-causes",
   "base_branch": "main",
   "worktree_path": "/Users/artisan/.codex/worktrees/main-acceptance-root-causes/multica-0.4.37",
@@ -28,7 +28,7 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "验证结束时的未提交状态保留于续修报告；用户随后于2026-11-26明确授权提交、推送、合并main。集成记录单列，外部/平台条件继续HOLD。",
+  "notes": "验证结束时的未提交状态保留于续修报告；用户随后于2026-11-26明确授权提交、推送、合并main。集成记录单列，外部/平台条件继续HOLD。\n2026-11-26：用户明确要求“这几个任务归档吧”，按指定主线连同未归档子任务关闭归档。归档仅表示停止活跃跟踪，不代表未完成开发或验收已通过。保留原报告中的发布 HOLD、平台/外部验收条件及历史证据限制；本轮未重跑验收，也未根据归档改变发布结论。",
   "meta": {
     "delivery_status": "reviewed_repairs_with_open_release_blockers",
     "release_verdict": "HOLD",
@@ -72,6 +72,20 @@
       "report": "research/integration-publication-20261126.md",
       "release_verdict": "HOLD",
       "product_commit": "bf09c8d72f13332be7cb6dd1a26db821eff46287"
+    },
+    "archive_disposition": {
+      "date": "2026-11-26",
+      "reason": "user_requested_archive",
+      "user_instruction": "这几个任务归档吧",
+      "root_task": "11-25-main-post-merge-acceptance-fixes",
+      "previous_status": "in_progress",
+      "previous_completed_at": null,
+      "acceptance_reassessed": false,
+      "product_tests_run": false,
+      "remaining_work": "保留原报告中的发布 HOLD、平台/外部验收条件及历史证据限制；本轮未重跑验收，也未根据归档改变发布结论。",
+      "resume_requires": "new_explicit_user_direction",
+      "original_path": ".trellis/tasks/11-25-main-post-merge-acceptance-fixes",
+      "archive_path": ".trellis/tasks/archive/2026-11/11-25-main-post-merge-acceptance-fixes"
     }
   }
 }

@@ -1,0 +1,41 @@
+{
+  "id": "acceptance-security",
+  "name": "acceptance-security",
+  "title": "验收修复：工具链与依赖安全",
+  "description": "核实受支持工具链和依赖，最小安全升级及重扫，含GitHub403证据",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-25",
+  "completedAt": "2026-11-26",
+  "branch": "codex/main-post-merge-acceptance-fixes",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-25-main-post-merge-acceptance-fixes",
+  "relatedFiles": [],
+  "notes": "2026-11-26：用户明确要求“这几个任务归档吧”，按指定主线连同未归档子任务关闭归档。归档仅表示停止活跃跟踪，不代表未完成开发或验收已通过。保留原报告中的发布 HOLD、平台/外部验收条件及历史证据限制；本轮未重跑验收，也未根据归档改变发布结论。",
+  "meta": {
+    "archive_disposition": {
+      "date": "2026-11-26",
+      "reason": "user_requested_archive",
+      "user_instruction": "这几个任务归档吧",
+      "root_task": "11-25-main-post-merge-acceptance-fixes",
+      "previous_status": "in_progress",
+      "previous_completed_at": null,
+      "acceptance_reassessed": false,
+      "product_tests_run": false,
+      "remaining_work": "保留原报告中的发布 HOLD、平台/外部验收条件及历史证据限制；本轮未重跑验收，也未根据归档改变发布结论。",
+      "resume_requires": "new_explicit_user_direction",
+      "original_path": ".trellis/tasks/11-25-acceptance-security",
+      "archive_path": ".trellis/tasks/archive/2026-11/11-25-acceptance-security"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "security-remediation-squad-v2",
+  "name": "security-remediation-squad-v2",
+  "title": "安全漏洞修复小队 v2：复现闭环与人工闸门",
+  "description": "父任务统筹v2模板交付、独立Codex验收与跨子任务集成；2026-11-20已授权续做。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-18",
+  "completedAt": "2026-11-26",
+  "branch": "codex/security-remediation-v2-20261118",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "11-18-security-remediation-v2-template",
+    "11-18-security-remediation-v2-real-model-acceptance"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "2026-11-26：用户明确要求“这几个任务归档吧”，按指定主线连同未归档子任务关闭归档。归档仅表示停止活跃跟踪，不代表未完成开发或验收已通过。模板交付与既有验证结论保留；真实模型验收的 C1/D1 及人工 G1/G2 未因本次归档获得完成结论，不自动恢复真实调用。",
+  "meta": {
+    "verified_base": "c56e2194ee45236b8c634843579b7f3e492b0db4",
+    "integration_status": "merged",
+    "integrated_commit": "50045c12cc6eb32a11e032b68717ec844640f4b8",
+    "integrated_branch": "codex/cross-workspace-collaboration",
+    "archive_disposition": {
+      "date": "2026-11-26",
+      "reason": "user_requested_archive",
+      "user_instruction": "这几个任务归档吧",
+      "root_task": "11-18-security-remediation-squad-v2",
+      "previous_status": "in_progress",
+      "previous_completed_at": null,
+      "acceptance_reassessed": false,
+      "product_tests_run": false,
+      "remaining_work": "模板交付与既有验证结论保留；真实模型验收的 C1/D1 及人工 G1/G2 未因本次归档获得完成结论，不自动恢复真实调用。",
+      "resume_requires": "new_explicit_user_direction",
+      "original_path": ".trellis/tasks/11-18-security-remediation-squad-v2",
+      "archive_path": ".trellis/tasks/archive/2026-11/11-18-security-remediation-squad-v2"
+    }
+  }
+}
