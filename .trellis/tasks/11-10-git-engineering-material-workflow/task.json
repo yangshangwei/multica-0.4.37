@@ -21,13 +21,13 @@
   "children": [],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-11-12：D9 澄清为未来产品使用模型：产品/测试的物料仓关联一个普通 Multica 项目，该项目兼任系统需求、测试与协调入口。此前把计划中的资源记录为既有仓库/项目并要求地址属于误解。当前功能开发无需真实 Git 地址或预建业务项目，运行时再配置绑定，开发用模拟 provider 和隔离数据。D1–D8 保留，总体/模块编排、QA 策略、开关重启与首期范围仍待定。保持 planning，尚未开始实现。 本轮新增 D10：用户确认稳定目录、Multica 分层状态与独立归档，需求完成需整体验收、问题修复需复测通过，完成/关闭/重开/归档不移动 Git 文件。具体状态映射、转换与归档权限及自动归档时机待细化；本次只更新规划记录。",
+  "notes": "2026-11-12：D9 澄清为未来产品使用模型：产品/测试的物料仓关联一个普通 Multica 项目，该项目兼任系统需求、测试与协调入口。此前把计划中的资源记录为既有仓库/项目并要求地址属于误解。当前功能开发无需真实 Git 地址或预建业务项目，运行时再配置绑定，开发用模拟 provider 和隔离数据。D1–D8 保留，总体/模块编排、QA 策略、开关重启与首期范围仍待定。保持 planning，尚未开始实现。 本轮新增 D10：用户确认稳定目录、Multica 分层状态与独立归档，需求完成需整体验收、问题修复需复测通过，完成/关闭/重开/归档不移动 Git 文件。具体状态映射、转换与归档权限及自动归档时机待细化；本次只更新规划记录。\n2026-11-26：用户明确按产品版本管理需求和 issue（D11）。本轮同步版本范围/发布基线、稳定物料关联、问题多版本关系、按需初始化及复用运行时接入的设计建议。目录、权限、冻结、初始化和执行适配仍待最终方案评审，未批准实现，未执行真实仓库操作。",
   "meta": {
     "progress_phase": "design_draft_product_decisions_pending",
     "research_deliverables_complete": true,
     "product_implementation_started": false,
     "implementation_ready": false,
-    "next_action": "Continue product and technical design for ordinary material project coordination and runtime resource binding; use isolated fixtures for development without requesting live repository URLs or precreated projects; converge QA policy, D8 re-enable behavior and first-release scope; refine D10 status mappings, transition/archive permissions and automatic archive policy while preserving stable material paths",
+    "next_action": "Review product-release scope and frozen baselines, requirement/issue version relations, initialization and runtime execution contracts alongside existing QA, cross-module and D8 decisions; refine D10 status mappings, transition/archive permissions and automatic archive policy; use isolated fixtures without requiring live business resources, and finalize first-release scope before implementation.",
     "research_files": [
       "research/requirements-depth.md",
       "research/multica-existing-capabilities.md",
@@ -35,7 +35,8 @@
       "research/product-authoring-workflow.md",
       "research/gitlab-github-compatibility.md",
       "research/deepseek-harness-primary-sources.md",
-      "research/material-repository-layout.md"
+      "research/material-repository-layout.md",
+      "research/product-release-workflow.md"
     ],
     "status_refresh_2026_11_11": {
       "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
@@ -204,6 +205,44 @@
       "status_mapping_and_transition_permissions": "undecided",
       "archive_permissions_and_automatic_archive_policy": "undecided",
       "implementation_started": false
+    },
+    "confirmed_product_version_management": {
+      "decision": "D11",
+      "confirmed_at": "2026-11-26",
+      "scope": "manage_requirements_and_issues_by_product_version",
+      "examples": [
+        "V1.8.0",
+        "V1.8.1"
+      ],
+      "implementation_started": false,
+      "detailed_directory_and_workflow_policy": "proposed_pending_final_review"
+    },
+    "product_version_and_runtime_proposal": {
+      "updated_at": "2026-11-26",
+      "status": "draft_not_finally_approved",
+      "document": "research/product-release-workflow.md",
+      "release_scope": "releases/<version>/release.yaml references stable material IDs",
+      "issue_relations": [
+        "found_in",
+        "affected_versions",
+        "planned_fix_versions",
+        "verified_fixed_versions"
+      ],
+      "relation_names_are_schema_examples": true,
+      "preserve_published_baseline": true,
+      "initialize_directories": "on_demand_with_separate_rule_maintenance_authority",
+      "runtime_access": "reuse_configured_runtime_and_auth_if_capabilities_are_available",
+      "url_only_setup_is_conditional": true,
+      "open_decisions": [
+        "scope_review_and_freeze_permissions",
+        "unscheduled_requirement_admission",
+        "phased_delivery_and_multi_version_issue_closure",
+        "qa_admission_and_repair_start",
+        "initialization_review_and_empty_repo_first_commit",
+        "runtime_git_and_provider_execution_adapter"
+      ],
+      "product_tests_run": false,
+      "real_repository_operations_run": false
     }
   }
 }
