@@ -36,8 +36,21 @@ const ALLOWED_PATHS: RegExp[] = [
 ];
 
 const MAX_RESIZE_PX = 4000;
+const UUID = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/;
+const COMMIT = /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/;
+
+function materialBaseline(value: unknown, issueId: string) {
+  const row = value as Record<string, unknown> | null;
+  if (!row || row.issue_id !== issueId || typeof row.baseline_id !== "string" || !UUID.test(row.baseline_id) ||
+      typeof row.commit !== "string" || !COMMIT.test(row.commit) || typeof row.content_sha256 !== "string" ||
+      !/^[0-9a-f]{64}$/.test(row.content_sha256) || typeof row.content !== "string" || !row.content) {
+    throw new Error("invalid material baseline response");
+  }
+  return { issue_id: issueId, baseline_id: row.baseline_id, commit: row.commit, content_sha256: row.content_sha256, content: row.content };
+}
 
 function isAllowedPath(path: string): boolean {
+  if (/[\\?#\s]/.test(path) || path.split("/").some((segment) => /^(?:\.|%2e){1,2}$/i.test(segment))) return false;
   return ALLOWED_PATHS.some((pattern) => pattern.test(path));
 }
 
@@ -59,6 +72,7 @@ function isBridgeRequest(value: unknown): value is BridgeRequest {
 
 export interface SurfaceBridgeOptions {
   installationId: string;
+  versionId?: string;
   /** Single-use proof returned with this exact hosted document URL. */
   bridgeToken: string;
   /** Mounted-on issue, forwarded to /context so the surface knows where it is. */
@@ -92,7 +106,13 @@ export function createSurfaceBridge(options: SurfaceBridgeOptions): SurfaceBridg
       return;
     }
 
-    if (!isAllowedPath(request.path)) {
+    const baseline = request.path === "/material/baseline";
+    const { issueId, versionId } = options;
+    const path = baseline && request.method === "GET" && request.body === undefined &&
+      issueId && UUID.test(issueId) && versionId && UUID.test(versionId)
+      ? `/material-baselines/${versionId}/${issueId}`
+      : isAllowedPath(request.path) ? request.path : undefined;
+    if (!path) {
       port.postMessage({ id: request.id, ok: false, status: 400, error: `unsupported path ${request.path}` });
       return;
     }
@@ -100,11 +120,11 @@ export function createSurfaceBridge(options: SurfaceBridgeOptions): SurfaceBridg
     try {
       const result = await api.callPluginAction(options.installationId, {
         method: request.method,
-        path: request.path,
+        path,
         body: request.body,
         issueId: options.issueId,
       });
-      port.postMessage({ id: request.id, ok: true, status: 200, data: result });
+      port.postMessage({ id: request.id, ok: true, status: 200, data: baseline ? materialBaseline(result, issueId!) : result });
     } catch (error) {
       // The status matters to the surface: 403 means "the admin did not grant
       // this", which is a different thing for a plugin author to fix than 404.

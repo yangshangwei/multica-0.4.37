@@ -65,6 +65,19 @@ A comment you post is authored by **the user**, recorded as having been made
 through your plugin. It does not run `@mention` trigger dispatch — a surface
 cannot start agent runs as a side effect of posting text.
 
+## Reading a material baseline
+
+A plan issue surface can call `await multica.material.baseline()` to read its
+verified requirements text, commit and SHA-256 digest. The host selects the
+mounted issue; the SDK accepts no issue, repository or path argument. The
+installation must be granted `materials:baseline:read:<project-uuid>` for
+that exact project. There is no workspace-wide or wildcard grant.
+
+This is a browser bridge read only. Install and callback tokens cannot use it.
+Candidate submission, approval, settings, merge and run controls are not SDK
+operations. A disabled installation, superseded baseline or lost membership
+can invalidate a previously successful read.
+
 ## Theme
 
 The host pushes design tokens over the private port and again on every theme switch, and

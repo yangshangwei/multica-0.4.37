@@ -1147,6 +1147,17 @@ func (h *Handler) DeleteWorkspace(w http.ResponseWriter, r *http.Request) {
 		failWorkspaceDelete(w, r, workspaceID, "lock workspace", err)
 		return
 	}
+	if has, e := qtx.MaterialWorkspaceHasHistory(r.Context(), requester.WorkspaceID); e != nil {
+		failWorkspaceDelete(w, r, workspaceID, "check material history", e)
+		return
+	} else if has {
+		writeJSON(w, 409, map[string]string{"error": "This workspace retains engineering-material review history. Disable material workflows to stop new work; retained records cannot be deleted.", "code": "material_history_retained"})
+		return
+	}
+	if e := qtx.DeleteWorkspaceMaterialSettings(r.Context(), requester.WorkspaceID); e != nil {
+		failWorkspaceDelete(w, r, workspaceID, "clear material settings", e)
+		return
+	}
 	shared, err := qtx.WorkspaceHasCollaborationRecords(r.Context(), requester.WorkspaceID)
 	if err != nil {
 		failWorkspaceDelete(w, r, workspaceID, "check retained collaboration", err)

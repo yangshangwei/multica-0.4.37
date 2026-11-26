@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS project_material_settings_identity;

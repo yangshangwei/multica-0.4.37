@@ -917,6 +917,14 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 			}
 			return err
 		}
+		if has, e := q.MaterialProjectHasHistory(r.Context(), db.MaterialProjectHasHistoryParams{ProjectID: id, WorkspaceID: ws}); e != nil {
+			return e
+		} else if has {
+			return projectErr(409, "material_history_retained", "This project retains engineering-material review history. Disable the material workflow to stop new work; retained records cannot be deleted.")
+		}
+		if e := q.DeleteMaterialSettings(r.Context(), db.DeleteMaterialSettingsParams{ProjectID: id, WorkspaceID: ws}); e != nil {
+			return e
+		}
 		if err := service.CheckDeliveryProjectDeleteInTx(r.Context(), tx, project); err != nil {
 			return err
 		}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/iteration"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -41,6 +42,13 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 		if _, err = q.LockWorkspaceForChatSessionCreate(ctx, issue.WorkspaceID); err != nil {
 			return db.AgentTaskQueue{}, err
 		}
+		if plan, e := q.GetMaterialPlanForIssue(ctx, issue.ID); e == nil {
+			if _, err = q.LockProjectForExecutionSquad(ctx, db.LockProjectForExecutionSquadParams{ID: plan.ProjectID, WorkspaceID: plan.WorkspaceID}); err != nil {
+				return db.AgentTaskQueue{}, err
+			}
+		} else if !errors.Is(e, pgx.ErrNoRows) {
+			return db.AgentTaskQueue{}, e
+		}
 		if err = q.LockIssueStatusCatalogShared(ctx, issue.WorkspaceID); err != nil {
 			return db.AgentTaskQueue{}, err
 		}
@@ -73,7 +81,8 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 	if lockedTask.IssueID != current.IssueID {
 		return db.AgentTaskQueue{}, errors.New("task issue changed before start; retry task start")
 	}
-	if err = s.checkIssueExecution(ctx, q, lockedTask.IssueID, lockedTask.TriggerCommentID, lockedTask.CoalescedCommentIds); err != nil {
+	materialCtx := context.WithValue(ctx, materialExecutionKey{}, materialExecutionPermit{issueID: lockedTask.IssueID, taskID: lockedTask.ID})
+	if err = s.checkIssueExecution(materialCtx, q, lockedTask.IssueID, lockedTask.TriggerCommentID, lockedTask.CoalescedCommentIds); err != nil {
 		return db.AgentTaskQueue{}, err
 	}
 	// The real queued-to-started boundary: decide under the root lifecycle fence.

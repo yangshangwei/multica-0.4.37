@@ -3512,6 +3512,9 @@ func (s *TaskService) claimTask(ctx context.Context, agentID, runtimeID pgtype.U
 		if err := ValidateManagedTaskBinding(ctx, task); err != nil {
 			return err
 		}
+		if allowed, err := settleMaterialClaim(ctx, qtx, task); err != nil || !allowed {
+			return err
+		}
 		if binding.ID.Valid && !task.ExecutionBindingID.Valid {
 			task, err = qtx.CaptureTaskExecutionBinding(ctx, db.CaptureTaskExecutionBindingParams{TaskID: task.ID, RuntimeID: task.RuntimeID, DispatchedAt: task.DispatchedAt, InstallationID: binding.InstallationID, BindingID: binding.ID, BindingEpoch: pgtype.Int8{Int64: binding.BindingEpoch, Valid: true}})
 			if err != nil {
@@ -3636,9 +3639,16 @@ func (s *TaskService) ClaimTaskForRuntime(ctx context.Context, runtimeID pgtype.
 			if err != nil {
 				return err
 			}
-			return ValidateManagedTaskBinding(ctx, stale)
+			if err := ValidateManagedTaskBinding(ctx, stale); err != nil {
+				return err
+			}
+			allowed, err := settleMaterialClaim(ctx, qtx, stale)
+			if !allowed {
+				stale = db.AgentTaskQueue{}
+			}
+			return err
 		})
-		if err == nil {
+		if err == nil && stale.ID.Valid {
 			s.ReclaimCheck.MarkChecked(
 				ctx,
 				[]string{runtimeKey},
@@ -3655,7 +3665,7 @@ func (s *TaskService) ClaimTaskForRuntime(ctx context.Context, runtimeID pgtype.
 			)
 			return &stale, nil
 		}
-		if !errors.Is(err, pgx.ErrNoRows) {
+		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			outcome = "error_reclaim_dispatched"
 			return nil, fmt.Errorf("reclaim stale dispatched task: %w", err)
 		}
@@ -3834,6 +3844,9 @@ func (s *TaskService) FinalizeTaskClaim(
 			return &admission.Blocked{IssueID: task.IssueID}
 		}
 		if err := ValidateManagedTaskBinding(ctx, task); err != nil {
+			return err
+		}
+		if err := checkMaterialClaim(ctx, qtx, task); err != nil {
 			return err
 		}
 		if err := s.finalizeTaskCapability(ctx, qtx, currentTask, &token, len(daemonTokens)); err != nil {
@@ -4027,11 +4040,20 @@ func (s *TaskService) ClaimTasksForRuntimes(ctx context.Context, runtimeIDs []pg
 				if err != nil {
 					return err
 				}
+				accepted := reclaimed[:0]
 				for _, task := range reclaimed {
 					if err := ValidateManagedTaskBinding(ctx, task); err != nil {
 						return err
 					}
+					allowed, err := settleMaterialClaim(ctx, qtx, task)
+					if err != nil {
+						return err
+					}
+					if allowed {
+						accepted = append(accepted, task)
+					}
 				}
+				reclaimed = accepted
 				return nil
 			})
 			if err != nil {
@@ -4241,7 +4263,7 @@ func (s *TaskService) StartTask(ctx context.Context, taskID pgtype.UUID, knowled
 	if err := validateTaskKnowledgeFences(current, knowledgeFences); err != nil {
 		return nil, err
 	}
-	if err := s.checkIssueExecution(ctx, s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
+	if err := s.checkIssueExecution(context.WithValue(ctx, materialExecutionKey{}, materialExecutionPermit{issueID: current.IssueID, taskID: current.ID}), s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
 		return nil, err
 	}
 	task, err := s.startTaskAtomically(ctx, current, knowledgeFences...)
@@ -4339,7 +4361,7 @@ func (s *TaskService) MarkTaskWaitingLocalDirectory(ctx context.Context, taskID 
 	if err != nil {
 		return nil, err
 	}
-	if err := s.checkIssueExecution(ctx, s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
+	if err := s.checkIssueExecution(context.WithValue(ctx, materialExecutionKey{}, materialExecutionPermit{issueID: current.IssueID, taskID: current.ID}), s.Queries, current.IssueID, current.TriggerCommentID, current.CoalescedCommentIds); err != nil {
 		return nil, err
 	}
 	reason = sanitizeWaitReason(reason)

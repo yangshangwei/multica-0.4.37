@@ -1,6 +1,6 @@
 ---
 name: multica-projects-and-resources
-description: "Use when creating, inspecting, updating, or debugging Multica projects, their execution squad defaults, and resources (github_repo, local_directory)."
+description: "Use when creating, inspecting, updating, or debugging Multica projects, execution squad defaults, resources (github_repo, local_directory), or Git requirement and plan materials."
 user-invocable: false
 allowed-tools: Bash(multica *)
 ---
@@ -19,6 +19,10 @@ multica project resource list <project-id> --output json
 
 Project resources are mutated through project resource commands/endpoints. Issue
 comments do not create durable project resources.
+
+For Git requirement drafts, fixed baselines or design/task-plan revisions, read
+`references/git-materials.md` before using `multica project material`. It defines
+explicit request identity, complete revision JSON and automatic publication.
 
 ## Core model
 
@@ -214,7 +218,7 @@ is task-local checkout state.
 
 ## Side effects
 
-Project create/update/delete/status and project resource add/update/remove mutate durable workspace state and affect future tasks. Ask before changing `local_directory` unless the user explicitly requested that exact local path.
+Project create/update/delete/status and project resource add/update/remove mutate durable workspace state and affect future tasks. Ask before changing `local_directory` unless the user explicitly requested that exact local path. Material create/revise also persist content; a reviewable revision with `ready=true` automatically enters Git publication, while human approval and verified merge remain separate.
 
 More source-backed details: `references/projects-and-resources-source-map.md`.
 

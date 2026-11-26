@@ -63,11 +63,12 @@ export function PluginSurfaceFrame({ wsId, installation, surface, issueId, class
   const bridge = useMemo(
     () => createSurfaceBridge({
       installationId: installation.id,
+      versionId: installation.package_version_id,
       bridgeToken: launch?.bridge_token ?? "",
       issueId,
       onResize: setHeight,
     }),
-    [installation.id, launch?.bridge_token, issueId],
+    [installation.id, installation.package_version_id, launch?.bridge_token, issueId],
   );
 
   // The listener is armed BEFORE srcdoc is assigned. That makes the guest-first

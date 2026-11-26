@@ -4918,6 +4918,13 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 	if len(issues) != len(selected) {
 		return issueDeleteResult{}, fmt.Errorf("lock selected issues for delete: %w", pgx.ErrNoRows)
 	}
+	for _, retained := range issues {
+		if has, e := qtx.MaterialIssueHasHistory(ctx, retained.ID); e != nil {
+			return issueDeleteResult{}, e
+		} else if has {
+			return issueDeleteResult{}, &issueUpdateAccessError{409, "material_history_retained"}
+		}
+	}
 	if err = h.authorizeIssueDeletion(r, tx, workspaceID, actorType, actorID); err != nil {
 		return issueDeleteResult{}, err
 	}

@@ -102,7 +102,8 @@ const (
 
 	// ScopeNetPrefix guards outbound network access: both the iframe CSP
 	// connect-src allowlist and the hook transport host check derive from it.
-	ScopeNetPrefix = "net:"
+	ScopeNetPrefix                  = "net:"
+	ScopeMaterialBaselineReadPrefix = "materials:baseline:read:"
 )
 
 // Product events an `event`-triggered hook may subscribe to.
@@ -465,8 +466,16 @@ func (m Manifest) validateScopes() error {
 	return nil
 }
 
+var materialProjectID = regexp.MustCompile(`^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$`)
+
 // ValidateScope reports whether a single scope string is one this host defines.
 func ValidateScope(scope string) error {
+	if project, ok := strings.CutPrefix(scope, ScopeMaterialBaselineReadPrefix); ok {
+		if !materialProjectID.MatchString(project) || project == "00000000-0000-0000-0000-000000000000" {
+			return fmt.Errorf("material baseline scope requires a canonical project UUID")
+		}
+		return nil
+	}
 	if fixedScopes[scope] {
 		return nil
 	}

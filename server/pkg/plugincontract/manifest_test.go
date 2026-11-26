@@ -401,6 +401,7 @@ func TestValidateScope(t *testing.T) {
 		ScopeTasksRead, ScopeTasksWrite, ScopeAgentsRead, ScopeMembersRead,
 		ScopeStorageUser, ScopeStorageWorkspace,
 		"net:example.com", "net:api.example.co.uk",
+		"materials:baseline:read:00000000-0000-4000-8000-000000000001",
 	}
 	for _, scope := range valid {
 		if err := ValidateScope(scope); err != nil {
@@ -410,6 +411,8 @@ func TestValidateScope(t *testing.T) {
 	invalid := []string{
 		"", "issues", "issues:delete", "storage:global", "net:", "net:localhost",
 		"net:EXAMPLE.com", "net:example.com/path", "net:*.example.com", "NET:example.com",
+		"materials:baseline:read", "materials:baseline:read:*", "materials:baseline:read:00000000-0000-0000-0000-000000000000",
+		"materials:write", "materials:decide", "materials:settings", "materials:merge",
 	}
 	for _, scope := range invalid {
 		if err := ValidateScope(scope); err == nil {

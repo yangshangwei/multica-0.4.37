@@ -4,6 +4,7 @@ import { ApiError, errorCode } from "../api";
 import { projectKeys } from "./queries";
 import { clearProjectDescriptionDrafts, useProjectDescriptionDraftStore } from "./description-draft-store";
 import { clearProjectProgressDrafts, useProjectProgressDraftStore } from "./progress-draft-store";
+import { clearMaterialDrafts } from "../materials/draft-store";
 
 let sessionGeneration = 0;
 export const projectSessionGeneration = () => sessionGeneration;
@@ -32,8 +33,18 @@ export function canAccessProject(wsId: string, projectId?: string, generation = 
   const state = useProjectAccessStore.getState();
   return generation === sessionGeneration && !state.denied[accessKey(wsId)] && !state.denied[accessKey(wsId, projectId)] && !state.deleted[accessKey(wsId, projectId)];
 }
+// These 403s refuse a particular operation after access to the project was checked.
+const commandRefusals = new Set([
+  "project_evidence_forbidden", "project_permission_denied", "project_updates_disabled",
+  "material_resource_unavailable", "material_connection_unavailable", "material_reviewer_unavailable",
+  "material_agent_unavailable", "material_source_unavailable", "material_plan_task_denied",
+  "material_plan_invocation_denied", "material_human_required",
+]);
 export function isProjectAccessLost(error: unknown): boolean {
-  return error instanceof ApiError && (error.status === 401 || (error.status === 404 && errorCode(error) === "workspace_access_denied") || (error.status === 403 && !["project_evidence_forbidden", "project_permission_denied", "project_updates_disabled"].includes(errorCode(error) ?? "")));
+  if (!(error instanceof ApiError)) return false;
+  const code = errorCode(error);
+  return error.status === 401 || (error.status === 404 && code === "workspace_access_denied") ||
+    (error.status === 403 && !commandRefusals.has(code ?? ""));
 }
 export function isProjectDeleted(error: unknown): boolean {
   return error instanceof ApiError && error.status === 404 && errorCode(error) === "project_not_found";
@@ -80,6 +91,7 @@ export function clearProtectedProjectContent(qc: QueryClient, wsId: string, proj
   }));
   clearProjectCaches(qc, wsId, projectId);
   clearProjectProgressDrafts(wsId, projectId); clearProjectDescriptionDrafts(wsId, projectId);
+  clearMaterialDrafts(wsId, projectId);
 }
 export function markProjectDeleted(qc: QueryClient, wsId: string, projectId: string) {
   if (!canAccessProject(wsId, projectId)) { clearProjectCaches(qc, wsId, projectId); return; }
@@ -96,6 +108,7 @@ export function markProjectDeleted(qc: QueryClient, wsId: string, projectId: str
   useProjectAccessStore.setState((state) => ({ deleted: { ...state.deleted, [key]: [...new Set(texts.filter((text) => text.trim()))] }, epochs: { ...state.epochs, [key]: (state.epochs[key] ?? 0) + 1 } }));
   clearProjectCaches(qc, wsId, projectId);
   clearProjectProgressDrafts(wsId, projectId); clearProjectDescriptionDrafts(wsId, projectId);
+  clearMaterialDrafts(wsId, projectId);
 }
 export function handleProjectAccessError(qc: QueryClient, wsId: string, projectId: string | undefined, error: unknown) {
   if (isProjectAccessLost(error)) clearProtectedProjectContent(qc, wsId);

@@ -1636,6 +1636,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Use(handler.RequireHumanActor)
 		r.Route(pluginBridgePrefix, func(r chi.Router) {
 			registerPluginActionRoutes(r, h)
+			r.Get("/material-baselines/{versionID}/{issueID}", h.GetPluginMaterialBaseline)
 			// ui / manual only. `event` is dispatched by the host off the event
 			// bus; `agent` arrives over MCP rather than this HTTP endpoint.
 			r.Post("/hooks/{key}", h.InvokePluginHook)
@@ -2415,6 +2416,21 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Put("/execution-squad", h.ConfigureProjectSquad)
 					r.Put("/execution-squads", h.ConfigureProjectSquads)
 					r.Delete("/", h.DeleteProject)
+
+					r.Route("/materials", func(r chi.Router) {
+						r.Get("/settings", h.GetMaterialSettings)
+						r.With(handler.RequireHumanActor).Put("/settings", h.ConfigureMaterials)
+						r.Get("/", h.ListMaterials)
+						r.Post("/", h.CreateMaterial)
+						r.Route("/{materialID}", func(r chi.Router) {
+							r.Get("/", h.GetMaterial)
+							r.Post("/revisions", h.ReviseMaterial)
+							r.Post("/comments", h.CommentMaterial)
+							r.With(handler.RequireHumanActor).Post("/decisions", h.DecideMaterial)
+							r.With(handler.RequireHumanActor).Post("/retry", h.RetryMaterial)
+							r.With(handler.RequireHumanActor).Post("/start-plan", h.StartMaterialPlan)
+						})
+					})
 					r.Get("/resources", h.ListProjectResources)
 					r.Post("/resources", h.CreateProjectResource)
 					r.Put("/resources/{resourceId}", h.UpdateProjectResource)

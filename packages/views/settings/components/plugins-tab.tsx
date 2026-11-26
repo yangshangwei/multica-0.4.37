@@ -127,6 +127,9 @@ function scheduleFrequency(cron: string, t: Translate): string {
 }
 
 function scopeDescription(scope: string, t: Translate): string {
+  if (scope.startsWith("materials:baseline:read:")) {
+    return t(($) => $.plugins.scopes.material_baseline_read, { project: scope.slice("materials:baseline:read:".length) });
+  }
   if (scope.startsWith("net:")) {
     return t(($) => $.plugins.scopes.net, { domain: scope.slice("net:".length) });
   }

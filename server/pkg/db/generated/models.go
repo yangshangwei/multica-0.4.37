@@ -1859,6 +1859,108 @@ type Feedback struct {
 	CreatedAt   pgtype.Timestamptz `json:"created_at"`
 }
 
+type GitMaterial struct {
+	ID                pgtype.UUID        `json:"id"`
+	WorkspaceID       pgtype.UUID        `json:"workspace_id"`
+	ProjectID         pgtype.UUID        `json:"project_id"`
+	Title             string             `json:"title"`
+	Path              string             `json:"path"`
+	Version           int64              `json:"version"`
+	Status            string             `json:"status"`
+	Blocker           pgtype.Text        `json:"blocker"`
+	CurrentRevisionID pgtype.UUID        `json:"current_revision_id"`
+	Baseline          []byte             `json:"baseline"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+}
+
+type GitMaterialComment struct {
+	ID          pgtype.UUID        `json:"id"`
+	MaterialID  pgtype.UUID        `json:"material_id"`
+	RevisionID  pgtype.UUID        `json:"revision_id"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ProjectID   pgtype.UUID        `json:"project_id"`
+	ActorID     pgtype.UUID        `json:"actor_id"`
+	Body        string             `json:"body"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type GitMaterialDecision struct {
+	ID          pgtype.UUID        `json:"id"`
+	MaterialID  pgtype.UUID        `json:"material_id"`
+	RevisionID  pgtype.UUID        `json:"revision_id"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ProjectID   pgtype.UUID        `json:"project_id"`
+	ActorID     pgtype.UUID        `json:"actor_id"`
+	MemberID    pgtype.UUID        `json:"member_id"`
+	Credential  []byte             `json:"credential"`
+	Decision    string             `json:"decision"`
+	Reason      string             `json:"reason"`
+	HeadSha     string             `json:"head_sha"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type GitMaterialJob struct {
+	ID          pgtype.UUID        `json:"id"`
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ProjectID   pgtype.UUID        `json:"project_id"`
+	MaterialID  pgtype.UUID        `json:"material_id"`
+	RevisionID  pgtype.UUID        `json:"revision_id"`
+	Kind        string             `json:"kind"`
+	State       string             `json:"state"`
+	Attempts    int32              `json:"attempts"`
+	LeaseToken  pgtype.UUID        `json:"lease_token"`
+	LeasedUntil pgtype.Timestamptz `json:"leased_until"`
+	NextAt      pgtype.Timestamptz `json:"next_at"`
+	Blocker     pgtype.Text        `json:"blocker"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+}
+
+type GitMaterialPlan struct {
+	MaterialID   pgtype.UUID        `json:"material_id"`
+	WorkspaceID  pgtype.UUID        `json:"workspace_id"`
+	ProjectID    pgtype.UUID        `json:"project_id"`
+	BaselineID   pgtype.UUID        `json:"baseline_id"`
+	IssueID      pgtype.UUID        `json:"issue_id"`
+	Status       string             `json:"status"`
+	Requested    bool               `json:"requested"`
+	AuthorizedBy pgtype.UUID        `json:"authorized_by"`
+	MemberID     pgtype.UUID        `json:"member_id"`
+	AgentID      pgtype.UUID        `json:"agent_id"`
+	TaskID       pgtype.UUID        `json:"task_id"`
+	RevisionID   pgtype.UUID        `json:"revision_id"`
+	Blocker      pgtype.Text        `json:"blocker"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	ManualStart  bool               `json:"manual_start"`
+}
+
+type GitMaterialRequest struct {
+	WorkspaceID pgtype.UUID        `json:"workspace_id"`
+	ProjectID   pgtype.UUID        `json:"project_id"`
+	ActorID     pgtype.UUID        `json:"actor_id"`
+	RequestID   string             `json:"request_id"`
+	BodyHash    string             `json:"body_hash"`
+	Response    []byte             `json:"response"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+}
+
+type GitMaterialRevision struct {
+	ID                pgtype.UUID        `json:"id"`
+	MaterialID        pgtype.UUID        `json:"material_id"`
+	WorkspaceID       pgtype.UUID        `json:"workspace_id"`
+	ProjectID         pgtype.UUID        `json:"project_id"`
+	Kind              string             `json:"kind"`
+	Payload           []byte             `json:"payload"`
+	Settings          []byte             `json:"settings"`
+	ConfigVersion     int64              `json:"config_version"`
+	CreatedBy         pgtype.UUID        `json:"created_by"`
+	PublicationStatus string             `json:"publication_status"`
+	Review            []byte             `json:"review"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+}
+
 type GithubInstallation struct {
 	ID               pgtype.UUID        `json:"id"`
 	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
@@ -2807,6 +2909,17 @@ type ProjectKnowledgePolicy struct {
 	BuiltinRuleVersion string             `json:"builtin_rule_version"`
 	ChangedByUserID    pgtype.UUID        `json:"changed_by_user_id"`
 	UpdatedAt          pgtype.Timestamptz `json:"updated_at"`
+}
+
+type ProjectMaterialSetting struct {
+	ProjectID    pgtype.UUID        `json:"project_id"`
+	WorkspaceID  pgtype.UUID        `json:"workspace_id"`
+	Version      int64              `json:"version"`
+	Settings     []byte             `json:"settings"`
+	AuthorizedBy pgtype.UUID        `json:"authorized_by"`
+	MemberID     pgtype.UUID        `json:"member_id"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
 }
 
 type ProjectResource struct {

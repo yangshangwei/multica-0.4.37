@@ -43,13 +43,14 @@ function workspaceScoped(slug: string) {
     iterations: () => `${ws}/iterations`,
     iterationDetail: (id: string) => `${ws}/iterations/${encode(id)}`,
     projects: () => `${ws}/projects`,
-    projectDetail: (id: string, section?: "overview" | "issues", risk?: string, version?: string) => {
+    projectDetail: (id: string, section?: "overview" | "issues" | "materials", risk?: string, version?: string) => {
       const params = new URLSearchParams();
       if (section) params.set("section", section);
       if (risk) params.set("risk", risk);
       if (version) params.set("version", version);
       return `${ws}/projects/${encode(id)}${params.size ? `?${params}` : ""}`;
     },
+    projectMaterial: (id: string, materialId: string) => `${ws}/projects/${encode(id)}?section=materials&material=${encode(materialId)}`,
     projectUpdate: (id: string, updateId: string) => `${ws}/projects/${encode(id)}?section=overview&update=${encode(updateId)}`,
     autopilots: () => `${ws}/autopilots`,
     // The built-in automation templates, and the entry point behind the list's

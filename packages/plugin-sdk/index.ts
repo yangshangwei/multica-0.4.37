@@ -69,6 +69,14 @@ export interface StorageKey {
   updated_at: string;
 }
 
+export interface MaterialBaseline {
+  issue_id: string;
+  baseline_id: string;
+  commit: string;
+  content_sha256: string;
+  content: string;
+}
+
 /** Thrown when the host refuses or the call fails. `status` mirrors HTTP. */
 export class MulticaPluginError extends Error {
   readonly status: number;
@@ -227,6 +235,12 @@ export const multica = {
         content: input.body,
         parent_id: input.parentId,
       });
+    },
+  },
+
+  material: {
+    baseline(): Promise<MaterialBaseline> {
+      return bridge.request<MaterialBaseline>("GET", "/material/baseline");
     },
   },
 

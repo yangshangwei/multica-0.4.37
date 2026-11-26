@@ -1,4 +1,5 @@
 "use client";
+import { ProjectMaterials } from "./project-materials";
 import { ProjectIterations } from "../../iterations/project-iterations";
 
 import { useMemo, useState, useCallback, useRef, useEffect, useId } from "react";
@@ -134,7 +135,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const [completing, setCompleting] = useState(false);
   const [completionReason, setCompletionReason] = useState("");
   const completionOverview = useQuery({ ...projectOverviewOptions(wsId, projectId), enabled: completing && capabilities.data?.overview === true });
-  const section = router.searchParams?.get("section") === "issues" || capabilities.data?.overview !== true ? "issues" : "overview";
+  const section = router.searchParams?.get("section") === "materials" ? "materials" : router.searchParams?.get("section") === "issues" || capabilities.data?.overview !== true ? "issues" : "overview";
   const riskParam = router.searchParams?.get("risk");
   const riskSignal = ["blocked", "overdue", "unassigned", "in_review"].includes(riskParam ?? "") ? riskParam as ProjectRiskSignal : undefined;
   const goOverview = () => router.push(wsPaths.projectDetail(projectId, "overview"));
@@ -641,11 +642,12 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           <ProjectSquadSection key={`squad:${project.id}`} project={project} />
           <div className="flex items-center gap-2 border-b px-4 py-2">
             {capabilities.data?.overview === true && <Button size="sm" variant={section === "overview" ? "secondary" : "ghost"} onClick={goOverview}>{t(($) => $.management.overview)}</Button>}
+            <Button size="sm" variant={section === "materials" ? "secondary" : "ghost"} onClick={() => router.push(wsPaths.projectDetail(projectId, "materials"))}>{t(($) => $.materials.title)}</Button>
             <Button size="sm" variant={section === "issues" ? "secondary" : "ghost"} onClick={() => router.push(wsPaths.projectDetail(projectId, "issues"))}>{t(($) => $.management.issues)}</Button>
           </div>
           {capabilities.error && <div role="alert" className="px-4 py-2 text-caption text-destructive">{t(($) => $.management.load_error)} <Button size="sm" variant="ghost" onClick={() => void capabilities.refetch()}>{t(($) => $.management.retry)}</Button></div>}
           {capabilities.data === null && <p className="px-4 py-2 text-caption text-muted-foreground">{t(($) => $.management.unsupported)}</p>}
-          {section === "overview" ? riskSignal ? <ProjectRiskIssues key={`${project.id}:${riskSignal}`} project={project} signal={riskSignal} version={router.searchParams?.get("version") ?? undefined} onBack={goOverview} onProtectedError={hideProtected} />
+          {section === "materials" ? <ProjectMaterials key={`${wsId}:${project.id}`} workspaceId={wsId} projectId={project.id} /> : section === "overview" ? riskSignal ? <ProjectRiskIssues key={`${project.id}:${riskSignal}`} project={project} signal={riskSignal} version={router.searchParams?.get("version") ?? undefined} onBack={goOverview} onProtectedError={hideProtected} />
             : <ProjectOverviewPanel key={`${wsId}:${project.id}`} targetUpdateId={router.searchParams?.get("update") ?? undefined} project={project} updatesSupported={capabilities.data?.updates === true} onProtectedError={hideProtected}
                 onRisk={(signal, version) => router.push(wsPaths.projectDetail(projectId, "overview", signal, version))} />
             : <ProjectIssueSurface key={project.id} project={project} scope={issueScope} fallbackCreateDefaults={projectCreateDefaults} />}

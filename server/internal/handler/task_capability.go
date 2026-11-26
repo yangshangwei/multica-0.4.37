@@ -26,6 +26,12 @@ func (h *Handler) TaskCapabilityGuard(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
+		if managed, allowed := h.materialTaskGuard(w, r, token); managed {
+			if allowed {
+				next.ServeHTTP(w, r)
+			}
+			return
+		}
 		agent, err := h.Queries.GetAgent(r.Context(), token.AgentID)
 		if err != nil {
 			writeTaskCapabilityError(w, err)

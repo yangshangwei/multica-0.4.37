@@ -11,6 +11,8 @@ describe("paths.workspace(slug)", () => {
     expect(ws.issueDetail("abc-123")).toBe("/acme/issues/abc-123");
     expect(ws.projects()).toBe("/acme/projects");
     expect(ws.projectDetail("p1")).toBe("/acme/projects/p1");
+    expect(ws.projectDetail("p1", "materials")).toBe("/acme/projects/p1?section=materials");
+    expect(ws.projectMaterial("p1", "m1")).toBe("/acme/projects/p1?section=materials&material=m1");
     expect(ws.autopilots()).toBe("/acme/autopilots");
     expect(ws.autopilotDetail("a1")).toBe("/acme/autopilots/a1");
     expect(ws.newAutopilotTemplate()).toBe("/acme/autopilots/new/template");

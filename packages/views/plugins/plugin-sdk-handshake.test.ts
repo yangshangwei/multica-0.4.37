@@ -38,4 +38,19 @@ describe("surface SDK guest port", () => {
     await vi.waitFor(() => expect(style.setProperty).toHaveBeenCalledWith("--background", "black"));
     expect(typeof multica.ui.onThemeChange).toBe("function");
   });
+
+  it("requests the mounted baseline without sending a selector or credential", async () => {
+    const channel = new MessageChannel();
+    const requests: unknown[] = [];
+    const baseline = { issue_id: "issue", baseline_id: "revision", commit: "a".repeat(40), content_sha256: "b".repeat(64), content: "PRD" };
+    channel.port2.onmessage = ({ data }) => {
+      requests.push(data);
+      channel.port2.postMessage({ id: data.id, ok: true, status: 200, data: baseline });
+    };
+    const { multica } = await loadSdk(channel.port1);
+    await expect(multica.material.baseline()).resolves.toEqual(baseline);
+    expect(requests).toEqual([{ id: expect.any(String), kind: "action", method: "GET", path: "/material/baseline", body: undefined }]);
+    channel.port1.close();
+    channel.port2.close();
+  });
 });

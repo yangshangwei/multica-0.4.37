@@ -12,6 +12,8 @@ import type { ApiClient } from "@multica/core/api/client";
 import { projectKeys } from "@multica/core/projects/queries";
 import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, useProjectAccessStore, useProjectProgressDraftStore, writeProjectProgressDraft } from "@multica/core/projects";
 import { p1Overview, p1Preview, p1Project } from "@multica/core/projects/test-fixtures/p1";
+// Materials interactions are canonical in project-materials.test.tsx.
+vi.mock("./project-materials", () => ({ ProjectMaterials: ({ workspaceId, projectId }: { workspaceId: string; projectId: string }) => <div data-testid="materials-mount" data-workspace={workspaceId} data-project={projectId} /> }));
 // Knowledge interactions are canonical in collaboration/knowledge-panel.test.tsx.
 vi.mock("../../collaboration/knowledge-panel", () => ({ ManagedKnowledgePanel: ({ workspaceId, projectId }: { workspaceId: string; projectId?: string }) => <div data-testid="knowledge-target-mount" data-workspace={workspaceId} data-project={projectId} /> }));
 vi.mock("./project-knowledge-policy", () => ({ ProjectKnowledgePolicy: ({ workspaceId, projectId }: { workspaceId: string; projectId: string }) => <div data-testid="knowledge-policy-mount" data-workspace={workspaceId} data-project={projectId} /> }));
@@ -359,13 +361,13 @@ const UNLINKED_ISSUE: Issue = {
   metadata: {}, properties: {}, created_at: "2026-09-28T00:00:00Z", updated_at: "2026-09-28T00:00:00Z",
 };
 
-function renderProjectDetail(locale: "en" | "zh-Hans" = "en") {
+function renderProjectDetail(locale: "en" | "zh-Hans" = "en", search = "") {
   const adapter: NavigationAdapter = {
     push: mocks.push,
     replace: vi.fn(),
     back: vi.fn(),
     pathname: "/test-workspace/projects/project-1",
-    searchParams: new URLSearchParams(),
+    searchParams: new URLSearchParams(search),
     hash: "",
     getShareableUrl: mocks.getShareableUrl,
   };
@@ -474,6 +476,13 @@ describe("ProjectDetail sharing", () => {
     if (state === "not-configured") mocks.project = { ...PROJECT, execution_squad: { state: "failed", squad_id: PROJECT_SQUAD.id } };
     renderProjectDetail();
     expect(screen.getByLabelText("Project issue defaults")).toBeEmptyDOMElement();
+  });
+
+  it("mounts shared engineering materials in the project section", () => {
+    renderProjectDetail("en", "section=materials");
+    expect(screen.getByTestId("materials-mount")).toHaveAttribute("data-workspace", "workspace-1");
+    expect(screen.getByTestId("materials-mount")).toHaveAttribute("data-project", "project-1");
+    expect(screen.queryByRole("region", { name: "Project issues" })).not.toBeInTheDocument();
   });
 
   it("places execution above issues and project automation entry below resources", () => {

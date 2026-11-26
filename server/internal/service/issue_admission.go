@@ -10,6 +10,9 @@ import (
 )
 
 func (s *TaskService) checkIssueExecution(ctx context.Context, q *db.Queries, issueID, triggerID pgtype.UUID, coalesced []pgtype.UUID) error {
+	if err := checkMaterialExecution(ctx, q, issueID); err != nil {
+		return err
+	}
 	if err := admission.Check(ctx, q, issueID); err != nil {
 		return err
 	}

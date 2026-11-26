@@ -69,6 +69,20 @@ func TestPluginActionRouteTrustBoundaries(t *testing.T) {
 			wantProblem:   true,
 		},
 		{
+			name:          "public API does not expose mounted material baselines",
+			path:          "/v1/material-baselines/00000000-0000-4000-8000-000000000001/00000000-0000-4000-8000-000000000002",
+			authorization: "Bearer mpi_invalid",
+			wantStatus:    http.StatusNotFound,
+			wantProblem:   true,
+		},
+		{
+			name:          "mounted material baseline has no write operation",
+			method:        http.MethodPost,
+			path:          "/api/plugin-bridge/v1/material-baselines/00000000-0000-4000-8000-000000000001/00000000-0000-4000-8000-000000000002",
+			authorization: "Bearer " + testToken,
+			wantStatus:    http.StatusMethodNotAllowed,
+		},
+		{
 			name:          "public API empty resource path uses the problem contract",
 			path:          "/v1/issues/",
 			authorization: "Bearer mpi_invalid",

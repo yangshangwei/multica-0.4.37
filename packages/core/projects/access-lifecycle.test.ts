@@ -20,11 +20,25 @@ it("recognizes the real workspace middleware404 and erases its protected cache",
 it.each([
   [404, "project_update_not_found"], [404, "execution_not_found"], [403, "project_evidence_forbidden"],
   [403, "project_permission_denied"], [503, "project_health_unavailable"],
+  [403, "material_resource_unavailable"], [403, "material_connection_unavailable"],
+  [403, "material_reviewer_unavailable"], [403, "material_agent_unavailable"],
+  [403, "material_source_unavailable"], [403, "material_plan_task_denied"],
+  [403, "material_plan_invocation_denied"], [403, "material_human_required"],
 ])("does not erase workspace content for HTTP%s %s", async (status, code) => {
   const qc = new QueryClient(); const data = { description: "retained" }; qc.setQueryData(projectKeys.detail("w", "p"), data);
   const error = new ApiError("request failed", Number(status), "Error", { code });
   await expect(protectProjectRequest(qc, "w", "p", async () => { throw error; })).rejects.toBe(error);
   expect(qc.getQueryData(projectKeys.detail("w", "p"))).toEqual(data); expect(useProjectAccessStore.getState().denied).toEqual({}); qc.clear();
+});
+it("erases protected content when the material credential was revoked", async () => {
+  const qc = new QueryClient();
+  const key = projectKeys.detail("w", "p");
+  qc.setQueryData(key, { description: "private" });
+  const error = new ApiError("request failed", 403, "Forbidden", { code: "material_credential_revoked" });
+  await expect(protectProjectRequest(qc, "w", "p", async () => { throw error; })).rejects.toMatchObject({ status: 403 });
+  expect(qc.getQueryData(key)).toBeUndefined();
+  expect(useProjectAccessStore.getState().denied['["w","*"]']).toBe(true);
+  qc.clear();
 });
 // Canonical rule for P1-L14; the mounted-page wiring lives in
 // packages/views/projects/components/use-project-access-guard.test.tsx.

@@ -80,6 +80,37 @@ describe("surface bridge", () => {
     expect(posted).toContainEqual(expect.objectContaining({ id: "bad-path", ok: false, status: 400 }));
   });
 
+  it("binds a baseline read to the mounted issue and installed version", async () => {
+    const issueId = "00000000-0000-4000-8000-000000000001";
+    const versionId = "00000000-0000-4000-8000-000000000002";
+    const snapshot = { issue_id: issueId, baseline_id: versionId, content: "PRD", commit: "a".repeat(40), content_sha256: "b".repeat(64) };
+    mockCall.mockResolvedValue({ ...snapshot, settings: "private" });
+    const { bridge, port, posted } = connectedBridge({ installationId: "install", bridgeToken: TOKEN, issueId, versionId });
+    const read = { id: "read", kind: "action", method: "GET", path: "/material/baseline" };
+    port.postMessage({ ...read, issueId: "other" });
+    port.postMessage({ ...read, id: "body", body: { issue_id: "other" } });
+    port.postMessage({ ...read, id: "write", method: "POST" });
+    port.postMessage({ ...read, id: "target", path: `/material-baselines/${versionId}/${issueId}` });
+    await answered(port, posted);
+    expect(mockCall).toHaveBeenCalledTimes(1);
+    expect(mockCall).toHaveBeenCalledWith("install", expect.objectContaining({ method: "GET", path: `/material-baselines/${versionId}/${issueId}` }));
+    expect(posted).toContainEqual({ id: "read", status: 200, ok: true, data: snapshot });
+    mockCall.mockResolvedValue({ ...snapshot, issue_id: versionId });
+    port.postMessage({ ...read, id: "mismatch" });
+    await answered(port, posted);
+    expect(posted).toContainEqual(expect.objectContaining({ id: "mismatch", ok: false, error: "invalid material baseline response" }));
+    bridge.close();
+  });
+
+  it("denies a baseline read outside an issue-bound launch", async () => {
+    const { bridge, port, posted } = connectedBridge();
+    port.postMessage({ id: "read", kind: "action", method: "GET", path: "/material/baseline" });
+    await answered(port, posted);
+    expect(mockCall).not.toHaveBeenCalled();
+    expect(posted).toContainEqual(expect.objectContaining({ id: "read", ok: false }));
+    bridge.close();
+  });
+
   it("passes a refusal status through to the plugin", async () => {
     mockCall.mockRejectedValue(Object.assign(new Error("not granted"), { status: 403 }));
     const { port, posted } = connectedBridge();

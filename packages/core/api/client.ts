@@ -1,3 +1,4 @@
+import { parseMaterialSettings, parseMaterialList, parseMaterialDetail, type MaterialSettingsInput, type MaterialCommand } from "../materials/schema";
 import { hasBatchIssueMutation, isBatchUpdateComplete, parseBatchUpdateOutcome, validBatchCompletionOptions } from "./issue-batch-update";
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
@@ -6550,6 +6551,43 @@ export class ApiClient {
 
   async deleteProject(id: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<void> {
     await this.fetch(`/api/projects/${encodeURIComponent(id)}`, { ...workspaceRequestInit(options), method: "DELETE" });
+  }
+
+  // Git engineering material responses never fall back to an approved or empty state.
+  async getMaterialSettings(projectId: string, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials/settings`, workspaceRequestInit(options));
+    return parseMaterialSettings(raw, options.workspaceId, projectId);
+  }
+
+  async saveMaterialSettings(projectId: string, data: MaterialSettingsInput, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials/settings`, {
+      ...workspaceRequestInit(options), method: "PUT", body: JSON.stringify(data),
+    });
+    return parseMaterialSettings(raw, options.workspaceId, projectId);
+  }
+
+  async listMaterials(projectId: string, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials`, workspaceRequestInit(options));
+    return parseMaterialList(raw, options.workspaceId, projectId);
+  }
+
+  async createMaterial(projectId: string, data: { request_id: string; title: string }, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials`, {
+      ...workspaceRequestInit(options), method: "POST", body: JSON.stringify(data),
+    });
+    return parseMaterialDetail(raw, options.workspaceId, projectId);
+  }
+
+  async getMaterial(projectId: string, materialId: string, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials/${encodeURIComponent(materialId)}`, workspaceRequestInit(options));
+    return parseMaterialDetail(raw, options.workspaceId, projectId, materialId);
+  }
+
+  async sendMaterialCommand(projectId: string, materialId: string, command: MaterialCommand, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials/${encodeURIComponent(materialId)}/${command.action}`, {
+      ...workspaceRequestInit(options), method: "POST", body: JSON.stringify(command.data),
+    });
+    return parseMaterialDetail(raw, options.workspaceId, projectId, materialId);
   }
 
   // Project resources
