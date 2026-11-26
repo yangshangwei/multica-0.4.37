@@ -1,0 +1,39 @@
+{
+  "version": "0.8.8",
+  "tag": "v0.8.8",
+  "commit": "d2c9240eaf9f768446faba93cac625bd63e9cf53",
+  "merged_fix_base": "c920c5e5b0354258ad0a37d500655a6856d5ed5b",
+  "branch": "codex/release-v0-8-8",
+  "base_main_ci": 45656329181,
+  "status": "completed",
+  "superseded_candidate": "53df2dbb60fcb29acebb507f4a6041802bfb27dc",
+  "failed_windows_run": 45659248507,
+  "freeze_reason": "Windows acceptance text/platform fixture repair; server/web/desktop application/SQL/Dockerfiles remain identical to merged main",
+  "superseded_candidates": [
+    "7a99271341910b58c35a99d5f38ffe1ae75c6959",
+    "b7563d8bbeb3abe0f73151a3d17f0414cbc4d89f"
+  ],
+  "failed_windows_runs": [
+    45660381726,
+    45663530640
+  ],
+  "base_main_ci_conclusion": "failure",
+  "base_main_ci_failure": "TestProjectAutopilotRunOnlyRacesRealRuntimeTeardown/with_project: check agent readiness: no rows in result set",
+  "main_advanced": true,
+  "main_ci": 45713882395,
+  "windows_run": 45710224239,
+  "main_commit": "d2c9240eaf9f768446faba93cac625bd63e9cf53",
+  "prior_main_ci_success": [
+    45668401610,
+    45676077490,
+    45686947203,
+    45694754924,
+    45704727374
+  ],
+  "windows_conclusion": "success",
+  "main_ci_conclusion": "success",
+  "release_ci": 45721755253,
+  "release_attempt": 2,
+  "release_ci_conclusion": "success",
+  "remote_assets_verified": 40
+}

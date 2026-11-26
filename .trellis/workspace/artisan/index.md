@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 195
-- **Last Active**: 2026-11-25
+- **Total Sessions**: 196
+- **Last Active**: 2026-11-26
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~797 | Active |
+| `journal-4.md` | ~837 | Active |
 | `journal-3.md` | ~1928 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
@@ -32,6 +32,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 196 | 2026-11-26 | Complete V0.8.8 verified offline and Windows delivery | `d2c9240eaf9f768446faba93cac625bd63e9cf53` | `main` |
 | 195 | 2026-11-25 | Ship categorized issue mention discovery | `f0a64fdf33a276b1411a7b7fe395908ed58c3dd9` | `main` |
 | 194 | 2026-11-24 | Complete cross-workspace integration into main | `904160af8`, `ee38e36e8`, `f878b88bf`, `46b045167`, `662d66943`, `0302e4cb9` | `main` |
 | 193 | 2026-11-23 | 提交剩余通知与市场改动，保留历史计划 | `2d8fa836e`, `914c1bf77`, `95c8b12dc`, `9bca2c02e` | `codex/cross-workspace-collaboration` |

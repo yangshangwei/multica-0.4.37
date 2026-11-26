@@ -809,3 +809,29 @@ User confirmed ordinarycomment memberuploads with independentuploader. ReleaseHO
 ### 2026-11-26 subsequent integration authorization
 
 User explicitly requested commit, push and merge to main. Verified fetched origin/main still9ffa37281; retained previous test/source/protocol qualifications and HOLD. Integration record: parent research/integration-publication-20261126.md. No deployment/tag or external condition waiver.
+
+
+## Session 196: Complete V0.8.8 verified offline and Windows delivery
+<!-- trellis-session: v=2 fp=8bfd79905995e220 -->
+
+**Date**: 2026-11-26
+**Task**: Complete V0.8.8 verified offline and Windows delivery
+**Branch**: `main`
+
+### Summary
+
+Released v0.8.8 with 40 matching local and GitHub assets. Formal Linux password/device upgrade, 877 migrations, config/identity retention, backups/restarts/fault gates and native Windows passed. Preserved all scope limits and earlier failures.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `d2c9240eaf9f768446faba93cac625bd63e9cf53` | test(desktop): preserve protocol ownership while checking reinstalled clients |
+
+### Testing
+
+- [OK] Release CI attempt2 success with live vulnerability scan; 40 full remote SHA256 downloads; independent review passed
+
+### Status
+
+[OK] **Completed**
