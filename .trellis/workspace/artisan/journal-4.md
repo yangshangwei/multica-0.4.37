@@ -869,3 +869,37 @@ Released v0.8.8 with 40 matching local and GitHub assets. Formal Linux password/
 ### Next Steps
 
 - 这四条主线停止活跃跟踪，后续仅按新的明确指示恢复。
+
+
+## Session 198: Git 物料闭环开发与恢复边界验收
+<!-- trellis-session: v=2 fp=c8cc8ef224c0c99c -->
+
+**Date**: 2026-11-27
+**Task**: Git 物料闭环开发与恢复边界验收
+**Branch**: `codex/git-engineering-material-workflow`
+
+### Summary
+
+完成首期需求到方案审核闭环，补齐合并校验、撤权领取、失败人工重试与输入恢复；本地 Web/Electron 验收通过。
+
+### Main Changes
+
+- 共享物料 UI/API、GitHub/GitLab 适配、持久化审核和方案派发，复用现有组件与恢复协议，无新增依赖。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `08174f7ac` | feat(materials): make approved Git definitions drive auditable planning |
+
+### Testing
+
+- [OK] 完整前端各包、lint/typecheck、受影响 Go 竞态回归、独立 Redis、fresh DB 迁移、生产 Web/Electron 两条旅程通过；未跑全仓 Go。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 父任务继续跨模块编码/QA/发布编排；真实 Git、真实模型和安装包另行验收。本地提交未推送。

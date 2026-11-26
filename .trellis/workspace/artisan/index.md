@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 197
-- **Last Active**: 2026-11-26
+- **Total Sessions**: 198
+- **Last Active**: 2026-11-27
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~871 | Active |
+| `journal-4.md` | ~905 | Active |
 | `journal-3.md` | ~1928 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
@@ -32,6 +32,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 198 | 2026-11-27 | Git 物料闭环开发与恢复边界验收 | `08174f7ac` | `codex/git-engineering-material-workflow` |
 | 197 | 2026-11-26 | 按用户要求归档四条任务主线 | - | `codex/git-engineering-material-workflow` |
 | 196 | 2026-11-26 | Complete V0.8.8 verified offline and Windows delivery | `d2c9240eaf9f768446faba93cac625bd63e9cf53` | `main` |
 | 195 | 2026-11-25 | Ship categorized issue mention discovery | `f0a64fdf33a276b1411a7b7fe395908ed58c3dd9` | `main` |
