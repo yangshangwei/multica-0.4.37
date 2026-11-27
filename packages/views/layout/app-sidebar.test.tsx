@@ -1239,19 +1239,22 @@ it("lists triage last in the work group", () => {
   expect(rendered.filter((href) => workHrefs.includes(href ?? ""))).toEqual(workHrefs);
 });
 
-it.each(["expanded", "collapsed"] as const)("keeps one explicit collaboration resume button in %s navigation", (state) => {
+it.each(["expanded", "collapsed"] as const)("shows collaboration resume only inside the open group in %s navigation", (state) => {
   sidebarState.state = state;
   const resume = vi.fn();
   renderWithI18n(<AppSidebar onAccountResume={resume} />);
-  expect(screen.getAllByRole("button", { name: "Return to previous collaboration" })).toHaveLength(1);
-  if (state === "expanded") {
-    fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
-    expect(resume).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button", { name: "Collapse collaboration navigation" }));
-  }
-  fireEvent.click(screen.getByRole("button", { name: "Return to previous collaboration" }));
+  expect(screen.queryByRole("button", { name: "Resume last view" })).not.toBeInTheDocument();
+  if (state === "collapsed") return;
+
+  fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
+  expect(resume).not.toHaveBeenCalled();
+  expect(screen.getAllByRole("button", { name: "Resume last view" })).toHaveLength(1);
+  fireEvent.click(screen.getByRole("button", { name: "Resume last view" }));
   expect(resume).toHaveBeenCalledOnce();
   expect(resume).toHaveBeenCalledWith();
+  fireEvent.click(screen.getByRole("button", { name: "Collapse collaboration navigation" }));
+  expect(screen.queryByRole("button", { name: "Resume last view" })).not.toBeInTheDocument();
+  expect(resume).toHaveBeenCalledOnce();
   expect(navigationPush).not.toHaveBeenCalled();
 });
 
@@ -1259,7 +1262,7 @@ it("keeps the Chinese resume action inert in the current account view", () => {
   navigation.current = { pathname: "/account", search: "?view=participating" };
   const resume = vi.fn();
   renderWithI18n(<AppSidebar onAccountResume={resume} />, { locale: "zh-Hans" });
-  const button = screen.getByRole("button", { name: "返回上次协作" });
+  const button = screen.getByRole("button", { name: "恢复上次浏览" });
   expect(button).toBeDisabled();
   fireEvent.click(button);
   expect(resume).not.toHaveBeenCalled();

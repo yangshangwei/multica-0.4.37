@@ -73,10 +73,11 @@ are not zero. The notification item is an active native link to
 `/account?view=notifications&filter=unread`; collapse removes the child links
 while the protected count observer and main notification page remain available.
 
-The separate “Return to previous collaboration” action resumes the remembered
+The “Resume last view” action (“恢复上次浏览” in Simplified Chinese) resumes the remembered
 account destination, including selected issue, fragment and scroll, without
-selecting an issue again. It appears exactly once outside the disclosure so
-closed groups and icon-only navigation retain an accessible native button.
+selecting an issue again. It appears exactly once after notifications inside
+the expanded collaboration directory. Closing the group or switching to
+icon-only navigation hides the action along with the other directory children.
 It is disabled in account scope to avoid resetting an editor or focus already
 there. The disclosure and explicit list links keep their existing behavior.
 `onAccountResume` comes from the platform: Web resolves the current viewer's

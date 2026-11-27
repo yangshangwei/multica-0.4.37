@@ -856,15 +856,15 @@ function CollaborationNavigation({ workspaceActive, onAccountResume }: { workspa
         </SidebarMenuButton></SidebarMenuItem>;
       })}
       {notificationLink}
+      {onAccountResume && <SidebarMenuItem>
+        <SidebarMenuButton onClick={() => onAccountResume()} disabled={destination !== null}
+          aria-label={collaboration(($) => $.page.resume)}
+          className="text-muted-foreground pointer-coarse:min-h-11">
+          <Undo2 aria-hidden /><span>{collaboration(($) => $.page.resume)}</span>
+        </SidebarMenuButton>
+      </SidebarMenuItem>}
       </SidebarMenu></SidebarGroupContent></CollapsibleContent>}
     </Collapsible>}
-    {onAccountResume && <SidebarGroupContent><SidebarMenu><SidebarMenuItem>
-      <SidebarMenuButton onClick={() => onAccountResume()} disabled={destination !== null}
-        aria-label={collaboration(($) => $.page.resume)} tooltip={iconCollapsed ? collaboration(($) => $.page.resume) : undefined}
-        className={cn("text-muted-foreground pointer-coarse:min-h-11", iconCollapsed && "mx-auto")}>
-        <Undo2 aria-hidden />{!iconCollapsed && <span>{collaboration(($) => $.page.resume)}</span>}
-      </SidebarMenuButton>
-    </SidebarMenuItem></SidebarMenu></SidebarGroupContent>}
   </SidebarGroup>;
 }
 
