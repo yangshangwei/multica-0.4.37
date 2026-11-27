@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 	"strconv"
 
 	"github.com/jackc/pgx/v5"
@@ -59,6 +60,7 @@ const (
 
 // TaskClaimFinalization is what a committed claim finalization hands back.
 type TaskClaimFinalization struct {
+	MaterialClaim *protocol.MaterialClaimBinding
 	// DeliveredCommentIDs is the comment receipt as the task row holds it.
 	DeliveredCommentIDs []pgtype.UUID
 	// BudgetAttemptID is valid when the claim got a budget attempt.

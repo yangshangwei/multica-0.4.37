@@ -1,8 +1,11 @@
-// Package materialgit publishes immutable engineering material revisions through
-// narrowly scoped Git provider APIs. It never owns credentials or business approval.
+// Package materialgit reads immutable engineering materials through bounded Git
+// provider APIs. Remote mutations belong exclusively to the selected runtime.
 package materialgit
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 type Connection struct {
 	Provider, BaseURL, Repository, Token string
@@ -22,6 +25,7 @@ type PublishRequest struct {
 }
 
 type Review struct {
+	MergedAt                                                                   *time.Time
 	Number                                                                     int64
 	URL, HeadSHA, BaseBranch, Branch, State, MergeSHA, MergeActor, BlockReason string
 	Changes                                                                    []Change
@@ -65,9 +69,6 @@ func (expected MergeExpectation) Check(review Review) error {
 }
 
 type Provider interface {
-	Publish(context.Context, PublishRequest) (Review, error)
 	Observe(context.Context, int64) (Review, error)
-	SyncDecision(context.Context, int64, DecisionNote) error
-	Merge(context.Context, MergeExpectation) (Review, error)
 	ReadFile(context.Context, string, string) (string, error)
 }

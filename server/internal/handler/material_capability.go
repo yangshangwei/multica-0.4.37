@@ -19,6 +19,19 @@ func (h *Handler) materialTaskGuard(w http.ResponseWriter, r *http.Request, toke
 		writeError(w, 403, "material_plan_task_denied")
 		return true, false
 	}
+	if task.TriggerEvidenceKind.String == "material_operation" {
+		op, d, e := service.AuthorizeMaterialOperation(r.Context(), h.Queries, task)
+		if e != nil || token.AgentID != op.AgentID || token.WorkspaceID != op.WorkspaceID || task.Status != "running" {
+			writeError(w, 403, "material_task_scope_denied")
+			return true, false
+		}
+		base := "/api/projects/" + d.ProjectID + "/materials/"
+		allowed := r.URL.RawQuery == "" && r.URL.RawPath == "" && !r.URL.ForceQuery && (r.Method == http.MethodGet && r.URL.Path == base+"operations/"+d.OperationID || r.Method == http.MethodPost && r.URL.Path == base+d.MaterialID+"/operations/"+d.OperationID+"/permit")
+		if !allowed {
+			writeError(w, 403, "material_task_scope_denied")
+		}
+		return true, allowed
+	}
 	if !task.IssueID.Valid && task.TriggerEvidenceKind.String != "material_baseline" {
 		return false, true
 	}

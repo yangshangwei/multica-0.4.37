@@ -103,3 +103,46 @@ DELETE FROM project_material_settings WHERE workspace_id=$1;
 SELECT EXISTS (SELECT 1 FROM git_material_plan WHERE issue_id=$1)::boolean;
 -- name: GetMaterialPlanForTask :one
 SELECT * FROM git_material_plan WHERE task_id=$1;
+
+-- name: EnsureMaterialCarrier :one
+INSERT INTO agent (workspace_id,name,runtime_mode,runtime_config,runtime_id,visibility,permission_mode,max_concurrent_tasks,owner_id,instructions,custom_env,custom_args,kind,system_key)
+VALUES (@workspace_id,@system_key::text,@runtime_mode,'{}',@runtime_id,'private','private',1,@owner_id,'Execute only the authorized material stage. Never self-approve.','{}','[]','system',@system_key)
+ON CONFLICT (workspace_id,owner_id,runtime_id,system_key) WHERE system_key IS NOT NULL DO UPDATE SET system_key=EXCLUDED.system_key RETURNING *;
+-- name: CreateMaterialOperationTask :one
+INSERT INTO agent_task_queue (id,agent_id,runtime_id,status,priority,force_fresh_session,max_attempts,context,originator_user_id,accountable_user_id,originator_source,trigger_evidence_kind,trigger_evidence_ref_id)
+VALUES (@id,@agent_id,@runtime_id,'queued',0,true,1,@context,@authorizer_id,@authorizer_id,'direct_human','material_operation',@operation_id) RETURNING *;
+-- name: CreateMaterialOperation :one
+INSERT INTO git_material_operation (id,job_id,task_id,workspace_id,project_id,material_id,revision_id,runtime_id,agent_id,authorizer_id,attempt_no,action,descriptor,expected_digest)
+VALUES (@id,@job_id,@task_id,@workspace_id,@project_id,@material_id,@revision_id,@runtime_id,@agent_id,@authorizer_id,@attempt_no,@action,@descriptor,@expected_digest) RETURNING *;
+-- name: GetMaterialOperationForTask :one
+SELECT * FROM git_material_operation WHERE task_id=$1;
+-- name: GetMaterialOperation :one
+SELECT * FROM git_material_operation WHERE id=$1;
+-- name: LatestMaterialOperation :one
+SELECT * FROM git_material_operation WHERE job_id=$1 ORDER BY attempt_no DESC LIMIT 1;
+-- name: CurrentMaterialOperation :one
+SELECT o.*,t.status AS task_status FROM git_material_operation o JOIN agent_task_queue t ON t.id=o.task_id WHERE o.material_id=$1 ORDER BY o.created_at DESC LIMIT 1;
+-- name: BindMaterialOperationClaim :exec
+UPDATE git_material_operation SET claim_generation=$2,challenge_hash=$3,state='dispatched',receipt=NULL,receipt_digest='',observation_id='',permit_expires_at=NULL,permit_request_id='',updated_at=now() WHERE task_id=$1 AND claim_generation<$2;
+-- name: SaveMaterialObservation :exec
+UPDATE git_material_operation SET receipt=$2,receipt_digest=$3,observation_id=$4,state=$5,blocker=$6,receipt_history=jsonb_set(receipt_history,ARRAY[$4::text],to_jsonb($3::text)),updated_at=now() WHERE id=$1;
+-- name: SaveMaterialPermit :exec
+UPDATE git_material_operation SET permit_request_id=$2,permit_expires_at=$3,updated_at=now() WHERE id=$1;
+-- name: CompleteMaterialOperationJob :exec
+UPDATE git_material_job SET state=$2,blocker=$3,leased_until=NULL,lease_token=NULL,updated_at=now() WHERE id=$1;
+-- name: DetachMaterialCarriers :exec
+UPDATE agent SET runtime_id=NULL WHERE runtime_id=$1 AND kind='system' AND system_key LIKE 'material:%';
+-- name: DisableMaterialTaskRetries :exec
+UPDATE agent_task_queue SET max_attempts=1 WHERE id=$1;
+-- name: RequestMaterialOperationRecovery :execrows
+UPDATE git_material_operation o SET state='recovery_requested',updated_at=now()
+FROM agent_task_queue t WHERE o.task_id=t.id AND o.material_id=$1 AND o.id=(SELECT id FROM git_material_operation WHERE material_id=$1 ORDER BY created_at DESC LIMIT 1)
+AND o.state NOT IN ('succeeded','no_effect') AND t.status IN ('completed','failed','cancelled');
+-- name: RetryMaterialJob :exec
+UPDATE git_material_job SET state='pending',next_at=now(),leased_until=NULL,lease_token=NULL,blocker=NULL WHERE revision_id=$1 AND kind=$2;
+-- name: GetMaterialPermittedMerge :one
+SELECT * FROM git_material_operation WHERE job_id=$1 AND action='merge' AND permit_request_id<>'' ORDER BY attempt_no DESC LIMIT 1;
+-- name: LockMaterialRuntimeProfile :one
+-- Claims and observations may already own the task/runtime lock. Never wait
+-- behind a configuration writer that could be waiting for that same task.
+SELECT * FROM runtime_profile WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT;

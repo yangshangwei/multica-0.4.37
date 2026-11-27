@@ -376,6 +376,8 @@ type TaskIssueStatusData struct {
 }
 
 type AgentTaskResponse struct {
+	MaterialExecution    *protocol.MaterialExecution         `json:"material_execution,omitempty"`
+	MaterialClaim        *protocol.MaterialClaimBinding      `json:"material_claim,omitempty"`
 	taskCapability       []byte                              // Server-only expected scope; checked again by claim finalization.
 	ExecutionFence       *service.AdminCancellationWireFence `json:"execution_fence,omitempty"`
 	ID                   string                              `json:"id"`

@@ -8,6 +8,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"time"
 	"unicode/utf8"
 )
 
@@ -18,6 +19,7 @@ type glCommit struct {
 	ParentIDs []string `json:"parent_ids"`
 }
 type glMR struct {
+	MergedAt            *time.Time                `json:"merged_at"`
 	IID                 int64                     `json:"iid"`
 	ProjectID           int64                     `json:"project_id"`
 	SourceProjectID     int64                     `json:"source_project_id"`
@@ -161,126 +163,6 @@ func (p *gitlabProvider) ReadFile(ctx context.Context, sha, name string) (string
 	return string(b), nil
 }
 
-func (p *gitlabProvider) Publish(ctx context.Context, in PublishRequest) (Review, error) {
-	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
-	defer cancel()
-	if err := validatePublish(in); err != nil {
-		return Review{}, err
-	}
-	q := url.Values{"state": {"all"}, "source_branch": {in.Branch}, "scope": {"all"}, "per_page": {"100"}}
-	var found *glMR
-	for page := 1; ; page++ {
-		q.Set("page", strconv.Itoa(page))
-		var rows []glMR
-		h, err := p.request(ctx, http.MethodGet, p.repo+"/merge_requests?"+q.Encode(), nil, &rows)
-		if err != nil {
-			return Review{}, err
-		}
-		for _, row := range rows {
-			if found != nil {
-				return Review{}, failure("candidate_review_ambiguous")
-			}
-			v := row
-			found = &v
-		}
-		next, err := nextPage(h, page, len(rows), false)
-		if err != nil {
-			return Review{}, err
-		}
-		if !next {
-			break
-		}
-	}
-	if found != nil && found.TargetBranch != in.BaseBranch {
-		return Review{}, failure("candidate_review_changed")
-	}
-	commit, err := p.branch(ctx, in.Branch)
-	if err != nil && !isStatus(err, 404) {
-		return Review{}, err
-	}
-	if isStatus(err, 404) {
-		if found != nil {
-			return Review{}, failure("candidate_branch_missing")
-		}
-		base, err := p.branch(ctx, in.BaseBranch)
-		if err != nil {
-			return Review{}, err
-		}
-		actions := make([]map[string]any, 0, len(in.Files))
-		for _, file := range in.Files {
-			action := map[string]any{"action": "create", "file_path": file.Path, "content": file.Content, "encoding": "text"}
-			_, err := p.fileEntry(ctx, base.ID, file.Path)
-			if err == nil {
-				old, err := p.file(ctx, base.ID, file.Path)
-				if err != nil {
-					return Review{}, err
-				}
-				action["action"] = "update"
-				action["last_commit_id"] = old.LastCommitID
-			} else if !isMissingTreeEntry(err) {
-				return Review{}, err
-			}
-			actions = append(actions, action)
-		}
-		// GitLab's commits API can append to an existing branch even when
-		// start_sha is supplied. Claim the name through the create-only branches
-		// endpoint first. An ambiguous creation cannot authorize a commit.
-		var created struct {
-			Name   string
-			Commit glCommit
-		}
-		_, err = p.request(ctx, http.MethodPost, p.repo+"/repository/branches", map[string]string{"branch": in.Branch, "ref": base.ID}, &created)
-		if err != nil {
-			return Review{}, err
-		}
-		if created.Name != in.Branch || created.Commit.ID != base.ID {
-			return Review{}, &Error{Code: "candidate_branch_ownership_unknown", Uncertain: true}
-		}
-		current, err := p.branch(ctx, in.Branch)
-		if err != nil {
-			return Review{}, err
-		}
-		if current.ID != base.ID {
-			return Review{}, failure("candidate_branch_conflict")
-		}
-		// This is not a branch-head CAS. File last_commit_id guards updates;
-		// create actions reject an intervening file. Unrelated concurrent edits
-		// are preserved and the full diff is checked before returning a review.
-		_, err = p.request(ctx, http.MethodPost, p.repo+"/repository/commits", map[string]any{"branch": in.Branch, "commit_message": in.Title + "\n\n" + candidateMarker(in), "actions": actions, "force": false}, &commit)
-		if err != nil {
-			return Review{}, err
-		}
-	}
-	if !shaPattern.MatchString(commit.ID) || !strings.Contains(commit.Message, candidateMarker(in)) {
-		return Review{}, failure("candidate_branch_ownership_unknown")
-	}
-	if err = sameFiles(ctx, p, commit.ID, in.Files); err != nil {
-		return Review{}, err
-	}
-	if found == nil {
-		var made glMR
-		_, err = p.request(ctx, http.MethodPost, p.repo+"/merge_requests", map[string]any{"source_branch": in.Branch, "target_branch": in.BaseBranch, "title": in.Title, "description": candidateMarker(in) + "\n\n" + in.Body, "remove_source_branch": false, "allow_collaboration": false}, &made)
-		if err != nil {
-			return Review{}, err
-		}
-		found = &made
-	}
-	raw, review, err := p.observe(ctx, found.IID)
-	if err != nil {
-		return Review{}, err
-	}
-	if !strings.Contains(raw.Description, candidateMarker(in)) || review.HeadSHA != commit.ID || review.Branch != in.Branch || review.BaseBranch != in.BaseBranch {
-		return Review{}, failure("candidate_review_changed")
-	}
-	if err = checkChanges(review.Changes, in.Files); err != nil {
-		return Review{}, err
-	}
-	if review.State == "closed" {
-		return Review{}, failure("candidate_review_closed")
-	}
-	return review, nil
-}
-
 func (p *gitlabProvider) Observe(ctx context.Context, number int64) (Review, error) {
 	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
 	defer cancel()
@@ -307,20 +189,20 @@ func (p *gitlabProvider) observe(ctx context.Context, number int64) (glMR, Revie
 	if err != nil || count < 1 || count > 1000 || !shaPattern.MatchString(raw.SHA) || raw.DiffRefs.HeadSHA != raw.SHA {
 		return raw, Review{}, failure("provider_review_invalid")
 	}
-	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.SHA, BaseBranch: raw.TargetBranch, Branch: raw.SourceBranch, State: raw.State, MergeSHA: raw.MergeSHA, MergeActor: raw.MergedBy.Username, Changes: []Change{}}
+	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.SHA, BaseBranch: raw.TargetBranch, Branch: raw.SourceBranch, State: raw.State, MergeSHA: raw.MergeSHA, MergedAt: raw.MergedAt, MergeActor: raw.MergedBy.Username, Changes: []Change{}}
 	if r.State == "opened" {
 		r.State = "open"
 	}
 	if r.MergeSHA == "" {
 		r.MergeSHA = raw.SquashSHA
 	}
-	if r.MergeActor == "" {
+	if r.MergeActor == "" || r.MergedAt == nil || r.MergedAt.IsZero() {
 		r.MergeActor = raw.LegacyMergedBy.Username
 	}
 	if r.State != "open" && r.State != "closed" && r.State != "merged" {
 		return raw, Review{}, failure("provider_review_invalid")
 	}
-	if r.State == "merged" && (!shaPattern.MatchString(r.MergeSHA) || r.MergeActor == "") {
+	if r.State == "merged" && (!shaPattern.MatchString(r.MergeSHA) || (r.MergeActor == "" || r.MergedAt == nil || r.MergedAt.IsZero())) {
 		return raw, Review{}, failure("provider_merge_incomplete")
 	}
 	seen := map[string]bool{}
@@ -391,82 +273,6 @@ func (p *gitlabProvider) observe(ctx context.Context, number int64) (glMR, Revie
 	}
 	r.GatesPassed = true
 	return raw, r, nil
-}
-func (p *gitlabProvider) SyncDecision(ctx context.Context, number int64, in DecisionNote) error {
-	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
-	defer cancel()
-	if number <= 0 {
-		return failure("invalid_review")
-	}
-	body, err := decisionBody(in)
-	if err != nil {
-		return err
-	}
-	endpoint := p.repo + "/merge_requests/" + strconv.FormatInt(number, 10) + "/notes"
-	found := false
-	for page := 1; ; page++ {
-		var rows []struct{ Body string }
-		h, err := p.request(ctx, http.MethodGet, endpoint+"?per_page=100&page="+strconv.Itoa(page), nil, &rows)
-		if err != nil {
-			return err
-		}
-		for _, row := range rows {
-			if strings.Contains(row.Body, marker(in.Key)) {
-				if row.Body != body {
-					return failure("decision_note_conflict")
-				}
-				found = true
-			}
-		}
-		next, err := nextPage(h, page, len(rows), false)
-		if err != nil {
-			return err
-		}
-		if !next {
-			break
-		}
-	}
-	if found {
-		return nil
-	}
-	_, err = p.request(ctx, http.MethodPost, endpoint, map[string]string{"body": body}, nil)
-	return err
-}
-func (p *gitlabProvider) Merge(ctx context.Context, expected MergeExpectation) (Review, error) {
-	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
-	defer cancel()
-	number, head := expected.Number, expected.HeadSHA
-	if !shaPattern.MatchString(head) {
-		return Review{}, failure("invalid_head")
-	}
-	r, err := p.Observe(ctx, number)
-	if err != nil {
-		return Review{}, err
-	}
-	if err := expected.Check(r); err != nil {
-		return r, err
-	}
-	if r.State == "merged" {
-		return r, nil
-	}
-	if r.State != "open" || !r.GatesPassed {
-		return r, failure("native_merge_blocked")
-	}
-	_, err = p.request(ctx, http.MethodPut, p.repo+"/merge_requests/"+strconv.FormatInt(number, 10)+"/merge", map[string]any{"sha": head, "should_remove_source_branch": false, "squash": true}, nil)
-	if err != nil {
-		return r, err
-	}
-	observed, err := p.Observe(ctx, number)
-	if err != nil {
-		return r, &Error{Code: "merge_not_confirmed", Retryable: true, Uncertain: true}
-	}
-	if err := expected.Check(observed); err != nil {
-		return observed, err
-	}
-	if observed.State != "merged" {
-		return observed, &Error{Code: "merge_not_confirmed", Retryable: true, Uncertain: true}
-	}
-	return observed, nil
 }
 
 var _ Provider = (*gitlabProvider)(nil)

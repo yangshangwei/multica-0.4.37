@@ -213,6 +213,7 @@ func (c *Client) capabilities() string {
 // support (MUL-4257).
 func daemonClientCapabilities() string {
 	return strings.Join([]string{
+		protocol.DaemonCapabilityMaterialOperationsV1,
 		protocol.DaemonCapabilitySkillBundlesV1,
 		protocol.DaemonCapabilityCoalescedCommentsV1,
 		protocol.DaemonCapabilityExecutionManifestV1,

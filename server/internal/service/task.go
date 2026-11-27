@@ -3779,6 +3779,7 @@ func (s *TaskService) FinalizeTaskClaim(
 	receipt := task.DeliveredCommentIds
 	currentTask := task
 	var budgetClaim taskBudgetClaim
+	var materialClaim *protocol.MaterialClaimBinding
 	err := s.runInTx(ctx, func(qtx *db.Queries) error {
 		if auth.PasswordMode() {
 			session, err := auth.LockPasswordSession(ctx, qtx)
@@ -3849,6 +3850,10 @@ func (s *TaskService) FinalizeTaskClaim(
 		if err := checkMaterialClaim(ctx, qtx, task); err != nil {
 			return err
 		}
+		materialClaim, err = bindMaterialClaim(ctx, qtx, currentTask)
+		if err != nil {
+			return err
+		}
 		if err := s.finalizeTaskCapability(ctx, qtx, currentTask, &token, len(daemonTokens)); err != nil {
 			return err
 		}
@@ -3895,7 +3900,7 @@ func (s *TaskService) FinalizeTaskClaim(
 	// The commit is confirmed: the ledger the claim appended to may be read
 	// by the next writer of its root.
 	budgetClaim.Committed()
-	return TaskClaimFinalization{DeliveredCommentIDs: receipt, BudgetAttemptID: budgetClaim.AttemptID}, nil
+	return TaskClaimFinalization{MaterialClaim: materialClaim, DeliveredCommentIDs: receipt, BudgetAttemptID: budgetClaim.AttemptID}, nil
 }
 
 // RequeueTaskAfterClaimFailure immediately releases an exact dispatched claim
@@ -7182,6 +7187,16 @@ func (s *TaskService) ResolveTaskWorkspaceID(ctx context.Context, task db.AgentT
 // keeps a task carrying several links working during a partial outage while
 // still refusing to call an unknown state "not found".
 func (s *TaskService) ResolveTaskWorkspaceIDChecked(ctx context.Context, task db.AgentTaskQueue) (string, error) {
+	if task.TriggerEvidenceKind.String == "material_operation" {
+		op, e := s.Queries.GetMaterialOperationForTask(ctx, task.ID)
+		if e != nil {
+			return "", e
+		}
+		if op.AgentID != task.AgentID {
+			return "", errors.New("material task identity changed")
+		}
+		return util.UUIDToString(op.WorkspaceID), nil
+	}
 	// isNotFound is the "genuinely absent" signal; every other error means the
 	// lookup itself did not complete. pgx.ErrNoRows is the only error the
 	// queries below use to say "this row does not exist".

@@ -217,6 +217,9 @@ func buildActiveSiblingRunsBlock(currentIssueID string, runs []ActiveSiblingRunD
 // post with `--content-file`) because the shell-layer corruption it guards
 // against is not specific to any one provider or host (MUL-2904, #4182).
 func BuildPrompt(task Task, provider string, options ...PromptOption) string {
+	if task.MaterialExecution != nil {
+		return materialPrompt(task)
+	}
 	var opts promptOpts
 	for _, apply := range options {
 		apply(&opts)

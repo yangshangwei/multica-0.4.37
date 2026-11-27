@@ -33,13 +33,11 @@ type MaterialAccess struct {
 	WorkspaceID, ProjectID pgtype.UUID
 	Credential             ArtifactCredentialSnapshot
 }
-type MaterialProviderResolver func(context.Context, *db.Queries, pgtype.UUID, material.Settings) (materialgit.Provider, func(), error)
 type MaterialService struct {
-	Queries         *db.Queries
-	TxStarter       TxStarter
-	Issues          *IssueService
-	Tasks           *TaskService
-	ResolveProvider MaterialProviderResolver
+	Queries   *db.Queries
+	TxStarter TxStarter
+	Issues    *IssueService
+	Tasks     *TaskService
 }
 
 func NewMaterialService(q *db.Queries, tx TxStarter, issues *IssueService, tasks *TaskService) *MaterialService {
@@ -48,8 +46,11 @@ func NewMaterialService(q *db.Queries, tx TxStarter, issues *IssueService, tasks
 
 type materialBinding struct {
 	material.Settings
-	ResourceDigest     string `json:"resource_digest"`
-	ConnectionRevision int64  `json:"connection_revision"`
+	ResourceDigest string                `json:"resource_digest"`
+	Credential     stageSignerCredential `json:"credential"`
+	CarrierID      string                `json:"carrier_id"`
+	RuntimeDigest  string                `json:"runtime_digest"`
+	InstanceURL    string                `json:"instance_url"`
 }
 type materialTx struct {
 	tx     pgx.Tx
@@ -205,6 +206,24 @@ func materialView(row db.GitMaterial) material.Material {
 }
 func (t *materialTx) detail(ctx context.Context, row db.GitMaterial) (material.Detail, error) {
 	out := material.Detail{Material: materialView(row), Revisions: []material.Revision{}, Decisions: []material.Decision{}, Comments: []material.Comment{}}
+	if op, e := t.q.CurrentMaterialOperation(ctx, row.ID); e == nil {
+		status := op.State
+		if status == "queued" || status == "dispatched" || status == "preflight" {
+			terminal := op.TaskStatus == "completed" || op.TaskStatus == "failed" || op.TaskStatus == "cancelled"
+			if terminal {
+				status = "unknown"
+				if op.Blocker.Valid {
+					status = "blocked"
+				}
+			} else if status != "preflight" {
+				status = op.TaskStatus
+			}
+		}
+		out.Operation = &material.Operation{ID: util.UUIDToString(op.ID), Kind: op.Action, Status: status, TaskID: util.UUIDToString(op.TaskID), ExecutionRuntimeID: util.UUIDToString(op.RuntimeID), Blocker: materialPtr(op.Blocker.String)}
+	} else if !errors.Is(e, pgx.ErrNoRows) {
+		return out, e
+	}
+
 	revisions, err := t.q.ListMaterialRevisions(ctx, row.ID)
 	if err != nil {
 		return out, err
@@ -281,7 +300,7 @@ func (t *materialTx) detail(ctx context.Context, row db.GitMaterial) (material.D
 	return out, nil
 }
 func (s *MaterialService) Settings(ctx context.Context, a MaterialAccess) (material.SettingsEnvelope, error) {
-	out := material.SettingsEnvelope{WorkspaceID: util.UUIDToString(a.WorkspaceID), ProjectID: util.UUIDToString(a.ProjectID)}
+	out := material.SettingsEnvelope{ExecutionProtocol: 1, WorkspaceID: util.UUIDToString(a.WorkspaceID), ProjectID: util.UUIDToString(a.ProjectID)}
 	t, err := s.begin(ctx, a, false)
 	if err != nil {
 		return out, err
@@ -376,48 +395,50 @@ func checkMaterialBinding(ctx context.Context, q *db.Queries, ws, project pgtype
 		return b, materialError(409, "material_resource_changed")
 	}
 	b.ResourceDigest = digest
-	if b.ConnectionID == nil {
-		return b, materialError(400, "material_connection_required")
+	if b.Provider == "github" && host != "github.com" {
+		return b, materialError(409, "material_repository_mismatch")
 	}
-	connection, e := materialUUID(*b.ConnectionID)
+	b.InstanceURL = "https://" + host
+	// Disabling the workflow grants no execution authority. Retain its target
+	// validation while allowing a missing/deleted runtime to be cleared safely.
+	if freeze && !b.Enabled {
+		return b, nil
+	}
+	if b.ExecutionRuntimeID == nil {
+		return b, materialError(409, "material_runtime_required")
+	}
+	id, e := materialUUID(*b.ExecutionRuntimeID)
 	if e != nil {
 		return b, e
 	}
-	var revision int64
-	if b.Provider == "gitlab" {
-		c, e := q.GetVCSConnectionByID(ctx, connection)
-		if e != nil && !errors.Is(e, pgx.ErrNoRows) {
-			return b, e
+	runtime, e := q.LockRuntimeForAutopilotDispatch(ctx, db.LockRuntimeForAutopilotDispatchParams{ID: id, WorkspaceID: ws})
+	if e != nil {
+		if errors.Is(e, pgx.ErrNoRows) {
+			return b, materialError(409, "material_runtime_unavailable")
 		}
-		if e != nil || c.WorkspaceID != ws || c.Provider != "gitlab" {
-			return b, materialError(403, "material_connection_unavailable")
-		}
-		u, e := url.Parse(c.InstanceUrl)
-		if e != nil || !strings.EqualFold(u.Host, host) {
-			return b, materialError(409, "material_repository_mismatch")
-		}
-		revision = c.TrustRevision
-	} else {
-		c, e := q.GetGitHubInstallationByID(ctx, connection)
-		if e != nil && !errors.Is(e, pgx.ErrNoRows) {
-			return b, e
-		}
-		if e != nil || c.WorkspaceID != ws || host != "github.com" || !strings.EqualFold(strings.Split(b.Repository, "/")[0], c.AccountLogin) {
-			return b, materialError(403, "material_connection_unavailable")
-		}
-		revision = c.TrustRevision
+		return b, e
 	}
-	if !freeze && revision != b.ConnectionRevision {
-		return b, materialError(409, "material_connection_changed")
+	digest, e = materialRuntimeConfigurationDigest(ctx, q, runtime)
+	if e != nil {
+		return b, e
 	}
-	b.ConnectionRevision = revision
+	if !freeze && digest != b.RuntimeDigest {
+		return b, materialError(409, "material_runtime_changed")
+	}
+	b.RuntimeDigest = digest
+
 	return b, nil
 }
 func (s *MaterialService) Configure(ctx context.Context, a MaterialAccess, in material.SettingsInput) (material.SettingsEnvelope, error) {
-	out := material.SettingsEnvelope{WorkspaceID: util.UUIDToString(a.WorkspaceID), ProjectID: util.UUIDToString(a.ProjectID), CanConfigure: true}
+	out := material.SettingsEnvelope{ExecutionProtocol: 1, WorkspaceID: util.UUIDToString(a.WorkspaceID), ProjectID: util.UUIDToString(a.ProjectID), CanConfigure: true}
 	setting := in.Settings()
 	if err := material.ValidateSettings(setting); err != nil {
 		return out, materialError(400, err.Error())
+	}
+	if setting.ExecutionRuntimeID != nil {
+		if _, err := materialUUID(*setting.ExecutionRuntimeID); err != nil {
+			return out, err
+		}
 	}
 	t, err := s.begin(ctx, a, true)
 	if err != nil {
@@ -464,20 +485,28 @@ func (s *MaterialService) Configure(ctx context.Context, a MaterialAccess, in ma
 			return out, materialError(403, "material_reviewer_unavailable")
 		}
 	}
-	if setting.PlanAgentID != nil {
-		id, e := materialUUID(*setting.PlanAgentID)
-		if e != nil {
-			return out, e
-		}
-		agent, e := t.q.GetAgent(ctx, id)
-		if e != nil || agent.WorkspaceID != a.WorkspaceID || agent.ArchivedAt.Valid {
-			return out, materialError(403, "material_agent_unavailable")
-		}
-	}
+
 	binding, err := checkMaterialBinding(ctx, t.q, a.WorkspaceID, a.ProjectID, materialBinding{Settings: setting}, true)
 	if err != nil {
 		return out, err
 	}
+	if setting.Enabled {
+		runtime, err := materialRuntimeForUser(ctx, t.q, a.WorkspaceID, setting.ExecutionRuntimeID, t.actor)
+		if err != nil {
+			return out, err
+		}
+		carrier, err := t.q.EnsureMaterialCarrier(ctx, db.EnsureMaterialCarrierParams{WorkspaceID: a.WorkspaceID, RuntimeID: runtime.ID, RuntimeMode: runtime.RuntimeMode, OwnerID: t.actor, SystemKey: materialText("material:" + util.UUIDToString(a.ProjectID) + ":" + util.UUIDToString(runtime.ID))})
+		if err != nil {
+			return out, err
+		}
+		binding.CarrierID = util.UUIDToString(carrier.ID)
+	}
+	binding.Credential = stageSignerCredential{Version: 1, Kind: a.Credential.Principal.Kind, PATHash: a.Credential.Principal.PATTokenHash, PasswordSession: a.Credential.PasswordSession}
+	if !a.Credential.Principal.ExpiresAt.IsZero() {
+		expiry := a.Credential.Principal.ExpiresAt
+		binding.Credential.ExpiresAt = &expiry
+	}
+
 	_, err = t.q.SaveMaterialSettings(ctx, db.SaveMaterialSettingsParams{ProjectID: a.ProjectID, WorkspaceID: a.WorkspaceID, Version: setting.Version, Settings: materialJSON(binding), AuthorizedBy: t.actor, MemberID: t.member.ID})
 	if err != nil {
 		return out, err
@@ -849,10 +878,10 @@ func (s *MaterialService) Command(ctx context.Context, a MaterialAccess, id, com
 		p.Blocker = materialText("material_plan_start_pending")
 		p.AuthorizedBy = t.actor
 		p.MemberID = t.member.ID
-		if binding.PlanAgentID == nil {
+		if binding.CarrierID == "" {
 			return out, materialError(409, "material_plan_agent_unavailable")
 		}
-		p.AgentID, err = materialUUID(*binding.PlanAgentID)
+		p.AgentID, err = materialUUID(binding.CarrierID)
 		if err != nil {
 			return out, err
 		}
@@ -886,6 +915,14 @@ func (s *MaterialService) Command(ctx context.Context, a MaterialAccess, id, com
 			kind = "plan"
 		} else if rev.PublicationStatus == "merged" {
 			kind = ""
+		}
+	}
+	if command == "retry" && kind != "plan" && kind != "" {
+		if _, err = t.q.RequestMaterialOperationRecovery(ctx, row.ID); err != nil {
+			return out, err
+		}
+		if err = t.q.RetryMaterialJob(ctx, db.RetryMaterialJobParams{RevisionID: row.CurrentRevisionID, Kind: kind}); err != nil {
+			return out, err
 		}
 	}
 	if kind != "" {

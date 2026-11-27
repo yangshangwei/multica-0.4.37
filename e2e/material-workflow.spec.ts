@@ -1,13 +1,13 @@
-import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { createHash, randomUUID } from "node:crypto";
+import { mkdtempSync, openSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { get } from "node:https";
-import { posix } from "node:path";
+import { dirname, join, posix } from "node:path";
 import { expect, type Page, type Route, type TestInfo } from "@playwright/test";
 import pg from "pg";
 import type { MaterialDetail } from "@multica/core/materials";
 import { p1Capture, p1Project, p1Session } from "./fixtures/project-p1";
 import { openNativeProject, test } from "./fixtures/project-p1-desktop";
-import { seedProgressAgent } from "./fixtures/project-p1-progress";
+import { spawn } from "node:child_process";
 import { selectDesktopWorkspace } from "./fixtures/collaboration-native";
 
 test.skip(!process.env.MATERIAL_RUN_STAMP, "Requires the identity-checked material-run.mjs fixture");
@@ -43,6 +43,7 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   const { api, workspace, owner } = session;
   const record = JSON.parse(readFileSync(process.env.MATERIAL_UI_RECORD!, "utf8"));
   const gitOrigin = "https://127.0.0.1:" + record.ports.gitlab;
+  const provider = record.provider ?? "gitlab";
   const snapshot = () => new Promise<Snapshot>((resolve, reject) => {
     get(gitOrigin + "/__control/snapshot", { ca: readFileSync(record.env.SSL_CERT_FILE), headers: { authorization: "Bearer " + record.control_token } }, (response) => {
       let data = "";
@@ -56,10 +57,29 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   });
   const before = await snapshot();
   const project = await p1Project(api, { title: "Material acceptance project" });
-  const planner = await seedProgressAgent(api, "Material planning fixture");
-  await api.requestJSON("/api/workspaces/" + workspace.id + "/vcs/connections", { method: "POST", body: { provider: "gitlab", instance_url: gitOrigin, access_token: record.git_token } });
-  await api.requestJSON("/api/projects/" + project.id + "/resources", { method: "POST", body: { resource_type: "github_repo", label: "Fixture repository", resource_ref: { url: gitOrigin + "/" + before.repository + ".git" } } });
-  if (native) await openNativeProject(page, project.title);
+  const runtime = await api.seedProjectRuntime();
+  const runRoot = mkdtempSync(join(process.env.MATERIAL_RUNTIME_DIR!, "runtime-"));
+  const token = "mdt_" + randomUUID();
+  const database = new pg.Client({ connectionString: record.connection });
+  await database.connect();
+  try {
+    await database.query("UPDATE agent_runtime SET provider='claude',name='Material fixture runtime',metadata=$2 WHERE id=$1", [runtime.id, JSON.stringify({ capabilities: ["material-operations-v1"] })]);
+    await database.query("INSERT INTO daemon_token(token_hash,workspace_id,daemon_id,user_id,expires_at) VALUES($1,$2,$3,$4,now()+interval '1 hour')", [createHash("sha256").update(token).digest("hex"), workspace.id, runtime.daemon_id, owner.id]);
+  } finally { await database.end(); }
+  const registration = join(runRoot, "registration.json");
+  writeFileSync(registration, JSON.stringify({ API: process.env.NEXT_PUBLIC_API_URL, Token: token, Runtime: runtime.id, Daemon: runtime.daemon_id, Executable: process.env.MATERIAL_RUNTIME_EXECUTABLE, Root: runRoot }), { mode: 0o600 });
+  const log = openSync(join(runRoot, "daemon.log"), "w", 0o600);
+  const daemon = spawn(process.env.MATERIAL_DAEMON_BINARY!, ["-test.run", "^TestMaterialBrowserDaemon$", "-test.v"], { env: { ...process.env, PATH: dirname(process.env.MATERIAL_RUNTIME_EXECUTABLE!) + ":" + process.env.PATH, MATERIAL_BROWSER_REGISTRATION: registration, MATERIAL_RUNTIME_RUNS: join(runRoot, "runs") }, stdio: ["ignore", log, log] });
+  try {
+  await expect.poll(() => existsSync(join(runRoot, "daemon-ready"))).toBe(true);
+
+  await api.requestJSON("/api/projects/" + project.id + "/resources", { method: "POST", body: { resource_type: "github_repo", label: "Fixture repository", resource_ref: { url: (provider === "github" ? "https://github.com" : gitOrigin) + "/" + before.repository + ".git" } } });
+  if (native) {
+    // Runtime registration is fixture setup outside the app; discard the shell
+    // inventory fetched before that registration, then read the real API again.
+    await page.reload();
+    await openNativeProject(page, project.title);
+  }
   else await page.goto("/" + workspace.slug + "/projects/" + project.id);
   const button = (name: string) => page.getByRole("button", { name, exact: true });
   const choose = async (field: string, option: string) => {
@@ -68,14 +88,17 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   };
   await button("Engineering materials").click();
   await button("Configure workflow").click();
-  await choose("Git platform", "GitLab");
+  await choose("Git platform", provider === "github" ? "GitHub" : "GitLab");
   await choose("Material repository resource", "Fixture repository");
-  await choose("Repository connection", "multica-material-fixture · " + gitOrigin);
+  await page.getByRole("button", { name: "Runtime · none selected", exact: true }).click();
+  await page.getByRole("button", { name: /^Material fixture runtime/ }).click();
   await page.getByRole("checkbox", { name: "P1 project owner" }).check();
-  await choose("Planning agent", planner.agent.name);
+
   const auto = page.getByRole("switch", { name: "Start planning after verified merge" });
   await expect(auto).toBeChecked();
   await auto.click();
+  await page.getByRole("group", { name: "Execution runtime", exact: true }).scrollIntoViewIfNeeded();
+  await p1Capture(page, info, "runtime-only-settings");
   await button("Save").click();
   await button("New requirement").click();
   const title = "Auditable customer requirement";
@@ -170,7 +193,7 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   await p1Capture(page, info, "verified-baseline-manual-hold");
   await button("Start planning").click();
   await expect.poll(() => api.countIssueDispatches(issue), { timeout: 30_000 }).toBe(1);
-  await expect(page.getByText(/Planning · Queued/)).toBeVisible({ timeout: 30_000 });
+  await expect.poll(() => existsSync(join(runRoot, "runs")) ? readFileSync(join(runRoot, "runs"), "utf8").split("\n").filter(x => x === "verify_baseline").length : 0, { timeout: 30_000 }).toBe(1);
   await button("Write a plan revision").click();
   await page.getByLabel("Technical design").fill(design);
   await page.getByLabel("Task breakdown").fill(tasks);
@@ -194,6 +217,12 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   expect(files[posix.join(posix.dirname(baseline.path), "plan.md")].content_sha256).toBe(hash(tasks));
   for (const key of ["commit", "review", "merge", "note"] as const) expect(final.effects[key] - before.effects[key]).toBe(2);
   await p1Capture(page, info, "approved-design-and-plan");
+  expect(readFileSync(join(runRoot, "runs"), "utf8").trim().split("\n")).toEqual(["publish", "review_sync", "merge", "verify_baseline", "publish", "review_sync", "merge"]);
+  } finally {
+    writeFileSync(join(runRoot, "stop"), "stop", { mode: 0o600 });
+    await new Promise<void>((resolve) => { if (daemon.exitCode !== null) return resolve(); const timer = setTimeout(() => { daemon.kill(); resolve(); }, 2000); daemon.once("exit", () => { clearTimeout(timer); resolve(); }); });
+    if (daemon.exitCode !== null && daemon.exitCode !== 0) throw Error("Material daemon failed; inspect " + join(runRoot, "daemon.log"));
+  }
 }
 
 test("Web: verified requirement, manual planning and exact plan approval", async ({ page }, info) => {

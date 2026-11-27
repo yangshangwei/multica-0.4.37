@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 	"unicode/utf8"
 )
 
@@ -25,18 +26,19 @@ type ghCommit struct {
 }
 type ghEntry struct{ Path, Mode, Type, SHA string }
 type ghPull struct {
-	Number       int64     `json:"number"`
-	URL          string    `json:"html_url"`
-	Body         string    `json:"body"`
-	State        string    `json:"state"`
-	Draft        bool      `json:"draft"`
-	Merged       bool      `json:"merged"`
-	MergeSHA     string    `json:"merge_commit_sha"`
-	Mergeable    *bool     `json:"mergeable"`
-	MergeState   string    `json:"mergeable_state"`
-	ChangedFiles *int      `json:"changed_files"`
-	Head         ghPullRef `json:"head"`
-	Base         ghPullRef `json:"base"`
+	MergedAt     *time.Time `json:"merged_at"`
+	Number       int64      `json:"number"`
+	URL          string     `json:"html_url"`
+	Body         string     `json:"body"`
+	State        string     `json:"state"`
+	Draft        bool       `json:"draft"`
+	Merged       bool       `json:"merged"`
+	MergeSHA     string     `json:"merge_commit_sha"`
+	Mergeable    *bool      `json:"mergeable"`
+	MergeState   string     `json:"mergeable_state"`
+	ChangedFiles *int       `json:"changed_files"`
+	Head         ghPullRef  `json:"head"`
+	Base         ghPullRef  `json:"base"`
 	MergedBy     struct {
 		Login string `json:"login"`
 	} `json:"merged_by"`
@@ -157,124 +159,6 @@ func (p *githubProvider) ReadFile(ctx context.Context, commit, name string) (str
 	return string(b), nil
 }
 
-func (p *githubProvider) Publish(ctx context.Context, in PublishRequest) (Review, error) {
-	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
-	defer cancel()
-	if err := validatePublish(in); err != nil {
-		return Review{}, err
-	}
-	q := url.Values{"state": {"all"}, "head": {strings.Split(p.connection.Repository, "/")[0] + ":" + in.Branch}, "per_page": {"100"}}
-	var found *ghPull
-	for page := 1; ; page++ {
-		q.Set("page", strconv.Itoa(page))
-		var rows []ghPull
-		h, err := p.request(ctx, http.MethodGet, p.repo+"/pulls?"+q.Encode(), nil, &rows)
-		if err != nil {
-			return Review{}, err
-		}
-		for _, row := range rows {
-			if found != nil {
-				return Review{}, failure("candidate_review_ambiguous")
-			}
-			v := row
-			found = &v
-		}
-		next, err := nextPage(h, page, len(rows), true)
-		if err != nil {
-			return Review{}, err
-		}
-		if !next {
-			break
-		}
-	}
-	if found != nil && found.Base.Ref != in.BaseBranch {
-		return Review{}, failure("candidate_review_changed")
-	}
-	head, err := p.ref(ctx, in.Branch)
-	if err != nil && !isStatus(err, 404) {
-		return Review{}, err
-	}
-	if isStatus(err, 404) {
-		if found != nil {
-			return Review{}, failure("candidate_branch_missing")
-		}
-		base, err := p.ref(ctx, in.BaseBranch)
-		if err != nil {
-			return Review{}, err
-		}
-		commit, err := p.commit(ctx, base)
-		if err != nil {
-			return Review{}, err
-		}
-		entries := make([]map[string]string, 0, len(in.Files))
-		for _, file := range in.Files {
-			// Traversal checks every existing ancestor, not just the final blob.
-			if _, err := p.fileEntry(ctx, base, file.Path); err != nil && !isMissingTreeEntry(err) {
-				return Review{}, err
-			}
-			entries = append(entries, map[string]string{"path": file.Path, "mode": "100644", "type": "blob", "content": file.Content})
-		}
-		var tree struct{ SHA string }
-		if _, err = p.request(ctx, http.MethodPost, p.repo+"/git/trees", map[string]any{"base_tree": commit.Tree.SHA, "tree": entries}, &tree); err != nil {
-			return Review{}, err
-		}
-		if !shaPattern.MatchString(tree.SHA) {
-			return Review{}, failure("provider_tree_invalid")
-		}
-		var made ghCommit
-		if _, err = p.request(ctx, http.MethodPost, p.repo+"/git/commits", map[string]any{"message": in.Title + "\n\n" + candidateMarker(in), "tree": tree.SHA, "parents": []string{base}}, &made); err != nil {
-			return Review{}, err
-		}
-		if !shaPattern.MatchString(made.SHA) {
-			return Review{}, failure("provider_commit_invalid")
-		}
-		// Only create refs. A colliding ref is read and checked, never updated.
-		_, err = p.request(ctx, http.MethodPost, p.repo+"/git/refs", map[string]string{"ref": "refs/heads/" + in.Branch, "sha": made.SHA}, nil)
-		if err != nil && !isStatus(err, 422) && !isStatus(err, 409) {
-			return Review{}, err
-		}
-		head, err = p.ref(ctx, in.Branch)
-		if err != nil {
-			return Review{}, err
-		}
-	}
-	commit, err := p.commit(ctx, head)
-	if err != nil {
-		return Review{}, err
-	}
-	if !strings.Contains(commit.Message, candidateMarker(in)) {
-		return Review{}, failure("candidate_branch_conflict")
-	}
-	if err = sameFiles(ctx, p, head, in.Files); err != nil {
-		return Review{}, err
-	}
-	if found == nil {
-		var created ghPull
-		_, err = p.request(ctx, http.MethodPost, p.repo+"/pulls", map[string]any{"title": in.Title, "body": candidateMarker(in) + "\n\n" + in.Body, "head": in.Branch, "base": in.BaseBranch, "maintainer_can_modify": false}, &created)
-		if err != nil {
-			return Review{}, err
-		}
-		found = &created
-	}
-	if found.Number <= 0 {
-		return Review{}, failure("provider_review_invalid")
-	}
-	raw, review, err := p.observe(ctx, found.Number)
-	if err != nil {
-		return Review{}, err
-	}
-	if !strings.Contains(raw.Body, candidateMarker(in)) || review.HeadSHA != head || review.Branch != in.Branch || review.BaseBranch != in.BaseBranch {
-		return Review{}, failure("candidate_review_changed")
-	}
-	if err = checkChanges(review.Changes, in.Files); err != nil {
-		return Review{}, err
-	}
-	if review.State == "closed" {
-		return Review{}, failure("candidate_review_closed")
-	}
-	return review, nil
-}
-
 func (p *githubProvider) Observe(ctx context.Context, number int64) (Review, error) {
 	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
 	defer cancel()
@@ -293,10 +177,10 @@ func (p *githubProvider) observe(ctx context.Context, number int64) (ghPull, Rev
 	if raw.Number != number || !p.validateReviewURL(raw.URL, number) || !shaPattern.MatchString(raw.Head.SHA) || !validRef(raw.Head.Ref) || !validRef(raw.Base.Ref) || raw.Head.Repo.FullName != p.connection.Repository || raw.Base.Repo.FullName != p.connection.Repository || raw.ChangedFiles == nil || *raw.ChangedFiles < 1 || *raw.ChangedFiles > 3000 {
 		return raw, Review{}, failure("provider_review_invalid")
 	}
-	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.Head.SHA, BaseBranch: raw.Base.Ref, Branch: raw.Head.Ref, State: raw.State, MergeSHA: raw.MergeSHA, MergeActor: raw.MergedBy.Login, Changes: []Change{}}
+	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.Head.SHA, BaseBranch: raw.Base.Ref, Branch: raw.Head.Ref, State: raw.State, MergeSHA: raw.MergeSHA, MergedAt: raw.MergedAt, MergeActor: raw.MergedBy.Login, Changes: []Change{}}
 	if raw.Merged {
 		r.State = "merged"
-		if !shaPattern.MatchString(r.MergeSHA) || r.MergeActor == "" {
+		if !shaPattern.MatchString(r.MergeSHA) || (r.MergeActor == "" || r.MergedAt == nil || r.MergedAt.IsZero()) {
 			return raw, Review{}, failure("provider_merge_incomplete")
 		}
 	}
@@ -544,90 +428,6 @@ func (p *githubProvider) reviewAndChecks(ctx context.Context, pr ghPull, require
 		return false, "native_checks_pending"
 	}
 	return true, ""
-}
-
-func (p *githubProvider) SyncDecision(ctx context.Context, number int64, in DecisionNote) error {
-	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
-	defer cancel()
-	if number <= 0 {
-		return failure("invalid_review")
-	}
-	body, err := decisionBody(in)
-	if err != nil {
-		return err
-	}
-	endpoint := p.repo + "/issues/" + strconv.FormatInt(number, 10) + "/comments"
-	found := false
-	for page := 1; ; page++ {
-		var rows []struct{ Body string }
-		h, err := p.request(ctx, http.MethodGet, endpoint+"?per_page=100&page="+strconv.Itoa(page), nil, &rows)
-		if err != nil {
-			return err
-		}
-		for _, row := range rows {
-			if strings.Contains(row.Body, marker(in.Key)) {
-				if row.Body != body {
-					return failure("decision_note_conflict")
-				}
-				found = true
-			}
-		}
-		next, err := nextPage(h, page, len(rows), true)
-		if err != nil {
-			return err
-		}
-		if !next {
-			break
-		}
-	}
-	if found {
-		return nil
-	}
-	_, err = p.request(ctx, http.MethodPost, endpoint, map[string]string{"body": body}, nil)
-	return err
-}
-func (p *githubProvider) Merge(ctx context.Context, expected MergeExpectation) (Review, error) {
-	ctx, cancel := context.WithTimeout(ctx, operationTimeout)
-	defer cancel()
-	number, head := expected.Number, expected.HeadSHA
-	if !shaPattern.MatchString(head) {
-		return Review{}, failure("invalid_head")
-	}
-	r, err := p.Observe(ctx, number)
-	if err != nil {
-		return Review{}, err
-	}
-	if err := expected.Check(r); err != nil {
-		return r, err
-	}
-	if r.State == "merged" {
-		return r, nil
-	}
-	if r.State != "open" || !r.GatesPassed {
-		return r, failure("native_merge_blocked")
-	}
-	var result struct {
-		Merged bool
-		SHA    string
-	}
-	_, err = p.request(ctx, http.MethodPut, p.repo+"/pulls/"+strconv.FormatInt(number, 10)+"/merge", map[string]string{"sha": head, "merge_method": "squash"}, &result)
-	if err != nil {
-		return r, err
-	}
-	if !result.Merged {
-		return r, &Error{Code: "merge_not_confirmed", Retryable: true, Uncertain: true}
-	}
-	observed, err := p.Observe(ctx, number)
-	if err != nil {
-		return r, &Error{Code: "merge_not_confirmed", Retryable: true, Uncertain: true}
-	}
-	if err := expected.Check(observed); err != nil {
-		return observed, err
-	}
-	if observed.State != "merged" || observed.MergeSHA != result.SHA {
-		return observed, &Error{Code: "merge_not_confirmed", Retryable: true, Uncertain: true}
-	}
-	return observed, nil
 }
 
 var _ Provider = (*githubProvider)(nil)

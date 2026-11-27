@@ -16,7 +16,6 @@ import (
 
 func (h *Handler) materialService() *service.MaterialService {
 	s := service.NewMaterialService(h.Queries, h.TxStarter, h.IssueService, h.TaskService)
-	s.ResolveProvider = h.resolveMaterialProvider
 	return s
 }
 func (h *Handler) RunMaterialWorker(ctx context.Context) { h.materialService().Run(ctx) }

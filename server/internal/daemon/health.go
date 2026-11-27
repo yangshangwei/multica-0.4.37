@@ -109,6 +109,7 @@ type repoCheckoutRequest struct {
 }
 
 type activeRepoCheckoutTask struct {
+	Material    *materialRun
 	WorkspaceID string
 	TaskID      string
 	AgentID     string
@@ -393,6 +394,7 @@ func (d *Daemon) serveHealth(ctx context.Context, ln net.Listener, startedAt tim
 	mux.HandleFunc("/management/handoff", d.managementHandoffHandler())
 	mux.HandleFunc("/shutdown", d.shutdownHandler())
 	mux.HandleFunc("/repo/checkout", d.repoCheckoutHandler())
+	mux.HandleFunc("/material", d.materialHandler())
 
 	srv := &http.Server{Handler: mux}
 

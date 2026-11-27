@@ -1,5 +1,7 @@
 import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api";
+import { withQueryAccessBoundary } from "../query-access";
+import { runtimeKeys } from "../runtimes/queries";
 import { canAccessProject, protectProjectRequest } from "../projects/access";
 import { projectKeys } from "../projects/queries";
 import type { MaterialCommand, MaterialDetail, MaterialSettingsEnvelope, MaterialSettingsInput } from "./schema";
@@ -10,6 +12,13 @@ export const materialKeys = {
   list: (wsId: string, projectId: string) => [...materialKeys.all(wsId, projectId), "list"] as const,
   detail: (wsId: string, projectId: string, materialId: string) => [...materialKeys.all(wsId, projectId), "detail", materialId] as const,
 };
+// Keep the canonical runtime cache identity, but erase only this private
+// inventory after denial rather than revoking the entire material project.
+export const materialRuntimeOptions = (wsId: string) => queryOptions({
+  queryKey: runtimeKeys.list(wsId),
+  queryFn: withQueryAccessBoundary(() => api.listRuntimes({ workspace_id: wsId })),
+  enabled: !!wsId, retry: false,
+});
 export const materialSettingsOptions = (wsId: string, projectId: string) => queryOptions({
   queryKey: materialKeys.settings(wsId, projectId),
   queryFn: ({ signal, client }) => protectProjectRequest(client, wsId, projectId, () => api.getMaterialSettings(projectId, { workspaceId: wsId, signal })),

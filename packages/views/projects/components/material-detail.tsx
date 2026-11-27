@@ -3,7 +3,8 @@
 import { useEffect, useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ExternalLink } from "lucide-react";
-import { canReviewMaterialRevision, isKnownMaterialState, materialDetailOptions, useMaterialCommand, decodeMaterialCommand, materialDraftKey, setMaterialEditorDraft, type MaterialCommand, type MaterialDetail, type MaterialKind, type MaterialRevision } from "@multica/core/materials";
+import { materialRuntimeOptions, canReviewMaterialRevision, isKnownMaterialState, materialDetailOptions, useMaterialCommand, decodeMaterialCommand, materialDraftKey, setMaterialEditorDraft, type MaterialCommand, type MaterialDetail, type MaterialKind, type MaterialRevision } from "@multica/core/materials";
+import { runtimeDisplayLabel } from "@multica/core/runtimes";
 import { useAuthStore } from "@multica/core/auth";
 import { memberListOptions } from "@multica/core/workspace/queries";
 import { useWorkspacePaths } from "@multica/core/paths";
@@ -47,6 +48,8 @@ function MaterialDetailContent({ detail, onRefresh }: { detail: MaterialDetail; 
   const paths = useWorkspacePaths();
   const { material, baseline, plan } = detail;
   const members = useQuery(memberListOptions(material.workspace_id));
+  const runtimes = useQuery({ ...materialRuntimeOptions(material.workspace_id), enabled: !!detail.operation });
+  const operationRuntime = runtimes.data?.find((runtime) => runtime.id === detail.operation?.execution_runtime_id);
   const names = new Map(members.data?.map((member) => [member.user_id, member.name]));
   const mutation = useMaterialCommand(material.workspace_id, material.project_id, material.id);
   const userId = useAuthStore((state) => state.user?.id);
@@ -82,6 +85,12 @@ function MaterialDetailContent({ detail, onRefresh }: { detail: MaterialDetail; 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-caption"><span className="font-medium">{labels.state(material.status)}</span><span className="min-w-0 break-all text-muted-foreground">{material.path}</span></div>
       {material.blocker && <p role="status" className="break-words text-body text-muted-foreground">{labels.blocker(material.blocker)}</p>}
     </header>
+    {detail.operation && <section className="space-y-2 text-caption" aria-labelledby={`${id}-operation`}>
+      <h3 id={`${id}-operation`} className="font-medium">{t(($) => $.materials.operation)}</h3>
+      <p role="status">{labels.operation(detail.operation.status)}</p>
+      {detail.operation.execution_runtime_id && <p className="break-all text-muted-foreground">{t(($) => $.materials.executionRuntime)}: {operationRuntime ? runtimeDisplayLabel(operationRuntime) : t(($) => $.materials.runtimeHistoryUnavailable)}</p>}
+      {detail.operation.blocker && <p className="text-muted-foreground">{labels.blocker(detail.operation.blocker)}</p>}
+    </section>}
     <MaterialActionNotice error={action.error} uncertain={action.pending !== null} busy={action.busy} onRetry={action.retry} />
     <section className="space-y-3 rounded-lg bg-muted/40 p-4" aria-labelledby={`${id}-baseline`}>
       <h3 id={`${id}-baseline`} className="text-body font-semibold">{t(($) => $.materials.baseline)}</h3>

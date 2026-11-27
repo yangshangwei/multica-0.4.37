@@ -86,6 +86,7 @@ export function createMaterialGitLab({
       user: { can_merge: mr.can_merge },
       head_pipeline: mr.pipeline_status === null ? null : { sha: head, status: mr.pipeline_status },
       merge_commit_sha: mr.merge_sha ?? null,
+      merged_at: mr.merged_at ?? null,
       squash_commit_sha: mr.merge_sha ?? null,
       merge_user: mr.merge_sha ? { username: "multica-material-fixture" } : null,
     };
@@ -288,7 +289,7 @@ export function createMaterialGitLab({
             else files.set(change.new_path, { ...source.files.get(change.new_path), last_commit_id: undefined });
           }
           const made = commit(files, [target.id], "Merge the approved material candidate");
-          branches.set(mr.target_branch, made.id); mr.state = "merged"; mr.merge_sha = made.id; effects.merge++;
+          branches.set(mr.target_branch, made.id); mr.state = "merged"; mr.merge_sha = made.id; mr.merged_at = new Date().toISOString(); effects.merge++;
           if (!fault(res, "merge")) json(res, 200, reviewJSON(mr)); return;
         }
       }

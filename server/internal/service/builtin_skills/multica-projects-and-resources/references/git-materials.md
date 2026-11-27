@@ -4,8 +4,11 @@ Use this workflow when the task names a project material or asks for a PRD,
 technical design or task breakdown in the configured material repository.
 Git owns the versioned definitions; Multica owns discussion, review decisions,
 assignment and execution. A normal project resource is not automatically a
-material output repository. A human configures the binding, reviewers and
-planning agent in the project's Engineering materials tab.
+material output repository. A human configures the repository, reviewers and
+one execution runtime in the project's Engineering materials tab. That runtime
+performs publication, review-note synchronization, approved merge and planning
+with its own local Git credentials. Material operations do not require a GitHub
+App or server-side GitLab connection.
 
 ## Read before writing
 
@@ -85,6 +88,42 @@ Both plan documents are required when `ready=true`. Omit unused optional
 fields instead of sending null. Server-side access and readiness checks remain
 authoritative even after local CLI validation.
 
+## Execute an assigned Git operation
+
+An operation task supplies one immutable operation UUID and a stage-specific
+descriptor. Read that descriptor with:
+
+```bash
+multica project material operation <operation-uuid>
+```
+
+Use only the assigned repository, source/target branches, exact document bytes
+and authorized stage. Obtain the current operation permit before the remote
+write using a retained request UUID:
+
+```bash
+multica project material permit <operation-uuid> --request-id <request-uuid>
+```
+
+Publication is not merge authorization. A merge requires the recorded
+human decision, its exact HEAD and satisfied native checks; never bypass native
+protection. Run `observe` before requesting a merge permit so the server can
+check current remote facts. Use the selected runtime's Git/hosting tools for writes.
+
+After the remote action, request independent readback:
+
+```bash
+multica project material observe <operation-uuid>
+```
+
+The local daemon reads the actual review, complete changes and immutable file
+bytes. This command does not accept a receipt JSON or perform a remote write.
+Model output, a review URL and exit status alone cannot establish a baseline.
+The daemon's private observation credentials are not task credentials. Keep the
+original operation identity on uncertain results and reconcile before another
+write. If the runtime, permission or configuration changed, report the blocker;
+do not choose another runtime or substitute a human token.
+
 ## Verify and recover
 
 After a successful save, inspect the returned revision and state, then use
@@ -104,6 +143,15 @@ policy and current execution permission; when disabled, the same planning task
 waits for a human start. Turning the switch back on does not release old waiting
 tasks. A current approved plan is required before coding; this material loop
 does not automatically launch coding or merge code.
+
+Before a planning model starts, the daemon independently reads the fixed
+requirement baseline in the selected runtime environment. Missing or changed
+bytes block that start. A human may retry a terminal planning attempt with no
+submitted plan; the original issue and previous runs remain in history.
+
+Multica controls its own stage authorization and acceptance of verified facts.
+This is not operating-system isolation of arbitrary shell commands on a host
+that already has broader Git credentials.
 
 These commands use the ordinary task API context. They are unavailable inside
 a collaboration run. Keep the task-scoped token and project authorization
