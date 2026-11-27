@@ -1,0 +1,12 @@
+# TEMPLATE: Product versions define delivery scope, separately from Git commits.
+# New same-change references may omit commit; paths and content digests remain required. Record the merge SHA in the external receipt.
+# Existing revisions require full commits, never main, HEAD or latest.
+schema_version: 1
+id: "<release-id>"
+version: "<产品版本>"
+goal: "<交付目标>"
+requirements:
+  - id: "<requirement-id>"
+    path: "requirements/<requirement-id>/prd.md"
+    content_sha256: "<64位正文摘要>"
+fixes: []

@@ -1,0 +1,51 @@
+{
+  "id": "material-repository-initialization",
+  "name": "material-repository-initialization",
+  "title": "物料仓库初始化与独立规则维护流程",
+  "description": "首次绑定物料仓和运行时后检查基础结构，缺失文件经独立初始化评审、合并核对后解锁普通物料发布；保留已有内容和测试数据，支持重复初始化与恢复。",
+  "status": "in_progress",
+  "dev_type": "fullstack",
+  "scope": "material-repository-initialization",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-27",
+  "completedAt": null,
+  "branch": "codex/material-repository-initialization",
+  "base_branch": "codex/git-engineering-material-workflow",
+  "worktree_path": "/Users/artisan/.codex/worktrees/material-repository-initialization/multica-0.4.37",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "server/internal/materialrepo",
+    ".trellis/spec/server/material-repository-initialization.md"
+  ],
+  "notes": "",
+  "meta": {
+    "task_creation_consent": true,
+    "implementation_requested": true,
+    "related_parent": "11-10-git-engineering-material-workflow",
+    "depends_on": "11-27-git-material-real-e2e-acceptance",
+    "implementation_ready": true,
+    "planning_summary_approved_in_prior_turn": true,
+    "authorization_basis": "用户在上一轮完整目录与初始化流程设计之后明确要求按该方案新建任务、设计开发；本轮不重复请求相同范围许可。",
+    "dependency_state": "runtime operation and receipt contract not yet implemented",
+    "current_slice": "independent material repository catalog/check/proof package",
+    "integration_complete": false,
+    "kernel_implemented": true,
+    "kernel_checks_passed": true,
+    "next_action": "等待前置运行时operation/receipt代码，接入repository_initialization目标，再完成维护审核、持久化、ready门槛和共享界面。独立内核已实现并复核通过。",
+    "last_verified_checks": [
+      "go test ./internal/materialrepo ./internal/material -race -count=1",
+      "go vet ./internal/materialrepo",
+      "node --test server/internal/materialrepo/schema-path.test.mjs",
+      "git diff --check"
+    ],
+    "kernel_review_passed": true,
+    "quality_check_passed": false
+  }
+}

@@ -1,0 +1,20 @@
+# TEMPLATE: Record actual delivery and existing evidence, not planned scope as a release fact.
+# Every commit must already exist; never include this file's own future commit SHA.
+schema_version: 1
+release_id: "<release-id>"
+materials:
+  - id: "<material-id>"
+    path: "requirements/<material-id>/prd.md"
+    content_sha256: "<64位正文摘要>"
+    commit: "<既有完整提交SHA>"
+repositories:
+  - repository_id: "<代码仓ID>"
+    commit: "<实际交付完整SHA>"
+builds:
+  - id: "<实际构建或镜像标识>"
+    content_sha256: "<64位制品摘要>"
+acceptance:
+  id: "<验收记录ID>"
+  path: "releases/<版本>/acceptance.md"
+  content_sha256: "<64位验收文档摘要>"
+  commit: "<既有验收记录完整SHA>"

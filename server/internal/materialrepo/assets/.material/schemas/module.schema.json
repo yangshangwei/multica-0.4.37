@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material module",
+  "description": "Structural format only; authority, readiness and actual evidence are verified by the owning workflow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "name",
+    "responsibility",
+    "repositories",
+    "dependencies"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "responsibility": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "repositories": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "repository_id",
+          "purpose"
+        ],
+        "properties": {
+          "repository_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+      }
+    }
+  }
+}

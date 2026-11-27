@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material issue",
+  "description": "Structural format only; authority, readiness and actual evidence are verified by the owning workflow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "type",
+    "title",
+    "category",
+    "discovered_release",
+    "affected_releases",
+    "tested_repositories",
+    "tested_builds",
+    "requirement_refs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+    },
+    "type": {
+      "const": "issue"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "category": {
+      "enum": [
+        "bug",
+        "environment",
+        "question",
+        "unknown"
+      ]
+    },
+    "discovered_release": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 128
+    },
+    "affected_releases": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+      }
+    },
+    "tested_repositories": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/code_ref"
+      }
+    },
+    "tested_builds": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/build_ref"
+      }
+    },
+    "requirement_refs": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/pinned_ref"
+      }
+    }
+  }
+}

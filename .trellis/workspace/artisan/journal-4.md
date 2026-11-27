@@ -903,3 +903,35 @@ Released v0.8.8 with 40 matching local and GitHub assets. Formal Linux password/
 ### Next Steps
 
 - 父任务继续跨模块编码/QA/发布编排；真实 Git、真实模型和安装包另行验收。本地提交未推送。
+
+
+## Session 199: 物料仓初始化：独立内核和评审设计
+<!-- trellis-session: v=2 fp=981d8471f9585549 -->
+
+**Date**: 2026-11-27
+**Task**: 物料仓初始化：独立内核和评审设计
+**Branch**: `codex/material-repository-initialization`
+
+### Summary
+
+创建独立任务和分支，完成20文件目录内核、严格读取与保留校验、测试和真实仓只读预览；运行时/API/UI接线依赖另一任务，保持开发中。
+
+### Main Changes
+
+- 独立materialrepo包，不拓宽普通需求写入权限
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Go/race/vet和Node schema路径测试通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 前置runtime协议落地后接入独立初始化审核、回执和ready门槛

@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material material",
+  "description": "Structural format only; authority, readiness and actual evidence are verified by the owning workflow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "bundle_version",
+    "system_id",
+    "layout"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "bundle_version": {
+      "const": "1.0.0"
+    },
+    "system_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "modules",
+        "requirements",
+        "issues",
+        "releases",
+        "contracts",
+        "specs",
+        "decisions",
+        "knowledge"
+      ],
+      "properties": {
+        "modules": {
+          "const": "modules"
+        },
+        "requirements": {
+          "const": "requirements"
+        },
+        "issues": {
+          "const": "issues"
+        },
+        "releases": {
+          "const": "releases"
+        },
+        "contracts": {
+          "const": "contracts"
+        },
+        "specs": {
+          "const": "specs"
+        },
+        "decisions": {
+          "const": "decisions"
+        },
+        "knowledge": {
+          "const": "knowledge"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "material_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "content_sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*(?:^|/)\\.[gG][iI][tT](?:/|$))(?!.*//)(?!.*[\\\\%?#:\\x00-\\x1f\\x7f-\\x9f])(?!.*(?:^|/)[\\x20\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000])(?!.*[\\x20\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000](?:/|$))[^/]+(?:/[^/]+)*$"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        }
+      }
+    },
+    "pinned_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "content_sha256",
+        "commit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*(?:^|/)\\.[gG][iI][tT](?:/|$))(?!.*//)(?!.*[\\\\%?#:\\x00-\\x1f\\x7f-\\x9f])(?!.*(?:^|/)[\\x20\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000])(?!.*[\\x20\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000](?:/|$))[^/]+(?:/[^/]+)*$"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        }
+      }
+    },
+    "code_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_id",
+        "commit"
+      ],
+      "properties": {
+        "repository_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        }
+      }
+    },
+    "build_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "content_sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

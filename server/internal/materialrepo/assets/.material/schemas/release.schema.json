@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material release",
+  "description": "Structural format only; authority, readiness and actual evidence are verified by the owning workflow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "version",
+    "goal",
+    "requirements",
+    "fixes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "requirements": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/material_ref"
+      }
+    },
+    "fixes": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/material_ref"
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material baseline",
+  "description": "Structural format only; authority, readiness and actual evidence are verified by the owning workflow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "materials",
+    "repositories",
+    "builds",
+    "acceptance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "release_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$"
+    },
+    "materials": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/pinned_ref"
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/code_ref"
+      }
+    },
+    "builds": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "material.schema.json#/$defs/build_ref"
+      }
+    },
+    "acceptance": {
+      "$ref": "material.schema.json#/$defs/pinned_ref"
+    }
+  }
+}
