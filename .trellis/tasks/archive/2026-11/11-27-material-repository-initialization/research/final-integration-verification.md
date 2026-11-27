@@ -40,3 +40,5 @@
 GitHub测试服务UTF-8分块拼接修复后，四条用例均在全新独立环境通过；GitLab四条不受该专属fixture修复影响。测试保持完整字节相等与原超时，没有更改产品核验或跳过后续普通流程。
 
 全部自建API/Web/daemon/Electron/provider进程已退出，专用PostgreSQL容器material-init-ui-90276a8f已停止；数据库和报告保留。最终视觉检查94/pass。提交前主会话再跑两个provider fixture Node测试通过，含刻意拆分中文UTF-8字节的回归。
+
+代码交付提交：`7bc0ec0ec`。初始化任务本地代码及确定性验收完成；真实平台/模型验收继续由前置验收任务承接。
