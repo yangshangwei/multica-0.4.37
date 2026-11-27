@@ -968,3 +968,37 @@ Completed original runtime-only material task implementation with native Trellis
 ### Next Steps
 
 - Keep task in_progress for separate real provider/model acceptance and full-repository Go verification.
+
+
+## Session 201: Integrate reviewed material repository initialization and maintenance
+<!-- trellis-session: v=2 fp=a385cbc8f6e20296 -->
+
+**Date**: 2026-11-27
+**Task**: Integrate reviewed material repository initialization and maintenance
+**Branch**: `codex/material-repository-initialization`
+
+### Summary
+
+Merged runtime foundation into initialization, completed full lifecycle and supported rule upgrade, independent review and8 production UI cases passed. Ready to merge back; real models/providers not invoked.
+
+### Main Changes
+
+- Independent repository target/maintainer review reuses existing queue and trusted observations; protected-rule gate preserves drafts and history.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `7bc0ec0ec` | feat(materials): require reviewed repository rules before publication |
+
+### Testing
+
+- [OK] 64 service race0skip, both-provider native initialization/maintenance race,8 Web/Desktop cases, lint/typecheck/build/vet/sqlc.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Fast-forward original material workflow branch and retain separate live acceptance task.
