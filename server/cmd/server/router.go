@@ -2421,6 +2421,10 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 					r.Route("/materials", func(r chi.Router) {
 						r.Get("/operations/{operationID}", h.GetMaterialOperation)
+						r.Get("/initialization", h.GetMaterialInitialization)
+						r.Post("/initialization/decisions", h.DecideMaterialInitialization)
+						r.Post("/initialization/{initializationCommand:check|retry|maintenance}", h.CommandMaterialInitialization)
+						r.Post("/initialization/operations/{operationID}/permit", h.PermitMaterialOperation)
 						r.Get("/settings", h.GetMaterialSettings)
 						r.With(handler.RequireHumanActor).Put("/settings", h.ConfigureMaterials)
 						r.Get("/", h.ListMaterials)

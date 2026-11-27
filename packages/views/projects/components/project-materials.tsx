@@ -15,6 +15,7 @@ import { useT } from "../../i18n";
 import { getSettingsQueryState } from "../../settings/components/settings-query-feedback";
 import { MaterialActionNotice, MaterialLoadError, useMaterialAction, useMaterialLabels } from "./material-controls";
 import { MaterialDetailView } from "./material-detail";
+import { ProjectMaterialInitialization } from "./project-material-initialization";
 import { ProjectMaterialSettings } from "./project-material-settings";
 
 export function ProjectMaterials({ workspaceId, projectId }: { workspaceId: string; projectId: string }) {
@@ -57,6 +58,7 @@ function MaterialsContent({ workspaceId, projectId }: { workspaceId: string; pro
       <header className="flex flex-wrap items-start justify-between gap-4"><div className="min-w-0 max-w-prose space-y-2"><h2 className="text-title font-semibold">{t(($) => $.materials.title)}</h2><p className="text-body text-muted-foreground">{t(($) => $.materials.intro)}</p></div>
         {envelope.can_configure && <Button type="button" size="sm" variant="outline" disabled={action.locked} onClick={() => setConfiguring(!configuring)}><Settings2 />{t(($) => $.materials.settings)}</Button>}
       </header>
+      {!configuring && <ProjectMaterialInitialization workspaceId={workspaceId} projectId={projectId} settingsVersion={envelope.settings?.version} />}
       {configuring ? <ProjectMaterialSettings workspaceId={workspaceId} projectId={projectId} envelope={envelope} onClose={() => setConfiguring(false)} />
         : selected ? <MaterialDetailView key={selected} workspaceId={workspaceId} projectId={projectId} materialId={selected} onBack={() => open()} />
         : <>

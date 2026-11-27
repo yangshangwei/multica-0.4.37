@@ -177,7 +177,7 @@ func (p *githubProvider) observe(ctx context.Context, number int64) (ghPull, Rev
 	if raw.Number != number || !p.validateReviewURL(raw.URL, number) || !shaPattern.MatchString(raw.Head.SHA) || !validRef(raw.Head.Ref) || !validRef(raw.Base.Ref) || raw.Head.Repo.FullName != p.connection.Repository || raw.Base.Repo.FullName != p.connection.Repository || raw.ChangedFiles == nil || *raw.ChangedFiles < 1 || *raw.ChangedFiles > 3000 {
 		return raw, Review{}, failure("provider_review_invalid")
 	}
-	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.Head.SHA, BaseBranch: raw.Base.Ref, Branch: raw.Head.Ref, State: raw.State, MergeSHA: raw.MergeSHA, MergedAt: raw.MergedAt, MergeActor: raw.MergedBy.Login, Changes: []Change{}}
+	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.Head.SHA, BaseBranch: raw.Base.Ref, BaseCommit: raw.Base.SHA, Branch: raw.Head.Ref, State: raw.State, MergeSHA: raw.MergeSHA, MergedAt: raw.MergedAt, MergeActor: raw.MergedBy.Login, Changes: []Change{}}
 	if raw.Merged {
 		r.State = "merged"
 		if !shaPattern.MatchString(r.MergeSHA) || (r.MergeActor == "" || r.MergedAt == nil || r.MergedAt.IsZero()) {

@@ -30,7 +30,7 @@ const claimMaterialJob = `-- name: ClaimMaterialJob :one
 WITH candidate AS (SELECT id FROM git_material_job WHERE state IN ('pending','working') AND next_at<=now()
  AND (leased_until IS NULL OR leased_until<now()) ORDER BY next_at,id FOR UPDATE SKIP LOCKED LIMIT 1)
 UPDATE git_material_job SET state='working',lease_token=$1,leased_until=now()+interval '2 minutes',attempts=attempts+1,updated_at=now()
-WHERE id IN (SELECT id FROM candidate) RETURNING id, workspace_id, project_id, material_id, revision_id, kind, state, attempts, lease_token, leased_until, next_at, blocker, created_at, updated_at
+WHERE id IN (SELECT id FROM candidate) RETURNING id, workspace_id, project_id, material_id, revision_id, kind, state, attempts, lease_token, leased_until, next_at, blocker, created_at, updated_at, target_kind, repository_id, repository_revision_id
 `
 
 func (q *Queries) ClaimMaterialJob(ctx context.Context, leaseToken pgtype.UUID) (GitMaterialJob, error) {
@@ -51,6 +51,9 @@ func (q *Queries) ClaimMaterialJob(ctx context.Context, leaseToken pgtype.UUID) 
 		&i.Blocker,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 	)
 	return i, err
 }
@@ -199,25 +202,28 @@ func (q *Queries) CreateMaterialDecision(ctx context.Context, arg CreateMaterial
 }
 
 const createMaterialOperation = `-- name: CreateMaterialOperation :one
-INSERT INTO git_material_operation (id,job_id,task_id,workspace_id,project_id,material_id,revision_id,runtime_id,agent_id,authorizer_id,attempt_no,action,descriptor,expected_digest)
-VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history
+INSERT INTO git_material_operation (id,job_id,task_id,workspace_id,project_id,material_id,revision_id,runtime_id,agent_id,authorizer_id,attempt_no,action,descriptor,expected_digest,target_kind,repository_id,repository_revision_id)
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17) RETURNING id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history, target_kind, repository_id, repository_revision_id
 `
 
 type CreateMaterialOperationParams struct {
-	ID             pgtype.UUID `json:"id"`
-	JobID          pgtype.UUID `json:"job_id"`
-	TaskID         pgtype.UUID `json:"task_id"`
-	WorkspaceID    pgtype.UUID `json:"workspace_id"`
-	ProjectID      pgtype.UUID `json:"project_id"`
-	MaterialID     pgtype.UUID `json:"material_id"`
-	RevisionID     pgtype.UUID `json:"revision_id"`
-	RuntimeID      pgtype.UUID `json:"runtime_id"`
-	AgentID        pgtype.UUID `json:"agent_id"`
-	AuthorizerID   pgtype.UUID `json:"authorizer_id"`
-	AttemptNo      int32       `json:"attempt_no"`
-	Action         string      `json:"action"`
-	Descriptor     []byte      `json:"descriptor"`
-	ExpectedDigest string      `json:"expected_digest"`
+	ID                   pgtype.UUID `json:"id"`
+	JobID                pgtype.UUID `json:"job_id"`
+	TaskID               pgtype.UUID `json:"task_id"`
+	WorkspaceID          pgtype.UUID `json:"workspace_id"`
+	ProjectID            pgtype.UUID `json:"project_id"`
+	MaterialID           pgtype.UUID `json:"material_id"`
+	RevisionID           pgtype.UUID `json:"revision_id"`
+	RuntimeID            pgtype.UUID `json:"runtime_id"`
+	AgentID              pgtype.UUID `json:"agent_id"`
+	AuthorizerID         pgtype.UUID `json:"authorizer_id"`
+	AttemptNo            int32       `json:"attempt_no"`
+	Action               string      `json:"action"`
+	Descriptor           []byte      `json:"descriptor"`
+	ExpectedDigest       string      `json:"expected_digest"`
+	TargetKind           string      `json:"target_kind"`
+	RepositoryID         pgtype.UUID `json:"repository_id"`
+	RepositoryRevisionID pgtype.UUID `json:"repository_revision_id"`
 }
 
 func (q *Queries) CreateMaterialOperation(ctx context.Context, arg CreateMaterialOperationParams) (GitMaterialOperation, error) {
@@ -236,6 +242,9 @@ func (q *Queries) CreateMaterialOperation(ctx context.Context, arg CreateMateria
 		arg.Action,
 		arg.Descriptor,
 		arg.ExpectedDigest,
+		arg.TargetKind,
+		arg.RepositoryID,
+		arg.RepositoryRevisionID,
 	)
 	var i GitMaterialOperation
 	err := row.Scan(
@@ -265,6 +274,9 @@ func (q *Queries) CreateMaterialOperation(ctx context.Context, arg CreateMateria
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.ReceiptHistory,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 	)
 	return i, err
 }
@@ -472,37 +484,40 @@ func (q *Queries) CreateMaterialRevision(ctx context.Context, arg CreateMaterial
 }
 
 const currentMaterialOperation = `-- name: CurrentMaterialOperation :one
-SELECT o.id, o.job_id, o.task_id, o.workspace_id, o.project_id, o.material_id, o.revision_id, o.runtime_id, o.agent_id, o.authorizer_id, o.attempt_no, o.action, o.descriptor, o.expected_digest, o.claim_generation, o.challenge_hash, o.state, o.observation_id, o.receipt, o.receipt_digest, o.permit_request_id, o.permit_expires_at, o.blocker, o.created_at, o.updated_at, o.receipt_history,t.status AS task_status FROM git_material_operation o JOIN agent_task_queue t ON t.id=o.task_id WHERE o.material_id=$1 ORDER BY o.created_at DESC LIMIT 1
+SELECT o.id, o.job_id, o.task_id, o.workspace_id, o.project_id, o.material_id, o.revision_id, o.runtime_id, o.agent_id, o.authorizer_id, o.attempt_no, o.action, o.descriptor, o.expected_digest, o.claim_generation, o.challenge_hash, o.state, o.observation_id, o.receipt, o.receipt_digest, o.permit_request_id, o.permit_expires_at, o.blocker, o.created_at, o.updated_at, o.receipt_history, o.target_kind, o.repository_id, o.repository_revision_id,t.status AS task_status FROM git_material_operation o JOIN agent_task_queue t ON t.id=o.task_id WHERE o.material_id=$1 ORDER BY o.created_at DESC LIMIT 1
 `
 
 type CurrentMaterialOperationRow struct {
-	ID              pgtype.UUID        `json:"id"`
-	JobID           pgtype.UUID        `json:"job_id"`
-	TaskID          pgtype.UUID        `json:"task_id"`
-	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
-	ProjectID       pgtype.UUID        `json:"project_id"`
-	MaterialID      pgtype.UUID        `json:"material_id"`
-	RevisionID      pgtype.UUID        `json:"revision_id"`
-	RuntimeID       pgtype.UUID        `json:"runtime_id"`
-	AgentID         pgtype.UUID        `json:"agent_id"`
-	AuthorizerID    pgtype.UUID        `json:"authorizer_id"`
-	AttemptNo       int32              `json:"attempt_no"`
-	Action          string             `json:"action"`
-	Descriptor      []byte             `json:"descriptor"`
-	ExpectedDigest  string             `json:"expected_digest"`
-	ClaimGeneration int64              `json:"claim_generation"`
-	ChallengeHash   string             `json:"challenge_hash"`
-	State           string             `json:"state"`
-	ObservationID   string             `json:"observation_id"`
-	Receipt         []byte             `json:"receipt"`
-	ReceiptDigest   string             `json:"receipt_digest"`
-	PermitRequestID string             `json:"permit_request_id"`
-	PermitExpiresAt pgtype.Timestamptz `json:"permit_expires_at"`
-	Blocker         pgtype.Text        `json:"blocker"`
-	CreatedAt       pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
-	ReceiptHistory  []byte             `json:"receipt_history"`
-	TaskStatus      string             `json:"task_status"`
+	ID                   pgtype.UUID        `json:"id"`
+	JobID                pgtype.UUID        `json:"job_id"`
+	TaskID               pgtype.UUID        `json:"task_id"`
+	WorkspaceID          pgtype.UUID        `json:"workspace_id"`
+	ProjectID            pgtype.UUID        `json:"project_id"`
+	MaterialID           pgtype.UUID        `json:"material_id"`
+	RevisionID           pgtype.UUID        `json:"revision_id"`
+	RuntimeID            pgtype.UUID        `json:"runtime_id"`
+	AgentID              pgtype.UUID        `json:"agent_id"`
+	AuthorizerID         pgtype.UUID        `json:"authorizer_id"`
+	AttemptNo            int32              `json:"attempt_no"`
+	Action               string             `json:"action"`
+	Descriptor           []byte             `json:"descriptor"`
+	ExpectedDigest       string             `json:"expected_digest"`
+	ClaimGeneration      int64              `json:"claim_generation"`
+	ChallengeHash        string             `json:"challenge_hash"`
+	State                string             `json:"state"`
+	ObservationID        string             `json:"observation_id"`
+	Receipt              []byte             `json:"receipt"`
+	ReceiptDigest        string             `json:"receipt_digest"`
+	PermitRequestID      string             `json:"permit_request_id"`
+	PermitExpiresAt      pgtype.Timestamptz `json:"permit_expires_at"`
+	Blocker              pgtype.Text        `json:"blocker"`
+	CreatedAt            pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt            pgtype.Timestamptz `json:"updated_at"`
+	ReceiptHistory       []byte             `json:"receipt_history"`
+	TargetKind           string             `json:"target_kind"`
+	RepositoryID         pgtype.UUID        `json:"repository_id"`
+	RepositoryRevisionID pgtype.UUID        `json:"repository_revision_id"`
+	TaskStatus           string             `json:"task_status"`
 }
 
 func (q *Queries) CurrentMaterialOperation(ctx context.Context, materialID pgtype.UUID) (CurrentMaterialOperationRow, error) {
@@ -535,6 +550,9 @@ func (q *Queries) CurrentMaterialOperation(ctx context.Context, materialID pgtyp
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.ReceiptHistory,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 		&i.TaskStatus,
 	)
 	return i, err
@@ -724,7 +742,7 @@ func (q *Queries) GetGitMaterial(ctx context.Context, arg GetGitMaterialParams) 
 }
 
 const getMaterialOperation = `-- name: GetMaterialOperation :one
-SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE id=$1
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history, target_kind, repository_id, repository_revision_id FROM git_material_operation WHERE id=$1
 `
 
 func (q *Queries) GetMaterialOperation(ctx context.Context, id pgtype.UUID) (GitMaterialOperation, error) {
@@ -757,12 +775,15 @@ func (q *Queries) GetMaterialOperation(ctx context.Context, id pgtype.UUID) (Git
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.ReceiptHistory,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 	)
 	return i, err
 }
 
 const getMaterialOperationForTask = `-- name: GetMaterialOperationForTask :one
-SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE task_id=$1
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history, target_kind, repository_id, repository_revision_id FROM git_material_operation WHERE task_id=$1
 `
 
 func (q *Queries) GetMaterialOperationForTask(ctx context.Context, taskID pgtype.UUID) (GitMaterialOperation, error) {
@@ -795,12 +816,15 @@ func (q *Queries) GetMaterialOperationForTask(ctx context.Context, taskID pgtype
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.ReceiptHistory,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 	)
 	return i, err
 }
 
 const getMaterialPermittedMerge = `-- name: GetMaterialPermittedMerge :one
-SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE job_id=$1 AND action='merge' AND permit_request_id<>'' ORDER BY attempt_no DESC LIMIT 1
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history, target_kind, repository_id, repository_revision_id FROM git_material_operation WHERE job_id=$1 AND action='merge' AND permit_request_id<>'' ORDER BY attempt_no DESC LIMIT 1
 `
 
 func (q *Queries) GetMaterialPermittedMerge(ctx context.Context, jobID pgtype.UUID) (GitMaterialOperation, error) {
@@ -833,6 +857,9 @@ func (q *Queries) GetMaterialPermittedMerge(ctx context.Context, jobID pgtype.UU
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.ReceiptHistory,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 	)
 	return i, err
 }
@@ -1027,7 +1054,7 @@ func (q *Queries) LatestMaterialDecision(ctx context.Context, revisionID pgtype.
 }
 
 const latestMaterialOperation = `-- name: LatestMaterialOperation :one
-SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE job_id=$1 ORDER BY attempt_no DESC LIMIT 1
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history, target_kind, repository_id, repository_revision_id FROM git_material_operation WHERE job_id=$1 ORDER BY attempt_no DESC LIMIT 1
 `
 
 func (q *Queries) LatestMaterialOperation(ctx context.Context, jobID pgtype.UUID) (GitMaterialOperation, error) {
@@ -1060,6 +1087,9 @@ func (q *Queries) LatestMaterialOperation(ctx context.Context, jobID pgtype.UUID
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.ReceiptHistory,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 	)
 	return i, err
 }
@@ -1214,7 +1244,7 @@ func (q *Queries) ListMaterialRevisions(ctx context.Context, materialID pgtype.U
 }
 
 const lockMaterialJob = `-- name: LockMaterialJob :one
-SELECT id, workspace_id, project_id, material_id, revision_id, kind, state, attempts, lease_token, leased_until, next_at, blocker, created_at, updated_at FROM git_material_job WHERE id=$1 AND lease_token=$2 AND state='working' AND leased_until>now() FOR UPDATE
+SELECT id, workspace_id, project_id, material_id, revision_id, kind, state, attempts, lease_token, leased_until, next_at, blocker, created_at, updated_at, target_kind, repository_id, repository_revision_id FROM git_material_job WHERE id=$1 AND lease_token=$2 AND state='working' AND leased_until>now() FOR UPDATE
 `
 
 type LockMaterialJobParams struct {
@@ -1240,6 +1270,9 @@ func (q *Queries) LockMaterialJob(ctx context.Context, arg LockMaterialJobParams
 		&i.Blocker,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TargetKind,
+		&i.RepositoryID,
+		&i.RepositoryRevisionID,
 	)
 	return i, err
 }
@@ -1397,7 +1430,7 @@ func (q *Queries) MaterialIssueHasHistory(ctx context.Context, issueID pgtype.UU
 }
 
 const materialProjectHasHistory = `-- name: MaterialProjectHasHistory :one
-SELECT EXISTS (SELECT 1 FROM git_material WHERE project_id=$1 AND workspace_id=$2)::boolean
+SELECT (EXISTS (SELECT 1 FROM git_material m WHERE m.project_id=$1 AND m.workspace_id=$2) OR EXISTS (SELECT 1 FROM project_material_repository r WHERE r.project_id=$1 AND r.workspace_id=$2))::boolean
 `
 
 type MaterialProjectHasHistoryParams struct {
@@ -1413,7 +1446,7 @@ func (q *Queries) MaterialProjectHasHistory(ctx context.Context, arg MaterialPro
 }
 
 const materialWorkspaceHasHistory = `-- name: MaterialWorkspaceHasHistory :one
-SELECT EXISTS (SELECT 1 FROM git_material WHERE workspace_id=$1)::boolean
+SELECT (EXISTS (SELECT 1 FROM git_material m WHERE m.workspace_id=$1) OR EXISTS (SELECT 1 FROM project_material_repository r WHERE r.workspace_id=$1))::boolean
 `
 
 func (q *Queries) MaterialWorkspaceHasHistory(ctx context.Context, workspaceID pgtype.UUID) (bool, error) {

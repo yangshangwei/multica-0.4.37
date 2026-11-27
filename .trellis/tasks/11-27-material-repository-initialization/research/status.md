@@ -1,10 +1,9 @@
-# Current execution status
+# Final integrated status — 2026-11-27
 
-2026-11-27: task remains in_progress. Independent materialrepo kernel,20 assets, strict inspection/proof rules, regression suite, spec and design review are implemented and verified. All three kernel review findings fixed; final independent race/vet/Node checks passed. User's live test repo was read only to generate a local19-file preview preserving README/UAT. No remote initialization write occurred.
+Initialization and independent rule maintenance are implemented and verified against the selected-runtime material workflow. Current-source independent review passed with no unresolved blockers. Service/ordinary queue race64/64 passed with dedicated Redis; both-provider native init/ordinary/manual/drift and supported1.0.0→1.0.1 maintenance passed. Final production Web/Desktop matrix8/8 passed using a fresh database and remote fixture per case.
 
-Remaining required work: dependency runtime operation/receipt implementation; repository/root initialization target; persisted independent maintenance review; selected runtime check/publish/merge/verify; ready gates; shared core/views; cross-layer fake-runtime and real acceptance. The dependency chat currently has a design, no landed executable contract in this branch. Do not implement a competing queue or restore App credentials. Do not archive this task or call the whole feature complete.
+Original1.0.0 assets remain byte-identical;1.0.1 changes only AGENTS.md/material.yaml. No real model/account/remote writes occurred. Full evidence and limitations: final-integration-verification.md, integration-independent-check.md and frontend-final-browser.json. This task's local code delivery is ready for commit, archive and merge-back; separate live acceptance remains in11-27-git-material-real-e2e-acceptance.
 
-Isolated checkout: /Users/artisan/.codex/worktrees/material-repository-initialization/multica-0.4.37
-Branch: codex/material-repository-initialization
-Related parent:11-10-git-engineering-material-workflow
-Dependency:11-27-git-material-real-e2e-acceptance
+Worktree: /Users/artisan/.codex/worktrees/material-repository-initialization/multica-0.4.37
+Implementation branch: codex/material-repository-initialization
+Integration target: codex/git-engineering-material-workflow

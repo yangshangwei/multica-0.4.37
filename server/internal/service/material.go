@@ -291,6 +291,8 @@ func (t *materialTx) detail(ctx context.Context, row db.GitMaterial) (material.D
 	_, binding, err := t.binding(ctx)
 	if err == nil && binding.Enabled {
 		out.Capabilities.CanEdit = true
+		_, _, readyErr := requireRepositoryReady(ctx, t.q, row.WorkspaceID, row.ProjectID, binding)
+		out.Capabilities.CanPublish = readyErr == nil
 		out.Capabilities.CanReview = t.kind == "human" && slices.Contains(binding.ReviewerIDs, util.UUIDToString(t.actor))
 		out.Capabilities.CanRetry = t.kind == "human"
 		out.Capabilities.CanStartPlan = out.Capabilities.CanStartPlan && t.kind == "human" && out.Plan != nil && row.CurrentRevisionID == plan.BaselineID && (out.Plan.Status == "waiting_manual" || out.Plan.Status == "blocked")
@@ -511,6 +513,9 @@ func (s *MaterialService) Configure(ctx context.Context, a MaterialAccess, in ma
 	if err != nil {
 		return out, err
 	}
+	if err = ensureRepositoryConfiguration(ctx, t.q, a.WorkspaceID, a.ProjectID, binding); err != nil {
+		return out, err
+	}
 	out.Settings = &setting
 	if err = t.saveRequest(ctx, in.RequestID, hash, out); err != nil {
 		return out, err
@@ -592,6 +597,11 @@ func (s *MaterialService) Revise(ctx context.Context, a MaterialAccess, id strin
 	}
 	if _, err = checkMaterialBinding(ctx, t.q, a.WorkspaceID, a.ProjectID, binding, false); err != nil {
 		return out, err
+	}
+	if in.Ready {
+		if _, _, err = requireRepositoryReady(ctx, t.q, a.WorkspaceID, a.ProjectID, binding); err != nil {
+			return out, err
+		}
 	}
 	for _, src := range in.Sources {
 		sid, e := materialUUID(src.ResourceID)
@@ -847,6 +857,9 @@ func (s *MaterialService) Command(ctx context.Context, a MaterialAccess, id, com
 	_, binding, err := t.binding(ctx)
 	if err != nil || !binding.Enabled {
 		return out, materialError(409, "material_disabled")
+	}
+	if _, _, err = requireRepositoryReady(ctx, t.q, row.WorkspaceID, row.ProjectID, binding); err != nil {
+		return out, err
 	}
 	kind := "publish"
 	if command == "start-plan" {

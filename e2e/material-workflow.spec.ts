@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
-import { mkdtempSync, openSync, writeFileSync, existsSync, readFileSync } from "node:fs";
-import { get } from "node:https";
+import { mkdtempSync, openSync, writeFileSync, existsSync, readFileSync, readdirSync } from "node:fs";
+import { get, request as httpsRequest } from "node:https";
 import { dirname, join, posix } from "node:path";
 import { expect, type Page, type Route, type TestInfo } from "@playwright/test";
 import pg from "pg";
@@ -11,7 +11,7 @@ import { spawn } from "node:child_process";
 import { selectDesktopWorkspace } from "./fixtures/collaboration-native";
 
 test.skip(!process.env.MATERIAL_RUN_STAMP, "Requires the identity-checked material-run.mjs fixture");
-test.setTimeout(120_000);
+test.setTimeout(240_000);
 
 test.beforeAll(async () => {
   const record = JSON.parse(readFileSync(process.env.MATERIAL_UI_RECORD!, "utf8"));
@@ -39,7 +39,7 @@ type Snapshot = {
   effects: { review: number; merge: number; commit: number; note: number };
 };
 
-async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>>, info: TestInfo, native: boolean) {
+async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>>, info: TestInfo, native: boolean, maintenance = false) {
   const { api, workspace, owner } = session;
   const record = JSON.parse(readFileSync(process.env.MATERIAL_UI_RECORD!, "utf8"));
   const gitOrigin = "https://127.0.0.1:" + record.ports.gitlab;
@@ -55,23 +55,28 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
       });
     }).on("error", reject);
   });
+  const seed = (files: Record<string, string>) => new Promise<void>((resolve, reject) => {
+    const body = JSON.stringify(provider === "github" ? { action: "seed", files } : { action: "edit", branch: "main", files });
+    const req = httpsRequest(gitOrigin + "/__control", { method: "POST", ca: readFileSync(record.env.SSL_CERT_FILE), headers: { authorization: "Bearer " + record.control_token, "content-type": "application/json" } }, response => { response.resume(); response.on("end", () => response.statusCode === 200 ? resolve() : reject(Error("Seed failed " + response.statusCode))); }); req.on("error", reject); req.end(body);
+  });
   const before = await snapshot();
   const project = await p1Project(api, { title: "Material acceptance project" });
+  const rootPath = "material-" + project.id;
   const runtime = await api.seedProjectRuntime();
   const runRoot = mkdtempSync(join(process.env.MATERIAL_RUNTIME_DIR!, "runtime-"));
   const token = "mdt_" + randomUUID();
   const database = new pg.Client({ connectionString: record.connection });
   await database.connect();
   try {
-    await database.query("UPDATE agent_runtime SET provider='claude',name='Material fixture runtime',metadata=$2 WHERE id=$1", [runtime.id, JSON.stringify({ capabilities: ["material-operations-v1"] })]);
+    await database.query("UPDATE agent_runtime SET provider='claude',name='Material fixture runtime',metadata=$2 WHERE id=$1", [runtime.id, JSON.stringify({ capabilities: ["material-operations-v1", "material-repository-v1"] })]);
     await database.query("INSERT INTO daemon_token(token_hash,workspace_id,daemon_id,user_id,expires_at) VALUES($1,$2,$3,$4,now()+interval '1 hour')", [createHash("sha256").update(token).digest("hex"), workspace.id, runtime.daemon_id, owner.id]);
   } finally { await database.end(); }
   const registration = join(runRoot, "registration.json");
   writeFileSync(registration, JSON.stringify({ API: process.env.NEXT_PUBLIC_API_URL, Token: token, Runtime: runtime.id, Daemon: runtime.daemon_id, Executable: process.env.MATERIAL_RUNTIME_EXECUTABLE, Root: runRoot }), { mode: 0o600 });
   const log = openSync(join(runRoot, "daemon.log"), "w", 0o600);
-  const daemon = spawn(process.env.MATERIAL_DAEMON_BINARY!, ["-test.run", "^TestMaterialBrowserDaemon$", "-test.v"], { env: { ...process.env, PATH: dirname(process.env.MATERIAL_RUNTIME_EXECUTABLE!) + ":" + process.env.PATH, MATERIAL_BROWSER_REGISTRATION: registration, MATERIAL_RUNTIME_RUNS: join(runRoot, "runs") }, stdio: ["ignore", log, log] });
+  const startDaemon = () => spawn(process.env.MATERIAL_DAEMON_BINARY!, ["-test.run", "^TestMaterialBrowserDaemon$", "-test.v"], { env: { ...process.env, PATH: dirname(process.env.MATERIAL_RUNTIME_EXECUTABLE!) + ":" + process.env.PATH, MATERIAL_BROWSER_REGISTRATION: registration, MATERIAL_RUNTIME_RUNS: join(runRoot, "runs") }, stdio: ["ignore", log, log] });
+  let daemon: ReturnType<typeof spawn> | undefined;
   try {
-  await expect.poll(() => existsSync(join(runRoot, "daemon-ready"))).toBe(true);
 
   await api.requestJSON("/api/projects/" + project.id + "/resources", { method: "POST", body: { resource_type: "github_repo", label: "Fixture repository", resource_ref: { url: (provider === "github" ? "https://github.com" : gitOrigin) + "/" + before.repository + ".git" } } });
   if (native) {
@@ -93,6 +98,7 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   await page.getByRole("button", { name: "Runtime · none selected", exact: true }).click();
   await page.getByRole("button", { name: /^Material fixture runtime/ }).click();
   await page.getByRole("checkbox", { name: "P1 project owner" }).check();
+  await page.getByLabel("Material root directory").fill(rootPath);
 
   const auto = page.getByRole("switch", { name: "Start planning after verified merge" });
   await expect(auto).toBeChecked();
@@ -100,6 +106,78 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   await page.getByRole("group", { name: "Execution runtime", exact: true }).scrollIntoViewIfNeeded();
   await p1Capture(page, info, "runtime-only-settings");
   await button("Save").click();
+  await expect(page.getByRole("group", { name: "Execution runtime", exact: true })).toHaveCount(0);
+  if (maintenance) {
+    const db = new pg.Client({ connectionString: record.connection }); await db.connect();
+    let systemId: string;
+    try { systemId = (await db.query("SELECT id FROM project_material_repository WHERE project_id=$1", [project.id])).rows[0].id; } finally { await db.end(); }
+    const assets = join(import.meta.dirname, "../server/internal/materialrepo/assets");
+    const files: Record<string, string> = {};
+    const load = (directory: string, prefix = "") => { for (const entry of readdirSync(directory, { withFileTypes: true })) { const relative = prefix + entry.name; if (entry.isDirectory()) load(join(directory, entry.name), relative + "/"); else files[rootPath + "/" + relative] = readFileSync(join(directory, entry.name), "utf8").replaceAll("{{SYSTEM_ID}}", systemId); } };
+    load(assets); await seed(files);
+  } else await seed({ [rootPath + "/README.md"]: "# Preserved user README\n" });
+  daemon = startDaemon();
+  await expect.poll(() => existsSync(join(runRoot, "daemon-ready"))).toBe(true);
+  const initialization = page.getByRole("region", { name: "Material repository initialization", exact: true });
+  if (maintenance) {
+    await expect(initialization.getByText("Repository initialized", { exact: true })).toBeVisible({ timeout: 60_000 });
+    const adopted = await api.requestJSON<{ readiness: { bundle_version: string } }>("/api/projects/" + project.id + "/materials/initialization");
+    expect(adopted.readiness.bundle_version).toBe("1.0.0");
+    expect((await snapshot()).effects.review).toBe(before.effects.review);
+    await choose("Supported template version", "1.0.1");
+    await initialization.getByRole("button", { name: "Check template maintenance" }).click();
+  }
+  await expect(initialization.getByText("Initialization awaiting review", { exact: true })).toBeVisible({ timeout: 60_000 });
+  const refreshReview = initialization.getByRole("button", { name: "Review the current initialization changes" });
+  if (await refreshReview.isVisible()) await refreshReview.click();
+  await expect(initialization.getByRole("button", { name: "Approve initialization changes" })).toBeEnabled();
+  await initialization.getByLabel("Initialization review reason").fill("Approve complete repository foundation; preserve existing README");
+  const initializationReason = await initialization.getByLabel("Initialization review reason").elementHandle();
+  const initializationPath = "/api/projects/" + project.id + "/materials/initialization";
+  let releaseInitFailure!: () => void;
+  const releaseInitialization = new Promise<void>(resolve => { releaseInitFailure = resolve; });
+  let initReads = 0;
+  const failInitializationRead = async (route: Route) => {
+    if (route.request().method() !== "GET") return route.continue();
+    initReads++; await releaseInitialization;
+    await route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: "Temporary initialization outage" }) });
+  };
+  const matchesInitialization = (url: URL) => url.pathname === initializationPath;
+  await page.route(matchesInitialization, failInitializationRead);
+  try {
+    await initialization.getByRole("button", { name: "Refresh", exact: true }).click();
+    await expect.poll(() => initReads).toBeGreaterThan(0);
+    await initialization.getByLabel("Initialization review reason").focus();
+    releaseInitFailure();
+    await expect(initialization.getByRole("alert")).toContainText("Could not refresh repository checks");
+    await expect(initialization.getByLabel("Initialization review reason")).toHaveValue("Approve complete repository foundation; preserve existing README");
+    await expect(initialization.getByLabel("Initialization review reason")).toBeFocused();
+    expect(await initializationReason!.evaluate(input => input.isConnected)).toBe(true);
+    await expect(initialization.getByRole("button", { name: "Approve initialization changes" })).toBeDisabled();
+    await p1Capture(page, info, "initialization-preserved-through-read-failure");
+  } finally { releaseInitFailure(); await page.unroute(matchesInitialization, failInitializationRead); }
+  await initialization.getByRole("button", { name: "Refresh", exact: true }).click();
+  await expect(initialization.getByRole("alert")).toHaveCount(0);
+  expect(await initializationReason!.evaluate(input => input.isConnected)).toBe(true);
+  await initializationReason!.dispose();
+  await p1Capture(page, info, "initialization-complete-diff");
+  await initialization.getByRole("button", { name: "Approve initialization changes" }).click();
+  await expect(initialization.getByText("Repository initialized", { exact: true })).toBeVisible({ timeout: 60_000 });
+  const init = await api.requestJSON<{ readiness: { publish_allowed: boolean; verified_commit: string; bundle_version: string }; candidate: { files: { path: string; action: string }[] } }>("/api/projects/" + project.id + "/materials/initialization");
+  expect(init.readiness.publish_allowed).toBe(true);
+  if (maintenance) {
+    expect(init.readiness.bundle_version).toBe("1.0.1");
+    expect(init.candidate.files.filter(f => f.action === "modify").map(f => f.path).sort()).toEqual([rootPath + "/AGENTS.md", rootPath + "/material.yaml"]);
+  } else expect(init.candidate.files).toContainEqual(expect.objectContaining({ path: rootPath + "/README.md", action: "preserve" }));
+  const initialized = await snapshot();
+  expect(initialized.commits.find(c => c.id === init.readiness.verified_commit)?.files["README.md"].content_sha256).toBe(before.commits.find(c => c.id === before.initial_commit)?.files["README.md"].content_sha256);
+  await p1Capture(page, info, "initialization-verified-ready");
+  await choose("Supported template version", init.readiness.bundle_version);
+  const noOp = page.waitForResponse(res => res.request().method() === "POST" && new URL(res.url()).pathname === initializationPath + "/maintenance" && res.ok());
+  await initialization.getByRole("button", { name: "Check template maintenance" }).click();
+  await noOp;
+  expect((await snapshot()).effects).toEqual(initialized.effects);
+
   await button("New requirement").click();
   const title = "Auditable customer requirement";
   await page.getByLabel("Requirement title").fill(title);
@@ -215,13 +293,13 @@ async function journey(page: Page, session: Awaited<ReturnType<typeof p1Session>
   const files = final.commits.find((item) => item.id === merge?.merge_commit_sha)!.files;
   expect(files[posix.join(posix.dirname(baseline.path), "design.md")].content_sha256).toBe(hash(design));
   expect(files[posix.join(posix.dirname(baseline.path), "plan.md")].content_sha256).toBe(hash(tasks));
-  for (const key of ["commit", "review", "merge", "note"] as const) expect(final.effects[key] - before.effects[key]).toBe(2);
+  for (const key of ["commit", "review", "merge", "note"] as const) expect(final.effects[key] - before.effects[key]).toBe(3);
   await p1Capture(page, info, "approved-design-and-plan");
-  expect(readFileSync(join(runRoot, "runs"), "utf8").trim().split("\n")).toEqual(["publish", "review_sync", "merge", "verify_baseline", "publish", "review_sync", "merge"]);
+  expect(readFileSync(join(runRoot, "runs"), "utf8").trim().split("\n")).toEqual(["publish", "review_sync", "merge", "publish", "review_sync", "merge", "verify_baseline", "publish", "review_sync", "merge"]);
   } finally {
     writeFileSync(join(runRoot, "stop"), "stop", { mode: 0o600 });
-    await new Promise<void>((resolve) => { if (daemon.exitCode !== null) return resolve(); const timer = setTimeout(() => { daemon.kill(); resolve(); }, 2000); daemon.once("exit", () => { clearTimeout(timer); resolve(); }); });
-    if (daemon.exitCode !== null && daemon.exitCode !== 0) throw Error("Material daemon failed; inspect " + join(runRoot, "daemon.log"));
+    await new Promise<void>((resolve) => { if (!daemon || daemon.exitCode !== null) return resolve(); const timer = setTimeout(() => { daemon?.kill(); resolve(); }, 2000); daemon?.once("exit", () => { clearTimeout(timer); resolve(); }); });
+    if (daemon && daemon.exitCode !== null && daemon.exitCode !== 0) throw Error("Material daemon failed; inspect " + join(runRoot, "daemon.log"));
   }
 }
 
@@ -243,4 +321,15 @@ test("Desktop: verified requirement, manual planning and exact plan approval", a
     api.setWorkspaceId(native.workspace.id);
     api.setWorkspaceSlug(native.workspace.slug);
   }
+});
+
+test("Web: adopt supported old bundle and review real maintenance", async ({ page }, info) => {
+  const session = await p1Session(page); await journey(page, session, info, false, true);
+});
+test("Desktop: adopt supported old bundle and review real maintenance", async ({ native }, info) => {
+    const { api } = native;
+    const workspace = await api.requestJSON<typeof native.workspace>("/api/workspaces", { method: "POST", body: { name: "Material maintenance archive", slug: "maintenance-" + native.workspace.slug } });
+    api.setWorkspaceId(workspace.id); api.setWorkspaceSlug(workspace.slug);
+    try { await native.page.reload(); await selectDesktopWorkspace(native.page, workspace); await journey(native.page, { ...native, workspace }, info, true, true); }
+    finally { api.setWorkspaceId(native.workspace.id); api.setWorkspaceSlug(native.workspace.slug); }
 });

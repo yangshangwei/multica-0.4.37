@@ -1090,6 +1090,62 @@
       "preflight": "正在核验合并条件",
       "succeeded": "操作已核验"
     },
-    "runtimeHistoryUnavailable": "原执行运行时不可用"
+    "runtimeHistoryUnavailable": "原执行运行时不可用",
+    "initialization": {
+      "title": "物料仓库初始化",
+      "unsupported": "当前服务器无法核验仓库初始化。仍可整理草稿，发布前请更新服务器。",
+      "loadError": "仓库核验信息刷新失败。审核输入已保留，请刷新后再操作。",
+      "publishAllowed": "已采用的规则与模板允许发布物料。",
+      "draftAllowed": "你可以先整理草稿，完成仓库初始化后再发布。",
+      "acceptedBundle": "已采用模板版本",
+      "incompatibleRequest": "有一条尚未确认的初始化请求使用了不支持的格式。请保留原请求，核对结果后再发起新请求。",
+      "check": "检查仓库",
+      "maintenance": "规则与模板维护",
+      "candidate": "初始化变更",
+      "bundle": "模板版本",
+      "baseCommit": "检查时的基准提交",
+      "candidateHead": "受审 HEAD",
+      "manifest": "文件清单 SHA-256",
+      "unpublished": "尚未发布",
+      "diffHint": "下方列出本次全部文件变更。规则正文仅作为文本展示，无关已有文件保持原样。",
+      "file": "查看文件",
+      "before": "变更前",
+      "after": "变更后",
+      "noFile": "文件不存在",
+      "approvalHint": "仅工作空间所有者或管理员可以批准仓库规则。批准后，所选运行时将在仓库检查通过时合并这份确切变更。",
+      "reviewCurrent": "重新查看当前初始化变更",
+      "reason": "初始化审核说明",
+      "approve": "批准初始化变更",
+      "targetBundle": "支持的模板版本",
+      "maintenanceHint": "请选择服务器列出的版本。已采用的版本没有差异时，不会新建评审。",
+      "maintain": "检查模板维护",
+      "history": "初始化审核历史",
+      "settingsHint": "保存绑定后，所选运行时会检查仓库。缺失的基础文件需要单独经过人工审核，才能发布物料。",
+      "notReady": "发布前须先核验仓库初始化。你仍可将本次修订保存为草稿。",
+      "states": {
+        "unconfigured": "尚未配置仓库",
+        "queued": "仓库检查排队中",
+        "checking": "正在检查仓库",
+        "needs_review": "初始化需要审核",
+        "publishing": "正在发布初始化变更",
+        "in_review": "初始化待审核",
+        "changes_requested": "初始化需要修改",
+        "approved": "初始化已批准，等待合并",
+        "merging": "正在合并初始化变更",
+        "verifying": "正在核验仓库内容",
+        "ready": "仓库已初始化",
+        "blocked": "初始化受阻",
+        "unknown": "初始化结果未确认"
+      },
+      "fileActions": {
+        "add": "新增",
+        "modify": "修改",
+        "preserve": "保留",
+        "conflict": "冲突"
+      },
+      "proofHistory": "历史仓库核验",
+      "proofHistoryHint": "历史核验结果不能授权当前绑定发布物料。",
+      "unreadBody": "此文件按摘要保留，不属于本次拟写入内容。"
+    }
   }
 }

@@ -16,6 +16,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/material"
 	"github.com/multica-ai/multica/server/internal/materialgit"
+	"github.com/multica-ai/multica/server/internal/materialrepo"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/dbid"
@@ -128,7 +129,7 @@ func materialOperationDescriptor(job db.GitMaterialJob, row db.GitMaterial, revi
 	if e != nil {
 		return protocol.MaterialExecution{}, e
 	}
-	d := protocol.MaterialExecution{ProtocolVersion: 1, OperationID: util.UUIDToString(dbid.NewV7()), JobID: util.UUIDToString(job.ID), MaterialID: util.UUIDToString(row.ID), RevisionID: rev.ID, ProjectID: util.UUIDToString(row.ProjectID), WorkspaceID: util.UUIDToString(row.WorkspaceID), TaskID: util.UUIDToString(taskID), Action: action, OperationKey: rev.ID, ConfigVersion: b.Version, ResourceID: b.ResourceID, Provider: b.Provider, InstanceURL: b.InstanceURL, Repository: b.Repository, BaseBranch: b.BaseBranch, SourceBranch: "multica/material-" + rev.ID, RuntimeID: util.UUIDToString(r.ID), DaemonID: r.DaemonID.String, ProfileID: util.UUIDToString(r.ProfileID), ConfigDigest: b.RuntimeDigest, Title: "Multica engineering material " + rev.ID, Body: "Versioned engineering material. Review and execution are managed in Multica."}
+	d := protocol.MaterialExecution{ProtocolVersion: 1, TargetKind: "material_revision", OperationID: util.UUIDToString(dbid.NewV7()), JobID: util.UUIDToString(job.ID), MaterialID: util.UUIDToString(row.ID), RevisionID: rev.ID, ProjectID: util.UUIDToString(row.ProjectID), WorkspaceID: util.UUIDToString(row.WorkspaceID), TaskID: util.UUIDToString(taskID), Action: action, OperationKey: rev.ID, ConfigVersion: b.Version, ResourceID: b.ResourceID, Provider: b.Provider, InstanceURL: b.InstanceURL, Repository: b.Repository, BaseBranch: b.BaseBranch, SourceBranch: "multica/material-" + rev.ID, RuntimeID: util.UUIDToString(r.ID), DaemonID: r.DaemonID.String, ProfileID: util.UUIDToString(r.ProfileID), ConfigDigest: b.RuntimeDigest, Title: "Multica engineering material " + rev.ID, Body: "Versioned engineering material. Review and execution are managed in Multica."}
 	for _, f := range materialFiles(row, rev) {
 		d.Files = append(d.Files, protocol.MaterialFile{Path: f.Path, Content: f.Content, Mode: "100644", SHA256: material.Digest(f.Content)})
 	}
@@ -157,7 +158,7 @@ func createMaterialOperation(ctx context.Context, q *db.Queries, job db.GitMater
 	if e != nil {
 		return e
 	}
-	_, e = q.CreateMaterialOperation(ctx, db.CreateMaterialOperationParams{ID: id, JobID: job.ID, TaskID: tid, WorkspaceID: job.WorkspaceID, ProjectID: job.ProjectID, MaterialID: job.MaterialID, RevisionID: job.RevisionID, RuntimeID: rid, AgentID: agent, AuthorizerID: user, AttemptNo: attempt, Action: d.Action, Descriptor: materialJSON(d), ExpectedDigest: d.ExpectedDigest})
+	_, e = q.CreateMaterialOperation(ctx, db.CreateMaterialOperationParams{ID: id, JobID: job.ID, TaskID: tid, WorkspaceID: job.WorkspaceID, ProjectID: job.ProjectID, MaterialID: job.MaterialID, RevisionID: job.RevisionID, RuntimeID: rid, AgentID: agent, AuthorizerID: user, AttemptNo: attempt, Action: d.Action, Descriptor: materialJSON(d), ExpectedDigest: d.ExpectedDigest, TargetKind: d.TargetKind, RepositoryID: job.RepositoryID, RepositoryRevisionID: job.RepositoryRevisionID})
 	return e
 }
 func materialDecision(ctx context.Context, t *materialTx, revision db.GitMaterialRevision, b materialBinding) (db.GitMaterialDecision, error) {
@@ -250,6 +251,10 @@ func (s *MaterialService) processMaterialGit(ctx context.Context, job db.GitMate
 	}
 	taskID := dbid.NewV7()
 	d, e := materialOperationDescriptor(job, row, rev, b, r, taskID, action)
+	if e != nil {
+		return e
+	}
+	d.RepositoryExecution, e = repositoryExecutionProof(ctx, t.q, row.WorkspaceID, row.ProjectID, b)
 	if e != nil {
 		return e
 	}
@@ -354,6 +359,20 @@ func AuthorizeMaterialOperation(ctx context.Context, q *db.Queries, task db.Agen
 	}
 	if _, e = checkMaterialBinding(ctx, q, op.WorkspaceID, op.ProjectID, b, false); e != nil {
 		return op, d, e
+	}
+	if d.TargetKind == "repository_initialization" {
+		return authorizeRepositoryOperation(ctx, q, op, d)
+	}
+	_, ready, e := requireRepositoryReady(ctx, q, op.WorkspaceID, op.ProjectID, b)
+	if e != nil {
+		return op, d, e
+	}
+	if d.RepositoryExecution == nil || len(d.RepositoryExecution.ReadyProof) == 0 {
+		return op, d, materialError(409, "material_repository_unverified")
+	}
+	expectedProof, e := materialParse[materialrepo.Proof](d.RepositoryExecution.ReadyProof)
+	if e != nil || material.JSONDigest(expectedProof) != material.JSONDigest(ready.Proof) {
+		return op, d, materialError(409, "material_repository_proof_changed")
 	}
 	row, e := q.GetGitMaterial(ctx, db.GetGitMaterialParams{WorkspaceID: op.WorkspaceID, ProjectID: op.ProjectID, ID: op.MaterialID})
 	if e != nil {
@@ -530,9 +549,67 @@ func (s *MaterialService) ObserveOperation(ctx context.Context, taskID pgtype.UU
 	if o.TaskID != util.UUIDToString(taskID) || o.OperationID != d.OperationID || o.RuntimeID != d.RuntimeID || o.ClaimGeneration != task.ClaimGeneration || op.ClaimGeneration != task.ClaimGeneration || o.ExpectedDigest != op.ExpectedDigest || len(o.HostChallenge) < 32 || subtle.ConstantTimeCompare([]byte(material.Digest(o.HostChallenge)), []byte(op.ChallengeHash)) != 1 {
 		return materialError(403, "material_observation_denied")
 	}
+	if len(o.ObservationID) < 8 || len(o.ObservationID) > 128 || o.ProtocolVersion != 1 || o.ObservedAt.IsZero() || o.ObservedAt.After(time.Now().Add(time.Minute)) || time.Since(o.ObservedAt) > 5*time.Minute {
+		return materialError(409, "material_observation_incomplete")
+	}
+	if task.Status != "running" && !(task.Status == "dispatched" && (d.Action == "verify_baseline" || o.Outcome == "rules_verified" || o.Outcome == "rules_changed")) {
+		return materialError(409, "material_observation_state")
+	}
 	op, d, e = AuthorizeMaterialOperation(ctx, q, task)
 	if e != nil {
 		return e
+	}
+	if op.State == "succeeded" || op.State == "no_effect" {
+		return materialError(409, "material_observation_state")
+	}
+	if d.TargetKind == "repository_initialization" {
+		if task.Status != "running" {
+			return materialError(409, "material_observation_state")
+		}
+		state, err := repositoryObservation(ctx, q, op, d, o)
+		if err != nil {
+			return err
+		}
+		o.HostChallenge = ""
+		if err = q.SaveMaterialObservation(ctx, db.SaveMaterialObservationParams{ID: op.ID, Receipt: materialJSON(o), ReceiptDigest: digest, ObservationID: o.ObservationID, State: state}); err != nil {
+			return err
+		}
+		return tx.Commit(ctx)
+	}
+	if d.RepositoryExecution != nil && len(d.RepositoryExecution.ReadyProof) > 0 {
+		if err := verifyOperationRules(ctx, q, op, d, o); err != nil {
+			if materialCode(err) == "material_repository_rules_changed" {
+				root, e := q.GetMaterialRepository(ctx, db.GetMaterialRepositoryParams{ProjectID: op.ProjectID, WorkspaceID: op.WorkspaceID})
+				if e != nil {
+					return e
+				}
+				state, e := repositoryPayload(root)
+				if e != nil {
+					return e
+				}
+				state.Status = "blocked"
+				state.Blocker = "material_repository_rules_changed"
+				if _, e = saveRepository(ctx, q, root, state); e != nil {
+					return e
+				}
+				o.HostChallenge = ""
+				if e = q.SaveMaterialObservation(ctx, db.SaveMaterialObservationParams{ID: op.ID, Receipt: materialJSON(o), ReceiptDigest: digest, ObservationID: o.ObservationID, State: "blocked", Blocker: materialText("material_repository_rules_changed")}); e != nil {
+					return e
+				}
+				return tx.Commit(ctx)
+			}
+			return err
+		}
+		if o.Outcome == "rules_verified" {
+			if task.Status != "dispatched" && task.Status != "running" {
+				return materialError(409, "material_observation_state")
+			}
+			o.HostChallenge = ""
+			if err := q.SaveMaterialObservation(ctx, db.SaveMaterialObservationParams{ID: op.ID, Receipt: materialJSON(o), ReceiptDigest: digest, ObservationID: o.ObservationID, State: "prepared"}); err != nil {
+				return err
+			}
+			return tx.Commit(ctx)
+		}
 	}
 	if op.State == "succeeded" || op.State == "no_effect" {
 		return materialError(409, "material_observation_state")
@@ -686,7 +763,7 @@ func (s *MaterialService) OperationPermit(ctx context.Context, task db.AgentTask
 	if e != nil {
 		return out, e
 	}
-	if task.Status != "running" || d.OperationID != id || d.ExpectedDigest != in.ExpectedDigest || len(in.RequestID) < 8 || (d.Action == "verify_baseline" || d.Action == "observe") {
+	if task.Status != "running" || d.OperationID != id || d.ExpectedDigest != in.ExpectedDigest || len(in.RequestID) < 8 || (d.Action != "publish" && d.Action != "review_sync" && d.Action != "merge") {
 		return out, materialError(403, "material_permit_denied")
 	}
 	if d.Action == "merge" {

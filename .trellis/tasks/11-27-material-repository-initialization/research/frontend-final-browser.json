@@ -1,0 +1,495 @@
+{
+  "cases": 8,
+  "passed": 8,
+  "runs": [
+    {
+      "name": "gitlab-web-initialization",
+      "database": "multica_gitmaterial_ui_init_defc1fa003",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-web-initialization/material-run-yFNur0",
+      "provider": "gitlab",
+      "duration": "1.5m",
+      "sourceStable": true,
+      "finalSourceDelta": [
+        "e2e/fixtures/material-github.mjs",
+        "e2e/fixtures/material-github.node-test.mjs"
+      ],
+      "sourceSHA256": "99c7e57df70f5cb33108f908f1cc03400af1c274e75c1c07c6cf2f5bfd2e4a45",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-bb089f20-adbd-40f0-b528-e8f723daa70f",
+        "database": "multica_gitmaterial_ui_init_defc1fa003",
+        "provider": "gitlab",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-web-initialization/material-run-yFNur0/api",
+          "sha256": "1e952bef921199f1f5485427db482e4a2551f28becb8278650d6ff6a983bf77b"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-web-initialization/material-run-yFNur0/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 44710,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 44708,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 44704,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "name": "gitlab-web-maintenance",
+      "database": "multica_gitmaterial_ui_init_ba61ea56f3",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-web-maintenance/material-run-OkXq4M",
+      "provider": "gitlab",
+      "duration": "1.5m",
+      "sourceStable": true,
+      "finalSourceDelta": [
+        "e2e/fixtures/material-github.mjs",
+        "e2e/fixtures/material-github.node-test.mjs"
+      ],
+      "sourceSHA256": "99c7e57df70f5cb33108f908f1cc03400af1c274e75c1c07c6cf2f5bfd2e4a45",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-01c53441-d70b-4a19-9bf0-1b923ec8b432",
+        "database": "multica_gitmaterial_ui_init_ba61ea56f3",
+        "provider": "gitlab",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-web-maintenance/material-run-OkXq4M/api",
+          "sha256": "d96d258187a189d112ad17c57d238dc4aa0d498b9ef3fd2a8b949978fa3504f3"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-web-maintenance/material-run-OkXq4M/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 45455,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 45453,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 45452,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "name": "gitlab-desktop-initialization",
+      "database": "multica_gitmaterial_ui_init_e03414eb02",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-desktop-initialization/material-run-3Ob3Vo",
+      "provider": "gitlab",
+      "duration": "1.5m",
+      "sourceStable": true,
+      "finalSourceDelta": [
+        "e2e/fixtures/material-github.mjs",
+        "e2e/fixtures/material-github.node-test.mjs"
+      ],
+      "sourceSHA256": "99c7e57df70f5cb33108f908f1cc03400af1c274e75c1c07c6cf2f5bfd2e4a45",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-206eda75-8341-4203-9f67-ff61aad155fb",
+        "database": "multica_gitmaterial_ui_init_e03414eb02",
+        "provider": "gitlab",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-desktop-initialization/material-run-3Ob3Vo/api",
+          "sha256": "cfb0c583a86154ffc0f5ad3fffdc50a905d442590ad3ada0302a6e842d94a96d"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-desktop-initialization/material-run-3Ob3Vo/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 46295,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 46292,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 46291,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "name": "gitlab-desktop-maintenance",
+      "database": "multica_gitmaterial_ui_init_a64ca50ef5",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-desktop-maintenance/material-run-GhKjB6",
+      "provider": "gitlab",
+      "duration": "1.5m",
+      "sourceStable": true,
+      "finalSourceDelta": [
+        "e2e/fixtures/material-github.mjs",
+        "e2e/fixtures/material-github.node-test.mjs"
+      ],
+      "sourceSHA256": "99c7e57df70f5cb33108f908f1cc03400af1c274e75c1c07c6cf2f5bfd2e4a45",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-a2bea8b5-694c-4ce7-8ae6-7a6ed99ca7cd",
+        "database": "multica_gitmaterial_ui_init_a64ca50ef5",
+        "provider": "gitlab",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-desktop-maintenance/material-run-GhKjB6/api",
+          "sha256": "8aa5b39a68de62697a138b3a1ab2fffe6d20be6a4c704f8d6c6d293a2e05be85"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-desktop-maintenance/material-run-GhKjB6/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 47176,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 47170,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 47165,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "name": "github-web-initialization-r2",
+      "database": "multica_gitmaterial_ui_init_500ceeed06",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/github-web-initialization-r2/material-run-66Er3e",
+      "provider": "github",
+      "duration": "1.7m",
+      "sourceStable": true,
+      "finalSourceDelta": [],
+      "sourceSHA256": "a25e27152a7cd25a3235a31536b3a2bb7c0160431c136883567045f8f305d5bd",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-15d76849-de5f-48d3-9f54-ec1e8d6aacc0",
+        "database": "multica_gitmaterial_ui_init_500ceeed06",
+        "provider": "github",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-web-initialization-r2/material-run-66Er3e/api",
+          "sha256": "080da76b294291c1d9d7960b48d26f1471b4ad541af29ff581e9ae8052f6216a"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-web-initialization-r2/material-run-66Er3e/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 51031,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 51029,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 51028,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "name": "github-web-maintenance-r2",
+      "database": "multica_gitmaterial_ui_init_f1a1c38e1d",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/github-web-maintenance-r2/material-run-J6OdJk",
+      "provider": "github",
+      "duration": "1.6m",
+      "sourceStable": true,
+      "finalSourceDelta": [],
+      "sourceSHA256": "a25e27152a7cd25a3235a31536b3a2bb7c0160431c136883567045f8f305d5bd",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-21305bf2-46d5-41fe-9f37-f1fd490a71bf",
+        "database": "multica_gitmaterial_ui_init_f1a1c38e1d",
+        "provider": "github",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-web-maintenance-r2/material-run-J6OdJk/api",
+          "sha256": "e9018b00e1a3ad69b21b9878e10edb1200e89702d5072ff4e214a2619b828404"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-web-maintenance-r2/material-run-J6OdJk/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 52256,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 52254,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 52252,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "name": "github-desktop-initialization-r2",
+      "database": "multica_gitmaterial_ui_init_fe591983db",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/github-desktop-initialization-r2/material-run-bjRhmn",
+      "provider": "github",
+      "duration": "1.7m",
+      "sourceStable": true,
+      "finalSourceDelta": [],
+      "sourceSHA256": "a25e27152a7cd25a3235a31536b3a2bb7c0160431c136883567045f8f305d5bd",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-e556a3db-714c-4da7-8d6f-c046d1b62680",
+        "database": "multica_gitmaterial_ui_init_fe591983db",
+        "provider": "github",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-desktop-initialization-r2/material-run-bjRhmn/api",
+          "sha256": "9b8157842d5820eeed3e9c89e4b6432aeabe3fc7f2e9f0ad30dac4ffe9679b95"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-desktop-initialization-r2/material-run-bjRhmn/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 53307,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 53305,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 53302,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "name": "github-desktop-maintenance-r2",
+      "database": "multica_gitmaterial_ui_init_cd3a23fe57",
+      "exit": 0,
+      "evidence": "/private/tmp/multica-material-init-ui-uEHFqY/github-desktop-maintenance-r2/material-run-jMtVg9",
+      "provider": "github",
+      "duration": "1.6m",
+      "sourceStable": true,
+      "finalSourceDelta": [],
+      "sourceSHA256": "a25e27152a7cd25a3235a31536b3a2bb7c0160431c136883567045f8f305d5bd",
+      "build": {
+        "commit": "73e187139be089bd975f410564fcf8c502931c4f",
+        "stamp": "material-ccdfcc1e-9fdb-4d6f-8c38-32c6a268c6a6",
+        "database": "multica_gitmaterial_ui_init_cd3a23fe57",
+        "provider": "github",
+        "ports": {
+          "api": 61542,
+          "web": 61543,
+          "gitlab": 61544
+        },
+        "api": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-desktop-maintenance-r2/material-run-jMtVg9/api",
+          "sha256": "bef244b679117f0b19a8fa0f883b493b94a792f2903563b4ffbda1839bffc8c9"
+        },
+        "daemon": {
+          "file": "/private/tmp/multica-material-init-ui-uEHFqY/github-desktop-maintenance-r2/material-run-jMtVg9/material-daemon.test",
+          "sha256": "2f70644eff03407a2b970a05ff2212952b012705c5f043f54a28e649e4477be5"
+        },
+        "web": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/source/apps/web",
+          "buildId": "dWJBhZf6DiaHA2j5cD88j"
+        },
+        "desktop": {
+          "directory": "/private/tmp/multica-material-init-ui-uEHFqY/desktop-final-out",
+          "rendererSHA256": "a265e5d0b7adfb56b2fbfba72d5f7d66eea9ebd2df7e709a07ee470b611512d6",
+          "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+        }
+      },
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 54694,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 54678,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 54649,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    }
+  ],
+  "container": "material-init-ui-90276a8f",
+  "containerState": "exited",
+  "databasesRetained": true,
+  "realProviders": false,
+  "realModels": false
+}

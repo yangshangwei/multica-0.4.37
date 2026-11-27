@@ -11,7 +11,20 @@ import (
 // Inspect checks a complete tree at one immutable commit and produces an
 // add-only candidate. Conflicts preserve the input and produce no candidate.
 func Inspect(binding Binding, snapshot Snapshot) (Inspection, error) {
-	catalog, err := BuildCatalog(binding)
+	version := BundleVersion
+	// Existing supported manifests select their exact immutable bundle; a
+	// service upgrade is not permission to rewrite repository rules.
+	for _, entry := range snapshot.Entries {
+		if entry.Path == path.Join(binding.RootPath, "material.yaml") && entry.Content != nil {
+			if m, e := ParseManifest(*entry.Content); e == nil {
+				version = m.BundleVersion
+			}
+		}
+	}
+	return InspectVersion(binding, snapshot, version)
+}
+func InspectVersion(binding Binding, snapshot Snapshot, version string) (Inspection, error) {
+	catalog, err := BuildCatalogVersion(binding, version)
 	if err != nil {
 		return Inspection{}, err
 	}
@@ -42,6 +55,9 @@ func Inspect(binding Binding, snapshot Snapshot) (Inspection, error) {
 				if e != nil {
 					finding.State = "conflict"
 					finding.Reason = e.(*Error).Code
+				} else if m.BundleVersion != catalog.BundleVersion {
+					finding.State = "conflict"
+					finding.Reason = "bundle_version_conflict"
 				} else if m.SystemID != binding.SystemID {
 					finding.State = "conflict"
 					finding.Reason = "system_identity_conflict"

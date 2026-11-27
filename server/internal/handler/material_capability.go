@@ -26,7 +26,11 @@ func (h *Handler) materialTaskGuard(w http.ResponseWriter, r *http.Request, toke
 			return true, false
 		}
 		base := "/api/projects/" + d.ProjectID + "/materials/"
-		allowed := r.URL.RawQuery == "" && r.URL.RawPath == "" && !r.URL.ForceQuery && (r.Method == http.MethodGet && r.URL.Path == base+"operations/"+d.OperationID || r.Method == http.MethodPost && r.URL.Path == base+d.MaterialID+"/operations/"+d.OperationID+"/permit")
+		permit := base + d.MaterialID + "/operations/" + d.OperationID + "/permit"
+		if d.TargetKind == "repository_initialization" {
+			permit = base + "initialization/operations/" + d.OperationID + "/permit"
+		}
+		allowed := r.URL.RawQuery == "" && r.URL.RawPath == "" && !r.URL.ForceQuery && (r.Method == http.MethodGet && r.URL.Path == base+"operations/"+d.OperationID || r.Method == http.MethodPost && r.URL.Path == permit)
 		if !allowed {
 			writeError(w, 403, "material_task_scope_denied")
 		}

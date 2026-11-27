@@ -2240,6 +2240,9 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 		if e != nil {
 			return resp, []pgtype.UUID{}, 0, 0, &claimBuildFailure{status: 409, message: "material_operation_unavailable"}
 		}
+		if operation.Execution.RepositoryExecution != nil && !requestHasClientCapability(r, protocol.DaemonCapabilityMaterialRepositoryV1) {
+			return resp, []pgtype.UUID{}, 0, 0, h.failClaimedTaskBeforeLaunch(r.Context(), task, "Update the selected runtime for repository initialization.", taskfailure.ReasonInvalidTaskIdentity, "material_runtime_upgrade_required", 409, "material_runtime_upgrade_required")
+		}
 		resp.MaterialExecution = &operation.Execution
 	}
 	if task.ExecutionBindingID.Valid && task.DispatchedAt.Valid {

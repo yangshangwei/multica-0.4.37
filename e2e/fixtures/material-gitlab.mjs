@@ -222,7 +222,25 @@ export function createMaterialGitLab({
           const isTree = relative.includes("/");
           entries.set(entryPath, { id: isTree ? digest(current.id + entryPath) : fileBlob(file), name: part, type: isTree ? "tree" : "blob", path: entryPath, mode: isTree ? "040000" : file.mode });
         }
+        if (url.searchParams.get("recursive") === "true") {
+          entries.clear();
+          for (const [name, file] of current.files) {
+            const parts = name.split("/");
+            for (let i = 1; i < parts.length; i++) {
+              const path = parts.slice(0, i).join("/"); entries.set(path, { id: digest(current.id + path), name: parts[i - 1], path, type: "tree", mode: "040000" });
+            }
+            entries.set(name, { id: fileBlob(file), name: parts.at(-1), path: name, type: "blob", mode: file.mode });
+          }
+        }
         page(res, [...entries.values()].sort((a, b) => a.path.localeCompare(b.path)), url.searchParams); return;
+      }
+      if (method === "GET" && ep.startsWith("/repository/blobs/")) {
+        const raw = ep.endsWith("/raw");
+        const sha = ep.slice("/repository/blobs/".length).replace(/\/raw$/, "");
+        const file = [...commits.values()].flatMap(c => [...c.files.values()]).find(f => fileBlob(f) === sha);
+        if (!file) { fail(res, 404); return; }
+        if (raw) { res.writeHead(200, { "Content-Type": "application/octet-stream" }); res.end(Buffer.from(file.content)); return; }
+        json(res, 200, { sha, encoding: "base64", content: Buffer.from(file.content).toString("base64"), size: Buffer.byteLength(file.content) }); return;
       }
       if (method === "GET" && ep.startsWith("/repository/files/")) {
         const name = decodeURIComponent(ep.slice("/repository/files/".length));
@@ -234,11 +252,11 @@ export function createMaterialGitLab({
       if (method === "POST" && ep === "/repository/commits") {
         const input = await body(req);
         const parent = resolve(input.branch);
-        if (!parent || !branches.has(input.branch) || input.branch === baseBranch || input.force !== false || input.start_sha !== undefined || !Array.isArray(input.actions) || input.actions.length < 1 || input.actions.length > 3 || typeof input.commit_message !== "string") { fail(res); return; }
+        if (!parent || !branches.has(input.branch) || input.branch === baseBranch || input.force !== false || input.start_sha !== undefined || !Array.isArray(input.actions) || input.actions.length < 1 || input.actions.length > 20 || typeof input.commit_message !== "string") { fail(res); return; }
         const files = new Map(parent.files);
         const names = new Set();
         for (const action of input.actions) {
-          if (!safePath(action.file_path) || !/requirements\/[^/]+\/(prd|design|plan)\.md$/.test(action.file_path) || names.has(action.file_path) || typeof action.content !== "string" || action.encoding !== "text") { fail(res); return; }
+          if (!safePath(action.file_path) || names.has(action.file_path) || typeof action.content !== "string" || action.encoding !== "text") { fail(res); return; }
           names.add(action.file_path);
           const existing = files.get(action.file_path);
           if (action.action === "create" ? !!existing : action.action !== "update" || !existing || action.last_commit_id !== existing.last_commit_id) { fail(res, 409); return; }

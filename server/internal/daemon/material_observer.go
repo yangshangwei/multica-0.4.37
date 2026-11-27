@@ -139,7 +139,17 @@ func newMaterialObserver(e protocol.MaterialExecution) (materialgit.Observer, er
 	return materialgit.NewObserver(e.Provider, instance, e.Repository, materialCLITransport{executable: executable, provider: e.Provider, host: u.Host, env: materialObserverEnvironment()})
 }
 func readMaterialObservation(ctx context.Context, e protocol.MaterialExecution, b protocol.MaterialClaimBinding, reader materialgit.Observer) (protocol.MaterialObservation, error) {
+	if e.TargetKind == "repository_initialization" {
+		return readRepositoryObservation(ctx, e, b, reader)
+	}
 	o := protocol.MaterialObservation{ProtocolVersion: 1, OperationID: e.OperationID, TaskID: e.TaskID, RuntimeID: e.RuntimeID, ClaimGeneration: b.ClaimGeneration, HostChallenge: b.HostChallenge, ExpectedDigest: e.ExpectedDigest, ObservationID: uuid.NewString(), ObservedAt: time.Now().UTC(), Outcome: "observed", RepositoryIdentity: e.Provider + ":" + e.InstanceURL + ":" + e.Repository, Files: []protocol.MaterialFile{}}
+	if e.RepositoryExecution != nil && len(e.RepositoryExecution.ReadyProof) > 0 {
+		var err error
+		o.RulesSnapshot, err = readMaterialRules(ctx, e, reader)
+		if err != nil {
+			return o, err
+		}
+	}
 	commit := e.BaselineCommit
 	if e.Action != "verify_baseline" {
 		number := e.ReviewNumber

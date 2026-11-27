@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
 	"strings"
 
@@ -72,7 +74,7 @@ func (h *Handler) ObserveDaemonMaterialOperation(w http.ResponseWriter, r *http.
 		return
 	}
 	var in protocol.MaterialObservation
-	if !decodeMaterial(w, r, &in) {
+	if !decodeMaterialObservation(w, r, &in) {
 		return
 	}
 	if e := h.materialService().ObserveOperation(r.Context(), task.ID, in); e != nil {
@@ -124,4 +126,20 @@ func (h *Handler) PermitMaterialOperation(w http.ResponseWriter, r *http.Request
 		return
 	}
 	writeJSON(w, 200, out)
+}
+
+func decodeMaterialObservation(w http.ResponseWriter, r *http.Request, dst *protocol.MaterialObservation) bool {
+	r.Body = http.MaxBytesReader(w, r.Body, protocol.MaxMaterialObservationBytes)
+	dec := json.NewDecoder(r.Body)
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(dst); err != nil {
+		writeError(w, 400, "invalid_material_observation")
+		return false
+	}
+	var extra any
+	if dec.Decode(&extra) != io.EOF {
+		writeError(w, 400, "invalid_material_observation")
+		return false
+	}
+	return true
 }

@@ -9,7 +9,7 @@
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
 | [Task API capabilities](./task-api-capabilities.md) | Frozen reporter/reviewer scope, current authority, durable non-dispatch and claim limits | M1 increment; host sandbox separate |
 | [Git requirement and plan materials](./git-materials.md) | Immutable review, verified Git baselines, manual planning holds and scoped plugin reads | Local provider and client acceptance; real services separate |
-| [Material repository initialization kernel](./material-repository-initialization.md) | Deterministic foundation bundle, preservation, strict inspection and exact content proofs | Independent kernel; runtime/UI integration pending |
+| [Material repository initialization and maintenance](./material-repository-initialization.md) | Independent root review, runtime inspection, protected rules, exact proofs and publication readiness | Integrated workflow; verification recorded in task |
 | [Parent-task budget observation](./issue-budgets.md) | Lifetime root attribution, atomic usage, unknown holds and human API/CLI recovery | F3-S1 observe only |
 | [Deterministic report snapshots](./report-snapshots.md) | Frozen safe facts, source gaps, current Reporter reads, human capture and terminal report withdrawal | F2 minimum slice; deterministic API/CLI validation |
 | [Controlled artifact execution](./controlled-artifact-execution.md) | Frozen package approval, one-time claim, confined tar output and durable uncertainty | Local synthetic adapter verified; deployment separate |

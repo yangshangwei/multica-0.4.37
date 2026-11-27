@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/attribution"
 	"github.com/multica-ai/multica/server/internal/material"
+	"github.com/multica-ai/multica/server/internal/materialrepo"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -165,6 +166,17 @@ func AuthorizeMaterialPlanTask(ctx context.Context, q *db.Queries, task db.Agent
 	if descriptor.Digest() != op.ExpectedDigest || descriptor.Action != "verify_baseline" || op.TaskID != task.ID || op.AgentID != task.AgentID || op.RuntimeID != task.RuntimeID || op.AuthorizerID != task.OriginatorUserID || descriptor.ConfigVersion != config.Version || descriptor.ConfigDigest != config.RuntimeDigest || config.ExecutionRuntimeID == nil || *config.ExecutionRuntimeID != descriptor.RuntimeID {
 		return materialError(409, "material_plan_context_changed")
 	}
+	_, current, err := requireRepositoryReady(ctx, q, binding.WorkspaceID, binding.ProjectID, config)
+	if err != nil {
+		return err
+	}
+	if descriptor.RepositoryExecution == nil {
+		return materialError(409, "material_repository_unverified")
+	}
+	frozen, err := materialParse[materialrepo.Proof](descriptor.RepositoryExecution.ReadyProof)
+	if err != nil || material.JSONDigest(frozen) != material.JSONDigest(current.Proof) {
+		return materialError(409, "material_repository_proof_changed")
+	}
 	return checkMaterialRunAuthority(ctx, q, binding)
 }
 
@@ -172,6 +184,9 @@ func checkMaterialRunAuthority(ctx context.Context, q *db.Queries, binding db.Ma
 	config, err := materialParse[materialBinding](binding.Settings)
 	if err != nil || !config.Enabled {
 		return materialError(409, "material_disabled")
+	}
+	if _, _, err = requireRepositoryReady(ctx, q, binding.WorkspaceID, binding.ProjectID, config); err != nil {
+		return err
 	}
 	if err = materialSignerCurrent(ctx, q, config.Credential, binding.ConfigAuthorizedBy); err != nil {
 		return err
@@ -393,6 +408,9 @@ func (s *MaterialService) processMaterialPlan(ctx context.Context, job db.GitMat
 		return e
 	}
 	descriptor, e := materialOperationDescriptor(job, row, revision, binding, runtime, task.ID, "verify_baseline")
+	if e == nil {
+		descriptor.RepositoryExecution, e = repositoryExecutionProof(ctx, t.q, row.WorkspaceID, row.ProjectID, binding)
+	}
 	if e != nil {
 		return e
 	}

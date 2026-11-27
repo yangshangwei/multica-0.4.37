@@ -214,6 +214,7 @@ func (c *Client) capabilities() string {
 func daemonClientCapabilities() string {
 	return strings.Join([]string{
 		protocol.DaemonCapabilityMaterialOperationsV1,
+		protocol.DaemonCapabilityMaterialRepositoryV1,
 		protocol.DaemonCapabilitySkillBundlesV1,
 		protocol.DaemonCapabilityCoalescedCommentsV1,
 		protocol.DaemonCapabilityExecutionManifestV1,

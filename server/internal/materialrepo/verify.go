@@ -12,7 +12,11 @@ func validateCandidate(c Candidate) error {
 	if len(c.Files) == 0 || len(c.Files) > 20 || !digestPattern.MatchString(c.Digest) {
 		return invalid("invalid_candidate", "")
 	}
-	inspected, err := Inspect(c.Binding, c.Before)
+	catalog, err := catalogByDigest(c.Binding, c.CatalogDigest)
+	if err != nil {
+		return err
+	}
+	inspected, err := InspectVersion(c.Binding, c.Before, catalog.BundleVersion)
 	if err != nil {
 		return err
 	}
@@ -76,11 +80,13 @@ func VerifyExisting(binding Binding, snapshot Snapshot) (Proof, error) {
 	if !inspection.Compatible {
 		return Proof{}, invalid("repository_not_compatible", "")
 	}
-	catalog, err := BuildCatalog(binding)
-	if err != nil {
-		return Proof{}, err
+	for _, version := range AvailableBundleVersions() {
+		if known, e := InspectVersion(binding, snapshot, version); e == nil && known.Compatible {
+			catalog, _ := BuildCatalogVersion(binding, version)
+			return proof(binding, catalog.Digest, "", snapshot)
+		}
 	}
-	return proof(binding, catalog.Digest, "", snapshot)
+	return Proof{}, invalid("repository_not_compatible", "")
 }
 func verifyTree(c Candidate, snapshot Snapshot) error {
 	observed, err := validateSnapshot(snapshot)
@@ -112,7 +118,7 @@ func verifyTree(c Candidate, snapshot Snapshot) error {
 	return nil
 }
 func proof(binding Binding, catalogDigest, candidateDigest string, s Snapshot) (Proof, error) {
-	catalog, err := BuildCatalog(binding)
+	catalog, err := catalogByDigest(binding, catalogDigest)
 	if err != nil {
 		return Proof{}, err
 	}
@@ -157,4 +163,19 @@ func projectSnapshot(before Snapshot, files []File) (Snapshot, error) {
 		result.Entries = append(result.Entries, entry)
 	}
 	return result, nil
+}
+
+func VerifyExistingVersion(binding Binding, snapshot Snapshot, version string) (Proof, error) {
+	inspected, err := InspectVersion(binding, snapshot, version)
+	if err != nil {
+		return Proof{}, err
+	}
+	if !inspected.Compatible {
+		return Proof{}, invalid("repository_not_compatible", "")
+	}
+	catalog, err := BuildCatalogVersion(binding, version)
+	if err != nil {
+		return Proof{}, err
+	}
+	return proof(binding, catalog.Digest, "", snapshot)
 }

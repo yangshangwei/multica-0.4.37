@@ -25,6 +25,7 @@ type PublishRequest struct {
 }
 
 type Review struct {
+	BaseCommit                                                                 string
 	MergedAt                                                                   *time.Time
 	Number                                                                     int64
 	URL, HeadSHA, BaseBranch, Branch, State, MergeSHA, MergeActor, BlockReason string

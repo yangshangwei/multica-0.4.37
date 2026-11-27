@@ -16,7 +16,7 @@ import (
 
 const (
 	SchemaVersion    = 1
-	BundleVersion    = "1.0.0"
+	BundleVersion    = "1.0.1"
 	MaxFileBytes     = 1 << 20
 	MaxSnapshotBytes = 32 << 20
 	MaxEntries       = 10000

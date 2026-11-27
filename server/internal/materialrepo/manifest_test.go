@@ -51,7 +51,7 @@ func TestManifestStrictParsing(t *testing.T) {
 		"merge key":             good + "<<: {system_id: other}\n",
 		"wrong root type":       "[1,2,3]",
 		"unknown schema":        strings.Replace(good, "schema_version: 1", "schema_version: 2", 1),
-		"unknown bundle":        strings.Replace(good, "1.0.0", "1.99.0", 1),
+		"unknown bundle":        strings.Replace(good, BundleVersion, "1.99.0", 1),
 		"layout redirect":       strings.Replace(good, "releases: releases", "releases: ../releases", 1),
 		"non-string id":         strings.Replace(good, "\"system-1\"", "123", 1),
 		"custom tag":            strings.Replace(good, "\"system-1\"", "!custom system-1", 1),

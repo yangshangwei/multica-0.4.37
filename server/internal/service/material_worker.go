@@ -47,7 +47,9 @@ func (s *MaterialService) ProcessNext(ctx context.Context) (bool, error) {
 	}
 	stepCtx, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
-	if job.Kind == "plan" {
+	if job.TargetKind == "repository_initialization" {
+		err = s.processRepositoryJob(stepCtx, job)
+	} else if job.Kind == "plan" {
 		err = s.processMaterialPlan(stepCtx, job)
 	} else {
 		err = s.processMaterialGit(stepCtx, job)

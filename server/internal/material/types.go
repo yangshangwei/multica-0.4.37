@@ -157,6 +157,7 @@ type Plan struct {
 	RevisionID *string `json:"revision_id"`
 }
 type Capabilities struct {
+	CanPublish   bool `json:"can_publish"`
 	CanEdit      bool `json:"can_edit"`
 	CanReview    bool `json:"can_review"`
 	CanStartPlan bool `json:"can_start_plan"`

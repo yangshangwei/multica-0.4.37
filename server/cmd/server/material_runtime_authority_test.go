@@ -24,7 +24,7 @@ func TestMaterialRuntimeRouterHostReceiptBoundary(t *testing.T) {
 	project := fx.Project(t, "Runtime material authority")
 	rid := fx.Runtime(t, "Selected material runtime", testutil.Cols{"daemon_id": "material-router-" + uuid.NewString(), "visibility": "public"})
 	resource := fx.Insert(t, "project_resource", testutil.Cols{"workspace_id": testWorkspaceID, "project_id": project, "resource_type": "github_repo", "resource_ref": `{"url":"https://github.com/fixture/material.git"}`, "position": 0})
-	for _, table := range []string{"git_material_operation", "git_material_job", "git_material_request", "git_material_revision", "git_material", "project_material_settings"} {
+	for _, table := range []string{"material_repository_decision", "material_repository_revision", "project_material_repository", "git_material_operation", "git_material_job", "git_material_request", "git_material_revision", "git_material", "project_material_settings"} {
 		fx.Cleanup(t, "DELETE FROM "+table+" WHERE project_id=$1", project)
 	}
 	fx.Cleanup(t, "DELETE FROM agent WHERE workspace_id=$1 AND system_key LIKE $2", testWorkspaceID, "material:"+project+":%")
@@ -33,15 +33,12 @@ func TestMaterialRuntimeRouterHostReceiptBoundary(t *testing.T) {
 		r := testutil.JSONRequest(method, path, body)
 		r.Header.Set("Authorization", "Bearer "+token)
 		r.Header.Set("X-Workspace-ID", testWorkspaceID)
-		r.Header.Set("X-Client-Capabilities", protocol.DaemonCapabilityMaterialOperationsV1)
+		r.Header.Set("X-Client-Capabilities", protocol.DaemonCapabilityMaterialOperationsV1+","+protocol.DaemonCapabilityMaterialRepositoryV1)
 		return testutil.Call(t, testServer.Config.Handler.ServeHTTP, r)
 	}
 	base := "/api/projects/" + project + "/materials"
 	off := false
 	call(testToken, "PUT", base+"/settings", material.SettingsInput{RequestID: uuid.NewString(), Enabled: true, Provider: "github", ResourceID: resource, ExecutionRuntimeID: &rid, Repository: "fixture/material", BaseBranch: "main", RootPath: "engineering", ReviewerIDs: []string{testUserID}, AutoStartPlan: &off}).Want(200)
-	var d material.Detail
-	call(testToken, "POST", base+"/", material.CreateInput{RequestID: uuid.NewString(), Title: "Router material"}).Want(200).JSON(&d)
-	call(testToken, "POST", base+"/"+d.Material.ID+"/revisions", material.RevisionInput{RequestID: uuid.NewString(), ExpectedVersion: d.Material.Version, Kind: "requirement", Content: strings.Repeat("Exact full immutable candidate bytes. ", 4), Sources: []material.Source{{ResourceID: resource, Commit: strings.Repeat("a", 40), Path: "README.md"}}, AcceptanceCriteria: []string{"AC1: only registered host can report evidence"}, Ready: true}).Want(200)
 	svc := service.NewMaterialService(q, testPool, nil, nil)
 	if _, e := svc.ProcessNext(t.Context()); e != nil {
 		t.Fatal(e)

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY material_repository_project_idx ON project_material_repository (project_id);

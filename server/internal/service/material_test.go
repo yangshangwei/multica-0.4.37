@@ -16,6 +16,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/material"
 	"github.com/multica-ai/multica/server/internal/materialgit"
+	"github.com/multica-ai/multica/server/internal/materialrepo"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -122,6 +123,7 @@ func (p *materialFakeGit) ReadFile(_ context.Context, commit, path string) (stri
 }
 
 type materialFixture struct {
+	rules                       materialrepo.Snapshot
 	pool                        *pgxpool.Pool
 	fx                          *testutil.Fixture
 	svc                         *MaterialService
@@ -137,6 +139,9 @@ type materialFixture struct {
 }
 
 func newMaterialFixture(t *testing.T, auto bool) *materialFixture {
+	return newMaterialRepositoryFixture(t, auto, true)
+}
+func newMaterialRepositoryFixture(t *testing.T, auto, initialize bool) *materialFixture {
 	t.Helper()
 	url := os.Getenv("DATABASE_URL")
 	if url == "" {
@@ -161,7 +166,7 @@ func newMaterialFixture(t *testing.T, auto bool) *materialFixture {
 	if e = q.SeedIssueStatusEntries(ctx, util.MustParseUUID(ws)); e != nil {
 		t.Fatal(e)
 	}
-	for _, table := range []string{"issue_status", "issue", "project_material_settings", "git_material", "git_material_revision", "git_material_decision", "git_material_comment", "git_material_request", "git_material_job", "git_material_plan", "git_material_operation"} {
+	for _, table := range []string{"issue_status", "issue", "project_material_settings", "git_material", "git_material_revision", "git_material_decision", "git_material_comment", "git_material_request", "git_material_job", "git_material_plan", "git_material_operation", "material_repository_decision", "material_repository_revision", "project_material_repository"} {
 		fx.Cleanup(t, `DELETE FROM `+table+` WHERE workspace_id=$1`, ws)
 	}
 	fx.Cleanup(t, `DELETE FROM task_token WHERE workspace_id=$1`, ws)
@@ -176,6 +181,9 @@ func newMaterialFixture(t *testing.T, auto bool) *materialFixture {
 	f.settings = material.SettingsInput{RequestID: uuid.NewString(), Enabled: true, Provider: "github", ResourceID: resource, ExecutionRuntimeID: &runtime, Repository: "example/materials", BaseBranch: "main", RootPath: "engineering", ReviewerIDs: []string{user}, AutoStartPlan: &auto}
 	if _, e = f.svc.Configure(ctx, f.access, f.settings); e != nil {
 		t.Fatal(e)
+	}
+	if initialize {
+		f.initializeRepository(t)
 	}
 	return f
 }
@@ -274,6 +282,12 @@ func (f *materialFixture) admit(t *testing.T, id pgtype.UUID) {
 	f.active = &op.Execution
 	f.claim = final.MaterialClaim
 	f.task = *task
+	if op.Execution.RepositoryExecution != nil && op.Execution.TargetKind != "repository_initialization" && op.Execution.Action != "verify_baseline" {
+		observation := f.rulesObservation(t, "rules_verified")
+		if e = f.svc.ObserveOperation(t.Context(), id, observation); e != nil {
+			t.Fatal(e)
+		}
+	}
 	if op.Execution.Action != "verify_baseline" {
 		if _, e = f.svc.Tasks.StartTask(t.Context(), id); e != nil {
 			t.Fatal(e)
@@ -284,6 +298,7 @@ func (f *materialFixture) observe(t *testing.T) error {
 	t.Helper()
 	d := *f.active
 	o := protocol.MaterialObservation{ProtocolVersion: 1, OperationID: d.OperationID, TaskID: d.TaskID, RuntimeID: d.RuntimeID, ClaimGeneration: f.claim.ClaimGeneration, ExpectedDigest: d.ExpectedDigest, ObservationID: uuid.NewString(), HostChallenge: f.claim.HostChallenge, ObservedAt: time.Now(), Outcome: "observed", SourceComplete: true, RepositoryIdentity: d.Provider + ":" + d.InstanceURL + ":" + d.Repository}
+	o.RulesSnapshot = materialJSON(f.rules)
 	commit := d.BaselineCommit
 	if d.Action != "verify_baseline" {
 		n := d.ReviewNumber
@@ -402,7 +417,7 @@ func TestMaterialSchedulerLeaseDoesNotRepeatActiveAttempt(t *testing.T) {
 	if n := f.fx.Count(t, `SELECT count(*) FROM git_material_operation WHERE material_id=$1`, d.Material.ID); n != 1 {
 		t.Fatalf("expired scheduler lease duplicated operation: %d", n)
 	}
-	if n := f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id IN (SELECT agent_id FROM git_material_operation WHERE material_id=$1)`, d.Material.ID); n != 1 {
+	if n := f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE id IN (SELECT task_id FROM git_material_operation WHERE material_id=$1)`, d.Material.ID); n != 1 {
 		t.Fatalf("expired scheduler lease duplicated runtime launch: %d", n)
 	}
 	if f.detail(t, d.Material.ID).Baseline != nil {
@@ -652,7 +667,7 @@ func TestMaterialManualRunConsumesExactTaskAndLiveAuthority(t *testing.T) {
 	if _, err = f.svc.Configure(ctx, f.access, f.settings); err != nil {
 		t.Fatal(err)
 	}
-	check("material_plan_context_changed")
+	check("material_repository_not_ready")
 }
 
 func TestMaterialNewRequirementSupersedesPlanUntilNewBaseline(t *testing.T) {
@@ -964,6 +979,7 @@ func TestMaterialAbsentPublishRecoveryAndReceiptReplay(t *testing.T) {
 	}
 	expected := *f.active
 	observation := protocol.MaterialObservation{ProtocolVersion: 1, OperationID: expected.OperationID, TaskID: expected.TaskID, RuntimeID: expected.RuntimeID, ClaimGeneration: f.claim.ClaimGeneration, ExpectedDigest: expected.ExpectedDigest, ObservationID: uuid.NewString(), HostChallenge: f.claim.HostChallenge, ObservedAt: time.Now(), Outcome: "not_found", SourceComplete: true, RepositoryIdentity: expected.Provider + ":" + expected.InstanceURL + ":" + expected.Repository}
+	observation.RulesSnapshot = materialJSON(f.rules)
 	invalid := observation
 	invalid.ClaimGeneration++
 	if err := f.svc.ObserveOperation(t.Context(), f.task.ID, invalid); materialCode(err) != "material_observation_denied" {
@@ -1126,6 +1142,7 @@ func TestMaterialRevokedRuntimeOwnerDoesNotStarveQueue(t *testing.T) {
 	if _, err := f.svc.Configure(t.Context(), f.access, f.settings); err != nil {
 		t.Fatal(err)
 	}
+	f.initializeRepository(t)
 	d := f.candidate(t)
 	if _, err := f.svc.ProcessNext(t.Context()); err != nil {
 		t.Fatal(err)

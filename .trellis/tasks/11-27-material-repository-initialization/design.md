@@ -1,6 +1,6 @@
 # 物料仓初始化设计
 
-状态：沿用用户已审阅的完整目录方案及后续明确开发请求。独立目录内核可实施；共享运行时接线依赖尚未落地，禁止将内核完成标为端到端完成。
+状态：沿用用户已审阅的完整目录方案及后续明确开发请求。独立目录内核已完成；运行时实现已合入，按用户确认的整合顺序推进完整接线，不能将内核或合并本身当作端到端完成。
 
 ## 1. 作用域与已有实现
 
@@ -52,7 +52,7 @@ ready证明至少绑定仓库身份/目标根、检查提交、bundle/catalog摘
 
 阶段 inspect_repository、publish_initialization、sync_initialization_decision、merge_initialization、verify_initialization 使用同一运行时合同。daemon只读观察与模型Git写入分离，结果从当前task/claim/runtime的可信回执消费。初始化allowlist最多catalog文件数，与普通PRD allowlist完全分离。
 
-前置尚无可编译的operation/receipt代码，因此当前只能完成独立内核、模板、测试和审阅材料。持久化、队列、HTTP和UI接线在依赖代码进入本分支后实施；不提交永远排队的伪接口。
+前置operation/receipt实现已在73e187139合入。继续扩展明确目标、完整树读取、独立维护候选、持久化、队列、HTTP和UI；保留原material_revision合同和已通过的恢复/审核回归。
 
 ## 7. 存储/API/界面接线方案
 

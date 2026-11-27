@@ -24,6 +24,8 @@ For Git requirement drafts, fixed baselines or design/task-plan revisions, read
 `references/git-materials.md` before using `multica project material`, including
 assigned Git operation/permit/observation commands. It defines
 explicit request identity, complete revision JSON and automatic publication.
+Repository initialization and rule maintenance use separate owner/admin review;
+ordinary material publication requires the current verified repository proof.
 
 ## Core model
 

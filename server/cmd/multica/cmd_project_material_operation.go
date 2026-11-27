@@ -76,8 +76,8 @@ func runMaterialOperation(cmd *cobra.Command, action, id string) error {
 	if resp.StatusCode != 200 {
 		return errors.New("local material operation refused or unconfirmed; retain the original request ID before retrying")
 	}
-	body, err := io.ReadAll(io.LimitReader(resp.Body, materialCLIResponseLimit+1))
-	if err != nil || len(body) > materialCLIResponseLimit {
+	body, err := io.ReadAll(io.LimitReader(resp.Body, protocol.MaxMaterialObservationBytes+1))
+	if err != nil || len(body) > protocol.MaxMaterialObservationBytes {
 		return errors.New("invalid local material response")
 	}
 	switch action {

@@ -1,0 +1,22 @@
+{
+  "score": 94,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "An independent repository initialization section now sits above ordinary materials.",
+    "Maintenance renders complete before/after rule text in bounded scrollable source panes; the retained reason and decision controls preserve existing material styling."
+  ],
+  "suggestions": [],
+  "reasoning": "The new initialization and maintenance review uses the existing project typography, spacing and controls. Source panes and long file identities remain contained; failed reads preserve the focused review input and visibly disable decisions.",
+  "threshold": 90,
+  "threshold_pass": true,
+  "next_actions": [],
+  "reference_images": [
+    "/private/tmp/multica-material-runtime-ui-Y7BDfo/gitlab-final3/material-run-9UmYiA/results/material-workflow-Desktop--a095c-ing-and-exact-plan-approval-chromium/runtime-only-settings.png"
+  ],
+  "generated_screenshots": [
+    "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-web-maintenance/material-run-OkXq4M/results/material-workflow-Web-adop-40a25-and-review-real-maintenance-chromium/initialization-preserved-through-read-failure.png",
+    "/private/tmp/multica-material-init-ui-uEHFqY/gitlab-final/material-run-3ySVSx/results/material-workflow-Desktop--a095c-ing-and-exact-plan-approval-chromium/initialization-complete-diff.png",
+    "/private/tmp/multica-material-init-ui-uEHFqY/github-desktop-maintenance-r2/material-run-jMtVg9/results/material-workflow-Desktop--bd724-and-review-real-maintenance-chromium/initialization-preserved-through-read-failure.png"
+  ]
+}

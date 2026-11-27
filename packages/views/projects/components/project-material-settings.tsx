@@ -68,6 +68,7 @@ export function ProjectMaterialSettings({ workspaceId, projectId, envelope, onCl
     action.submit({ ...draft, request_id: crypto.randomUUID() }, onClose);
   }}>
     <div className="space-y-2"><h3 className="text-title font-semibold">{t(($) => $.materials.settings)}</h3><p className="text-body text-muted-foreground">{t(($) => $.materials.repositoryHint)}</p></div>
+    <p className="text-caption text-muted-foreground">{t(($) => $.materials.initialization.settingsHint)}</p>
     <MaterialActionNotice error={action.error} uncertain={action.pending !== null} busy={action.busy || !supported || !envelope.can_configure || !userId} onRetry={() => { if (supported && envelope.can_configure && userId) action.retry(); }} />
     {action.incompatible && <div role="alert" className="space-y-2 text-caption text-muted-foreground">
       <p>{t(($) => $.materials.retiredRequest)}</p>

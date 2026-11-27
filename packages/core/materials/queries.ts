@@ -8,6 +8,7 @@ import type { MaterialCommand, MaterialDetail, MaterialSettingsEnvelope, Materia
 
 export const materialKeys = {
   all: (wsId: string, projectId: string) => [...projectKeys.detail(wsId, projectId), "materials"] as const,
+  initialization: (wsId: string, projectId: string) => [...materialKeys.all(wsId, projectId), "initialization"] as const,
   settings: (wsId: string, projectId: string) => [...materialKeys.all(wsId, projectId), "settings"] as const,
   list: (wsId: string, projectId: string) => [...materialKeys.all(wsId, projectId), "list"] as const,
   detail: (wsId: string, projectId: string, materialId: string) => [...materialKeys.all(wsId, projectId), "detail", materialId] as const,

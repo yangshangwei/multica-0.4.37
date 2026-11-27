@@ -1,3 +1,4 @@
+import { parseMaterialInitialization, type MaterialInitializationCommand } from "../materials/initialization-schema";
 import { parseMaterialSettings, parseMaterialList, parseMaterialDetail, type MaterialSettingsInput, type MaterialCommand } from "../materials/schema";
 import { hasBatchIssueMutation, isBatchUpdateComplete, parseBatchUpdateOutcome, validBatchCompletionOptions } from "./issue-batch-update";
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
@@ -6554,6 +6555,18 @@ export class ApiClient {
   }
 
   // Git engineering material responses never fall back to an approved or empty state.
+  async getMaterialInitialization(projectId: string, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials/initialization`, workspaceRequestInit(options));
+    return parseMaterialInitialization(raw, options.workspaceId, projectId);
+  }
+
+  async sendMaterialInitializationCommand(projectId: string, command: MaterialInitializationCommand, options: { workspaceId: string; signal?: AbortSignal }) {
+    const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials/initialization/${command.action}`, {
+      ...workspaceRequestInit(options), method: "POST", body: JSON.stringify(command.data),
+    });
+    return parseMaterialInitialization(raw, options.workspaceId, projectId);
+  }
+
   async getMaterialSettings(projectId: string, options: { workspaceId: string; signal?: AbortSignal }) {
     const raw = await this.fetch<unknown>(`/api/projects/${encodeURIComponent(projectId)}/materials/settings`, workspaceRequestInit(options));
     return parseMaterialSettings(raw, options.workspaceId, projectId);

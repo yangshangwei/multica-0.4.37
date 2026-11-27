@@ -54,7 +54,7 @@ func ParseManifest(body string) (Manifest, error) {
 	if typed.Decode(&m) != nil {
 		return Manifest{}, invalid("invalid_manifest", "")
 	}
-	if m.SchemaVersion != SchemaVersion || m.BundleVersion != BundleVersion {
+	if m.SchemaVersion != SchemaVersion || (m.BundleVersion != "1.0.0" && m.BundleVersion != "1.0.1") {
 		return Manifest{}, invalid("unsupported_format", "")
 	}
 	if !idPattern.MatchString(m.SystemID) || !reflect.DeepEqual(m.Layout, expectedLayout()) {

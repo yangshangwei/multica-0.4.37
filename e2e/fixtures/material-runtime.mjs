@@ -64,7 +64,13 @@ switch (e.action) {
     }
     const target = await api("/repository/branches/" + encodeURIComponent(e.base_branch));
     await api("/repository/branches", "POST", { branch: e.source_branch, ref: target.commit.id });
-    await api("/repository/commits", "POST", { branch: e.source_branch, force: false, commit_message: e.operation_key, actions: e.files.map(f => ({ action: "create", file_path: f.path, content: f.content, encoding: "text" })) });
+    const actions = [];
+    for (const f of e.files) {
+      const existing = await remote(base + "/repository/files/" + encodeURIComponent(f.path) + "?ref=" + target.commit.id);
+      if (existing.status !== 200 && existing.status !== 404) throw Error("Fixture before-file read failed");
+      actions.push({ action: existing.status === 200 ? "update" : "create", file_path: f.path, content: f.content, encoding: "text", ...(existing.status === 200 ? { last_commit_id: JSON.parse(existing.data).last_commit_id } : {}) });
+    }
+    await api("/repository/commits", "POST", { branch: e.source_branch, force: false, commit_message: e.operation_key, actions });
     await api("/merge_requests", "POST", { source_branch: e.source_branch, target_branch: e.base_branch, title: e.title, description: e.body });
     break;
   }

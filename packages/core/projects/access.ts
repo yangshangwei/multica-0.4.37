@@ -38,7 +38,7 @@ const commandRefusals = new Set([
   "project_evidence_forbidden", "project_permission_denied", "project_updates_disabled",
   "material_resource_unavailable", "material_connection_unavailable", "material_reviewer_unavailable",
   "material_agent_unavailable", "material_source_unavailable", "material_plan_task_denied",
-  "material_plan_invocation_denied", "material_human_required",
+  "material_plan_invocation_denied", "material_human_required", "material_maintenance_permission_denied", "material_human_manager_required",
 ]);
 export function isProjectAccessLost(error: unknown): boolean {
   if (!(error instanceof ApiError)) return false;

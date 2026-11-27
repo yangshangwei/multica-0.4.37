@@ -12,6 +12,7 @@ import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider } from "../../navigation";
 import { ProjectMaterials } from "./project-materials";
 import { ProjectMaterialSettings } from "./project-material-settings";
+import { ProjectMaterialInitialization } from "./project-material-initialization";
 import { MaterialDetailView } from "./material-detail";
 
 // Schema/default/identity and approval matrix tests belong to core/materials/schema.test.ts.
@@ -28,7 +29,7 @@ const sha = "a".repeat(40), digest = "b".repeat(64);
 const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 }, mutations: { retry: false } } });
 const push = vi.fn();
 const api = {
-  getMaterialSettings: vi.fn(), saveMaterialSettings: vi.fn(), listMaterials: vi.fn(), createMaterial: vi.fn(), getMaterial: vi.fn(), sendMaterialCommand: vi.fn(),
+  sendMaterialInitializationCommand: vi.fn(), getMaterialInitialization: vi.fn(), getMaterialSettings: vi.fn(), saveMaterialSettings: vi.fn(), listMaterials: vi.fn(), createMaterial: vi.fn(), getMaterial: vi.fn(), sendMaterialCommand: vi.fn(),
   listRuntimes: vi.fn(), listMembers: vi.fn(), listAgents: vi.fn(), listProjectResources: vi.fn(), listGitHubInstallations: vi.fn(), listVCSConnections: vi.fn(),
 };
 function envelope(auto = true): MaterialSettingsEnvelope {
@@ -40,7 +41,7 @@ function detail(): MaterialDetail {
   return {
     material: { id: "material", workspace_id: "ws", project_id: "project", title: "Refund requirements", path: "requirements/REQ-1/prd.md", version: 2, status: "in_review", blocker: null, created_at: "2026-11-26T00:00:00Z", updated_at: "2026-11-26T00:01:00Z" },
     revisions: [{ id: "revision", kind: "requirement", content: "The full requirement includes the final acceptance detail.", plan_content: null, content_sha256: digest, sources: [{ resource_id: "repo", commit: sha, path: "src/refund.go" }], acceptance_criteria: ["AC1: Refund succeeds"], blocking_questions: [], source_baseline_id: null, publication_status: "in_review", review_url: "https://github.com/acme/materials/pull/1", head_sha: sha, created_at: "2026-11-26T00:01:00Z" }],
-    decisions: [], comments: [], baseline: null, plan: null, capabilities: { can_edit: true, can_review: true, can_start_plan: false, can_retry: true },
+    decisions: [], comments: [], baseline: null, plan: null, capabilities: { can_edit: true, can_publish: true, can_review: true, can_start_plan: false, can_retry: true },
   };
 }
 function render(ui: React.ReactElement, locale: "en" | "zh-Hans" = "en", search = "section=materials") {
@@ -48,6 +49,7 @@ function render(ui: React.ReactElement, locale: "en" | "zh-Hans" = "en", search 
 }
 beforeEach(() => {
   vi.clearAllMocks(); client.clear(); useMaterialDraftStore.getState().clearDraft(); useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
+  api.getMaterialInitialization.mockResolvedValue({ workspace_id: "ws", project_id: "project", protocol_version: 1, version: 1, settings_version: 1, binding_generation: 1, status: "ready", blocker: null, readiness: { publish_allowed: true, verified_commit: sha, manifest_sha256: digest, schema_version: 1, bundle_version: "1.0.0", verified_at: "2026-11-27T00:00:00Z" }, operation: null, candidate: null, decisions: [], available_bundle_versions: ["1.0.0"], capabilities: { can_check: false, can_review: false, can_retry: false, can_maintain: false } });
   api.getMaterialSettings.mockResolvedValue(envelope());
   api.saveMaterialSettings.mockImplementation(async (_id, input) => ({ ...envelope(input.auto_start_plan), settings: { ...envelope(input.auto_start_plan).settings, version: 2 } }));
   api.listMaterials.mockResolvedValue({ workspace_id: "ws", project_id: "project", materials: [detail().material] });
@@ -76,6 +78,57 @@ describe("shared material workflow", () => {
     expect(api.sendMaterialCommand).toHaveBeenCalledWith("project", "material", {
       action: "retry", data: { request_id: expect.any(String), expected_version: current.material.version },
     }, { workspaceId: "ws" });
+  });
+
+  it("retains complete inert initialization diffs and pins approval after polling changes", async () => {
+    const value = { workspace_id: "ws", project_id: "project", protocol_version: 1, version: 4, settings_version: 1, binding_generation: 1, status: "in_review", blocker: null, readiness: { publish_allowed: false, verified_commit: null, manifest_sha256: null, schema_version: null, bundle_version: null, verified_at: null }, operation: null, candidate: { id: "candidate", kind: "initialize", version: 1, binding_generation: 1, bundle_version: "1.0.0", manifest_sha256: digest, base_commit: sha, head_sha: sha, review_url: "https://github.com/acme/materials/pull/1", publication_status: "in_review", files: [{ path: "AGENTS.md", action: "add", before_content: null, before_sha256: null, after_content: "<script>do not execute()</script>\nFull final rule", after_sha256: digest, explanation: null }] }, decisions: [], available_bundle_versions: ["1.0.0"], capabilities: { can_check: false, can_review: true, can_retry: false, can_maintain: false } };
+    api.getMaterialInitialization.mockResolvedValue(value);
+    api.sendMaterialInitializationCommand.mockResolvedValue(value);
+    render(<ProjectMaterialInitialization workspaceId="ws" projectId="project" settingsVersion={1} />);
+    expect(await screen.findByText(/Full final rule/)).toBeVisible();
+    expect(document.querySelector("script")).toBeNull();
+    const reason = screen.getByLabelText("Initialization review reason");
+    fireEvent.change(reason, { target: { value: "Reviewed exact rules" } }); reason.focus();
+    api.getMaterialInitialization.mockRejectedValueOnce(new ApiError("failed", 503, "Unavailable"));
+    await act(async () => { await client.invalidateQueries({ queryKey: materialKeys.initialization("ws", "project") }); });
+    expect(screen.getByLabelText("Initialization review reason")).toBe(reason); expect(reason).toHaveValue("Reviewed exact rules"); expect(reason).toHaveFocus();
+    await waitFor(() => expect(screen.getByRole("button", { name: "Approve initialization changes" })).toBeDisabled());
+    act(() => client.setQueryData(materialKeys.initialization("ws", "project"), { ...value, version: 5, candidate: { ...value.candidate, head_sha: "c".repeat(40) } }));
+    expect(screen.getByRole("button", { name: "Approve initialization changes" })).toBeDisabled();
+    await userEvent.click(await screen.findByRole("button", { name: "Review the current initialization changes" }));
+    await userEvent.click(screen.getByRole("button", { name: "Approve initialization changes" }));
+    expect(api.sendMaterialInitializationCommand).toHaveBeenCalledWith("project", { action: "decisions", data: { request_id: expect.any(String), expected_version: 5, expected_settings_version: 1, candidate_id: "candidate", head_sha: "c".repeat(40), manifest_sha256: digest, decision: "approve", reason: "" } }, { workspaceId: "ws" });
+  });
+
+  it("retries only the original initialization intent after a lost response", async () => {
+    const value = { workspace_id: "ws", project_id: "project", protocol_version: 1, version: 1, settings_version: 1, binding_generation: 1, status: "blocked", blocker: null, readiness: { publish_allowed: false, verified_commit: null, manifest_sha256: null, schema_version: null, bundle_version: null, verified_at: null }, operation: null, candidate: null, decisions: [], available_bundle_versions: ["1.0.0"], capabilities: { can_check: true, can_review: false, can_retry: true, can_maintain: false } };
+    api.getMaterialInitialization.mockResolvedValue(value);
+    api.sendMaterialInitializationCommand.mockRejectedValueOnce(new Error("Lost response")).mockResolvedValue(value);
+    const view = render(<ProjectMaterialInitialization workspaceId="ws" projectId="project" settingsVersion={1} />);
+    await userEvent.click(await screen.findByRole("button", { name: "Check repository" }));
+    const original = api.sendMaterialInitializationCommand.mock.calls[0]?.[1];
+    expect(await screen.findByRole("button", { name: "Retry the same request" })).toBeEnabled();
+    view.unmount();
+    render(<ProjectMaterialInitialization workspaceId="ws" projectId="project" settingsVersion={1} />);
+    await screen.findByRole("button", { name: "Retry the same request" });
+    expect(api.sendMaterialInitializationCommand).toHaveBeenCalledTimes(1);
+    await userEvent.click(screen.getByRole("button", { name: "Retry the same request" }));
+    expect(api.sendMaterialInitializationCommand.mock.calls[1]?.[1]).toEqual(original);
+    api.getMaterialInitialization.mockRejectedValue(new ApiError("denied", 403, "Forbidden"));
+    await act(async () => { await client.invalidateQueries({ queryKey: materialKeys.initialization("ws", "project") }); });
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Check repository" })).not.toBeInTheDocument());
+    expect(useMaterialDraftStore.getState().draft.requests).toEqual({});
+  });
+
+  it("keeps drafts writable while repository initialization blocks publication", async () => {
+    const current = detail(); current.capabilities.can_publish = false;
+    api.getMaterial.mockResolvedValue(current);
+    render(<MaterialDetailView workspaceId="ws" projectId="project" materialId="material" onBack={vi.fn()} />);
+    await userEvent.click(await screen.findByRole("button", { name: "New revision" }));
+    expect(screen.getByRole("checkbox", { name: /Clarification is complete/ })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Requirement document"), { target: { value: "Draft remains writable" } });
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    expect(api.sendMaterialCommand.mock.calls[0]?.[2]).toMatchObject({ action: "revisions", data: { ready: false, content: "Draft remains writable" } });
   });
 
   it("opens a material inside the shared project route", async () => {

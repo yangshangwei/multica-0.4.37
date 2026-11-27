@@ -105,7 +105,7 @@ try {
   const webLog = openSync(join(dir, "web.log"), "w", 0o600);
   launch(process.execPath, [join(root, "apps/web/node_modules/next/dist/bin/next"), "start", "--hostname", "127.0.0.1", "--port", String(ports.web)], { cwd: resolve(webBuild), env: childEnv, stdio: ["ignore", webLog, webLog] });
   await health(origin(ports.web), api);
-  const run = launch(process.execPath, [join(root, "node_modules/@playwright/test/cli.js"), "test", "e2e/material-workflow.spec.ts", "--workers=1", "--output", join(dir, "results")], { cwd: root, env: {
+  const run = launch(process.execPath, [join(root, "node_modules/@playwright/test/cli.js"), "test", "e2e/material-workflow.spec.ts", ...(record.case ? ["--grep", record.case] : []), "--workers=1", "--output", join(dir, "results")], { cwd: root, env: {
     ...childEnv, PLAYWRIGHT_BASE_URL: origin(ports.web), MATERIAL_RUN_STAMP: stamp, MATERIAL_RUN_DB: expectedDatabase, MATERIAL_UI_RECORD: resolve(recordFile), MATERIAL_DAEMON_BINARY: daemonBinary, MATERIAL_RUNTIME_EXECUTABLE: native, MATERIAL_RUNTIME_CONFIG: resolve(recordFile), MATERIAL_RUNTIME_DIR: dir, MULTICA_E2E_DESKTOP_OUTPUT_DIR: resolve(desktopOutput),
   }, stdio: "inherit" });
   process.exitCode = await new Promise((ok, fail) => run.once("error", fail).once("exit", (code) => ok(code ?? 1)));

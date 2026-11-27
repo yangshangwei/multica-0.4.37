@@ -143,6 +143,10 @@ func (c *client) request(ctx context.Context, method, endpoint string, body, out
 	if err != nil || len(b) > maxResponseBytes {
 		return response.Header, &Error{Code: "provider_response_incomplete", Retryable: true, Uncertain: mutating}
 	}
+	if raw, ok := out.(*[]byte); ok {
+		*raw = b
+		return response.Header, nil
+	}
 	if out != nil && (bytes.Equal(bytes.TrimSpace(b), []byte("null")) || json.Unmarshal(b, out) != nil) {
 		return response.Header, &Error{Code: "provider_response_invalid", Uncertain: mutating}
 	}

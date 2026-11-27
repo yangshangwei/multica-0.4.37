@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -95,6 +96,15 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 		}
 		if d.Action == "verify_baseline" && op.State != "succeeded" {
 			return db.AgentTaskQueue{}, materialError(409, "material_baseline_unverified")
+		}
+		if d.TargetKind != "repository_initialization" && d.RepositoryExecution != nil && len(d.RepositoryExecution.ReadyProof) > 0 && d.Action != "verify_baseline" && op.State != "prepared" {
+			return db.AgentTaskQueue{}, materialError(409, "material_repository_unverified")
+		}
+		if d.TargetKind != "repository_initialization" && d.RepositoryExecution != nil {
+			receipt, err := materialParse[protocol.MaterialObservation](op.Receipt)
+			if err != nil || time.Since(receipt.ObservedAt) > time.Minute {
+				return db.AgentTaskQueue{}, materialError(409, "material_repository_unverified")
+			}
 		}
 	}
 	// The real queued-to-started boundary: decide under the root lifecycle fence.

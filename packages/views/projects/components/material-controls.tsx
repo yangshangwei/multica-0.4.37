@@ -88,6 +88,7 @@ export function useMaterialLabels() {
   const publications = t(($) => $.materials.publicationStates, { returnObjects: true });
   const label = (map: Record<string, string>, value: string) => Object.hasOwn(map, value) ? map[value] : t(($) => $.materials.unknownState);
   const blocker = (value: string) => {
+    if (/material_repository_not_ready/.test(value)) return t(($) => $.materials.initialization.notReady);
     if (/runtime_required|runtime_unavailable|runtime_changed/.test(value)) return t(($) => $.materials.blockerMessages.runtime);
     if (/runtime_offline/.test(value)) return t(($) => $.materials.runtimeOffline);
     if (/protocol|capability|daemon_upgrade/.test(value)) return t(($) => $.materials.blockerMessages.runtimeUpgrade);

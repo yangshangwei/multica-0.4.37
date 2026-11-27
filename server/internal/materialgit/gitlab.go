@@ -44,6 +44,7 @@ type glMR struct {
 	} `json:"user"`
 	DiffRefs struct {
 		HeadSHA string `json:"head_sha"`
+		BaseSHA string `json:"base_sha"`
 	} `json:"diff_refs"`
 	HeadPipeline *struct{ SHA, Status string } `json:"head_pipeline"`
 }
@@ -189,7 +190,7 @@ func (p *gitlabProvider) observe(ctx context.Context, number int64) (glMR, Revie
 	if err != nil || count < 1 || count > 1000 || !shaPattern.MatchString(raw.SHA) || raw.DiffRefs.HeadSHA != raw.SHA {
 		return raw, Review{}, failure("provider_review_invalid")
 	}
-	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.SHA, BaseBranch: raw.TargetBranch, Branch: raw.SourceBranch, State: raw.State, MergeSHA: raw.MergeSHA, MergedAt: raw.MergedAt, MergeActor: raw.MergedBy.Username, Changes: []Change{}}
+	r := Review{Number: number, URL: raw.URL, HeadSHA: raw.SHA, BaseBranch: raw.TargetBranch, BaseCommit: raw.DiffRefs.BaseSHA, Branch: raw.SourceBranch, State: raw.State, MergeSHA: raw.MergeSHA, MergedAt: raw.MergedAt, MergeActor: raw.MergedBy.Username, Changes: []Change{}}
 	if r.State == "opened" {
 		r.State = "open"
 	}

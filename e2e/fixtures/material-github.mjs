@@ -35,15 +35,22 @@ export function createMaterialGitHub({ key, cert, token, controlToken, repositor
   }
   const initial = commit(new Map([["README.md", "# Controlled material repository\n"]]), [], "Initialize fixture"); branches.set(baseBranch, initial.sha);
   const changed = (p) => { const before = commits.get(p.base_sha).files, after = commits.get(branches.get(p.head)).files; return [...new Set([...before.keys(), ...after.keys()])].sort().filter(path => before.get(path) !== after.get(path)).map(filename => ({ filename, status: !after.has(filename) ? "removed" : before.has(filename) ? "modified" : "added" })); };
-  const review = p => ({ number: p.number, html_url: `https://github.com/${repository}/pull/${p.number}`, body: p.body, state: p.merge_sha ? "closed" : "open", draft: false, merged: !!p.merge_sha, merge_commit_sha: p.merge_sha ?? "", merged_at: p.merged_at ?? null, merged_by: p.merge_sha ? { login: actor } : null, mergeable: true, mergeable_state: "clean", changed_files: changed(p).length, head: { ref: p.head, sha: branches.get(p.head), repo: { full_name: repository } }, base: { ref: p.base, sha: branches.get(p.base), repo: { full_name: repository } } });
+  const review = p => ({ number: p.number, html_url: `https://github.com/${repository}/pull/${p.number}`, body: p.body, state: p.merge_sha ? "closed" : "open", draft: false, merged: !!p.merge_sha, merge_commit_sha: p.merge_sha ?? "", merged_at: p.merged_at ?? null, merged_by: p.merge_sha ? { login: actor } : null, mergeable: true, mergeable_state: "clean", changed_files: changed(p).length, head: { ref: p.head, sha: branches.get(p.head), repo: { full_name: repository } }, base: { ref: p.base, sha: p.base_sha, repo: { full_name: repository } } });
   const snapshot = () => ({ repository, initial_commit: initial.sha, base_branch: baseBranch, branches: Object.fromEntries(branches), effects: { ...effects }, reviews: [...reviews.values()].map(p => ({ iid: p.number, sha: branches.get(p.head), merge_commit_sha: p.merge_sha ?? null, notes: p.notes })), commits: [...commits.values()].map(c => ({ id: c.sha, files: Object.fromEntries([...c.files].map(([path, content]) => [path, { content_sha256: sha256(content), mode: "100644" }])) })) });
   const json = (res, status, body) => { res.writeHead(status, { "content-type": "application/json" }); res.end(JSON.stringify(body)); };
   const fail = (res, status = 400) => json(res, status, { message: "Fixture request rejected" });
-  async function input(req) { let data = ""; for await (const chunk of req) { data += chunk; if (Buffer.byteLength(data) > 4 << 20) throw Error("Too large"); } return JSON.parse(data); }
+  async function input(req) { const chunks = []; let size = 0; for await (const chunk of req) { size += chunk.length; if (size > 4 << 20) throw Error("Too large"); chunks.push(chunk); } return JSON.parse(Buffer.concat(chunks).toString("utf8")); }
   const server = createServer({ key, cert }, async (req, res) => {
     try {
       const url = new URL(req.url, "https://localhost");
       if (url.pathname === "/__control/snapshot" && req.method === "GET") { if (!sameSecret(req.headers.authorization, `Bearer ${controlToken}`)) return fail(res, 401); return json(res, 200, snapshot()); }
+      if (url.pathname === "/__control" && req.method === "POST") {
+        if (!sameSecret(req.headers.authorization, `Bearer ${controlToken}`)) return fail(res, 401);
+        const b = await input(req); if (b.action !== "seed" || !b.files || typeof b.files !== "object") return fail(res);
+        const files = new Map(commits.get(branches.get(baseBranch)).files);
+        for (const [path, content] of Object.entries(b.files)) { if (!safePath(path) || typeof content !== "string" || files.has(path)) return fail(res); files.set(path, content); }
+        const c = commit(files, [branches.get(baseBranch)], "Seed isolated existing repository"); branches.set(baseBranch, c.sha); return json(res, 200, snapshot());
+      }
       if (!sameSecret(req.headers.authorization, `Bearer ${token}`)) return fail(res, 401);
       if (url.pathname === "/graphql" && req.method === "POST") {
         const body = await input(req), p = reviews.get(body.variables?.number);
@@ -58,12 +65,12 @@ export function createMaterialGitHub({ key, cert, token, controlToken, repositor
       if (method === "GET" && ep.startsWith("/git/ref/heads/")) { const name = decodeURIComponent(ep.slice(15)); if (!branches.has(name)) return fail(res, 404); return json(res, 200, { ref: "refs/heads/" + name, object: { type: "commit", sha: branches.get(name) } }); }
       if (method === "POST" && ep === "/git/refs") { const b = await input(req), name = b.ref?.replace(/^refs\/heads\//, ""); if (!safePath(name) || !commits.has(b.sha) || branches.has(name)) return fail(res); branches.set(name, b.sha); effects.branch++; return json(res, 201, { ref: b.ref, object: { type: "commit", sha: b.sha } }); }
       if (method === "GET" && ep.startsWith("/git/commits/")) { const c = commits.get(ep.slice(13)); if (!c) return fail(res, 404); return json(res, 200, { sha: c.sha, tree: c.tree, parents: c.parents, message: c.message }); }
-      if (method === "GET" && ep.startsWith("/git/trees/")) { const sha = ep.slice(11), t = trees.get(sha); if (!t) return fail(res, 404); return json(res, 200, { sha, truncated: false, tree: t.entries }); }
+      if (method === "GET" && ep.startsWith("/git/trees/")) { const sha = ep.slice(11), t = trees.get(sha); if (!t) return fail(res, 404); const recursive = (value, prefix = "") => value.entries.flatMap(entry => { const path = prefix + entry.path; return [{ ...entry, path }, ...(entry.type === "tree" ? recursive(trees.get(entry.sha), path + "/") : [])]; }); return json(res, 200, { sha, truncated: false, tree: url.searchParams.get("recursive") === "1" ? recursive(t) : t.entries }); }
       if (method === "GET" && ep.startsWith("/git/blobs/")) { const sha = ep.slice(11), c = blobs.get(sha); if (c === undefined) return fail(res, 404); return json(res, 200, { sha, encoding: "base64", content: Buffer.from(c).toString("base64"), size: Buffer.byteLength(c) }); }
       if (method === "POST" && ep === "/git/trees") {
-        const b = await input(req), original = trees.get(b.base_tree); if (!original || !Array.isArray(b.tree) || b.tree.length < 1 || b.tree.length > 3) return fail(res);
+        const b = await input(req), original = trees.get(b.base_tree); if (!original || !Array.isArray(b.tree) || b.tree.length < 1 || b.tree.length > 20) return fail(res);
         const files = new Map(original.files);
-        for (const f of b.tree) { if (!safePath(f.path) || !/requirements\/[^/]+\/(prd|design|plan)\.md$/.test(f.path) || f.mode !== "100644" || f.type !== "blob" || typeof f.content !== "string") return fail(res); files.set(f.path, f.content); }
+        for (const f of b.tree) { if (!safePath(f.path) || f.mode !== "100644" || f.type !== "blob" || typeof f.content !== "string") return fail(res); files.set(f.path, f.content); }
         return json(res, 201, { sha: tree(files) });
       }
       if (method === "POST" && ep === "/git/commits") { const b = await input(req), t = trees.get(b.tree); if (!t || !Array.isArray(b.parents) || b.parents.length !== 1 || !commits.has(b.parents[0]) || typeof b.message !== "string") return fail(res); const c = commit(t.files, b.parents, b.message); effects.commit++; return json(res, 201, { sha: c.sha, tree: c.tree, parents: c.parents }); }

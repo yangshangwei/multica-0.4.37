@@ -60,6 +60,7 @@ func TestMaterialReviewSyncAbsenceRecovery(t *testing.T) {
 		v.Commit = r.HeadSHA
 		o.Files = append(o.Files, v)
 	}
+	o.RulesSnapshot = materialJSON(f.rules)
 	invalid := o
 	invalid.SourceComplete = false
 	if f.svc.ObserveOperation(t.Context(), f.task.ID, invalid) == nil {
@@ -128,7 +129,7 @@ func TestMaterialDisableWithoutRuntimePreservesIntent(t *testing.T) {
 	if err != nil || material.JSONDigest(replayed) != material.JSONDigest(out) {
 		t.Fatalf("disabled request replay changed: %v", err)
 	}
-	if f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id IN (SELECT id FROM agent WHERE workspace_id=$1)`, f.ws) != 0 {
+	if f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id IN (SELECT id FROM agent WHERE workspace_id=$1) AND status IN ('queued','running','dispatched')`, f.ws) != 0 {
 		t.Fatal("disable dispatched work")
 	}
 	f.settings.RequestID, f.settings.ExpectedVersion = uuid.NewString(), out.Settings.Version

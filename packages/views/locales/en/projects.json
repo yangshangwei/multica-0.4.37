@@ -1109,6 +1109,62 @@
       "preflight": "Checking merge conditions",
       "succeeded": "Operation verified"
     },
-    "runtimeHistoryUnavailable": "Original runtime unavailable"
+    "runtimeHistoryUnavailable": "Original runtime unavailable",
+    "initialization": {
+      "title": "Material repository initialization",
+      "unsupported": "This server cannot verify repository initialization. Drafts remain available; publication requires an update.",
+      "loadError": "Could not refresh repository checks. Your review input is kept; refresh before taking action.",
+      "publishAllowed": "The accepted rules and templates permit material publication.",
+      "draftAllowed": "You can prepare drafts. Complete repository initialization before publishing.",
+      "acceptedBundle": "Accepted bundle",
+      "incompatibleRequest": "An unconfirmed initialization request uses an unsupported format. Keep the original request and reconcile it before creating another.",
+      "check": "Check repository",
+      "maintenance": "Rules and template maintenance",
+      "candidate": "Initialization changes",
+      "bundle": "Template bundle",
+      "baseCommit": "Inspected base commit",
+      "candidateHead": "Review HEAD",
+      "manifest": "File manifest SHA-256",
+      "unpublished": "Not published yet",
+      "diffHint": "Every proposed file is listed below. Source text is displayed as data; unrelated existing files stay in place.",
+      "file": "Review file",
+      "before": "Before",
+      "after": "After",
+      "noFile": "No file",
+      "approvalHint": "Only workspace owners and administrators may approve these repository rules. Approval permits the selected runtime to merge this exact candidate after repository checks pass.",
+      "reviewCurrent": "Review the current initialization changes",
+      "reason": "Initialization review reason",
+      "approve": "Approve initialization changes",
+      "targetBundle": "Supported template version",
+      "maintenanceHint": "Select an advertised version. Checking an already accepted version creates no new review when there is no change.",
+      "maintain": "Check template maintenance",
+      "history": "Initialization review history",
+      "settingsHint": "Saving this binding asks the selected runtime to inspect the repository. Missing foundation files require a separate human review before material publication.",
+      "notReady": "Repository initialization must be verified before publishing. You can still save this revision as a draft.",
+      "states": {
+        "unconfigured": "Repository not configured",
+        "queued": "Repository check queued",
+        "checking": "Checking repository",
+        "needs_review": "Initialization needs review",
+        "publishing": "Publishing initialization changes",
+        "in_review": "Initialization awaiting review",
+        "changes_requested": "Initialization changes requested",
+        "approved": "Initialization approved; merge pending",
+        "merging": "Merging initialization",
+        "verifying": "Verifying repository contents",
+        "ready": "Repository initialized",
+        "blocked": "Initialization blocked",
+        "unknown": "Initialization result unconfirmed"
+      },
+      "fileActions": {
+        "add": "Add",
+        "modify": "Modify",
+        "preserve": "Preserve",
+        "conflict": "Conflict"
+      },
+      "proofHistory": "Previous repository checks",
+      "proofHistoryHint": "Historical checks do not authorize publication for the current binding.",
+      "unreadBody": "Contents were preserved by digest; they are not part of this proposed write."
+    }
   }
 }

@@ -50,7 +50,7 @@ export const MaterialDetailSchema = z.object({
   operation: MaterialOperationSchema.nullable().optional(),
   material: MaterialSchema, revisions: z.array(MaterialRevisionSchema), decisions: z.array(MaterialDecisionSchema),
   comments: z.array(MaterialCommentSchema), baseline: MaterialBaselineSchema.nullable(), plan: MaterialPlanSchema.nullable(),
-  capabilities: z.object({ can_edit: z.boolean(), can_review: z.boolean(), can_start_plan: z.boolean(), can_retry: z.boolean() }),
+  capabilities: z.object({ can_edit: z.boolean(), can_publish: z.boolean().optional(), can_review: z.boolean(), can_start_plan: z.boolean(), can_retry: z.boolean() }),
 }).superRefine((value, ctx) => {
   const revisions = new Map(value.revisions.map((revision) => [revision.id, revision]));
   if (revisions.size !== value.revisions.length ||

@@ -6877,7 +6877,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	if materialErr != nil {
 		return TaskResult{}, materialErr
 	}
-	if materialRun != nil && task.MaterialExecution.Action == "observe" {
+	if materialRun != nil && (task.MaterialExecution.Action == "observe" || task.MaterialExecution.Action == "inspect_repository") {
 		if err := d.client.StartTask(ctx, task.ID, taskKnowledgeFence(task)); err != nil {
 			return TaskResult{}, err
 		}
@@ -7616,6 +7616,11 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// taskfailure.Classify path records the failure with the same
 	// "start task failed: <…>" string and the same failure_reason
 	// taxonomy as before — see MUL-2946 for the classifier contract.
+	if materialRun != nil && task.MaterialExecution.Action != "verify_baseline" && task.MaterialExecution.TargetKind != "repository_initialization" && task.MaterialExecution.RepositoryExecution != nil {
+		if err := materialRun.observeRules(prepareCtx, d.client); err != nil {
+			return TaskResult{}, err
+		}
+	}
 	if materialRun != nil && task.MaterialExecution.Action == "verify_baseline" {
 		if err := materialRun.observe(prepareCtx, d.client); err != nil {
 			return TaskResult{}, err

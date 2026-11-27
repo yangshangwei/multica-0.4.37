@@ -28,6 +28,8 @@
 
 ## Git material authoring
 
+- `server/internal/materialrepo` owns the deterministic foundation catalog, preserved-tree checks and content proofs. These pure results are not human approvals. `server/internal/material/repository.go` owns the separate initialization response and command shapes; the initialization workflow reuses the runtime operation/claim/observation transport with a distinct repository target. Ordinary requirement paths never gain rule-file write permission. Current repository proof gates publication and planning while ordinary draft saving remains available.
+
 - `server/pkg/protocol/material.go` owns runtime execution v1 and the separate host-only claim binding. `server/internal/daemon/material.go` exposes operation/permit/observe through the exact active task's local bridge; `material_observer.go` reads provider facts using the host CLI. These helpers perform no remote write and never return the challenge to the model. Publication, note synchronization and approved merge are selected-runtime tool actions.
 - Material settings use one `execution_runtime_id`, with no Git connection or independent planning-Agent selection. The runtime carrier is internal. A fresh daemon baseline observation must precede planning model launch; persisted human holds and terminal retry history remain authoritative.
 

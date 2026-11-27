@@ -26,6 +26,35 @@ Read `material.version`, the current `revisions`, `baseline`, `plan`,
 requirement input yet. A Git review URL or human approval is not proof of merge,
 and a planning task ID is not proof that an agent ran.
 
+## Repository initialization and rule maintenance
+
+The configured repository/root must have a current verified initialization
+proof before a requirement can be published. Saving configuration starts a
+read-only check on the selected runtime. A compatible existing foundation can
+be adopted after independent readback; missing foundation files produce a
+separate initialization review. Workspace owner/admin maintenance authority
+approves those rule changes. Ordinary requirement reviewer rights do not grant
+authority to modify AGENTS.md, material.yaml, schemas or templates.
+
+You may save `ready=false` drafts while initialization is pending or blocked.
+Do not work around `material_repository_not_ready` by writing foundation files
+through a requirement revision. Follow the initialization state and remediation
+in the project's Engineering materials panel. Existing files are preserved;
+unknown rule content, partial reads and missing base branches require explicit
+resolution. The workflow does not silently create an initial default branch.
+
+An assigned initialization operation has the `repository_initialization`
+target and a frozen file manifest. Use the same operation/permit/observe
+commands below. Publish only the exact additions or reviewed maintenance
+before/after changes in that descriptor; no arbitrary rule edits are allowed.
+An initialization proof is neither a requirement baseline nor approval to code.
+Rule upgrades require their own maintenance candidate and current human review;
+a request for the already adopted supported bundle creates no redundant PR.
+
+The daemon checks protected rules again before ordinary material execution.
+Changed rules or a changed runtime/configuration invalidate old authority;
+do not replace the task identity or choose another runtime to bypass refusal.
+
 ## Create a requirement draft
 
 Choose and retain one request UUID for this create intent. The command never

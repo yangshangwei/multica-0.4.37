@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { newestMaterialRevision, materialDraftKey, useMaterialDraftStore, setMaterialEditorDraft, type MaterialEditorDraft, type MaterialCommand, type MaterialDetail, type MaterialKind, type MaterialSource } from "@multica/core/materials";
+import { canPublishInitializedMaterial, materialInitializationOptions, materialSettingsOptions, newestMaterialRevision, materialDraftKey, useMaterialDraftStore, setMaterialEditorDraft, type MaterialEditorDraft, type MaterialCommand, type MaterialDetail, type MaterialKind, type MaterialSource } from "@multica/core/materials";
 import { useAuthStore } from "@multica/core/auth";
 import { projectResourcesOptions } from "@multica/core/projects";
 import { Button } from "@multica/ui/components/ui/button";
@@ -17,6 +17,9 @@ export function MaterialRevisionEditor({ detail, kind, locked, onSave, onCancel 
   const { t } = useT("projects");
   const id = useId();
   const resources = useQuery(projectResourcesOptions(detail.material.workspace_id, detail.material.project_id));
+  const initialization = useQuery(materialInitializationOptions(detail.material.workspace_id, detail.material.project_id));
+  const settings = useQuery(materialSettingsOptions(detail.material.workspace_id, detail.material.project_id));
+  const canPublish = detail.capabilities.can_publish === true && !initialization.isError && !settings.isError && canPublishInitializedMaterial(initialization.data, settings.data?.settings?.version);
   const userId = useAuthStore((state) => state.user?.id);
   const draftKey = materialDraftKey(userId, detail.material.workspace_id, detail.material.project_id, `${detail.material.id}:${kind}`);
   const [initial] = useState<MaterialEditorDraft>(() => {
@@ -34,7 +37,7 @@ export function MaterialRevisionEditor({ detail, kind, locked, onSave, onCancel 
   const setSources = (update: (sources: MaterialSource[]) => MaterialSource[]) => edit({ sources: update(sources) });
   const changed = original.version !== detail.material.version || kind === "plan" && original.baselineId !== detail.baseline?.id;
   const lines = (value: string) => value.split("\n").map((line) => line.trim()).filter(Boolean);
-  const valid = content.trim().length > 0 && (!ready || (kind !== "plan" || planContent.trim().length > 0) && sources.length > 0 && lines(acceptance).length > 0 && lines(blockers).length === 0 && sources.every((source) => /^[a-f\d]{40}(?:[a-f\d]{24})?$/i.test(source.commit) && source.resource_id));
+  const valid = content.trim().length > 0 && (!ready || canPublish && (kind !== "plan" || planContent.trim().length > 0) && sources.length > 0 && lines(acceptance).length > 0 && lines(blockers).length === 0 && sources.every((source) => /^[a-f\d]{40}(?:[a-f\d]{24})?$/i.test(source.commit) && source.resource_id));
   const resourceOptions = [{ value: "", label: t(($) => $.materials.choose) }, ...(resources.data ?? []).map((resource) => ({ value: resource.id, label: resource.label || resource.id }))];
   const editSource = (index: number, change: Partial<MaterialSource>) => setSources((current) => current.map((source, i) => i === index ? { ...source, ...change } : source));
   return <form className="space-y-5" onSubmit={(event) => {
@@ -65,7 +68,8 @@ export function MaterialRevisionEditor({ detail, kind, locked, onSave, onCancel 
         </div>)}
         <Button type="button" variant="outline" size="sm" onClick={() => setSources((current) => [...current, { resource_id: "", commit: "", path: "" }])}>{t(($) => $.materials.addSource)}</Button>
       </fieldset>
-      <div className="space-y-2"><label className="flex items-start gap-3 text-body"><input type="checkbox" className="mt-1 size-4 shrink-0 accent-primary" checked={ready} onChange={(event) => edit({ ready: event.target.checked })} aria-describedby={`${id}-ready-hint`} /><span>{t(($) => $.materials.ready)}</span></label><p id={`${id}-ready-hint`} className="text-caption text-muted-foreground">{t(($) => $.materials.readyHint)}</p></div>
+      <div className="space-y-2"><label className="flex items-start gap-3 text-body"><input type="checkbox" className="mt-1 size-4 shrink-0 accent-primary" checked={ready} disabled={!canPublish && !ready} onChange={(event) => edit({ ready: event.target.checked })} aria-describedby={`${id}-ready-hint`} /><span>{t(($) => $.materials.ready)}</span></label><p id={`${id}-ready-hint`} className="text-caption text-muted-foreground">{t(($) => $.materials.readyHint)}</p></div>
+      {!canPublish && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.materials.initialization.notReady)}</p>}
     </fieldset>
     <div className="flex flex-wrap gap-2"><Button type="submit" disabled={!valid || locked || changed || resources.isError || resources.isPending}>{locked ? t(($) => $.materials.saving) : t(($) => $.materials.save)}</Button><Button type="button" variant="ghost" onClick={onCancel} disabled={locked}>{t(($) => $.materials.cancel)}</Button></div>
   </form>;

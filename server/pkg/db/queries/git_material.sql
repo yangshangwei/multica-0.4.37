@@ -88,7 +88,7 @@ WHERE material_id=$1 AND baseline_id=$10;
 -- name: MarkMaterialPlanManualStart :exec
 UPDATE git_material_plan SET manual_start=true WHERE material_id=$1 AND baseline_id=$2;
 -- name: MaterialProjectHasHistory :one
-SELECT EXISTS (SELECT 1 FROM git_material WHERE project_id=$1 AND workspace_id=$2)::boolean;
+SELECT (EXISTS (SELECT 1 FROM git_material m WHERE m.project_id=$1 AND m.workspace_id=$2) OR EXISTS (SELECT 1 FROM project_material_repository r WHERE r.project_id=$1 AND r.workspace_id=$2))::boolean;
 -- name: DeleteMaterialSettings :exec
 DELETE FROM project_material_settings WHERE project_id=$1 AND workspace_id=$2;
 -- name: MaterialExecutionBinding :one
@@ -96,7 +96,7 @@ SELECT p.*,m.baseline,m.current_revision_id,m.status AS material_status,s.settin
 FROM git_material_plan p JOIN git_material m ON m.id=p.material_id JOIN project_material_settings s ON s.project_id=p.project_id
 WHERE p.issue_id=$1;
 -- name: MaterialWorkspaceHasHistory :one
-SELECT EXISTS (SELECT 1 FROM git_material WHERE workspace_id=$1)::boolean;
+SELECT (EXISTS (SELECT 1 FROM git_material m WHERE m.workspace_id=$1) OR EXISTS (SELECT 1 FROM project_material_repository r WHERE r.workspace_id=$1))::boolean;
 -- name: DeleteWorkspaceMaterialSettings :exec
 DELETE FROM project_material_settings WHERE workspace_id=$1;
 -- name: MaterialIssueHasHistory :one
@@ -112,8 +112,8 @@ ON CONFLICT (workspace_id,owner_id,runtime_id,system_key) WHERE system_key IS NO
 INSERT INTO agent_task_queue (id,agent_id,runtime_id,status,priority,force_fresh_session,max_attempts,context,originator_user_id,accountable_user_id,originator_source,trigger_evidence_kind,trigger_evidence_ref_id)
 VALUES (@id,@agent_id,@runtime_id,'queued',0,true,1,@context,@authorizer_id,@authorizer_id,'direct_human','material_operation',@operation_id) RETURNING *;
 -- name: CreateMaterialOperation :one
-INSERT INTO git_material_operation (id,job_id,task_id,workspace_id,project_id,material_id,revision_id,runtime_id,agent_id,authorizer_id,attempt_no,action,descriptor,expected_digest)
-VALUES (@id,@job_id,@task_id,@workspace_id,@project_id,@material_id,@revision_id,@runtime_id,@agent_id,@authorizer_id,@attempt_no,@action,@descriptor,@expected_digest) RETURNING *;
+INSERT INTO git_material_operation (id,job_id,task_id,workspace_id,project_id,material_id,revision_id,runtime_id,agent_id,authorizer_id,attempt_no,action,descriptor,expected_digest,target_kind,repository_id,repository_revision_id)
+VALUES (@id,@job_id,@task_id,@workspace_id,@project_id,@material_id,@revision_id,@runtime_id,@agent_id,@authorizer_id,@attempt_no,@action,@descriptor,@expected_digest,@target_kind,@repository_id,@repository_revision_id) RETURNING *;
 -- name: GetMaterialOperationForTask :one
 SELECT * FROM git_material_operation WHERE task_id=$1;
 -- name: GetMaterialOperation :one
