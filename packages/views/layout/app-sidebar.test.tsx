@@ -590,20 +590,39 @@ describe("common icon navigation", () => {
   });
 });
 
-it("offers all three start-work entries directly before the existing directories", () => {
+it("groups workspace actions below the workspace picker without repeating its name", () => {
   renderWithI18n(<AppSidebar />);
   const group = screen.getByRole("group", { name: "Start work" });
   const create = within(group).getByRole("button", { name: "New Issue" });
-  const collaborate = within(group).getByRole("button", { name: "Start collaboration" });
   const chat = within(group).getByRole("link", { name: "AI Chat" });
   expect(create).toBeEnabled();
-  expect(collaborate).toBeEnabled();
   expect(chat).toHaveAttribute("href", "/acme/chat");
-  expect(create).toHaveTextContent("Acme");
-  expect(chat).toHaveTextContent("Acme");
-  expect(collaborate).toHaveTextContent("Cross-workspace");
+  expect(create).toHaveAccessibleDescription("Acme");
+  expect(chat).toHaveAccessibleDescription("Acme");
+  expect(group).not.toHaveTextContent("Acme");
+  expect(screen.queryByText("Start work", { exact: true })).not.toBeInTheDocument();
+  expect(group.closest('[data-sidebar-scope="workspace"]')).not.toBeNull();
+  const picker = screen.getByRole("button", { name: "Switch workspace" });
+  expect(picker.compareDocumentPosition(create) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(chat.compareDocumentPosition(screen.getByRole("link", { name: "Inbox" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(within(group).queryByRole("button", { name: "Start collaboration" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "New" })).not.toBeInTheDocument();
   expect(screen.getAllByRole("link", { name: "AI Chat" })).toHaveLength(1);
+});
+
+it("starts collaboration independently beside its collapsed disclosure", async () => {
+  renderWithI18n(<AppSidebar />);
+  const disclosure = screen.getByRole("button", { name: "Expand collaboration navigation" });
+  const create = screen.getByRole("button", { name: "Start collaboration" });
+  expect(disclosure.parentElement).toBe(create.parentElement);
+  expect(disclosure).not.toContainElement(create);
+  expect(screen.getAllByText("Beta", { exact: true })).toHaveLength(1);
+  create.focus();
+  await userEvent.keyboard("{Enter}");
+  expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", "ws-1");
+  expect(disclosure).toHaveAttribute("aria-expanded", "false");
+  expect(useSidebarPreferences.getState().groups.collaboration).toBe(false);
+  expect(navigationPush).not.toHaveBeenCalled();
 });
 
 it("opens ordinary creation immediately in the actual workspace", () => {
@@ -725,7 +744,7 @@ it("exposes explicit collaboration views before workspace navigation", () => {
   const { container } = renderWithI18n(<AppSidebar />);
   fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
   const links = Array.from(container.querySelectorAll("[data-href]"), (link) => link.getAttribute("data-href"));
-  expect(links.slice(1, 4)).toEqual(["/account?view=current", "/account?view=participating", "/account?view=notifications&filter=unread"]);
+  expect(links.slice(0, 3)).toEqual(["/account?view=current", "/account?view=participating", "/account?view=notifications&filter=unread"]);
   expect(screen.getByRole("navigation", { name: "Application navigation" })).toBeInTheDocument();
 });
 
@@ -739,9 +758,8 @@ it("keeps account navigation usable without a workspace or workspace providers",
   expect(container.querySelector('[data-href="/acme/issues"]')).not.toBeInTheDocument();
   expect(screen.getByText("Choose a workspace to access its issues and resources.")).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "New Issue" })).toBeDisabled();
-  expect(screen.getByRole("button", { name: "New Issue" })).toHaveTextContent("Open a workspace to create an issue");
+  expect(screen.getByRole("button", { name: "New Issue" })).toHaveAccessibleDescription("Open a workspace to create an issue");
   expect(screen.getByRole("button", { name: "AI Chat" })).toBeDisabled();
-  expect(screen.getByRole("button", { name: "AI Chat" })).toHaveTextContent("Choose a workspace to start AI Chat");
   expect(screen.getByRole("button", { name: "AI Chat" })).toHaveAccessibleDescription("Choose a workspace to start AI Chat");
   expect(screen.queryByRole("link", { name: "AI Chat" })).not.toBeInTheDocument();
   expect(queryLog.every((key) => key === "workspaces" || key === "invitations")).toBe(true);
@@ -1143,12 +1161,12 @@ describe("nav structure", () => {
     const { container } = render(<AppSidebar />);
     fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
     expect(navHrefs(container)).toEqual([
-      // Start work
-      "/acme/chat",
       // account collaboration
       "/account?view=current",
       "/account?view=participating",
       "/account?view=notifications&filter=unread",
+      // workspace actions
+      "/acme/chat",
       // personal
       "/acme/inbox",
       "/acme/my-issues",

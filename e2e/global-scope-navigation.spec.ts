@@ -88,17 +88,18 @@ async function expectStartWork(page: Page, workspace: Workspace, locale: "en" | 
   const navigation = page.getByRole("navigation", { name: chinese ? "应用导航" : "Application navigation", exact: true });
   const group = navigation.getByRole("group", { name: chinese ? "开始工作" : "Start work", exact: true });
   const newIssue = group.getByRole("button", { name: chinese ? "新建任务" : "New Issue", exact: true });
-  const collaboration = group.getByRole("button", { name: chinese ? "发起协作" : "Start collaboration", exact: true });
+  const collaboration = navigation.getByRole("button", { name: chinese ? "发起协作" : "Start collaboration", exact: true });
   const chat = group.getByRole("link", { name: chinese ? "AI 对话" : "AI Chat", exact: true });
   await expect(group).toBeVisible();
   await expect(newIssue).toBeVisible();
   await expect(newIssue).toBeEnabled();
   await expect(collaboration).toBeVisible();
   await expect(collaboration).toBeEnabled();
-  await expect(collaboration.getByText(chinese ? "跨工作空间" : "Cross-workspace", { exact: true })).toBeVisible();
-  await expect(collaboration.getByText("Beta", { exact: true })).toBeVisible();
+  await expect(collaboration).toHaveAccessibleDescription(/Beta/);
+  await expect(navigation.locator('[data-sidebar-scope="collaboration"]').getByText("Beta", { exact: true })).toHaveCount(1);
+  await expect(navigation.getByRole("button", { name: workspace.name, exact: true })).toBeVisible();
   for (const control of [newIssue, chat]) {
-    await expect(control.getByText(workspace.name, { exact: true })).toBeVisible();
+    await expect(control.getByText(workspace.name, { exact: true })).toHaveCount(0);
     await expect(control).toHaveAccessibleDescription(new RegExp(workspace.name));
   }
   await expect(navigation.getByRole("link", { name: chinese ? "AI 对话" : "AI Chat", exact: true })).toHaveCount(1);
@@ -109,8 +110,13 @@ async function expectStartWork(page: Page, workspace: Workspace, locale: "en" | 
   await expect(navigation.getByRole("button", { name: /^(New|新建)$/ })).toHaveCount(0);
   const bounds = await Promise.all([newIssue, collaboration, chat].map((control) => control.boundingBox()));
   expect(bounds.every((box) => box !== null)).toBe(true);
-  expect(bounds[0]!.y).toBeLessThan(bounds[1]!.y);
-  expect(bounds[1]!.y).toBeLessThan(bounds[2]!.y);
+  expect(bounds[1]!.y).toBeLessThan(bounds[0]!.y);
+  expect(Math.abs(bounds[0]!.y - bounds[2]!.y)).toBeLessThanOrEqual(1);
+  expect(bounds[0]!.x + bounds[0]!.width).toBeLessThanOrEqual(bounds[2]!.x);
+  if (await page.evaluate(() => matchMedia("(pointer: coarse)").matches)) {
+    expect(bounds[1]!.width).toBeGreaterThanOrEqual(44);
+    expect(bounds[1]!.height).toBeGreaterThanOrEqual(44);
+  }
   return { group, newIssue, collaboration, chat };
 }
 
@@ -130,7 +136,7 @@ async function setSidebarTheme(page: Page, theme: "light" | "dark" | "system") {
 }
 
 async function expectCompactStartWorkBounds(group: Locator, locale: "en" | "zh-Hans" = "en") {
-  const labels = locale === "zh-Hans" ? ["新建任务", "发起协作", "AI 对话"] : ["New Issue", "Start collaboration", "AI Chat"];
+  const labels = locale === "zh-Hans" ? ["新建任务", "AI 对话"] : ["New Issue", "AI Chat"];
   const geometry = await group.locator("button, a").evaluateAll((controls, labelNames) => {
     const bounds = (rect: DOMRect) => ({ left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom,
       width: rect.width, height: rect.height });
@@ -161,7 +167,7 @@ async function expectCompactStartWorkBounds(group: Locator, locale: "en" | "zh-H
         viewport: { width: innerWidth, height: innerHeight }, coarse: matchMedia("(pointer: coarse)").matches };
     });
   }, labels);
-  expect(geometry).toHaveLength(3);
+  expect(geometry).toHaveLength(2);
   for (const row of geometry) {
     expect(row.control.width, `${row.name} must have a painted target`).toBeGreaterThan(0);
     expect(row.control.left).toBeGreaterThanOrEqual(-1);
@@ -519,8 +525,6 @@ for (const platform of ["Web", "Desktop"] as const) {
       const compactNavigation = await openNavigation(page);
       const compactStartWork = await expectStartWork(page, fixture.second);
       await compactStartWork.newIssue.focus();
-      await page.keyboard.press("Tab");
-      await expect(compactStartWork.collaboration).toBeFocused();
       await page.keyboard.press("Tab");
       await expect(compactStartWork.chat).toBeFocused();
       const compactStartWorkBounds = await expectCompactStartWorkBounds(compactStartWork.group);
