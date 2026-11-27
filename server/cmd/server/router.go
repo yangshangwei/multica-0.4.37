@@ -1588,6 +1588,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Post("/runtimes/{runtimeId}/local-skills/{requestId}/result", h.ReportLocalSkillListResult)
 		r.Post("/runtimes/{runtimeId}/local-skills/import/{requestId}/result", h.ReportLocalSkillImportResult)
 
+		r.Get("/tasks/{taskId}/material-operation", h.GetDaemonMaterialOperation)
+		r.Post("/tasks/{taskId}/material-observations", h.ObserveDaemonMaterialOperation)
 		r.Get("/tasks/{taskId}/status", h.GetTaskStatus)
 		r.Post("/tasks/{taskId}/start", h.StartTask)
 		r.Post("/tasks/{taskId}/knowledge-context/prepare", h.PrepareTaskKnowledge)
@@ -2418,11 +2420,13 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 					r.Delete("/", h.DeleteProject)
 
 					r.Route("/materials", func(r chi.Router) {
+						r.Get("/operations/{operationID}", h.GetMaterialOperation)
 						r.Get("/settings", h.GetMaterialSettings)
 						r.With(handler.RequireHumanActor).Put("/settings", h.ConfigureMaterials)
 						r.Get("/", h.ListMaterials)
 						r.Post("/", h.CreateMaterial)
 						r.Route("/{materialID}", func(r chi.Router) {
+							r.Post("/operations/{operationID}/permit", h.PermitMaterialOperation)
 							r.Get("/", h.GetMaterial)
 							r.Post("/revisions", h.ReviseMaterial)
 							r.Post("/comments", h.CommentMaterial)

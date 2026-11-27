@@ -1953,6 +1953,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 			}
 			continue
 		}
+		resp.MaterialClaim = finalized.MaterialClaim
 		resp.AuthToken = tokenStr
 		resp.RemoteMCPDaemonToken = remoteMCPToken
 		resp.DeliveredCommentIDs = uuidStringsOrEmpty(finalized.DeliveredCommentIDs)
@@ -2223,6 +2224,24 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 	}
 	// Build response with fresh agent data (name + skills + custom_env + custom_args).
 	resp = taskToResponse(*task, runtimeWorkspaceID)
+	if task.TriggerEvidenceKind.String == "material_operation" || task.TriggerEvidenceKind.String == "material_baseline" {
+		if !materialDaemonCaller(r, runtime) {
+			// Public runtime visibility does not confer host authority. Return
+			// this exact unfinalized claim so the actual host can consume it.
+			if _, err := h.TaskService.RequeueTaskAfterClaimFailure(r.Context(), *task); err != nil {
+				return resp, []pgtype.UUID{}, 0, 0, &claimBuildFailure{status: 503, message: "material_claim_unavailable"}
+			}
+			return resp, []pgtype.UUID{}, 0, 0, &claimBuildFailure{status: 403, message: "material_daemon_required"}
+		}
+		if !requestHasClientCapability(r, protocol.DaemonCapabilityMaterialOperationsV1) {
+			return resp, []pgtype.UUID{}, 0, 0, h.failClaimedTaskBeforeLaunch(r.Context(), task, "Update the selected runtime to support material operations.", taskfailure.ReasonInvalidTaskIdentity, "material_runtime_upgrade_required", 409, "material_runtime_upgrade_required")
+		}
+		operation, e := service.MaterialOperationForTask(r.Context(), h.Queries, *task)
+		if e != nil {
+			return resp, []pgtype.UUID{}, 0, 0, &claimBuildFailure{status: 409, message: "material_operation_unavailable"}
+		}
+		resp.MaterialExecution = &operation.Execution
+	}
 	if task.ExecutionBindingID.Valid && task.DispatchedAt.Valid {
 		resp.ExecutionFence = &service.AdminCancellationWireFence{RuntimeID: runtimeID, DispatchedAt: task.DispatchedAt.Time.UTC().Format(time.RFC3339Nano)}
 	}
@@ -2420,6 +2439,22 @@ func (h *Handler) buildClaimedTaskResponse(r *http.Request, task *db.AgentTaskQu
 		RuntimeConfig:         runtimeConfig,
 		DisabledRuntimeSkills: disabledRuntimeSkillsFor(agent.DisabledRuntimeSkills, runtimeID, runtime.Provider),
 	}
+	if resp.MaterialExecution != nil {
+		resp.PluginHookTools = nil
+		resp.RemoteMCPConnections = nil
+		resp.ConnectedApps = nil
+		resp.Agent.Skills = nil
+		resp.Agent.SkillRefs = nil
+		resp.Agent.CustomEnv = map[string]string{}
+		resp.Agent.CustomArgs = nil
+		resp.Agent.McpConfig = nil
+		resp.ProjectID = resp.MaterialExecution.ProjectID
+		resp.WorkspaceContext = ""
+		resp.PriorSessionID = ""
+		resp.PriorWorkDir = ""
+		return resp, []pgtype.UUID{}, 0, 0, nil
+	}
+
 	// System agents carry a product-owned instruction layer that ships with
 	// this binary instead of being copied into their row at creation. That
 	// is what makes it hot-updatable: editing the embedded file and
@@ -3725,6 +3760,7 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to finalize task claim")
 		return
 	}
+	resp.MaterialClaim = finalized.MaterialClaim
 	resp.AuthToken = tokenStr
 	resp.RemoteMCPDaemonToken = remoteMCPToken
 	task.DeliveredCommentIds = finalized.DeliveredCommentIDs

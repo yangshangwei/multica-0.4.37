@@ -935,3 +935,36 @@ Released v0.8.8 with 40 matching local and GitHub assets. Formal Linux password/
 ### Next Steps
 
 - 前置runtime协议落地后接入独立初始化审核、回执和ready门槛
+
+## Session 200: Selected-runtime material delivery and deterministic acceptance
+<!-- trellis-session: v=2 fp=1150410bbd7214ba -->
+
+**Date**: 2026-11-27
+**Task**: Selected-runtime material delivery and deterministic acceptance
+**Branch**: `codex/git-engineering-material-workflow`
+
+### Summary
+
+Completed original runtime-only material task implementation with native Trellis lanes and independent full-scope review. Preserved unrelated work; no real model or remote Git writes.
+
+### Main Changes
+
+- Removed material App/VCS dependency and separate plan Agent; retained explicit runtime, human review, trusted observations and recoverable history.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `23d7d0721` | feat(materials): keep Git authority on the selected runtime |
+
+### Testing
+
+- [OK] Final service race 50; two-provider composite race; final production Web/Desktop 4/4; frontend tests; lint/typecheck/build/vet/sqlc.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Keep task in_progress for separate real provider/model acceptance and full-repository Go verification.

@@ -10,6 +10,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/material"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type materialExecutionKey struct{}
@@ -19,6 +20,15 @@ type materialExecutionPermit struct{ issueID, taskID pgtype.UUID }
 // on a configuration writer that may be cancelling the same task. Finalization
 // repeats this fence before disclosing the payload or minting a task token.
 func checkMaterialClaim(ctx context.Context, q *db.Queries, task db.AgentTaskQueue) error {
+	if task.TriggerEvidenceKind.String == "material_operation" {
+		_, _, err := AuthorizeMaterialOperation(ctx, q, task)
+		return err
+	}
+	if task.TriggerEvidenceKind.String == "material_baseline" {
+		if _, _, err := AuthorizeMaterialOperation(ctx, q, task); err != nil {
+			return err
+		}
+	}
 	if !task.IssueID.Valid {
 		return nil
 	}
@@ -137,6 +147,24 @@ func AuthorizeMaterialPlanTask(ctx context.Context, q *db.Queries, task db.Agent
 	if err != nil || base.ID != util.UUIDToString(binding.BaselineID) || (!active && !submitted) {
 		return materialError(403, "material_plan_task_denied")
 	}
+	// Submission legitimately moves the material's current revision past the
+	// baseline, so retain that read/replay path while still fencing the exact
+	// configuration and runtime that authorized this original plan invocation.
+	op, err := q.GetMaterialOperationForTask(ctx, task.ID)
+	if err != nil {
+		return err
+	}
+	descriptor, err := materialParse[protocol.MaterialExecution](op.Descriptor)
+	if err != nil {
+		return err
+	}
+	config, err := materialParse[materialBinding](binding.Settings)
+	if err != nil {
+		return err
+	}
+	if descriptor.Digest() != op.ExpectedDigest || descriptor.Action != "verify_baseline" || op.TaskID != task.ID || op.AgentID != task.AgentID || op.RuntimeID != task.RuntimeID || op.AuthorizerID != task.OriginatorUserID || descriptor.ConfigVersion != config.Version || descriptor.ConfigDigest != config.RuntimeDigest || config.ExecutionRuntimeID == nil || *config.ExecutionRuntimeID != descriptor.RuntimeID {
+		return materialError(409, "material_plan_context_changed")
+	}
 	return checkMaterialRunAuthority(ctx, q, binding)
 }
 
@@ -145,13 +173,16 @@ func checkMaterialRunAuthority(ctx context.Context, q *db.Queries, binding db.Ma
 	if err != nil || !config.Enabled {
 		return materialError(409, "material_disabled")
 	}
+	if err = materialSignerCurrent(ctx, q, config.Credential, binding.ConfigAuthorizedBy); err != nil {
+		return err
+	}
 	if err = materialCurrentMember(ctx, q, binding.WorkspaceID, binding.AuthorizedBy, binding.MemberID); err != nil {
 		return err
 	}
 	if _, err = currentMaterialManager(ctx, q, binding.WorkspaceID, binding.ConfigAuthorizedBy, binding.ConfigMemberID); err != nil {
 		return err
 	}
-	if config.PlanAgentID == nil || *config.PlanAgentID != util.UUIDToString(binding.AgentID) {
+	if config.CarrierID != util.UUIDToString(binding.AgentID) {
 		return materialError(409, "material_plan_context_changed")
 	}
 	revision, err := q.GetMaterialRevision(ctx, binding.BaselineID)
@@ -188,8 +219,7 @@ func checkMaterialRunAuthority(ctx context.Context, q *db.Queries, binding db.Ma
 func checkMaterialBaselineTarget(revision db.GitMaterialRevision, current materialBinding) error {
 	frozen, err := materialParse[materialBinding](revision.Settings)
 	if err != nil || frozen.Provider != current.Provider || frozen.Repository != current.Repository || frozen.ResourceID != current.ResourceID ||
-		frozen.ResourceDigest != current.ResourceDigest || frozen.BaseBranch != current.BaseBranch || frozen.RootPath != current.RootPath ||
-		frozen.ConnectionID == nil || current.ConnectionID == nil || *frozen.ConnectionID != *current.ConnectionID || frozen.ConnectionRevision != current.ConnectionRevision {
+		frozen.ResourceDigest != current.ResourceDigest || frozen.BaseBranch != current.BaseBranch || frozen.RootPath != current.RootPath {
 		return materialError(409, "material_configuration_changed")
 	}
 	return nil
@@ -214,8 +244,8 @@ func (s *MaterialService) processMaterialPlan(ctx context.Context, job db.GitMat
 	}
 	principal := config.AuthorizedBy
 	agentID := pgtype.UUID{}
-	if b.PlanAgentID != nil {
-		agentID, err = materialUUID(*b.PlanAgentID)
+	if b.CarrierID != "" {
+		agentID, err = materialUUID(b.CarrierID)
 		if err != nil {
 			return err
 		}
@@ -316,7 +346,7 @@ func (s *MaterialService) processMaterialPlan(ctx context.Context, job db.GitMat
 	if !preparedOK || !p.AgentID.Valid {
 		return block("material_plan_agent_unavailable")
 	}
-	if binding.PlanAgentID == nil || *binding.PlanAgentID != util.UUIDToString(agentID) || p.AgentID != agentID || p.AuthorizedBy != principal {
+	if binding.CarrierID != util.UUIDToString(agentID) || p.AgentID != agentID || p.AuthorizedBy != principal {
 		return block("material_plan_context_changed")
 	}
 	if err = materialCurrentMember(ctx, t.q, row.WorkspaceID, p.AuthorizedBy, p.MemberID); err != nil {
@@ -333,19 +363,7 @@ func (s *MaterialService) processMaterialPlan(ctx context.Context, job db.GitMat
 	if err != nil || agent.WorkspaceID != row.WorkspaceID || !allowed {
 		return block("material_plan_invocation_denied")
 	}
-	if s.ResolveProvider == nil {
-		return block("material_provider_unavailable")
-	}
-	provider, cleanup, err := s.ResolveProvider(ctx, t.q, row.WorkspaceID, binding.Settings)
-	if err != nil {
-		return block("material_connection_unavailable")
-	}
-	if cleanup != nil {
-		defer cleanup()
-	}
-	if err = materialVerifyFiles(ctx, provider, row, rev, base.Commit); err != nil {
-		return block("material_baseline_unreadable")
-	}
+
 	issue, err := t.q.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{ID: p.IssueID, WorkspaceID: row.WorkspaceID})
 	if err != nil {
 		return err
@@ -368,6 +386,29 @@ func (s *MaterialService) processMaterialPlan(ctx context.Context, job db.GitMat
 	}
 	if err != nil {
 		return err
+	}
+
+	runtime, e := materialRuntimeForUser(ctx, t.q, row.WorkspaceID, binding.ExecutionRuntimeID, p.AuthorizedBy)
+	if e != nil {
+		return e
+	}
+	descriptor, e := materialOperationDescriptor(job, row, revision, binding, runtime, task.ID, "verify_baseline")
+	if e != nil {
+		return e
+	}
+	descriptor.BaselineID = base.ID
+	descriptor.BaselineCommit = base.Commit
+	attempt := int32(1)
+	if old, e := t.q.LatestMaterialOperation(ctx, job.ID); e == nil {
+		attempt = old.AttemptNo + 1
+	} else if !errors.Is(e, pgx.ErrNoRows) {
+		return e
+	}
+	if e = createMaterialOperation(ctx, t.q, job, descriptor, p.AgentID, p.AuthorizedBy, attempt); e != nil {
+		return e
+	}
+	if e = t.q.DisableMaterialTaskRetries(ctx, task.ID); e != nil {
+		return e
 	}
 	p.Status = "queued"
 	p.TaskID = task.ID

@@ -4777,6 +4777,7 @@ func (d *Daemon) restartTargetBinary() (string, error) {
 // per-request timeout (WS) / the client's timeout (HTTP fallback), and the
 // server-side batch claim is index-backed + short.
 func (d *Daemon) pollLoop(ctx context.Context, taskWakeups <-chan taskWakeup) error {
+	d.replayMaterialObservations(ctx)
 	sem := newTaskSlotSemaphore(d.cfg.MaxConcurrentTasks)
 	collaboration, reserved, err := d.initializeCollaborationPoller(ctx)
 	if err != nil {
@@ -6872,6 +6873,19 @@ func qualifyTaskModel(
 
 func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot int, taskLog *slog.Logger) (taskResult TaskResult, returnErr error) {
 	defer func() { taskResult.KnowledgeFence = taskKnowledgeFence(task) }()
+	materialRun, materialErr := d.prepareMaterialRun(ctx, &task)
+	if materialErr != nil {
+		return TaskResult{}, materialErr
+	}
+	if materialRun != nil && task.MaterialExecution.Action == "observe" {
+		if err := d.client.StartTask(ctx, task.ID, taskKnowledgeFence(task)); err != nil {
+			return TaskResult{}, err
+		}
+		if err := materialRun.observe(ctx, d.client); err != nil {
+			return TaskResult{}, err
+		}
+		return TaskResult{Status: "completed"}, nil
+	}
 	markCancellationRunner(ctx)
 	// A claim carries the task-row agent id both at the top level and inside
 	// the expanded agent configuration. The top-level id is authoritative
@@ -7602,6 +7616,11 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// taskfailure.Classify path records the failure with the same
 	// "start task failed: <…>" string and the same failure_reason
 	// taxonomy as before — see MUL-2946 for the classifier contract.
+	if materialRun != nil && task.MaterialExecution.Action == "verify_baseline" {
+		if err := materialRun.observe(prepareCtx, d.client); err != nil {
+			return TaskResult{}, err
+		}
+	}
 	if err := d.client.StartTask(prepareCtx, task.ID, taskKnowledgeFence(task)); err != nil {
 		stopPrepareLease()
 		return TaskResult{}, fmt.Errorf("start task failed: %w", err)
@@ -7942,6 +7961,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// fields or ambient process environment. Register only for the provider
 	// execution window and always remove the credential afterwards.
 	d.registerActiveRepoCheckoutTask(agentToken, activeRepoCheckoutTask{
+		Material:    materialRun,
 		WorkspaceID: task.WorkspaceID,
 		TaskID:      task.ID,
 		AgentID:     task.AgentID,
@@ -7980,7 +8000,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	var retiredSessionID string
 	defer func() { taskResult.RetiredSessionID = retiredSessionID }()
 
-	if execOpts.Knowledge == nil && shouldRetryWithFreshSession(result, task.PriorSessionID, tools, provider) {
+	if materialRun == nil && execOpts.Knowledge == nil && shouldRetryWithFreshSession(result, task.PriorSessionID, tools, provider) {
 		firstResult := result
 		firstUsage := result.Usage
 		firstTools := tools

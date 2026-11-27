@@ -19,31 +19,29 @@ var shaPattern = regexp.MustCompile(`^(?:[a-f0-9]{40}|[a-f0-9]{64})$`)
 var acceptancePattern = regexp.MustCompile(`^[A-Za-z][A-Za-z0-9_-]{0,39}[:：\s]+\S`)
 
 type Settings struct {
-	Version       int64    `json:"version"`
-	Enabled       bool     `json:"enabled"`
-	Provider      string   `json:"provider"`
-	ResourceID    string   `json:"resource_id"`
-	ConnectionID  *string  `json:"connection_id"`
-	Repository    string   `json:"repository"`
-	BaseBranch    string   `json:"base_branch"`
-	RootPath      string   `json:"root_path"`
-	ReviewerIDs   []string `json:"reviewer_ids"`
-	PlanAgentID   *string  `json:"plan_agent_id"`
-	AutoStartPlan bool     `json:"auto_start_plan"`
+	Version            int64    `json:"version"`
+	Enabled            bool     `json:"enabled"`
+	Provider           string   `json:"provider"`
+	ResourceID         string   `json:"resource_id"`
+	ExecutionRuntimeID *string  `json:"execution_runtime_id"`
+	Repository         string   `json:"repository"`
+	BaseBranch         string   `json:"base_branch"`
+	RootPath           string   `json:"root_path"`
+	ReviewerIDs        []string `json:"reviewer_ids"`
+	AutoStartPlan      bool     `json:"auto_start_plan"`
 }
 type SettingsInput struct {
-	RequestID       string   `json:"request_id"`
-	ExpectedVersion int64    `json:"expected_version"`
-	Enabled         bool     `json:"enabled"`
-	Provider        string   `json:"provider"`
-	ResourceID      string   `json:"resource_id"`
-	ConnectionID    *string  `json:"connection_id"`
-	Repository      string   `json:"repository"`
-	BaseBranch      string   `json:"base_branch"`
-	RootPath        string   `json:"root_path"`
-	ReviewerIDs     []string `json:"reviewer_ids"`
-	PlanAgentID     *string  `json:"plan_agent_id"`
-	AutoStartPlan   *bool    `json:"auto_start_plan"`
+	RequestID          string   `json:"request_id"`
+	ExpectedVersion    int64    `json:"expected_version"`
+	Enabled            bool     `json:"enabled"`
+	Provider           string   `json:"provider"`
+	ResourceID         string   `json:"resource_id"`
+	ExecutionRuntimeID *string  `json:"execution_runtime_id"`
+	Repository         string   `json:"repository"`
+	BaseBranch         string   `json:"base_branch"`
+	RootPath           string   `json:"root_path"`
+	ReviewerIDs        []string `json:"reviewer_ids"`
+	AutoStartPlan      *bool    `json:"auto_start_plan"`
 }
 
 func (in SettingsInput) Settings() Settings {
@@ -51,14 +49,15 @@ func (in SettingsInput) Settings() Settings {
 	if in.AutoStartPlan != nil {
 		auto = *in.AutoStartPlan
 	}
-	return Settings{Version: in.ExpectedVersion + 1, Enabled: in.Enabled, Provider: in.Provider, ResourceID: in.ResourceID, ConnectionID: in.ConnectionID, Repository: in.Repository, BaseBranch: in.BaseBranch, RootPath: in.RootPath, ReviewerIDs: in.ReviewerIDs, PlanAgentID: in.PlanAgentID, AutoStartPlan: auto}
+	return Settings{Version: in.ExpectedVersion + 1, Enabled: in.Enabled, Provider: in.Provider, ResourceID: in.ResourceID, ExecutionRuntimeID: in.ExecutionRuntimeID, Repository: in.Repository, BaseBranch: in.BaseBranch, RootPath: in.RootPath, ReviewerIDs: in.ReviewerIDs, AutoStartPlan: auto}
 }
 
 type SettingsEnvelope struct {
-	WorkspaceID  string    `json:"workspace_id"`
-	ProjectID    string    `json:"project_id"`
-	CanConfigure bool      `json:"can_configure"`
-	Settings     *Settings `json:"settings"`
+	ExecutionProtocol int       `json:"execution_protocol"`
+	WorkspaceID       string    `json:"workspace_id"`
+	ProjectID         string    `json:"project_id"`
+	CanConfigure      bool      `json:"can_configure"`
+	Settings          *Settings `json:"settings"`
 }
 type Source struct {
 	ResourceID string `json:"resource_id"`
@@ -163,7 +162,16 @@ type Capabilities struct {
 	CanStartPlan bool `json:"can_start_plan"`
 	CanRetry     bool `json:"can_retry"`
 }
+type Operation struct {
+	ID                 string  `json:"id"`
+	Kind               string  `json:"kind"`
+	Status             string  `json:"status"`
+	TaskID             string  `json:"task_id"`
+	ExecutionRuntimeID string  `json:"execution_runtime_id"`
+	Blocker            *string `json:"blocker"`
+}
 type Detail struct {
+	Operation    *Operation   `json:"operation,omitempty"`
 	Material     Material     `json:"material"`
 	Revisions    []Revision   `json:"revisions"`
 	Decisions    []Decision   `json:"decisions"`
@@ -196,7 +204,7 @@ func ValidPath(s string, empty bool) bool {
 	return true
 }
 func ValidateSettings(s Settings) error {
-	if (s.Provider != "github" && s.Provider != "gitlab") || !ValidPath(s.Repository, false) || !strings.Contains(s.Repository, "/") || strings.HasSuffix(s.Repository, ".git") || !ValidPath(s.RootPath, true) || !ValidPath(s.BaseBranch, false) || strings.ContainsAny(s.BaseBranch, " ~^:?*[\t") || strings.Contains(s.BaseBranch, "..") || strings.Contains(s.BaseBranch, "@{") || strings.HasSuffix(s.BaseBranch, ".lock") || len(s.ReviewerIDs) == 0 || len(s.ReviewerIDs) > 32 || s.ConnectionID == nil || *s.ConnectionID == "" {
+	if (s.Provider != "github" && s.Provider != "gitlab") || !ValidPath(s.Repository, false) || !strings.Contains(s.Repository, "/") || strings.HasSuffix(s.Repository, ".git") || !ValidPath(s.RootPath, true) || !ValidPath(s.BaseBranch, false) || strings.ContainsAny(s.BaseBranch, " ~^:?*[\t") || strings.Contains(s.BaseBranch, "..") || strings.Contains(s.BaseBranch, "@{") || strings.HasSuffix(s.BaseBranch, ".lock") || len(s.ReviewerIDs) == 0 || len(s.ReviewerIDs) > 32 || s.Enabled && (s.ExecutionRuntimeID == nil || *s.ExecutionRuntimeID == "") {
 		return errors.New("invalid_material_settings")
 	}
 	return nil

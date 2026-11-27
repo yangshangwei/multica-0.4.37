@@ -22,11 +22,12 @@ export function MaterialSelect({ id, label, value, options, onChange, disabled }
 
 // An uncertain write keeps its original body and request ID until reconciled.
 // Definite HTTP refusals release the form; transport and malformed success do not.
-export function useMaterialAction<T, R>(write: (input: T) => Promise<R>, key: string, decode: (value: unknown) => T | null, onRecovered?: (result: R) => void) {
+export function useMaterialAction<T, R>(write: (input: T) => Promise<R>, key: string, decode: (value: unknown) => T | null, onRecovered?: (result: R) => void, holdIncompatible = false) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const stored = useMaterialDraftStore((state) => state.draft.requests[key]);
   const pending = decode(stored);
+  const incompatible = holdIncompatible && stored !== undefined && pending === null;
   const lock = useRef(false);
   const mounted = useRef(true);
   const onSuccess = useRef<((result: R) => void) | undefined>(undefined);
@@ -51,9 +52,9 @@ export function useMaterialAction<T, R>(write: (input: T) => Promise<R>, key: st
       if (mounted.current) setBusy(false);
     }
   };
-  return { busy, error: error ?? (pending !== null && !busy ? new Error("Unconfirmed request") : null), pending, locked: busy || pending !== null,
+  return { busy, incompatible, error: error ?? (pending !== null && !busy ? new Error("Unconfirmed request") : null), pending, locked: busy || pending !== null || incompatible,
     submit: (input: T, success?: (result: R) => void) => {
-      if (pending !== null || lock.current) return;
+      if (pending !== null || incompatible || lock.current) return;
       onSuccess.current = success;
       void execute(input);
     },
@@ -83,9 +84,14 @@ export function useMaterialLabels() {
   const { t } = useT("projects");
   const states = t(($) => $.materials.states, { returnObjects: true });
   const plans = t(($) => $.materials.planStates, { returnObjects: true });
+  const operations = t(($) => $.materials.operationStates, { returnObjects: true });
   const publications = t(($) => $.materials.publicationStates, { returnObjects: true });
   const label = (map: Record<string, string>, value: string) => Object.hasOwn(map, value) ? map[value] : t(($) => $.materials.unknownState);
   const blocker = (value: string) => {
+    if (/runtime_required|runtime_unavailable|runtime_changed/.test(value)) return t(($) => $.materials.blockerMessages.runtime);
+    if (/runtime_offline/.test(value)) return t(($) => $.materials.runtimeOffline);
+    if (/protocol|capability|daemon_upgrade/.test(value)) return t(($) => $.materials.blockerMessages.runtimeUpgrade);
+    if (/git_auth|authentication|git_tool|cli_missing/.test(value)) return t(($) => $.materials.blockerMessages.runtimeAuth);
     if (/not_reviewable|invalid_material_(revision|source)/.test(value)) return t(($) => $.materials.blockerMessages.notReady);
     if (/reviewer_required|human_required/.test(value)) return t(($) => $.materials.blockerMessages.reviewer);
     if (/agent_unavailable|plan_unavailable|plan_start_pending/.test(value)) return t(($) => $.materials.blockerMessages.agent);
@@ -101,5 +107,5 @@ export function useMaterialLabels() {
     if (/disabled|not_configured/.test(value)) return t(($) => $.materials.blockerMessages.disabled);
     return t(($) => $.materials.blockerMessages.unavailable);
   };
-  return { state: (value: string) => label(states, value), plan: (value: string) => label(plans, value), publication: (value: string) => label(publications, value), blocker };
+  return { operation: (value: string) => label(operations, value), state: (value: string) => label(states, value), plan: (value: string) => label(plans, value), publication: (value: string) => label(publications, value), blocker };
 }

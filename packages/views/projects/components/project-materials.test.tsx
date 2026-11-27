@@ -4,7 +4,8 @@ import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react
 import userEvent from "@testing-library/user-event";
 import { onlineManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiError, setApiInstance, type ApiClient } from "@multica/core/api";
-import { materialKeys, useMaterialDraftStore, type MaterialDetail, type MaterialSettingsEnvelope } from "@multica/core/materials";
+import { materialKeys, materialDraftKey, setMaterialPendingRequest, useMaterialDraftStore, type MaterialDetail, type MaterialSettingsEnvelope } from "@multica/core/materials";
+import { runtimeKeys } from "@multica/core/runtimes";
 import { useProjectAccessStore } from "@multica/core/projects";
 import { paths } from "@multica/core/paths";
 import { renderWithI18n } from "../../test/i18n";
@@ -22,16 +23,17 @@ vi.mock("@multica/core/paths", async (original) => {
 });
 vi.mock("@multica/ui/markdown", () => ({ Markdown: ({ children }: { children: string }) => <div>{children}</div> }));
 
+const runtime = { id: "12345678-1234-4234-8234-123456789abc", workspace_id: "ws", name: "Test computer", provider: "codex", status: "online", runtime_mode: "daemon", owner_id: "user", visibility: "private", daemon_id: "test-daemon", metadata: {} };
 const sha = "a".repeat(40), digest = "b".repeat(64);
 const client = new QueryClient({ defaultOptions: { queries: { retry: false, gcTime: 0 }, mutations: { retry: false } } });
 const push = vi.fn();
 const api = {
   getMaterialSettings: vi.fn(), saveMaterialSettings: vi.fn(), listMaterials: vi.fn(), createMaterial: vi.fn(), getMaterial: vi.fn(), sendMaterialCommand: vi.fn(),
-  listMembers: vi.fn(), listAgents: vi.fn(), listProjectResources: vi.fn(), listGitHubInstallations: vi.fn(), listVCSConnections: vi.fn(),
+  listRuntimes: vi.fn(), listMembers: vi.fn(), listAgents: vi.fn(), listProjectResources: vi.fn(), listGitHubInstallations: vi.fn(), listVCSConnections: vi.fn(),
 };
 function envelope(auto = true): MaterialSettingsEnvelope {
-  return { workspace_id: "ws", project_id: "project", can_configure: true, settings: {
-    version: 1, enabled: true, provider: "github", resource_id: "repo", connection_id: "installation", repository: "acme/materials", base_branch: "main", root_path: "", reviewer_ids: ["user"], plan_agent_id: null, auto_start_plan: auto,
+  return { workspace_id: "ws", project_id: "project", can_configure: true, execution_protocol: 1, settings: {
+    version: 1, enabled: true, provider: "github", resource_id: "repo", execution_runtime_id: "12345678-1234-4234-8234-123456789abc", repository: "acme/materials", base_branch: "main", root_path: "", reviewer_ids: ["user"], auto_start_plan: auto,
   } };
 }
 function detail(): MaterialDetail {
@@ -50,6 +52,7 @@ beforeEach(() => {
   api.saveMaterialSettings.mockImplementation(async (_id, input) => ({ ...envelope(input.auto_start_plan), settings: { ...envelope(input.auto_start_plan).settings, version: 2 } }));
   api.listMaterials.mockResolvedValue({ workspace_id: "ws", project_id: "project", materials: [detail().material] });
   api.getMaterial.mockImplementation(async () => detail()); api.sendMaterialCommand.mockImplementation(async () => detail());
+  api.listRuntimes.mockResolvedValue([runtime]);
   api.listMembers.mockResolvedValue([{ user_id: "user", name: "Alice", role: "admin" }]); api.listAgents.mockResolvedValue([]);
   api.listProjectResources.mockResolvedValue({ resources: [{ id: "repo", workspace_id: "ws", project_id: "project", resource_type: "github_repo", resource_ref: { url: "https://github.com/acme/materials" }, label: "Materials repository" }], total: 1 });
   api.listGitHubInstallations.mockResolvedValue({ configured: true, installations: [{ id: "installation", account_login: "acme" }] });
@@ -59,6 +62,22 @@ beforeEach(() => {
 afterEach(() => { cleanup(); client.clear(); onlineManager.setOnline(true); });
 
 describe("shared material workflow", () => {
+  it("keeps a confirmed no-effect operation pending until an explicit human retry", async () => {
+    const current = detail();
+    current.material.status = "blocked";
+    current.operation = { id: "operation", kind: "observe", status: "no_effect", task_id: "task", execution_runtime_id: runtime.id, blocker: null };
+    current.capabilities.can_review = false;
+    api.getMaterial.mockResolvedValue(current);
+    render(<MaterialDetailView workspaceId="ws" projectId="project" materialId="material" onBack={vi.fn()} />);
+    expect(await screen.findByText("No remote change found. Resume when ready to try again.")).toBeVisible();
+    expect(screen.queryByText("Operation verified")).not.toBeInTheDocument();
+    expect(api.sendMaterialCommand).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("button", { name: "Recheck and resume" }));
+    expect(api.sendMaterialCommand).toHaveBeenCalledWith("project", "material", {
+      action: "retry", data: { request_id: expect.any(String), expected_version: current.material.version },
+    }, { workspaceId: "ws" });
+  });
+
   it("opens a material inside the shared project route", async () => {
     render(<ProjectMaterials workspaceId="ws" projectId="project" />);
     await userEvent.click(await screen.findByRole("button", { name: /Refund requirements/ }));
@@ -74,9 +93,80 @@ describe("shared material workflow", () => {
     await userEvent.click(screen.getByRole("switch", { name: "Start planning after verified merge" }));
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(close).not.toHaveBeenCalled();
-    expect(api.saveMaterialSettings).toHaveBeenCalledWith("project", expect.objectContaining({ auto_start_plan: false, expected_version: 1, connection_id: "installation" }), { workspaceId: "ws" });
+    expect(api.saveMaterialSettings).toHaveBeenCalledWith("project", expect.objectContaining({ auto_start_plan: false, expected_version: 1, execution_runtime_id: runtime.id }), { workspaceId: "ws" });
     await act(async () => { confirm(envelope(false)); });
     await waitFor(() => expect(close).toHaveBeenCalledOnce());
+  });
+
+  it.each(["github", "gitlab"])("saves %s with a single explicit runtime and no integration or agent queries", async (provider) => {
+    const current = envelope(); current.settings!.provider = provider;
+    render(<ProjectMaterialSettings workspaceId="ws" projectId="project" envelope={current} onClose={vi.fn()} />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save" })).toBeEnabled());
+    expect(screen.getByRole("group", { name: "Execution runtime" })).toBeVisible();
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    const input = api.saveMaterialSettings.mock.calls[0]?.[1];
+    expect(input).toMatchObject({ provider, execution_runtime_id: runtime.id });
+    expect(input).not.toHaveProperty("connection_id"); expect(input).not.toHaveProperty("plan_agent_id");
+    expect(api.listAgents).not.toHaveBeenCalled(); expect(api.listGitHubInstallations).not.toHaveBeenCalled(); expect(api.listVCSConnections).not.toHaveBeenCalled();
+  });
+
+  it("requires deliberate runtime selection and never picks a replacement after removal", async () => {
+    const current = envelope(); current.settings!.execution_runtime_id = null;
+    render(<ProjectMaterialSettings workspaceId="ws" projectId="project" envelope={current} onClose={vi.fn()} />);
+    const picker = await screen.findByRole("button", { name: "Runtime · none selected" });
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+    await userEvent.click(picker);
+    await userEvent.click(await screen.findByRole("button", { name: /^Test computer/ }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save" })).toBeEnabled());
+    act(() => client.setQueryData(runtimeKeys.list("ws"), [{ ...runtime, id: "22222222-2222-4222-8222-222222222222" }]));
+    expect(await screen.findByText(/selected runtime is unavailable/i)).toBeVisible();
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+    expect(api.saveMaterialSettings).not.toHaveBeenCalled();
+  });
+
+  it("keeps an offline runtime selectable without claiming Git authentication", async () => {
+    api.listRuntimes.mockResolvedValue([{ ...runtime, status: "offline" }]);
+    render(<ProjectMaterialSettings workspaceId="ws" projectId="project" envelope={envelope()} onClose={vi.fn()} />);
+    expect(await screen.findByText(/operations will wait for this runtime/)).toBeVisible();
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save" })).toBeEnabled());
+    expect(screen.getByText(/Git access is checked on its computer/)).toBeVisible();
+  });
+
+  it("preserves inputs on inventory failure and erases denied runtime data only", async () => {
+    render(<ProjectMaterialSettings workspaceId="ws" projectId="project" envelope={envelope()} onClose={vi.fn()} />);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save" })).toBeEnabled());
+    const repository = screen.getByLabelText("Repository path");
+    fireEvent.change(repository, { target: { value: "acme/draft" } }); repository.focus();
+    api.listRuntimes.mockRejectedValueOnce(new ApiError("failed", 503, "Unavailable"));
+    await act(async () => { await client.invalidateQueries({ queryKey: runtimeKeys.list("ws") }); });
+    expect(screen.getByLabelText("Repository path")).toBe(repository); expect(repository).toHaveFocus();
+    expect(repository).toHaveValue("acme/draft");
+    expect(client.getQueryData(runtimeKeys.list("ws"))).toEqual([runtime]);
+    api.listRuntimes.mockRejectedValue(new ApiError("denied", 403, "Forbidden"));
+    await act(async () => { await client.invalidateQueries({ queryKey: runtimeKeys.list("ws") }); });
+    expect(client.getQueryData(runtimeKeys.list("ws"))).toBeUndefined();
+    expect(screen.queryByText("Test computer")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Repository path")).toHaveValue("acme/draft");
+    expect(useProjectAccessStore.getState().denied).toEqual({});
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+  });
+
+  it("refuses old server writes and reconciles a retired request without reusing it", async () => {
+    const legacy = envelope(); delete legacy.execution_protocol;
+    const view = render(<ProjectMaterialSettings workspaceId="ws" projectId="project" envelope={legacy} onClose={vi.fn()} />);
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled(); view.unmount();
+    const key = materialDraftKey("user", "ws", "project", "settings");
+    const original = { request_id: "legacy-intent", connection_id: "old", plan_agent_id: "old-agent" };
+    setMaterialPendingRequest(key, original);
+    render(<ProjectMaterialSettings workspaceId="ws" projectId="project" envelope={envelope()} onClose={vi.fn()} />);
+    expect(await screen.findByText(/older format/)).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Retry the same request" })).not.toBeInTheDocument();
+    expect(api.saveMaterialSettings).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("button", { name: "Reload saved configuration" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Save" })).toBeEnabled());
+    expect(useMaterialDraftStore.getState().draft.retiredRequests[key]).toEqual([original]);
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    expect(api.saveMaterialSettings.mock.calls[0]?.[1].request_id).not.toBe(original.request_id);
   });
 
   it("reads a saved false setting without restoring the default", async () => {

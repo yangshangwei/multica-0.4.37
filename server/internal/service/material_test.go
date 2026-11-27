@@ -19,6 +19,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type materialFakeGit struct {
@@ -26,6 +27,7 @@ type materialFakeGit struct {
 	reviews                map[int64]materialgit.Review
 	files                  map[string]string
 	branches               map[string]int64
+	notes                  map[int64]protocol.MaterialAuditNote
 	publish, merge         int
 	lostPublish, lostMerge bool
 	gates                  bool
@@ -36,7 +38,7 @@ type materialFakeGit struct {
 }
 
 func newMaterialFake() *materialFakeGit {
-	return &materialFakeGit{reviews: map[int64]materialgit.Review{}, files: map[string]string{}, branches: map[string]int64{}, gates: true}
+	return &materialFakeGit{reviews: map[int64]materialgit.Review{}, files: map[string]string{}, branches: map[string]int64{}, notes: map[int64]protocol.MaterialAuditNote{}, gates: true}
 }
 func (p *materialFakeGit) Publish(_ context.Context, in materialgit.PublishRequest) (materialgit.Review, error) {
 	p.mu.Lock()
@@ -45,7 +47,7 @@ func (p *materialFakeGit) Publish(_ context.Context, in materialgit.PublishReque
 	n := p.branches[in.Branch]
 	if n == 0 {
 		n = int64(len(p.reviews) + 1)
-		r := materialgit.Review{Number: n, URL: "https://git.example/review", HeadSHA: material.Digest(in.Key)[:40], BaseBranch: in.BaseBranch, Branch: in.Branch, State: "open", GatesPassed: p.gates}
+		r := materialgit.Review{Number: n, URL: "https://github.com/example/materials/pull/1", HeadSHA: material.Digest(in.Key)[:40], BaseBranch: in.BaseBranch, Branch: in.Branch, State: "open", GatesPassed: p.gates}
 		for _, f := range in.Files {
 			r.Changes = append(r.Changes, materialgit.Change{Path: f.Path, Mode: "100644", Status: "added"})
 			p.files[r.HeadSHA+":"+f.Path] = f.Content
@@ -72,7 +74,11 @@ func (p *materialFakeGit) Observe(_ context.Context, n int64) (materialgit.Revie
 	}
 	return r, nil
 }
-func (p *materialFakeGit) SyncDecision(context.Context, int64, materialgit.DecisionNote) error {
+func (p *materialFakeGit) SyncDecision(n int64, note protocol.MaterialAuditNote) error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	note.Actor = "fixture-runtime"
+	p.notes[n] = note
 	return nil
 }
 func (p *materialFakeGit) Merge(_ context.Context, expected materialgit.MergeExpectation) (materialgit.Review, error) {
@@ -85,8 +91,10 @@ func (p *materialFakeGit) Merge(_ context.Context, expected materialgit.MergeExp
 	}
 	p.merge++
 	r.State = "merged"
-	r.MergeSHA = strings.Repeat("b", 40)
+	r.MergeSHA = material.Digest(r.HeadSHA + "merge")[:40]
 	r.MergeActor = "integration"
+	mergedAt := time.Now()
+	r.MergedAt = &mergedAt
 	for _, c := range r.Changes {
 		p.files[r.MergeSHA+":"+c.Path] = p.files[r.HeadSHA+":"+c.Path]
 	}
@@ -121,6 +129,11 @@ type materialFixture struct {
 	access                      MaterialAccess
 	settings                    material.SettingsInput
 	ws, user, project, resource string
+	runtime                     string
+	active                      *protocol.MaterialExecution
+	claim                       *protocol.MaterialClaimBinding
+	task                        db.AgentTaskQueue
+	lastErr                     error
 }
 
 func newMaterialFixture(t *testing.T, auto bool) *materialFixture {
@@ -143,24 +156,24 @@ func newMaterialFixture(t *testing.T, auto bool) *materialFixture {
 	fx.WorkspaceID, fx.UserID = ws, user
 	project := fx.Project(t, "Engineering materials")
 	resource := fx.Insert(t, "project_resource", testutil.Cols{"workspace_id": ws, "project_id": project, "resource_type": "github_repo", "resource_ref": `{"url":"https://github.com/example/materials.git"}`, "position": 0})
-	conn := fx.Insert(t, "github_installation", testutil.Cols{"workspace_id": ws, "installation_id": time.Now().UnixNano(), "account_login": "example", "account_type": "Organization"})
+	runtime := fx.Runtime(t, "material runtime", testutil.Cols{"daemon_id": "material-" + suffix})
 	q := db.New(pool)
 	if e = q.SeedIssueStatusEntries(ctx, util.MustParseUUID(ws)); e != nil {
 		t.Fatal(e)
 	}
-	for _, table := range []string{"issue_status", "issue", "project_material_settings", "git_material", "git_material_revision", "git_material_decision", "git_material_comment", "git_material_request", "git_material_job", "git_material_plan"} {
+	for _, table := range []string{"issue_status", "issue", "project_material_settings", "git_material", "git_material_revision", "git_material_decision", "git_material_comment", "git_material_request", "git_material_job", "git_material_plan", "git_material_operation"} {
 		fx.Cleanup(t, `DELETE FROM `+table+` WHERE workspace_id=$1`, ws)
 	}
-	fx.Cleanup(t, `DELETE FROM agent_task_queue WHERE issue_id IN (SELECT id FROM issue WHERE workspace_id=$1)`, ws)
+	fx.Cleanup(t, `DELETE FROM task_token WHERE workspace_id=$1`, ws)
+	fx.Cleanup(t, `DELETE FROM agent_task_queue WHERE agent_id IN (SELECT id FROM agent WHERE workspace_id=$1)`, ws)
+	fx.Cleanup(t, `DELETE FROM agent WHERE workspace_id=$1 AND kind='system'`, ws)
 	f := &materialFixture{pool: pool, fx: fx, ws: ws, user: user, project: project, resource: resource, git: newMaterialFake()}
 	tasks := NewTaskService(q, pool, nil, events.New(), nil)
 	issues := NewIssueService(q, pool, nil, nil, tasks)
 	f.svc = NewMaterialService(q, pool, issues, tasks)
-	f.svc.ResolveProvider = func(context.Context, *db.Queries, pgtype.UUID, material.Settings) (materialgit.Provider, func(), error) {
-		return f.git, nil, nil
-	}
+	f.runtime = runtime
 	f.access = MaterialAccess{WorkspaceID: util.MustParseUUID(ws), ProjectID: util.MustParseUUID(project), Credential: stageCredential(user)}
-	f.settings = material.SettingsInput{RequestID: uuid.NewString(), Enabled: true, Provider: "github", ResourceID: resource, ConnectionID: &conn, Repository: "example/materials", BaseBranch: "main", RootPath: "engineering", ReviewerIDs: []string{user}, AutoStartPlan: &auto}
+	f.settings = material.SettingsInput{RequestID: uuid.NewString(), Enabled: true, Provider: "github", ResourceID: resource, ExecutionRuntimeID: &runtime, Repository: "example/materials", BaseBranch: "main", RootPath: "engineering", ReviewerIDs: []string{user}, AutoStartPlan: &auto}
 	if _, e = f.svc.Configure(ctx, f.access, f.settings); e != nil {
 		t.Fatal(e)
 	}
@@ -179,12 +192,139 @@ func (f *materialFixture) candidate(t *testing.T) material.Detail {
 	}
 	return d
 }
+
+// This service fixture exercises queue admission and receipt validation. The
+// executable/daemon integration is a separate test layer; this fake never acts
+// as a product server provider or writes final material state directly.
 func (f *materialFixture) step(t *testing.T) {
 	t.Helper()
-	f.fx.Exec(t, `UPDATE git_material_job SET next_at=now() WHERE workspace_id=$1`, f.ws)
-	if worked, e := f.svc.ProcessNext(context.Background()); e != nil || !worked {
-		t.Fatalf("worker: %v %v", worked, e)
+	f.lastErr = nil
+	if f.active != nil {
+		f.lastErr = f.observe(t)
+		if f.lastErr == nil {
+			f.finish(t)
+		}
+		return
 	}
+	f.fx.Exec(t, `UPDATE git_material_job SET next_at=now() WHERE workspace_id=$1`, f.ws)
+	worked, e := f.svc.ProcessNext(t.Context())
+	if e != nil {
+		f.lastErr = e
+		return
+	}
+	if !worked {
+		return
+	}
+	var id pgtype.UUID
+	e = f.pool.QueryRow(t.Context(), `SELECT o.task_id FROM git_material_operation o JOIN agent_task_queue t ON t.id=o.task_id WHERE o.workspace_id=$1 AND o.action!='verify_baseline' AND t.status='queued' ORDER BY o.created_at LIMIT 1`, f.ws).Scan(&id)
+	if e != nil {
+		return
+	}
+	f.admit(t, id)
+	d := *f.active
+	switch d.Action {
+	case "publish":
+		files := []materialgit.File{}
+		for _, v := range d.Files {
+			files = append(files, materialgit.File{Path: v.Path, Content: v.Content})
+		}
+		_, e = f.git.Publish(t.Context(), materialgit.PublishRequest{Key: d.OperationKey, Branch: d.SourceBranch, BaseBranch: d.BaseBranch, Files: files})
+	case "review_sync":
+		e = f.git.SyncDecision(d.ReviewNumber, *d.AuditNote)
+	case "merge":
+		e = f.observe(t)
+		if e == nil {
+			_, e = f.svc.OperationPermit(t.Context(), f.task, d.OperationID, protocol.MaterialPermitInput{RequestID: uuid.NewString(), ExpectedDigest: d.ExpectedDigest})
+		}
+		if e == nil {
+			_, e = f.git.Merge(t.Context(), materialgit.MergeExpectation{Number: d.ReviewNumber, HeadSHA: d.ApprovedHead})
+		}
+	}
+	if e != nil {
+		f.lastErr = e
+		return
+	}
+	f.lastErr = f.observe(t)
+	if f.lastErr != nil {
+		return
+	}
+	f.finish(t)
+	if d.Action == "review_sync" {
+		f.step(t)
+	}
+}
+func (f *materialFixture) admit(t *testing.T, id pgtype.UUID) {
+	t.Helper()
+	original, e := f.svc.Queries.GetAgentTask(t.Context(), id)
+	if e != nil {
+		t.Fatal(e)
+	}
+	task, e := f.svc.Tasks.ClaimTask(t.Context(), original.AgentID)
+	if e != nil || task == nil || task.ID != id {
+		t.Fatalf("claim: %+v %v", task, e)
+	}
+	final, e := f.svc.Tasks.FinalizeTaskClaim(t.Context(), *task, db.CreateTaskTokenParams{TokenHash: uuid.NewString(), TaskID: id, AgentID: task.AgentID, WorkspaceID: f.access.WorkspaceID, UserID: util.MustParseUUID(f.user), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, nil, TaskClaimBudgetProtocolNone)
+	if e != nil || final.MaterialClaim == nil {
+		t.Fatalf("claim finalization: %+v %v", final, e)
+	}
+	op, e := MaterialOperationForTask(t.Context(), f.svc.Queries, *task)
+	if e != nil {
+		t.Fatal(e)
+	}
+	f.active = &op.Execution
+	f.claim = final.MaterialClaim
+	f.task = *task
+	if op.Execution.Action != "verify_baseline" {
+		if _, e = f.svc.Tasks.StartTask(t.Context(), id); e != nil {
+			t.Fatal(e)
+		}
+	}
+}
+func (f *materialFixture) observe(t *testing.T) error {
+	t.Helper()
+	d := *f.active
+	o := protocol.MaterialObservation{ProtocolVersion: 1, OperationID: d.OperationID, TaskID: d.TaskID, RuntimeID: d.RuntimeID, ClaimGeneration: f.claim.ClaimGeneration, ExpectedDigest: d.ExpectedDigest, ObservationID: uuid.NewString(), HostChallenge: f.claim.HostChallenge, ObservedAt: time.Now(), Outcome: "observed", SourceComplete: true, RepositoryIdentity: d.Provider + ":" + d.InstanceURL + ":" + d.Repository}
+	commit := d.BaselineCommit
+	if d.Action != "verify_baseline" {
+		n := d.ReviewNumber
+		if n == 0 {
+			n = f.git.branches[d.SourceBranch]
+		}
+		r, e := f.git.Observe(t.Context(), n)
+		if e != nil {
+			return e
+		}
+		if r.State == "merged" && f.git.extraAfterMerge {
+			r.Changes = append(r.Changes, materialgit.Change{Path: "another.md", Mode: "100644", Status: "added"})
+		}
+		o.Review = &protocol.MaterialReview{Number: r.Number, URL: r.URL, SourceBranch: r.Branch, BaseBranch: r.BaseBranch, HeadSHA: r.HeadSHA, State: r.State, MergeSHA: r.MergeSHA, MergeActor: r.MergeActor, MergedAt: r.MergedAt, GatesPassed: r.GatesPassed}
+		for _, c := range r.Changes {
+			o.Review.Changes = append(o.Review.Changes, protocol.MaterialChange{Path: c.Path, Mode: c.Mode, Status: c.Status, PreviousPath: c.PreviousPath})
+		}
+		commit = r.HeadSHA
+		if r.State == "merged" {
+			commit = r.MergeSHA
+		}
+	}
+	for _, v := range d.Files {
+		body, e := f.git.ReadFile(t.Context(), commit, v.Path)
+		if e != nil {
+			return e
+		}
+		o.Files = append(o.Files, protocol.MaterialFile{Path: v.Path, Content: body, SHA256: material.Digest(body), Mode: "100644", Commit: commit})
+	}
+	if d.AuditNote != nil {
+		note := f.git.notes[d.ReviewNumber]
+		o.AuditNote = &note
+	}
+	return f.svc.ObserveOperation(t.Context(), f.task.ID, o)
+}
+func (f *materialFixture) finish(t *testing.T) {
+	t.Helper()
+	if _, e := f.svc.Tasks.CompleteTask(t.Context(), f.task.ID, []byte(`{}`), "", "", "", false, "", ""); e != nil {
+		t.Fatal(e)
+	}
+	f.active = nil
 }
 func (f *materialFixture) detail(t *testing.T, id string) material.Detail {
 	t.Helper()
@@ -208,12 +348,12 @@ func TestMaterialLostResponsesRecoverOneBaselineAndManualPlan(t *testing.T) {
 	f.git.lostPublish = true
 	d := f.candidate(t)
 	f.step(t)
-	if v := f.detail(t, d.Material.ID); v.Material.Status != "blocked" || v.Baseline != nil {
+	if v := f.detail(t, d.Material.ID); v.Baseline != nil || v.Material.Status == "in_review" {
 		t.Fatal(v)
 	}
 	f.step(t)
 	d = f.detail(t, d.Material.ID)
-	if len(f.git.reviews) != 1 || d.Material.Status != "in_review" {
+	if len(f.git.reviews) != 1 || f.git.publish != 1 || d.Material.Status != "in_review" {
 		t.Fatal(d)
 	}
 	d = f.approve(t, d)
@@ -249,6 +389,27 @@ func TestMaterialLostResponsesRecoverOneBaselineAndManualPlan(t *testing.T) {
 		t.Fatal("re-enable drained old todo")
 	}
 }
+func TestMaterialSchedulerLeaseDoesNotRepeatActiveAttempt(t *testing.T) {
+	f := newMaterialFixture(t, false)
+	d := f.candidate(t)
+	if worked, err := f.svc.ProcessNext(t.Context()); err != nil || !worked {
+		t.Fatalf("dispatch: %v %v", worked, err)
+	}
+	f.fx.Exec(t, `UPDATE git_material_job SET state='working',leased_until=now()-interval '3 minutes',next_at=now() WHERE workspace_id=$1`, f.ws)
+	if worked, err := f.svc.ProcessNext(t.Context()); err != nil || !worked {
+		t.Fatalf("lease recovery: %v %v", worked, err)
+	}
+	if n := f.fx.Count(t, `SELECT count(*) FROM git_material_operation WHERE material_id=$1`, d.Material.ID); n != 1 {
+		t.Fatalf("expired scheduler lease duplicated operation: %d", n)
+	}
+	if n := f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id IN (SELECT agent_id FROM git_material_operation WHERE material_id=$1)`, d.Material.ID); n != 1 {
+		t.Fatalf("expired scheduler lease duplicated runtime launch: %d", n)
+	}
+	if f.detail(t, d.Material.ID).Baseline != nil {
+		t.Fatal("queue dispatch established a baseline")
+	}
+}
+
 func TestMaterialCurrentVersionAndNativeGates(t *testing.T) {
 	for _, condition := range []string{"head", "extra files", "native checks", "expired signer", "unapproved external merge", "changed bytes"} {
 		t.Run(condition, func(t *testing.T) {
@@ -366,15 +527,15 @@ func TestMaterialPlanBaselineChecksFrozenIdentity(t *testing.T) {
 }
 
 func TestMaterialBaselineTargetAllowsPolicyNotRepositoryChanges(t *testing.T) {
-	connection := uuid.NewString()
-	binding := materialBinding{Settings: material.Settings{Provider: "gitlab", Repository: "team/repo", ResourceID: uuid.NewString(), ConnectionID: &connection, RootPath: "engineering", BaseBranch: "main"}, ResourceDigest: "resource-digest", ConnectionRevision: 2}
+	runtime := uuid.NewString()
+	binding := materialBinding{Settings: material.Settings{Provider: "gitlab", Repository: "team/repo", ResourceID: uuid.NewString(), ExecutionRuntimeID: &runtime, RootPath: "engineering", BaseBranch: "main"}, ResourceDigest: "resource-digest"}
 	revision := db.GitMaterialRevision{Settings: materialJSON(binding)}
 	binding.AutoStartPlan = true
 	binding.Version++
 	if err := checkMaterialBaselineTarget(revision, binding); err != nil {
 		t.Fatal(err)
 	}
-	for _, field := range []string{"resource", "branch", "connection", "trust"} {
+	for _, field := range []string{"resource", "branch", "repository", "root"} {
 		t.Run(field, func(t *testing.T) {
 			changed := binding
 			switch field {
@@ -382,10 +543,10 @@ func TestMaterialBaselineTargetAllowsPolicyNotRepositoryChanges(t *testing.T) {
 				changed.ResourceDigest += "changed"
 			case "branch":
 				changed.BaseBranch = "next"
-			case "connection":
-				changed.ConnectionID = materialPtr(uuid.NewString())
-			case "trust":
-				changed.ConnectionRevision++
+			case "repository":
+				changed.Repository = "other/repo"
+			case "root":
+				changed.RootPath = "other"
 			}
 			if err := checkMaterialBaselineTarget(revision, changed); materialCode(err) != "material_configuration_changed" {
 				t.Fatalf("accepted changed target %s: %v", field, err)
@@ -402,7 +563,7 @@ func TestMaterialFinalMergeReceiptRechecksPaths(t *testing.T) {
 	f.git.extraAfterMerge = true
 	f.step(t)
 	detail = f.detail(t, detail.Material.ID)
-	if detail.Baseline != nil || detail.Material.Blocker == nil || *detail.Material.Blocker != "material_unapproved_files" {
+	if detail.Baseline != nil || materialCode(f.lastErr) != "material_unapproved_files" {
 		t.Fatalf("unexpected merge receipt accepted: %+v", detail.Material)
 	}
 }
@@ -418,7 +579,7 @@ func TestMaterialPriorExternalMergeIsNotAnUncertainMergeAttempt(t *testing.T) {
 	f.approve(t, f.detail(t, detail.Material.ID))
 	f.step(t)
 	detail = f.detail(t, detail.Material.ID)
-	if detail.Baseline != nil || detail.Material.Blocker == nil || *detail.Material.Blocker != "material_merge_not_authorized" {
+	if detail.Baseline != nil || materialCode(f.lastErr) != "material_merge_not_authorized" {
 		t.Fatalf("preexisting merge counted as a system merge: %+v", detail.Material)
 	}
 }
@@ -426,8 +587,8 @@ func TestMaterialPriorExternalMergeIsNotAnUncertainMergeAttempt(t *testing.T) {
 func TestMaterialManualRunConsumesExactTaskAndLiveAuthority(t *testing.T) {
 	f := newMaterialFixture(t, false)
 	ctx := context.Background()
-	agentID := f.fx.Agent(t, "material planner", f.fx.Runtime(t, "material runtime"))
-	f.settings.RequestID, f.settings.ExpectedVersion, f.settings.PlanAgentID, f.settings.AutoStartPlan = uuid.NewString(), 1, &agentID, nil
+	runtimeID := f.runtime
+	f.settings.RequestID, f.settings.ExpectedVersion, f.settings.ExecutionRuntimeID, f.settings.AutoStartPlan = uuid.NewString(), 1, &runtimeID, nil
 	setting, err := f.svc.Configure(ctx, f.access, f.settings)
 	if err != nil || setting.Settings.AutoStartPlan {
 		t.Fatalf("omitted switch lost explicit false: %+v %v", setting, err)
@@ -446,28 +607,31 @@ func TestMaterialManualRunConsumesExactTaskAndLiveAuthority(t *testing.T) {
 	if _, err = f.svc.Command(ctx, f.access, id, "start-plan", start); err != nil {
 		t.Fatal(err)
 	}
-	f.git.badContent = true
 	f.step(t)
-	detail = f.detail(t, id)
-	if detail.Material.Blocker == nil || *detail.Material.Blocker != "material_baseline_unreadable" {
-		t.Fatal(detail.Material)
-	}
-	verified := detail.Baseline.VerifiedAt
-	f.git.badContent = false
-	if _, err = f.svc.Command(ctx, f.access, id, "retry", material.CommandInput{RequestID: uuid.NewString(), ExpectedVersion: detail.Material.Version}); err != nil {
+	plan, err := f.svc.Queries.GetMaterialPlan(ctx, util.MustParseUUID(id))
+	if err != nil {
 		t.Fatal(err)
 	}
-	f.step(t)
+	f.admit(t, plan.TaskID)
+	f.git.badContent = true
+	if err = f.observe(t); materialCode(err) != "material_content_changed" {
+		t.Fatalf("bad baseline accepted: %v", err)
+	}
+	if _, err = f.svc.Tasks.StartTask(ctx, plan.TaskID); materialCode(err) != "material_baseline_unverified" {
+		t.Fatalf("model started before baseline verification: %v", err)
+	}
+	verified := f.detail(t, id).Baseline.VerifiedAt
+	f.git.badContent = false
+	if err = f.observe(t); err != nil {
+		t.Fatal(err)
+	}
+	f.active = nil
 	if _, err = f.svc.Command(ctx, f.access, id, "start-plan", start); err != nil {
 		t.Fatal(err)
 	}
 	detail = f.detail(t, id)
 	if detail.Plan.Status != "queued" || !detail.Baseline.VerifiedAt.Equal(verified) || f.fx.Count(t, `SELECT COUNT(*) FROM agent_task_queue WHERE issue_id=$1`, *detail.Plan.IssueID) != 1 {
-		t.Fatalf("retry did not preserve baseline and dispatch one run: %+v", detail.Plan)
-	}
-	plan, err := f.svc.Queries.GetMaterialPlan(ctx, util.MustParseUUID(id))
-	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("verification did not preserve baseline and one run: %+v", detail.Plan)
 	}
 	run := context.WithValue(ctx, materialExecutionKey{}, materialExecutionPermit{issueID: plan.IssueID, taskID: plan.TaskID})
 	check := func(want string) {
@@ -483,7 +647,8 @@ func TestMaterialManualRunConsumesExactTaskAndLiveAuthority(t *testing.T) {
 	f.fx.Exec(t, `UPDATE member SET role='owner' WHERE workspace_id=$1 AND user_id=$2`, f.ws, f.user)
 	f.fx.Exec(t, `UPDATE agent_task_queue SET handoff_note='not the approved input' WHERE id=$1`, plan.TaskID)
 	check("material_baseline_changed")
-	f.settings.RequestID, f.settings.ExpectedVersion, f.settings.PlanAgentID = uuid.NewString(), 2, nil
+	newRuntime := f.fx.Runtime(t, "replacement", testutil.Cols{"daemon_id": "replacement"})
+	f.settings.RequestID, f.settings.ExpectedVersion, f.settings.ExecutionRuntimeID = uuid.NewString(), 2, &newRuntime
 	if _, err = f.svc.Configure(ctx, f.access, f.settings); err != nil {
 		t.Fatal(err)
 	}
@@ -527,8 +692,8 @@ func TestMaterialNewRequirementSupersedesPlanUntilNewBaseline(t *testing.T) {
 
 func (f *materialFixture) queuedPlan(t *testing.T) db.GitMaterialPlan {
 	t.Helper()
-	agentID := f.fx.Agent(t, "planner", f.fx.Runtime(t, "planner runtime"))
-	f.settings.RequestID, f.settings.ExpectedVersion, f.settings.PlanAgentID = uuid.NewString(), 1, &agentID
+	runtimeID := f.runtime
+	f.settings.RequestID, f.settings.ExpectedVersion, f.settings.ExecutionRuntimeID = uuid.NewString(), 1, &runtimeID
 	if _, err := f.svc.Configure(t.Context(), f.access, f.settings); err != nil {
 		t.Fatal(err)
 	}
@@ -594,12 +759,14 @@ func TestMaterialAutoDisableCancelsOnlyUnstartedPlan(t *testing.T) {
 			f := newMaterialFixture(t, true)
 			plan := f.queuedPlan(t)
 			if started {
-				if claimed, err := f.svc.Tasks.ClaimTask(t.Context(), plan.AgentID); err != nil || claimed == nil {
-					t.Fatalf("running plan claim: %v %v", claimed, err)
+				f.admit(t, plan.TaskID)
+				if err := f.observe(t); err != nil {
+					t.Fatal(err)
 				}
 				if _, err := f.svc.Tasks.StartTask(t.Context(), plan.TaskID); err != nil {
 					t.Fatal(err)
 				}
+				f.active = nil
 			}
 			disabled := false
 			f.settings.RequestID, f.settings.ExpectedVersion, f.settings.AutoStartPlan = uuid.NewString(), 2, &disabled
@@ -721,7 +888,7 @@ func TestMaterialDeniedClaimDoesNotStarveOrdinaryWork(t *testing.T) {
 }
 
 func TestMaterialClaimContentionDoesNotCancel(t *testing.T) {
-	for _, table := range []string{"project", "member", "agent"} {
+	for _, table := range []string{"project", "member", "agent", "runtime"} {
 		t.Run(table, func(t *testing.T) {
 			f := newMaterialFixture(t, true)
 			plan := f.queuedPlan(t)
@@ -741,6 +908,9 @@ func TestMaterialClaimContentionDoesNotCancel(t *testing.T) {
 			if table == "agent" {
 				query, id = `SELECT id FROM agent WHERE id=$1 FOR UPDATE`, plan.AgentID
 			}
+			if table == "runtime" {
+				query, id = `SELECT id FROM agent_runtime WHERE id=$1 FOR UPDATE`, util.MustParseUUID(f.runtime)
+			}
 			if _, err = blocker.Exec(t.Context(), query, id); err != nil {
 				t.Fatal(err)
 			}
@@ -757,5 +927,235 @@ func TestMaterialClaimContentionDoesNotCancel(t *testing.T) {
 				t.Fatal("contention cancelled task")
 			}
 		})
+	}
+}
+
+func TestMaterialAbsentPublishRecoveryAndReceiptReplay(t *testing.T) {
+	f := newMaterialFixture(t, false)
+	d := f.candidate(t)
+	if _, err := f.svc.ProcessNext(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	first, err := f.svc.Queries.CurrentMaterialOperation(t.Context(), util.MustParseUUID(d.Material.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	f.admit(t, first.TaskID)
+	// The runtime exited before publication. Ordinary completion proves no effect neither way.
+	f.finish(t)
+	retry := func() {
+		t.Helper()
+		current := f.detail(t, d.Material.ID)
+		if _, err := f.svc.Command(t.Context(), f.access, d.Material.ID, "retry", material.CommandInput{RequestID: uuid.NewString(), ExpectedVersion: current.Material.Version}); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := f.svc.ProcessNext(t.Context()); err != nil {
+			t.Fatal(err)
+		}
+	}
+	retry()
+	recovery, err := f.svc.Queries.CurrentMaterialOperation(t.Context(), util.MustParseUUID(d.Material.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	f.admit(t, recovery.TaskID)
+	if f.active.Action != "observe" || f.active.ReconcileAction != "publish" {
+		t.Fatalf("retry launched mutation before reconciliation: %+v", f.active)
+	}
+	expected := *f.active
+	observation := protocol.MaterialObservation{ProtocolVersion: 1, OperationID: expected.OperationID, TaskID: expected.TaskID, RuntimeID: expected.RuntimeID, ClaimGeneration: f.claim.ClaimGeneration, ExpectedDigest: expected.ExpectedDigest, ObservationID: uuid.NewString(), HostChallenge: f.claim.HostChallenge, ObservedAt: time.Now(), Outcome: "not_found", SourceComplete: true, RepositoryIdentity: expected.Provider + ":" + expected.InstanceURL + ":" + expected.Repository}
+	invalid := observation
+	invalid.ClaimGeneration++
+	if err := f.svc.ObserveOperation(t.Context(), f.task.ID, invalid); materialCode(err) != "material_observation_denied" {
+		t.Fatalf("wrong generation accepted: %v", err)
+	}
+	if err := f.svc.ObserveOperation(t.Context(), f.task.ID, observation); err != nil {
+		t.Fatal(err)
+	}
+	invalid = observation
+	invalid.ObservationID = uuid.NewString()
+	if err := f.svc.ObserveOperation(t.Context(), f.task.ID, invalid); materialCode(err) != "material_observation_state" {
+		t.Fatalf("new receipt changed settled outcome: %v", err)
+	}
+	before := f.detail(t, d.Material.ID)
+	if before.Baseline != nil || before.Operation.Status != "no_effect" {
+		t.Fatalf("absence promoted material: %+v", before)
+	}
+	f.finish(t)
+	if err := f.svc.ObserveOperation(t.Context(), recovery.TaskID, observation); err != nil {
+		t.Fatalf("lost response exact replay rejected after completion: %v", err)
+	}
+	invalid = observation
+	invalid.SourceComplete = false
+	if err := f.svc.ObserveOperation(t.Context(), recovery.TaskID, invalid); materialCode(err) != "material_observation_conflict" {
+		t.Fatalf("changed receipt identity accepted: %v", err)
+	}
+	retry()
+	next, err := f.svc.Queries.CurrentMaterialOperation(t.Context(), util.MustParseUUID(d.Material.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	descriptor, err := materialParse[protocol.MaterialExecution](next.Descriptor)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if descriptor.Action != "publish" || descriptor.SourceBranch != expected.SourceBranch || descriptor.OperationKey != expected.OperationKey {
+		t.Fatal("recovery lost original remote intent")
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE id=ANY($1::uuid[])`, []string{util.UUIDToString(first.TaskID), util.UUIDToString(recovery.TaskID), util.UUIDToString(next.TaskID)}) != 3 {
+		t.Fatal("retry discarded attempt history")
+	}
+}
+
+func TestMaterialRuntimeDeletionRetainsAuditHistory(t *testing.T) {
+	f := newMaterialFixture(t, false)
+	d := f.candidate(t)
+	f.step(t)
+	d = f.approve(t, f.detail(t, d.Material.ID))
+	f.step(t)
+	f.step(t)
+	d = f.detail(t, d.Material.ID)
+	if d.Baseline == nil || d.Plan == nil || d.Plan.IssueID == nil {
+		t.Fatalf("missing retained baseline/plan setup: %+v", d)
+	}
+	op, err := f.svc.Queries.CurrentMaterialOperation(t.Context(), util.MustParseUUID(d.Material.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	beforeTasks := f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id=$1`, op.AgentID)
+	beforeDecisions := f.fx.Count(t, `SELECT count(*) FROM git_material_decision WHERE material_id=$1`, d.Material.ID)
+	tx, err := f.pool.Begin(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tx.Rollback(t.Context())
+	q := f.svc.Queries.WithTx(tx)
+	if _, err = TeardownRuntime(t.Context(), q, util.MustParseUUID(f.runtime), RuntimeTeardownOptions{CancelNonTerminalTasks: true}); err != nil {
+		t.Fatal(err)
+	}
+	if err = q.DeleteAgentRuntime(t.Context(), util.MustParseUUID(f.runtime)); err != nil {
+		t.Fatal(err)
+	}
+	if err = tx.Commit(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	after := f.detail(t, d.Material.ID)
+	if after.Baseline == nil || after.Baseline.ID != d.Baseline.ID || after.Plan == nil || *after.Plan.IssueID != *d.Plan.IssueID {
+		t.Fatal("runtime deletion removed baseline/plan history")
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM agent WHERE id=$1 AND runtime_id IS NULL`, op.AgentID) != 1 || f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id=$1 AND runtime_id IS NULL`, op.AgentID) != beforeTasks || f.fx.Count(t, `SELECT count(*) FROM git_material_decision WHERE material_id=$1`, d.Material.ID) != beforeDecisions {
+		t.Fatal("runtime deletion erased carrier, tasks or decisions")
+	}
+	retained, err := f.svc.Queries.GetMaterialOperation(t.Context(), op.ID)
+	if err != nil || retained.RuntimeID != op.RuntimeID || string(retained.Descriptor) != string(op.Descriptor) || string(retained.ReceiptHistory) != string(op.ReceiptHistory) {
+		t.Fatalf("historical execution identity changed: %v", err)
+	}
+	if _, err = f.svc.Command(t.Context(), f.access, d.Material.ID, "start-plan", material.CommandInput{RequestID: uuid.NewString(), ExpectedVersion: after.Material.Version}); err == nil {
+		t.Fatal("deleted runtime allowed plan restart")
+	}
+}
+
+func TestMaterialRuntimeSwitchCannotTransferFrozenAttempt(t *testing.T) {
+	f := newMaterialFixture(t, false)
+	d := f.candidate(t)
+	if _, err := f.svc.ProcessNext(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	old, err := f.svc.Queries.CurrentMaterialOperation(t.Context(), util.MustParseUUID(d.Material.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	replacement := f.fx.Runtime(t, "Replacement runtime", testutil.Cols{"daemon_id": "replacement-" + uuid.NewString()})
+	f.settings.RequestID = uuid.NewString()
+	f.settings.ExpectedVersion = 1
+	f.settings.ExecutionRuntimeID = &replacement
+	if _, err := f.svc.Configure(t.Context(), f.access, f.settings); err != nil {
+		t.Fatal(err)
+	}
+	if task, err := f.svc.Tasks.ClaimTask(t.Context(), old.AgentID); err != nil || task != nil {
+		t.Fatalf("old selection disclosed work: %+v %v", task, err)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE id=$1 AND status='cancelled' AND runtime_id=$2`, old.TaskID, f.runtime) != 1 {
+		t.Fatal("old queued attempt was moved or erased")
+	}
+	retained, err := f.svc.Queries.GetMaterialOperation(t.Context(), old.ID)
+	if err != nil || retained.RuntimeID != old.RuntimeID || string(retained.Descriptor) != string(old.Descriptor) {
+		t.Fatal("configuration changed historical operation identity")
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE runtime_id=$1`, replacement) != 0 {
+		t.Fatal("runtime selection silently relaunched old task")
+	}
+	if current := f.detail(t, d.Material.ID); current.Operation.Status != "unknown" {
+		t.Fatalf("cancelled execution still shown queued: %+v", current.Operation)
+	}
+}
+
+func TestMaterialDelayedMergeReadbackRecoversOriginalPermit(t *testing.T) {
+	f := newMaterialFixture(t, false)
+	d := f.candidate(t)
+	f.step(t)
+	d = f.approve(t, f.detail(t, d.Material.ID))
+	f.git.lostMerge = true
+	f.step(t)
+	if f.active == nil || f.active.Action != "merge" || f.lastErr == nil {
+		t.Fatal("fixture did not lose actual merge response")
+	}
+	// Advance only this fixture's logical merge/permit clock, without waiting a
+	// minute in the suite. The later read still traverses normal receipt handling.
+	mergedAt := time.Now().Add(-3 * time.Minute)
+	review := f.git.reviews[1]
+	review.MergedAt = &mergedAt
+	f.git.reviews[1] = review
+	f.fx.Exec(t, `UPDATE git_material_operation SET permit_expires_at=$2 WHERE id=$1`, f.active.OperationID, mergedAt.Add(30*time.Second))
+	if err := f.observe(t); err != nil {
+		t.Fatalf("read after permit expiry lost actual authorized merge: %v", err)
+	}
+	if f.detail(t, d.Material.ID).Baseline == nil || f.git.merge != 1 {
+		t.Fatal("delayed receipt lost baseline or repeated merge")
+	}
+	f.finish(t)
+}
+
+func TestMaterialRevokedRuntimeOwnerDoesNotStarveQueue(t *testing.T) {
+	f := newMaterialFixture(t, false)
+	owner := f.fx.User(t, "Runtime owner", uuid.NewString()+"@example.test")
+	member := f.fx.Member(t, f.ws, owner, "member")
+	f.fx.Exec(t, `UPDATE agent_runtime SET owner_id=$2,visibility='public' WHERE id=$1`, f.runtime, owner)
+	f.settings.RequestID = uuid.NewString()
+	f.settings.ExpectedVersion = 1
+	if _, err := f.svc.Configure(t.Context(), f.access, f.settings); err != nil {
+		t.Fatal(err)
+	}
+	d := f.candidate(t)
+	if _, err := f.svc.ProcessNext(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	op, err := f.svc.Queries.CurrentMaterialOperation(t.Context(), util.MustParseUUID(d.Material.ID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	f.fx.Exec(t, `DELETE FROM member WHERE id=$1`, member)
+	if task, err := f.svc.Tasks.ClaimTask(t.Context(), op.AgentID); err != nil || task != nil {
+		t.Fatalf("revocation failed to settle unstarted task: %+v %v", task, err)
+	}
+	if f.fx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE id=$1 AND status='cancelled'`, op.TaskID) != 1 {
+		t.Fatal("denied task left at queue head")
+	}
+}
+
+func TestMaterialNativeGateWaitRetainsBlockedOutcome(t *testing.T) {
+	f := newMaterialFixture(t, false)
+	d := f.candidate(t)
+	f.step(t)
+	d = f.approve(t, f.detail(t, d.Material.ID))
+	f.git.gates = false
+	f.step(t)
+	if f.active == nil || f.active.Action != "merge" {
+		t.Fatal("expected rejected merge preflight")
+	}
+	f.finish(t)
+	detail := f.detail(t, d.Material.ID)
+	if detail.Operation.Status != "blocked" || detail.Operation.Blocker == nil || *detail.Operation.Blocker != "material_native_checks_pending" || detail.Baseline != nil {
+		t.Fatalf("native wait looks active or merged: %+v", detail)
 	}
 }

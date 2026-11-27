@@ -85,6 +85,18 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 	if err = s.checkIssueExecution(materialCtx, q, lockedTask.IssueID, lockedTask.TriggerCommentID, lockedTask.CoalescedCommentIds); err != nil {
 		return db.AgentTaskQueue{}, err
 	}
+	if lockedTask.TriggerEvidenceKind.String == "material_operation" || lockedTask.TriggerEvidenceKind.String == "material_baseline" {
+		op, d, e := AuthorizeMaterialOperation(ctx, q, lockedTask)
+		if e != nil {
+			return db.AgentTaskQueue{}, e
+		}
+		if op.ClaimGeneration != lockedTask.ClaimGeneration || op.ChallengeHash == "" {
+			return db.AgentTaskQueue{}, materialError(409, "material_claim_required")
+		}
+		if d.Action == "verify_baseline" && op.State != "succeeded" {
+			return db.AgentTaskQueue{}, materialError(409, "material_baseline_unverified")
+		}
+	}
 	// The real queued-to-started boundary: decide under the root lifecycle fence.
 	if err = checkStageChildExecutionLocked(ctx, q, lockedTask.IssueID, stageRootFence); err != nil {
 		return db.AgentTaskQueue{}, err

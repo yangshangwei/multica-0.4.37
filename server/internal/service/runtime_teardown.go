@@ -195,6 +195,9 @@ func TeardownRuntime(ctx context.Context, qtx *db.Queries, runtimeID pgtype.UUID
 		return out, fmt.Errorf("task history still references runtime after detach: %d", remaining)
 	}
 
+	if err := qtx.DetachMaterialCarriers(ctx, runtimeID); err != nil {
+		return out, err
+	}
 	// These tables intentionally lack agent foreign keys, so they must be
 	// pruned before the system-agent rows disappear.
 	if err := qtx.DeleteAgentInvocationTargetsBySystemRuntimeAgents(ctx, runtimeID); err != nil {
@@ -203,6 +206,7 @@ func TeardownRuntime(ctx context.Context, qtx *db.Queries, runtimeID pgtype.UUID
 	if err := qtx.DeleteChannelInstallationsBySystemRuntimeAgents(ctx, runtimeID); err != nil {
 		return out, fmt.Errorf("clean up channel installations: %w", err)
 	}
+
 	if err := qtx.DeleteChatPinnedAgentsBySystemRuntimeAgents(ctx, runtimeID); err != nil {
 		return out, fmt.Errorf("clean up chat pins: %w", err)
 	}

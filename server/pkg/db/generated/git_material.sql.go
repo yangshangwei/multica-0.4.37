@@ -11,6 +11,21 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const bindMaterialOperationClaim = `-- name: BindMaterialOperationClaim :exec
+UPDATE git_material_operation SET claim_generation=$2,challenge_hash=$3,state='dispatched',receipt=NULL,receipt_digest='',observation_id='',permit_expires_at=NULL,permit_request_id='',updated_at=now() WHERE task_id=$1 AND claim_generation<$2
+`
+
+type BindMaterialOperationClaimParams struct {
+	TaskID          pgtype.UUID `json:"task_id"`
+	ClaimGeneration int64       `json:"claim_generation"`
+	ChallengeHash   string      `json:"challenge_hash"`
+}
+
+func (q *Queries) BindMaterialOperationClaim(ctx context.Context, arg BindMaterialOperationClaimParams) error {
+	_, err := q.db.Exec(ctx, bindMaterialOperationClaim, arg.TaskID, arg.ClaimGeneration, arg.ChallengeHash)
+	return err
+}
+
 const claimMaterialJob = `-- name: ClaimMaterialJob :one
 WITH candidate AS (SELECT id FROM git_material_job WHERE state IN ('pending','working') AND next_at<=now()
  AND (leased_until IS NULL OR leased_until<now()) ORDER BY next_at,id FOR UPDATE SKIP LOCKED LIMIT 1)
@@ -38,6 +53,21 @@ func (q *Queries) ClaimMaterialJob(ctx context.Context, leaseToken pgtype.UUID) 
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const completeMaterialOperationJob = `-- name: CompleteMaterialOperationJob :exec
+UPDATE git_material_job SET state=$2,blocker=$3,leased_until=NULL,lease_token=NULL,updated_at=now() WHERE id=$1
+`
+
+type CompleteMaterialOperationJobParams struct {
+	ID      pgtype.UUID `json:"id"`
+	State   string      `json:"state"`
+	Blocker pgtype.Text `json:"blocker"`
+}
+
+func (q *Queries) CompleteMaterialOperationJob(ctx context.Context, arg CompleteMaterialOperationJobParams) error {
+	_, err := q.db.Exec(ctx, completeMaterialOperationJob, arg.ID, arg.State, arg.Blocker)
+	return err
 }
 
 const createGitMaterial = `-- name: CreateGitMaterial :one
@@ -168,6 +198,171 @@ func (q *Queries) CreateMaterialDecision(ctx context.Context, arg CreateMaterial
 	return i, err
 }
 
+const createMaterialOperation = `-- name: CreateMaterialOperation :one
+INSERT INTO git_material_operation (id,job_id,task_id,workspace_id,project_id,material_id,revision_id,runtime_id,agent_id,authorizer_id,attempt_no,action,descriptor,expected_digest)
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history
+`
+
+type CreateMaterialOperationParams struct {
+	ID             pgtype.UUID `json:"id"`
+	JobID          pgtype.UUID `json:"job_id"`
+	TaskID         pgtype.UUID `json:"task_id"`
+	WorkspaceID    pgtype.UUID `json:"workspace_id"`
+	ProjectID      pgtype.UUID `json:"project_id"`
+	MaterialID     pgtype.UUID `json:"material_id"`
+	RevisionID     pgtype.UUID `json:"revision_id"`
+	RuntimeID      pgtype.UUID `json:"runtime_id"`
+	AgentID        pgtype.UUID `json:"agent_id"`
+	AuthorizerID   pgtype.UUID `json:"authorizer_id"`
+	AttemptNo      int32       `json:"attempt_no"`
+	Action         string      `json:"action"`
+	Descriptor     []byte      `json:"descriptor"`
+	ExpectedDigest string      `json:"expected_digest"`
+}
+
+func (q *Queries) CreateMaterialOperation(ctx context.Context, arg CreateMaterialOperationParams) (GitMaterialOperation, error) {
+	row := q.db.QueryRow(ctx, createMaterialOperation,
+		arg.ID,
+		arg.JobID,
+		arg.TaskID,
+		arg.WorkspaceID,
+		arg.ProjectID,
+		arg.MaterialID,
+		arg.RevisionID,
+		arg.RuntimeID,
+		arg.AgentID,
+		arg.AuthorizerID,
+		arg.AttemptNo,
+		arg.Action,
+		arg.Descriptor,
+		arg.ExpectedDigest,
+	)
+	var i GitMaterialOperation
+	err := row.Scan(
+		&i.ID,
+		&i.JobID,
+		&i.TaskID,
+		&i.WorkspaceID,
+		&i.ProjectID,
+		&i.MaterialID,
+		&i.RevisionID,
+		&i.RuntimeID,
+		&i.AgentID,
+		&i.AuthorizerID,
+		&i.AttemptNo,
+		&i.Action,
+		&i.Descriptor,
+		&i.ExpectedDigest,
+		&i.ClaimGeneration,
+		&i.ChallengeHash,
+		&i.State,
+		&i.ObservationID,
+		&i.Receipt,
+		&i.ReceiptDigest,
+		&i.PermitRequestID,
+		&i.PermitExpiresAt,
+		&i.Blocker,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ReceiptHistory,
+	)
+	return i, err
+}
+
+const createMaterialOperationTask = `-- name: CreateMaterialOperationTask :one
+INSERT INTO agent_task_queue (id,agent_id,runtime_id,status,priority,force_fresh_session,max_attempts,context,originator_user_id,accountable_user_id,originator_source,trigger_evidence_kind,trigger_evidence_ref_id)
+VALUES ($1,$2,$3,'queued',0,true,1,$4,$5,$5,'direct_human','material_operation',$6) RETURNING id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source, knowledge_context_version, knowledge_delivery
+`
+
+type CreateMaterialOperationTaskParams struct {
+	ID           pgtype.UUID `json:"id"`
+	AgentID      pgtype.UUID `json:"agent_id"`
+	RuntimeID    pgtype.UUID `json:"runtime_id"`
+	Context      []byte      `json:"context"`
+	AuthorizerID pgtype.UUID `json:"authorizer_id"`
+	OperationID  pgtype.UUID `json:"operation_id"`
+}
+
+func (q *Queries) CreateMaterialOperationTask(ctx context.Context, arg CreateMaterialOperationTaskParams) (AgentTaskQueue, error) {
+	row := q.db.QueryRow(ctx, createMaterialOperationTask,
+		arg.ID,
+		arg.AgentID,
+		arg.RuntimeID,
+		arg.Context,
+		arg.AuthorizerID,
+		arg.OperationID,
+	)
+	var i AgentTaskQueue
+	err := row.Scan(
+		&i.ID,
+		&i.AgentID,
+		&i.IssueID,
+		&i.Status,
+		&i.Priority,
+		&i.DispatchedAt,
+		&i.StartedAt,
+		&i.CompletedAt,
+		&i.Result,
+		&i.Error,
+		&i.CreatedAt,
+		&i.Context,
+		&i.RuntimeID,
+		&i.SessionID,
+		&i.WorkDir,
+		&i.TriggerCommentID,
+		&i.ChatSessionID,
+		&i.AutopilotRunID,
+		&i.Attempt,
+		&i.MaxAttempts,
+		&i.ParentTaskID,
+		&i.FailureReason,
+		&i.TriggerSummary,
+		&i.ForceFreshSession,
+		&i.IsLeaderTask,
+		&i.WaitReason,
+		&i.InitiatorUserID,
+		&i.HandoffNote,
+		&i.PrepareLeaseExpiresAt,
+		&i.SquadID,
+		&i.RuntimeMcpOverlay,
+		&i.EscalationForTaskID,
+		&i.FireAt,
+		&i.OriginatorUserID,
+		&i.RuntimeConnectedApps,
+		&i.CoalescedCommentIds,
+		&i.DeliveredCommentIds,
+		&i.ChatInputTaskID,
+		&i.ChatFinalizeDeferredAt,
+		&i.OriginatorSource,
+		&i.DelegatedFromTaskID,
+		&i.RetryOfTaskID,
+		&i.RerunOfTaskID,
+		&i.RuleVersionID,
+		&i.TriggerEvidenceKind,
+		&i.TriggerEvidenceRefID,
+		&i.AccountableUserID,
+		&i.SessionRolloutMissing,
+		&i.RetiredSessionID,
+		&i.QuickActionsDisabled,
+		&i.RegenerateQuickActionsFor,
+		&i.BranchName,
+		&i.DurableWorkDir,
+		&i.ChannelContextRevision,
+		&i.SubmittedInstallationID,
+		&i.ExecutionInstallationID,
+		&i.ExecutionBindingID,
+		&i.ExecutionBindingEpoch,
+		&i.StateVersion,
+		&i.ExecutionAdmissionVersion,
+		&i.ClaimGeneration,
+		&i.QueuedAt,
+		&i.QueuedAtSource,
+		&i.KnowledgeContextVersion,
+		&i.KnowledgeDelivery,
+	)
+	return i, err
+}
+
 const createMaterialPlan = `-- name: CreateMaterialPlan :exec
 INSERT INTO git_material_plan (material_id,workspace_id,project_id,baseline_id,issue_id,status,requested,authorized_by,member_id,agent_id)
 VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
@@ -276,6 +471,75 @@ func (q *Queries) CreateMaterialRevision(ctx context.Context, arg CreateMaterial
 	return i, err
 }
 
+const currentMaterialOperation = `-- name: CurrentMaterialOperation :one
+SELECT o.id, o.job_id, o.task_id, o.workspace_id, o.project_id, o.material_id, o.revision_id, o.runtime_id, o.agent_id, o.authorizer_id, o.attempt_no, o.action, o.descriptor, o.expected_digest, o.claim_generation, o.challenge_hash, o.state, o.observation_id, o.receipt, o.receipt_digest, o.permit_request_id, o.permit_expires_at, o.blocker, o.created_at, o.updated_at, o.receipt_history,t.status AS task_status FROM git_material_operation o JOIN agent_task_queue t ON t.id=o.task_id WHERE o.material_id=$1 ORDER BY o.created_at DESC LIMIT 1
+`
+
+type CurrentMaterialOperationRow struct {
+	ID              pgtype.UUID        `json:"id"`
+	JobID           pgtype.UUID        `json:"job_id"`
+	TaskID          pgtype.UUID        `json:"task_id"`
+	WorkspaceID     pgtype.UUID        `json:"workspace_id"`
+	ProjectID       pgtype.UUID        `json:"project_id"`
+	MaterialID      pgtype.UUID        `json:"material_id"`
+	RevisionID      pgtype.UUID        `json:"revision_id"`
+	RuntimeID       pgtype.UUID        `json:"runtime_id"`
+	AgentID         pgtype.UUID        `json:"agent_id"`
+	AuthorizerID    pgtype.UUID        `json:"authorizer_id"`
+	AttemptNo       int32              `json:"attempt_no"`
+	Action          string             `json:"action"`
+	Descriptor      []byte             `json:"descriptor"`
+	ExpectedDigest  string             `json:"expected_digest"`
+	ClaimGeneration int64              `json:"claim_generation"`
+	ChallengeHash   string             `json:"challenge_hash"`
+	State           string             `json:"state"`
+	ObservationID   string             `json:"observation_id"`
+	Receipt         []byte             `json:"receipt"`
+	ReceiptDigest   string             `json:"receipt_digest"`
+	PermitRequestID string             `json:"permit_request_id"`
+	PermitExpiresAt pgtype.Timestamptz `json:"permit_expires_at"`
+	Blocker         pgtype.Text        `json:"blocker"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+	ReceiptHistory  []byte             `json:"receipt_history"`
+	TaskStatus      string             `json:"task_status"`
+}
+
+func (q *Queries) CurrentMaterialOperation(ctx context.Context, materialID pgtype.UUID) (CurrentMaterialOperationRow, error) {
+	row := q.db.QueryRow(ctx, currentMaterialOperation, materialID)
+	var i CurrentMaterialOperationRow
+	err := row.Scan(
+		&i.ID,
+		&i.JobID,
+		&i.TaskID,
+		&i.WorkspaceID,
+		&i.ProjectID,
+		&i.MaterialID,
+		&i.RevisionID,
+		&i.RuntimeID,
+		&i.AgentID,
+		&i.AuthorizerID,
+		&i.AttemptNo,
+		&i.Action,
+		&i.Descriptor,
+		&i.ExpectedDigest,
+		&i.ClaimGeneration,
+		&i.ChallengeHash,
+		&i.State,
+		&i.ObservationID,
+		&i.Receipt,
+		&i.ReceiptDigest,
+		&i.PermitRequestID,
+		&i.PermitExpiresAt,
+		&i.Blocker,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ReceiptHistory,
+		&i.TaskStatus,
+	)
+	return i, err
+}
+
 const deleteMaterialSettings = `-- name: DeleteMaterialSettings :exec
 DELETE FROM project_material_settings WHERE project_id=$1 AND workspace_id=$2
 `
@@ -297,6 +561,87 @@ DELETE FROM project_material_settings WHERE workspace_id=$1
 func (q *Queries) DeleteWorkspaceMaterialSettings(ctx context.Context, workspaceID pgtype.UUID) error {
 	_, err := q.db.Exec(ctx, deleteWorkspaceMaterialSettings, workspaceID)
 	return err
+}
+
+const detachMaterialCarriers = `-- name: DetachMaterialCarriers :exec
+UPDATE agent SET runtime_id=NULL WHERE runtime_id=$1 AND kind='system' AND system_key LIKE 'material:%'
+`
+
+func (q *Queries) DetachMaterialCarriers(ctx context.Context, runtimeID pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, detachMaterialCarriers, runtimeID)
+	return err
+}
+
+const disableMaterialTaskRetries = `-- name: DisableMaterialTaskRetries :exec
+UPDATE agent_task_queue SET max_attempts=1 WHERE id=$1
+`
+
+func (q *Queries) DisableMaterialTaskRetries(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, disableMaterialTaskRetries, id)
+	return err
+}
+
+const ensureMaterialCarrier = `-- name: EnsureMaterialCarrier :one
+INSERT INTO agent (workspace_id,name,runtime_mode,runtime_config,runtime_id,visibility,permission_mode,max_concurrent_tasks,owner_id,instructions,custom_env,custom_args,kind,system_key)
+VALUES ($1,$2::text,$3,'{}',$4,'private','private',1,$5,'Execute only the authorized material stage. Never self-approve.','{}','[]','system',$2)
+ON CONFLICT (workspace_id,owner_id,runtime_id,system_key) WHERE system_key IS NOT NULL DO UPDATE SET system_key=EXCLUDED.system_key RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+`
+
+type EnsureMaterialCarrierParams struct {
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	SystemKey   pgtype.Text `json:"system_key"`
+	RuntimeMode string      `json:"runtime_mode"`
+	RuntimeID   pgtype.UUID `json:"runtime_id"`
+	OwnerID     pgtype.UUID `json:"owner_id"`
+}
+
+func (q *Queries) EnsureMaterialCarrier(ctx context.Context, arg EnsureMaterialCarrierParams) (Agent, error) {
+	row := q.db.QueryRow(ctx, ensureMaterialCarrier,
+		arg.WorkspaceID,
+		arg.SystemKey,
+		arg.RuntimeMode,
+		arg.RuntimeID,
+		arg.OwnerID,
+	)
+	var i Agent
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Name,
+		&i.AvatarUrl,
+		&i.RuntimeMode,
+		&i.RuntimeConfig,
+		&i.Visibility,
+		&i.Status,
+		&i.MaxConcurrentTasks,
+		&i.OwnerID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Description,
+		&i.RuntimeID,
+		&i.Instructions,
+		&i.ArchivedAt,
+		&i.ArchivedBy,
+		&i.CustomEnv,
+		&i.CustomArgs,
+		&i.McpConfig,
+		&i.Model,
+		&i.ThinkingLevel,
+		&i.ComposioToolkitAllowlist,
+		&i.PermissionMode,
+		&i.Kind,
+		&i.SystemKey,
+		&i.DisabledRuntimeSkills,
+		&i.ServiceTier,
+		&i.ConversationStarters,
+		&i.TemplateKey,
+		&i.TemplateVersion,
+		&i.AutonomyLevel,
+		&i.Category,
+		&i.CollaborationConfigEpoch,
+		&i.CollaborationBoundaryEpoch,
+	)
+	return i, err
 }
 
 const ensureMaterialJob = `-- name: EnsureMaterialJob :exec
@@ -374,6 +719,120 @@ func (q *Queries) GetGitMaterial(ctx context.Context, arg GetGitMaterialParams) 
 		&i.Baseline,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getMaterialOperation = `-- name: GetMaterialOperation :one
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE id=$1
+`
+
+func (q *Queries) GetMaterialOperation(ctx context.Context, id pgtype.UUID) (GitMaterialOperation, error) {
+	row := q.db.QueryRow(ctx, getMaterialOperation, id)
+	var i GitMaterialOperation
+	err := row.Scan(
+		&i.ID,
+		&i.JobID,
+		&i.TaskID,
+		&i.WorkspaceID,
+		&i.ProjectID,
+		&i.MaterialID,
+		&i.RevisionID,
+		&i.RuntimeID,
+		&i.AgentID,
+		&i.AuthorizerID,
+		&i.AttemptNo,
+		&i.Action,
+		&i.Descriptor,
+		&i.ExpectedDigest,
+		&i.ClaimGeneration,
+		&i.ChallengeHash,
+		&i.State,
+		&i.ObservationID,
+		&i.Receipt,
+		&i.ReceiptDigest,
+		&i.PermitRequestID,
+		&i.PermitExpiresAt,
+		&i.Blocker,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ReceiptHistory,
+	)
+	return i, err
+}
+
+const getMaterialOperationForTask = `-- name: GetMaterialOperationForTask :one
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE task_id=$1
+`
+
+func (q *Queries) GetMaterialOperationForTask(ctx context.Context, taskID pgtype.UUID) (GitMaterialOperation, error) {
+	row := q.db.QueryRow(ctx, getMaterialOperationForTask, taskID)
+	var i GitMaterialOperation
+	err := row.Scan(
+		&i.ID,
+		&i.JobID,
+		&i.TaskID,
+		&i.WorkspaceID,
+		&i.ProjectID,
+		&i.MaterialID,
+		&i.RevisionID,
+		&i.RuntimeID,
+		&i.AgentID,
+		&i.AuthorizerID,
+		&i.AttemptNo,
+		&i.Action,
+		&i.Descriptor,
+		&i.ExpectedDigest,
+		&i.ClaimGeneration,
+		&i.ChallengeHash,
+		&i.State,
+		&i.ObservationID,
+		&i.Receipt,
+		&i.ReceiptDigest,
+		&i.PermitRequestID,
+		&i.PermitExpiresAt,
+		&i.Blocker,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ReceiptHistory,
+	)
+	return i, err
+}
+
+const getMaterialPermittedMerge = `-- name: GetMaterialPermittedMerge :one
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE job_id=$1 AND action='merge' AND permit_request_id<>'' ORDER BY attempt_no DESC LIMIT 1
+`
+
+func (q *Queries) GetMaterialPermittedMerge(ctx context.Context, jobID pgtype.UUID) (GitMaterialOperation, error) {
+	row := q.db.QueryRow(ctx, getMaterialPermittedMerge, jobID)
+	var i GitMaterialOperation
+	err := row.Scan(
+		&i.ID,
+		&i.JobID,
+		&i.TaskID,
+		&i.WorkspaceID,
+		&i.ProjectID,
+		&i.MaterialID,
+		&i.RevisionID,
+		&i.RuntimeID,
+		&i.AgentID,
+		&i.AuthorizerID,
+		&i.AttemptNo,
+		&i.Action,
+		&i.Descriptor,
+		&i.ExpectedDigest,
+		&i.ClaimGeneration,
+		&i.ChallengeHash,
+		&i.State,
+		&i.ObservationID,
+		&i.Receipt,
+		&i.ReceiptDigest,
+		&i.PermitRequestID,
+		&i.PermitExpiresAt,
+		&i.Blocker,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ReceiptHistory,
 	)
 	return i, err
 }
@@ -563,6 +1022,44 @@ func (q *Queries) LatestMaterialDecision(ctx context.Context, revisionID pgtype.
 		&i.Reason,
 		&i.HeadSha,
 		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const latestMaterialOperation = `-- name: LatestMaterialOperation :one
+SELECT id, job_id, task_id, workspace_id, project_id, material_id, revision_id, runtime_id, agent_id, authorizer_id, attempt_no, action, descriptor, expected_digest, claim_generation, challenge_hash, state, observation_id, receipt, receipt_digest, permit_request_id, permit_expires_at, blocker, created_at, updated_at, receipt_history FROM git_material_operation WHERE job_id=$1 ORDER BY attempt_no DESC LIMIT 1
+`
+
+func (q *Queries) LatestMaterialOperation(ctx context.Context, jobID pgtype.UUID) (GitMaterialOperation, error) {
+	row := q.db.QueryRow(ctx, latestMaterialOperation, jobID)
+	var i GitMaterialOperation
+	err := row.Scan(
+		&i.ID,
+		&i.JobID,
+		&i.TaskID,
+		&i.WorkspaceID,
+		&i.ProjectID,
+		&i.MaterialID,
+		&i.RevisionID,
+		&i.RuntimeID,
+		&i.AgentID,
+		&i.AuthorizerID,
+		&i.AttemptNo,
+		&i.Action,
+		&i.Descriptor,
+		&i.ExpectedDigest,
+		&i.ClaimGeneration,
+		&i.ChallengeHash,
+		&i.State,
+		&i.ObservationID,
+		&i.Receipt,
+		&i.ReceiptDigest,
+		&i.PermitRequestID,
+		&i.PermitExpiresAt,
+		&i.Blocker,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.ReceiptHistory,
 	)
 	return i, err
 }
@@ -782,6 +1279,37 @@ func (q *Queries) LockMaterialProjectForClaim(ctx context.Context, arg LockMater
 	return i, err
 }
 
+const lockMaterialRuntimeProfile = `-- name: LockMaterialRuntimeProfile :one
+SELECT id, workspace_id, display_name, protocol_family, command_name, description, fixed_args, visibility, created_by, enabled, created_at, updated_at FROM runtime_profile WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT
+`
+
+type LockMaterialRuntimeProfileParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Claims and observations may already own the task/runtime lock. Never wait
+// behind a configuration writer that could be waiting for that same task.
+func (q *Queries) LockMaterialRuntimeProfile(ctx context.Context, arg LockMaterialRuntimeProfileParams) (RuntimeProfile, error) {
+	row := q.db.QueryRow(ctx, lockMaterialRuntimeProfile, arg.ID, arg.WorkspaceID)
+	var i RuntimeProfile
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.DisplayName,
+		&i.ProtocolFamily,
+		&i.CommandName,
+		&i.Description,
+		&i.FixedArgs,
+		&i.Visibility,
+		&i.CreatedBy,
+		&i.Enabled,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const markMaterialPlanManualStart = `-- name: MarkMaterialPlanManualStart :exec
 UPDATE git_material_plan SET manual_start=true WHERE material_id=$1 AND baseline_id=$2
 `
@@ -907,6 +1435,74 @@ type ObserveMaterialRevisionParams struct {
 
 func (q *Queries) ObserveMaterialRevision(ctx context.Context, arg ObserveMaterialRevisionParams) error {
 	_, err := q.db.Exec(ctx, observeMaterialRevision, arg.ID, arg.PublicationStatus, arg.Review)
+	return err
+}
+
+const requestMaterialOperationRecovery = `-- name: RequestMaterialOperationRecovery :execrows
+UPDATE git_material_operation o SET state='recovery_requested',updated_at=now()
+FROM agent_task_queue t WHERE o.task_id=t.id AND o.material_id=$1 AND o.id=(SELECT id FROM git_material_operation WHERE material_id=$1 ORDER BY created_at DESC LIMIT 1)
+AND o.state NOT IN ('succeeded','no_effect') AND t.status IN ('completed','failed','cancelled')
+`
+
+func (q *Queries) RequestMaterialOperationRecovery(ctx context.Context, materialID pgtype.UUID) (int64, error) {
+	result, err := q.db.Exec(ctx, requestMaterialOperationRecovery, materialID)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected(), nil
+}
+
+const retryMaterialJob = `-- name: RetryMaterialJob :exec
+UPDATE git_material_job SET state='pending',next_at=now(),leased_until=NULL,lease_token=NULL,blocker=NULL WHERE revision_id=$1 AND kind=$2
+`
+
+type RetryMaterialJobParams struct {
+	RevisionID pgtype.UUID `json:"revision_id"`
+	Kind       string      `json:"kind"`
+}
+
+func (q *Queries) RetryMaterialJob(ctx context.Context, arg RetryMaterialJobParams) error {
+	_, err := q.db.Exec(ctx, retryMaterialJob, arg.RevisionID, arg.Kind)
+	return err
+}
+
+const saveMaterialObservation = `-- name: SaveMaterialObservation :exec
+UPDATE git_material_operation SET receipt=$2,receipt_digest=$3,observation_id=$4,state=$5,blocker=$6,receipt_history=jsonb_set(receipt_history,ARRAY[$4::text],to_jsonb($3::text)),updated_at=now() WHERE id=$1
+`
+
+type SaveMaterialObservationParams struct {
+	ID            pgtype.UUID `json:"id"`
+	Receipt       []byte      `json:"receipt"`
+	ReceiptDigest string      `json:"receipt_digest"`
+	ObservationID string      `json:"observation_id"`
+	State         string      `json:"state"`
+	Blocker       pgtype.Text `json:"blocker"`
+}
+
+func (q *Queries) SaveMaterialObservation(ctx context.Context, arg SaveMaterialObservationParams) error {
+	_, err := q.db.Exec(ctx, saveMaterialObservation,
+		arg.ID,
+		arg.Receipt,
+		arg.ReceiptDigest,
+		arg.ObservationID,
+		arg.State,
+		arg.Blocker,
+	)
+	return err
+}
+
+const saveMaterialPermit = `-- name: SaveMaterialPermit :exec
+UPDATE git_material_operation SET permit_request_id=$2,permit_expires_at=$3,updated_at=now() WHERE id=$1
+`
+
+type SaveMaterialPermitParams struct {
+	ID              pgtype.UUID        `json:"id"`
+	PermitRequestID string             `json:"permit_request_id"`
+	PermitExpiresAt pgtype.Timestamptz `json:"permit_expires_at"`
+}
+
+func (q *Queries) SaveMaterialPermit(ctx context.Context, arg SaveMaterialPermitParams) error {
+	_, err := q.db.Exec(ctx, saveMaterialPermit, arg.ID, arg.PermitRequestID, arg.PermitExpiresAt)
 	return err
 }
 

@@ -21,7 +21,8 @@ Project resources are mutated through project resource commands/endpoints. Issue
 comments do not create durable project resources.
 
 For Git requirement drafts, fixed baselines or design/task-plan revisions, read
-`references/git-materials.md` before using `multica project material`. It defines
+`references/git-materials.md` before using `multica project material`, including
+assigned Git operation/permit/observation commands. It defines
 explicit request identity, complete revision JSON and automatic publication.
 
 ## Core model

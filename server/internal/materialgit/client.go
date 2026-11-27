@@ -3,17 +3,13 @@ package materialgit
 import (
 	"bytes"
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"path"
 	"regexp"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -42,11 +38,6 @@ func failure(code string) error { return &Error{Code: code} }
 func isStatus(err error, status int) bool {
 	var e *Error
 	return errors.As(err, &e) && e.Status == status
-}
-
-func isMissingTreeEntry(err error) bool {
-	var remote *Error
-	return errors.As(err, &remote) && remote.Code == "provider_tree_entry_missing"
 }
 
 type client struct {
@@ -208,20 +199,6 @@ func materialPath(s string) bool {
 	}
 	return false
 }
-func validatePublish(in PublishRequest) error {
-	if !keyPattern.MatchString(in.Key) || !validRef(in.Branch) || !validRef(in.BaseBranch) || in.Branch == in.BaseBranch || len(in.Title) == 0 || len(in.Title) > 250 || strings.ContainsAny(in.Title, "\r\n") || len(in.Body) > 32000 || len(in.Files) < 1 || len(in.Files) > 3 {
-		return failure("invalid_candidate")
-	}
-	seen := map[string]bool{}
-	root := path.Dir(in.Files[0].Path)
-	for _, f := range in.Files {
-		if !materialPath(f.Path) || path.Dir(f.Path) != root || seen[f.Path] || len(f.Content) == 0 || len(f.Content) > MaxFileBytes || !utf8.ValidString(f.Content) || strings.ContainsRune(f.Content, 0) {
-			return failure("invalid_material_file")
-		}
-		seen[f.Path] = true
-	}
-	return nil
-}
 func validateRead(commit, name string) error {
 	if !shaPattern.MatchString(commit) || !validPath(name) {
 		return failure("invalid_file_reference")
@@ -234,48 +211,6 @@ func escapePath(s string) string {
 		parts[i] = url.PathEscape(parts[i])
 	}
 	return strings.Join(parts, "/")
-}
-func marker(key string) string { return "<!-- multica-material:" + key + " -->" }
-func candidateMarker(in PublishRequest) string {
-	files := append([]File(nil), in.Files...)
-	sort.Slice(files, func(i, j int) bool { return files[i].Path < files[j].Path })
-	raw, _ := json.Marshal(struct {
-		Key, Branch, BaseBranch string
-		Files                   []File
-	}{in.Key, in.Branch, in.BaseBranch, files})
-	digest := sha256.Sum256(raw)
-	return marker(in.Key) + "\n<!-- candidate-sha256:" + hex.EncodeToString(digest[:]) + " -->"
-}
-func sameFiles(ctx context.Context, p Provider, commit string, expected []File) error {
-	for _, file := range expected {
-		body, err := p.ReadFile(ctx, commit, file.Path)
-		if err != nil {
-			return err
-		}
-		if body != file.Content {
-			return failure("candidate_content_changed")
-		}
-	}
-	return nil
-}
-func checkChanges(changes []Change, files []File) error {
-	expected := map[string]bool{}
-	for _, f := range files {
-		expected[f.Path] = true
-	}
-	// A revision may retain an unchanged design alongside a changed task plan.
-	// Every observed change must be authorized; unchanged requested files are
-	// still verified by sameFiles at the immutable head.
-	if len(changes) == 0 || len(changes) > len(files) {
-		return failure("candidate_files_changed")
-	}
-	for _, change := range changes {
-		if !expected[change.Path] || change.PreviousPath != "" && change.PreviousPath != change.Path || (change.Status != "added" && change.Status != "modified") || change.Mode != "100644" {
-			return failure("candidate_files_changed")
-		}
-		delete(expected, change.Path)
-	}
-	return nil
 }
 
 func (c *client) validateReviewURL(raw string, number int64) bool {
@@ -291,21 +226,6 @@ func (c *client) validateReviewURL(raw string, number int64) bool {
 		return false
 	}
 	return u.Host == base.Host && u.Path == strings.TrimRight(base.Path, "/")+"/"+c.connection.Repository+"/-/merge_requests/"+strconv.FormatInt(number, 10)
-}
-func decisionBody(in DecisionNote) (string, error) {
-	if !keyPattern.MatchString(in.Key) || !keyPattern.MatchString(in.ActorID) || !keyPattern.MatchString(in.RevisionID) || !shaPattern.MatchString(in.HeadSHA) || len(in.Reason) > 16000 {
-		return "", failure("invalid_decision_note")
-	}
-	switch in.Decision {
-	case "approve", "request_changes", "withdraw":
-	default:
-		return "", failure("invalid_decision_note")
-	}
-	u, err := url.Parse(in.URL)
-	if err != nil || u.User != nil || (in.URL != "" && (u.Scheme != "https" && u.Scheme != "http" || u.Host == "")) {
-		return "", failure("invalid_decision_note")
-	}
-	return fmt.Sprintf("%s\nMultica business review (synchronized by the system integration; not a native Git approval).\n\nReviewer: `%s`\nRevision: `%s`\nReviewed HEAD: `%s`\nDecision: `%s`\n\n%s\n\nMultica record: %s", marker(in.Key), in.ActorID, in.RevisionID, in.HeadSHA, in.Decision, in.Reason, in.URL), nil
 }
 func nextPage(h http.Header, current, count int, github bool) (bool, error) {
 	if current >= maxPages {

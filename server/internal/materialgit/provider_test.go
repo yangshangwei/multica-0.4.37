@@ -2,15 +2,20 @@ package materialgit
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
 	"testing"
+	"time"
 )
 
 const (
@@ -43,6 +48,7 @@ type remote struct {
 	branch, review, merged             bool
 	content, commitMessage, reviewBody string
 	mode                               string
+	mergedAt                           *time.Time
 	branchCollision                    bool
 	existingBase                       bool
 	foreignHead                        bool
@@ -75,7 +81,8 @@ type remote struct {
 
 func fixture(t *testing.T, kind string) (Provider, *remote) {
 	t.Helper()
-	f := &remote{t: t, kind: kind, mode: "100644", enforceAdmins: true, approval: "APPROVED", checkState: "SUCCESS", glStatus: "mergeable", canMerge: true, writes: map[string]int{}}
+	mergedAt := time.Date(2026, 11, 27, 8, 0, 0, 0, time.UTC)
+	f := &remote{mergedAt: &mergedAt, t: t, kind: kind, mode: "100644", enforceAdmins: true, approval: "APPROVED", checkState: "SUCCESS", glStatus: "mergeable", canMerge: true, writes: map[string]int{}}
 	f.server = httptest.NewServer(http.HandlerFunc(f.serve))
 	t.Cleanup(f.server.Close)
 	p, err := newClient(Connection{Provider: kind, BaseURL: f.server.URL, Repository: "acme/materials", Token: "private-test-token"}, f.server.Client(), true)
@@ -121,7 +128,7 @@ func (f *remote) ghPull() map[string]any {
 	if f.extraFile {
 		count++
 	}
-	return map[string]any{"number": int64(9), "html_url": "https://github.com/acme/materials/pull/9", "body": f.reviewBody, "state": state, "draft": false, "merged": f.merged, "mergeable": true, "mergeable_state": "clean", "changed_files": count, "merge_commit_sha": mergeSHA, "merged_by": map[string]string{"login": "multica[bot]"}, "head": map[string]any{"ref": candidate().Branch, "sha": f.head(), "repo": map[string]string{"full_name": "acme/materials"}}, "base": map[string]any{"ref": "main", "sha": baseSHA, "repo": map[string]string{"full_name": "acme/materials"}}}
+	return map[string]any{"number": int64(9), "html_url": "https://github.com/acme/materials/pull/9", "body": f.reviewBody, "state": state, "draft": false, "merged": f.merged, "mergeable": true, "mergeable_state": "clean", "changed_files": count, "merge_commit_sha": mergeSHA, "merged_at": f.mergedAt, "merged_by": map[string]string{"login": "multica[bot]"}, "head": map[string]any{"ref": candidate().Branch, "sha": f.head(), "repo": map[string]string{"full_name": "acme/materials"}}, "base": map[string]any{"ref": "main", "sha": baseSHA, "repo": map[string]string{"full_name": "acme/materials"}}}
 }
 func (f *remote) glMR() map[string]any {
 	state := "opened"
@@ -132,7 +139,7 @@ func (f *remote) glMR() map[string]any {
 	if f.extraFile {
 		count = "2"
 	}
-	return map[string]any{"iid": 9, "project_id": 1, "source_project_id": 1, "target_project_id": 1, "web_url": strings.Replace(f.server.URL, "http://", "https://", 1) + "/acme/materials/-/merge_requests/9", "description": f.reviewBody, "state": state, "sha": f.head(), "source_branch": candidate().Branch, "target_branch": "main", "draft": false, "detailed_merge_status": f.glStatus, "has_conflicts": false, "changes_count": count, "merge_commit_sha": mergeSHA, "merge_user": map[string]string{"username": "multica"}, "user": map[string]bool{"can_merge": f.canMerge}, "diff_refs": map[string]string{"head_sha": f.head()}, "head_pipeline": map[string]string{"sha": f.head(), "status": strings.ToLower(f.checkState)}}
+	return map[string]any{"iid": 9, "project_id": 1, "source_project_id": 1, "target_project_id": 1, "web_url": strings.Replace(f.server.URL, "http://", "https://", 1) + "/acme/materials/-/merge_requests/9", "description": f.reviewBody, "state": state, "sha": f.head(), "source_branch": candidate().Branch, "target_branch": "main", "draft": false, "detailed_merge_status": f.glStatus, "has_conflicts": false, "changes_count": count, "merge_commit_sha": mergeSHA, "merged_at": f.mergedAt, "merge_user": map[string]string{"username": "multica"}, "user": map[string]bool{"can_merge": f.canMerge}, "diff_refs": map[string]string{"head_sha": f.head()}, "head_pipeline": map[string]string{"sha": f.head(), "status": strings.ToLower(f.checkState)}}
 }
 func (f *remote) serve(w http.ResponseWriter, r *http.Request) {
 	f.mu.Lock()
@@ -543,110 +550,6 @@ func seed(f *remote) {
 	f.reviewBody = candidateMarker(in) + "\n\n" + in.Body
 }
 
-func TestPublishRecoversRealEffectsWithoutRepeatingWrites(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		losses := []string{"", "branch", "review"}
-		if kind == "gitlab" {
-			losses = []string{"", "commit", "review"}
-		}
-		for _, loss := range losses {
-			t.Run(kind+"/"+loss, func(t *testing.T) {
-				p, f := fixture(t, kind)
-				f.loss = loss
-				_, err := p.Publish(context.Background(), candidate())
-				if loss != "" {
-					var remoteError *Error
-					if !errors.As(err, &remoteError) || !remoteError.Uncertain {
-						t.Fatalf("want uncertain response, got %v", err)
-					}
-				} else if err != nil {
-					t.Fatal(err)
-				}
-				r, err := p.Publish(context.Background(), candidate())
-				if err != nil {
-					t.Fatal(err)
-				}
-				if r.Number != 9 || r.HeadSHA != headSHA || r.State != "open" || !r.GatesPassed || len(r.Changes) != 1 {
-					t.Fatalf("bad observed review: %+v", r)
-				}
-				if f.writes["branch"] != 1 || f.writes["commit"] != 1 || f.writes["review"] != 1 {
-					t.Fatalf("duplicate effects: %v", f.writes)
-				}
-				body, err := p.ReadFile(context.Background(), headSHA, filePath)
-				if err != nil || body != candidate().Files[0].Content {
-					t.Fatalf("fixed body mismatch %v", err)
-				}
-			})
-		}
-	}
-}
-
-func TestPublishNeverRecreatesRetargetedOrDeletedReviewBranch(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		for _, change := range []string{"deleted_branch", "retargeted_review"} {
-			t.Run(kind+"/"+change, func(t *testing.T) {
-				provider, remote := fixture(t, kind)
-				seed(remote)
-				if change == "deleted_branch" {
-					remote.branch = false
-				} else {
-					remote.reviewBase = "release"
-				}
-				if _, err := provider.Publish(context.Background(), candidate()); err == nil || len(remote.writes) != 0 {
-					t.Fatalf("existing review should block new writes: err=%v writes=%v", err, remote.writes)
-				}
-			})
-		}
-	}
-}
-
-func TestGitLabPublishWaitsForDiffMetadata(t *testing.T) {
-	provider, remote := fixture(t, "gitlab")
-	remote.diffPending = true
-	_, err := provider.Publish(context.Background(), candidate())
-	var pending *Error
-	if !errors.As(err, &pending) || !pending.Retryable {
-		t.Fatalf("new MR diff metadata should be retried: %v", err)
-	}
-	remote.diffPending = false
-	review, err := provider.Publish(context.Background(), candidate())
-	if err != nil || review.Number != 9 || remote.writes["review"] != 1 || remote.writes["commit"] != 1 || remote.writes["branch"] != 1 {
-		t.Fatalf("did not recover original MR: review=%+v err=%v writes=%v", review, err, remote.writes)
-	}
-}
-
-func TestUnreadableBaseTreePreventsPublication(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		t.Run(kind, func(t *testing.T) {
-			provider, remote := fixture(t, kind)
-			remote.treeUnavailable = true
-			_, err := provider.Publish(context.Background(), candidate())
-			if !isStatus(err, 404) || len(remote.writes) != 0 {
-				t.Fatalf("unreadable tree allowed writes: err=%v writes=%v", err, remote.writes)
-			}
-		})
-	}
-}
-
-func TestMissingConfirmationAfterMergeIsUncertain(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		t.Run(kind, func(t *testing.T) {
-			provider, remote := fixture(t, kind)
-			seed(remote)
-			remote.loss = "confirmation"
-			_, err := provider.Merge(context.Background(), mergeExpectation(kind))
-			var pending *Error
-			if !errors.As(err, &pending) || !pending.Uncertain {
-				t.Fatalf("unconfirmed merge was not marked uncertain: %v", err)
-			}
-			review, err := provider.Merge(context.Background(), mergeExpectation(kind))
-			if err != nil || review.State != "merged" || remote.writes["merge"] != 1 {
-				t.Fatalf("merge recovery failed: review=%+v err=%v writes=%v", review, err, remote.writes)
-			}
-		})
-	}
-}
-
 func TestReadFileAtMergeCommitPreservesExactBytes(t *testing.T) {
 	for _, kind := range []string{"github", "gitlab"} {
 		t.Run(kind, func(t *testing.T) {
@@ -672,56 +575,28 @@ func TestReadFileAtMergeCommitPreservesExactBytes(t *testing.T) {
 	}
 }
 
+func TestReadFileRefusesNonRegularModes(t *testing.T) {
+	for _, kind := range []string{"github", "gitlab"} {
+		t.Run(kind, func(t *testing.T) {
+			provider, remote := fixture(t, kind)
+			seed(remote)
+			for _, mode := range []string{"100755", "120000", "160000"} {
+				remote.mode = mode
+				if _, err := provider.ReadFile(t.Context(), mergeSHA, filePath); err == nil {
+					t.Fatalf("accepted forbidden file mode %s", mode)
+				}
+			}
+		})
+	}
+}
+
 func TestGitLabMergeRejectsStaleSuccessfulPipeline(t *testing.T) {
 	provider, remote := fixture(t, "gitlab")
 	seed(remote)
 	remote.pipelineSHA = baseSHA
-	review, err := provider.Merge(context.Background(), mergeExpectation("gitlab"))
-	if err == nil || review.GatesPassed || remote.writes["merge"] != 0 {
+	review, err := provider.Observe(context.Background(), 9)
+	if err != nil || review.GatesPassed || remote.writes["merge"] != 0 {
 		t.Fatalf("pipeline from different commit accepted: review=%+v err=%v", review, err)
-	}
-}
-
-func TestGitLabUnconfirmedBranchOwnershipNeverWritesCommit(t *testing.T) {
-	for _, collision := range []bool{false, true} {
-		t.Run(strconv.FormatBool(collision), func(t *testing.T) {
-			p, f := fixture(t, "gitlab")
-			if collision {
-				f.branchCollision = true
-			} else {
-				f.loss = "branch"
-			}
-			if _, err := p.Publish(context.Background(), candidate()); err == nil {
-				t.Fatal("ambiguous creation was accepted")
-			}
-			if !f.branch || f.writes["branch"] != 1 || f.writes["commit"] != 0 || f.review {
-				t.Fatalf("unsafe side effect %v", f.writes)
-			}
-			_, err := p.Publish(context.Background(), candidate())
-			var e *Error
-			if !errors.As(err, &e) || e.Code != "candidate_branch_ownership_unknown" {
-				t.Fatalf("missing ownership blocker: %v", err)
-			}
-			if f.writes["branch"] != 1 || f.writes["commit"] != 0 || f.review {
-				t.Fatalf("recovery adopted unmarked branch: %v", f.writes)
-			}
-		})
-	}
-}
-
-func TestNewRevisionUpdatesExistingMaterialWithFilePrecondition(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		t.Run(kind, func(t *testing.T) {
-			p, f := fixture(t, kind)
-			f.existingBase = true
-			f.content = "# Previously approved requirement"
-			if _, err := p.Publish(context.Background(), candidate()); err != nil {
-				t.Fatal(err)
-			}
-			if f.writes["commit"] != 1 || f.content != candidate().Files[0].Content {
-				t.Fatalf("revision update failed: %v", f.writes)
-			}
-		})
 	}
 }
 
@@ -772,12 +647,12 @@ func TestGitHubRulesetOnlyRequiresProofOfClassicRuleAbsence(t *testing.T) {
 				f.classicProof = "absent"
 				f.rules = nil
 			}
-			r, err := p.Merge(context.Background(), mergeExpectation("github"))
+			r, err := p.Observe(context.Background(), 9)
 			if scenario == "absent" {
-				if err != nil || r.State != "merged" || f.writes["merge"] != 1 {
+				if err != nil || !r.GatesPassed || f.writes["merge"] != 0 {
 					t.Fatalf("ruleset-only branch blocked: review=%+v err=%v", r, err)
 				}
-			} else if err == nil || f.writes["merge"] != 0 || r.BlockReason != "native_protection_unavailable" {
+			} else if err != nil || r.GatesPassed || f.writes["merge"] != 0 || r.BlockReason != "native_protection_unavailable" {
 				t.Fatalf("unknown classic rule allowed: review=%+v err=%v writes=%v", r, err, f.writes)
 			}
 		})
@@ -799,135 +674,10 @@ func TestIncompleteProviderResponsesCannotAuthorizeOrLeak(t *testing.T) {
 		})
 	}
 }
-func TestPublishRefusesForeignOrModifiedCandidate(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		for _, mutation := range []string{"foreign_marker", "content", "extra_file", "symlink", "truncated_diff"} {
-			t.Run(kind+"/"+mutation, func(t *testing.T) {
-				p, f := fixture(t, kind)
-				seed(f)
-				switch mutation {
-				case "foreign_marker":
-					f.commitMessage = "human branch"
-				case "content":
-					f.content = "human edit"
-				case "extra_file":
-					f.extraFile = true
-				case "symlink":
-					f.mode = "120000"
-				case "truncated_diff":
-					f.truncateDiff = true
-				}
-				if _, err := p.Publish(context.Background(), candidate()); err == nil {
-					t.Fatal("changed candidate was accepted")
-				}
-				if len(f.writes) != 0 {
-					t.Fatalf("changed candidate caused writes: %v", f.writes)
-				}
-			})
-		}
-	}
-}
-func TestConditionalMergeAndLostResponseRecovery(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		for _, loss := range []bool{false, true} {
-			t.Run(kind+"/loss="+strconv.FormatBool(loss), func(t *testing.T) {
-				p, f := fixture(t, kind)
-				seed(f)
-				if loss {
-					f.loss = "merge"
-				}
-				r, err := p.Merge(context.Background(), mergeExpectation(kind))
-				if loss {
-					var e *Error
-					if !errors.As(err, &e) || !e.Uncertain {
-						t.Fatalf("expected uncertainty: %v", err)
-					}
-				} else if err != nil || r.State != "merged" {
-					t.Fatalf("merge failed %v %+v", err, r)
-				}
-				r, err = p.Merge(context.Background(), mergeExpectation(kind))
-				if err != nil || r.State != "merged" || r.MergeSHA != mergeSHA || r.MergeActor == "" {
-					t.Fatalf("recovery failed %v %+v", err, r)
-				}
-				if f.writes["merge"] != 1 {
-					t.Fatalf("merge repeated %v", f.writes)
-				}
-			})
-		}
-	}
-}
-func TestMergeRefusesChangedHeadAndNativeGates(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		for _, mutation := range []string{"head", "checks", "approval", "permission", "unknown"} {
-			t.Run(kind+"/"+mutation, func(t *testing.T) {
-				p, f := fixture(t, kind)
-				seed(f)
-				switch mutation {
-				case "head":
-					f.foreignHead = true
-				case "checks":
-					f.checkState = "PENDING"
-				case "approval":
-					f.protected = true
-					f.requireReviews = true
-					f.approval = "REVIEW_REQUIRED"
-					f.glStatus = "not_approved"
-				case "permission":
-					f.policyStatus = 403
-					f.canMerge = false
-				case "unknown":
-					f.policyStatus = 404
-					f.glStatus = "new_unknown_state"
-				}
-				if _, err := p.Merge(context.Background(), mergeExpectation(kind)); err == nil {
-					t.Fatal("unsafe merge accepted")
-				}
-				if f.writes["merge"] != 0 {
-					t.Fatal("native checks bypassed")
-				}
-			})
-		}
-	}
-}
 
 // The merge call must enforce the caller's frozen target and file set both
 // before its write and when consuming the final receipt. A changed post-write
 // receipt remains a remote fact, but must never authorize a local baseline.
-func TestMergeRechecksApprovedTargetAndFiles(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		for _, after := range []bool{false, true} {
-			for _, mutation := range []string{"target", "extra_file"} {
-				t.Run(kind+"/after="+strconv.FormatBool(after)+"/"+mutation, func(t *testing.T) {
-					p, f := fixture(t, kind)
-					seed(f)
-					expectedCode := "candidate_files_changed"
-					mutate := func(remote *remote) { remote.extraFile = true }
-					if mutation == "target" {
-						expectedCode = "review_target_changed"
-						mutate = func(remote *remote) { remote.reviewBase = "release" }
-					}
-					if after {
-						f.afterMerge = mutate
-					} else {
-						mutate(f)
-					}
-					_, err := p.Merge(context.Background(), mergeExpectation(kind))
-					var rejected *Error
-					if !errors.As(err, &rejected) || rejected.Code != expectedCode {
-						t.Fatalf("changed review not rejected: err=%v", err)
-					}
-					wantWrites := 0
-					if after {
-						wantWrites = 1
-					}
-					if f.writes["merge"] != wantWrites || f.merged != after {
-						t.Fatalf("unexpected merge effect: writes=%v merged=%v", f.writes, f.merged)
-					}
-				})
-			}
-		}
-	}
-}
 
 func TestGitHubAdministratorBypassRefused(t *testing.T) {
 	p, f := fixture(t, "github")
@@ -950,55 +700,7 @@ func TestGitHubRequiredChecksCannotBeMissing(t *testing.T) {
 		t.Fatalf("missing checks accepted: %v %+v", err, r)
 	}
 }
-func TestDecisionSyncRecoversSameNoteAndRejectsConflictingKey(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		t.Run(kind, func(t *testing.T) {
-			p, f := fixture(t, kind)
-			seed(f)
-			f.loss = "note"
-			in := DecisionNote{Key: "decision-1", ActorID: "user-1", RevisionID: "rev-1", HeadSHA: headSHA, Decision: "approve", Reason: "Checked AC-1", URL: "https://multica.example/project/1"}
-			if err := p.SyncDecision(context.Background(), 9, in); err == nil {
-				t.Fatal("expected lost response")
-			}
-			if err := p.SyncDecision(context.Background(), 9, in); err != nil {
-				t.Fatal(err)
-			}
-			if f.writes["note"] != 1 || !strings.Contains(f.notes[0], "not a native Git approval") || !strings.Contains(f.notes[0], "user-1") {
-				t.Fatalf("wrong audit: %v", f.writes)
-			}
-			in.Decision = "withdraw"
-			if err := p.SyncDecision(context.Background(), 9, in); err == nil {
-				t.Fatal("conflicting replay accepted")
-			}
-		})
-	}
-}
 
-func TestInvalidCandidateHasNoNetworkEffects(t *testing.T) {
-	for _, kind := range []string{"github", "gitlab"} {
-		t.Run(kind, func(t *testing.T) {
-			p, f := fixture(t, kind)
-			for _, name := range []string{"../prd.md", "requirements/a/../../AGENTS.md", "AGENTS.md", "requirements/a/AGENTS.md", "requirements/a/%2e%2e/prd.md", "requirements/a/prd.md\x00", ".git/requirements/a/prd.md"} {
-				in := candidate()
-				in.Files[0].Path = name
-				if _, err := p.Publish(context.Background(), in); err == nil {
-					t.Errorf("allowed %q", name)
-				}
-			}
-			in := candidate()
-			in.Branch = "main"
-			if _, err := p.Publish(context.Background(), in); err == nil {
-				t.Error("direct base write allowed")
-			}
-			if _, err := p.ReadFile(context.Background(), "main", filePath); err == nil {
-				t.Error("mutable ref allowed")
-			}
-			if len(f.requests) != 0 {
-				t.Fatalf("invalid request used network: %v", f.requests)
-			}
-		})
-	}
-}
 func TestConnectionValidation(t *testing.T) {
 	for _, base := range []string{"http://gitlab.example", "https://user:secret@gitlab.example", "https://gitlab.example?token=secret", "https://gitlab.example/#fragment", "https://gitlab.example/../other"} {
 		if _, err := New(Connection{Provider: "gitlab", BaseURL: base, Repository: "acme/materials", Token: "x"}); err == nil {
@@ -1061,7 +763,7 @@ func TestPaginationFollowsAllPagesWithoutFollowingLinks(t *testing.T) {
 					w.Header().Set("X-Next-Page", "2")
 					_ = json.NewEncoder(w).Encode(rows)
 				} else {
-					_ = json.NewEncoder(w).Encode([]map[string]string{{"body": body}})
+					_ = json.NewEncoder(w).Encode([]map[string]any{{"body": body, "user": map[string]string{"login": "actor"}, "author": map[string]string{"username": "actor"}}})
 				}
 			}))
 			defer srv.Close()
@@ -1069,11 +771,64 @@ func TestPaginationFollowsAllPagesWithoutFollowingLinks(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if err = p.SyncDecision(context.Background(), 9, in); err != nil {
+			var c *client
+			switch v := p.(type) {
+			case *githubProvider:
+				c = v.client
+			case *gitlabProvider:
+				c = v.client
+			}
+			reader := &observer{reader: p, c: c}
+			if _, err = reader.ObserveDecision(context.Background(), 9, marker(in.Key), body); err != nil {
 				t.Fatal(err)
 			}
 			if pages != 2 {
 				t.Fatalf("read %d pages", pages)
+			}
+		})
+	}
+}
+
+func candidateMarker(in PublishRequest) string {
+	files := append([]File(nil), in.Files...)
+	sort.Slice(files, func(i, j int) bool { return files[i].Path < files[j].Path })
+	raw, _ := json.Marshal(struct {
+		Key, Branch, BaseBranch string
+		Files                   []File
+	}{in.Key, in.Branch, in.BaseBranch, files})
+	digest := sha256.Sum256(raw)
+	return marker(in.Key) + "\n<!-- candidate-sha256:" + hex.EncodeToString(digest[:]) + " -->"
+}
+func decisionBody(in DecisionNote) (string, error) {
+	if !keyPattern.MatchString(in.Key) || !keyPattern.MatchString(in.ActorID) || !keyPattern.MatchString(in.RevisionID) || !shaPattern.MatchString(in.HeadSHA) || len(in.Reason) > 16000 {
+		return "", failure("invalid_decision_note")
+	}
+	switch in.Decision {
+	case "approve", "request_changes", "withdraw":
+	default:
+		return "", failure("invalid_decision_note")
+	}
+	u, err := url.Parse(in.URL)
+	if err != nil || u.User != nil || (in.URL != "" && (u.Scheme != "https" && u.Scheme != "http" || u.Host == "")) {
+		return "", failure("invalid_decision_note")
+	}
+	return fmt.Sprintf("%s\nMultica business review (synchronized by the system integration; not a native Git approval).\n\nReviewer: `%s`\nRevision: `%s`\nReviewed HEAD: `%s`\nDecision: `%s`\n\n%s\n\nMultica record: %s", marker(in.Key), in.ActorID, in.RevisionID, in.HeadSHA, in.Decision, in.Reason, in.URL), nil
+}
+func marker(key string) string { return "<!-- multica-material:" + key + " -->" }
+
+func TestMergedReviewRequiresProviderTimestamp(t *testing.T) {
+	for _, kind := range []string{"github", "gitlab"} {
+		t.Run(kind, func(t *testing.T) {
+			provider, remote := fixture(t, kind)
+			seed(remote)
+			remote.merged = true
+			got, err := provider.Observe(t.Context(), 9)
+			if err != nil || got.MergedAt == nil || !got.MergedAt.Equal(time.Date(2026, 11, 27, 8, 0, 0, 0, time.UTC)) {
+				t.Fatalf("merge timestamp lost: %v %v", got.MergedAt, err)
+			}
+			remote.mergedAt = nil
+			if _, err := provider.Observe(t.Context(), 9); err == nil {
+				t.Fatal("merged review without timestamp accepted")
 			}
 		})
 	}

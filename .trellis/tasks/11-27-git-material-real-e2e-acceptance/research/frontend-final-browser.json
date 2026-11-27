@@ -1,0 +1,83 @@
+{
+  "runs": [
+    {
+      "provider": "gitlab",
+      "database": "multica_gitmaterial_ui_20261127_gitlab_6bdfbe18",
+      "evidence": "/private/tmp/multica-material-runtime-ui-Y7BDfo/gitlab-final3/material-run-9UmYiA",
+      "sourceStable": true,
+      "sourceSHA256": "41e723633f8ac164e8d5ebae89e516d06b7107d9875484f33c002a142231290e",
+      "apiSHA256": "8d3a87e4ae259aa6c84b2781133aa5741c1a456ff50739e18162f80f60d6f79b",
+      "daemonSHA256": "af313facc9f6a2fb4d99b32c4a042b3c75388e8e0c0bc742fe8690825634d83b",
+      "webBuildId": "zls2Dmf5sSxeP89uZdzu7",
+      "desktop": {
+        "directory": "/private/tmp/multica-material-runtime-ui-Y7BDfo/desktop-final-out",
+        "rendererSHA256": "dda405da51e68ef45a61d30d30f74893c34db0ac89401d74b076209e08881b65",
+        "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+      },
+      "journeys": 2,
+      "passed": 2,
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 88410,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 88408,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 88405,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    },
+    {
+      "provider": "github",
+      "database": "multica_gitmaterial_ui_20261127_github_55d59404",
+      "evidence": "/private/tmp/multica-material-runtime-ui-Y7BDfo/github-final/material-run-npcJe1",
+      "sourceStable": true,
+      "sourceSHA256": "41e723633f8ac164e8d5ebae89e516d06b7107d9875484f33c002a142231290e",
+      "apiSHA256": "9c4dcf4fce5a3facaae7edff742bdb0690df9d2522eeb7c77b5b3ddf09d65038",
+      "daemonSHA256": "af313facc9f6a2fb4d99b32c4a042b3c75388e8e0c0bc742fe8690825634d83b",
+      "webBuildId": "zls2Dmf5sSxeP89uZdzu7",
+      "desktop": {
+        "directory": "/private/tmp/multica-material-runtime-ui-Y7BDfo/desktop-final-out",
+        "rendererSHA256": "dda405da51e68ef45a61d30d30f74893c34db0ac89401d74b076209e08881b65",
+        "preloadSHA256": "069a0485a1c08eb869ad2308a86f1c7f811ae594ec2e1a4c9a54bfd0c196479b"
+      },
+      "journeys": 2,
+      "passed": 2,
+      "cleanup": {
+        "processes": [
+          {
+            "pid": 88832,
+            "exitCode": 0,
+            "signal": null
+          },
+          {
+            "pid": 88830,
+            "exitCode": 143,
+            "signal": null
+          },
+          {
+            "pid": 88822,
+            "exitCode": 0,
+            "signal": null
+          }
+        ],
+        "fixtureClosed": true
+      }
+    }
+  ],
+  "container": "material-runtime-ui-2e6c1f97",
+  "containerState": "exited",
+  "databasesRetained": true,
+  "realModels": false,
+  "realProviders": false
+}

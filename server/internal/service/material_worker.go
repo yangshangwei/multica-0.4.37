@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"path"
-	"slices"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -17,13 +17,6 @@ import (
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/dbid"
 )
-
-var errMaterialMergePrepared = errors.New("material merge prepared")
-
-type materialMergeReceipt struct {
-	materialgit.Review
-	DecisionID string `json:"merge_decision_id,omitempty"`
-}
 
 // Run processes already committed intents. A failed or interrupted external
 // operation is recovered through the same provider identity, never a new branch.
@@ -58,9 +51,6 @@ func (s *MaterialService) ProcessNext(ctx context.Context) (bool, error) {
 		err = s.processMaterialPlan(stepCtx, job)
 	} else {
 		err = s.processMaterialGit(stepCtx, job)
-		if errors.Is(err, errMaterialMergePrepared) {
-			err = s.processMaterialGit(stepCtx, job)
-		}
 	}
 	if err != nil {
 		// The durable intent survives a transaction/connection failure. Only the
@@ -145,223 +135,6 @@ func materialReviewMatches(row db.GitMaterial, rev material.Revision, b material
 
 	return nil
 }
-func materialVerifyFiles(ctx context.Context, p materialgit.Provider, row db.GitMaterial, rev material.Revision, commit string) error {
-	if !material.IsSHA(commit) {
-		return materialError(409, "material_commit_unverified")
-	}
-	for _, f := range materialFiles(row, rev) {
-		body, err := p.ReadFile(ctx, commit, f.Path)
-		if err != nil {
-			return err
-		}
-		if body != f.Content {
-			return materialError(409, "material_content_changed")
-		}
-	}
-	return nil
-}
-func (s *MaterialService) processMaterialGit(ctx context.Context, job db.GitMaterialJob) error {
-	t, row, revision, binding, err := s.workerTx(ctx, job)
-	if err != nil {
-		return err
-	}
-	defer t.tx.Rollback(ctx)
-	finish := func(state, code string) error {
-		if code != "" {
-			if _, e := updateMaterial(ctx, t.q, row, "blocked", code, row.CurrentRevisionID, row.Baseline); e != nil {
-				return e
-			}
-		}
-		if e := t.q.FinishMaterialJob(ctx, db.FinishMaterialJobParams{ID: job.ID, LeaseToken: job.LeaseToken, State: state, Blocker: materialText(code)}); e != nil {
-			return e
-		}
-		return t.tx.Commit(ctx)
-	}
-	if row.CurrentRevisionID != revision.ID || revision.PublicationStatus == "merged" {
-		return finish("done", "")
-	}
-	if !binding.Enabled {
-		return finish("blocked", "material_disabled")
-	}
-	frozen, err := materialParse[materialBinding](revision.Settings)
-	if err != nil {
-		return err
-	}
-	if binding.Version != revision.ConfigVersion {
-		return finish("blocked", "material_configuration_changed")
-	}
-	if _, err = checkMaterialBinding(ctx, t.q, row.WorkspaceID, row.ProjectID, frozen, false); err != nil {
-		return finish("blocked", materialCode(err))
-	}
-	rev, err := materialParse[material.Revision](revision.Payload)
-	if err != nil {
-		return err
-	}
-	if rev.Kind == "plan" {
-		base, e := materialParse[material.Baseline](row.Baseline)
-		if e != nil || rev.SourceBaselineID == nil || *rev.SourceBaselineID != base.ID {
-			return finish("blocked", "material_baseline_changed")
-		}
-	}
-	if s.ResolveProvider == nil {
-		return finish("blocked", "material_provider_unavailable")
-	}
-	provider, cleanup, err := s.ResolveProvider(ctx, t.q, row.WorkspaceID, binding.Settings)
-	if err != nil {
-		return finish("blocked", "material_connection_unavailable")
-	}
-	if cleanup != nil {
-		defer cleanup()
-	}
-	if job.Kind == "publish" {
-		review, e := provider.Publish(ctx, materialgit.PublishRequest{Key: rev.ID, Branch: "multica/material-" + rev.ID, BaseBranch: binding.BaseBranch, Title: "Multica engineering material " + rev.ID, Body: "Versioned engineering material. Business review and execution are managed in Multica. This change does not close an implementation issue.", Files: materialFiles(row, rev)})
-		if e != nil {
-			return materialProviderFailure(finish, e, "material_publication_unconfirmed")
-		}
-		if e = materialReviewMatches(row, rev, binding, review); e != nil {
-			return finish("blocked", materialCode(e))
-		}
-		if review.State != "open" {
-			return finish("blocked", "material_review_not_open")
-		}
-		if e = materialVerifyFiles(ctx, provider, row, rev, review.HeadSHA); e != nil {
-			return finish("blocked", materialCode(e))
-		}
-		if e = t.q.ObserveMaterialRevision(ctx, db.ObserveMaterialRevisionParams{ID: revision.ID, PublicationStatus: "in_review", Review: materialJSON(review)}); e != nil {
-			return e
-		}
-		status := "in_review"
-		if rev.Kind == "plan" {
-			status = "plan_review"
-		}
-		if _, e = updateMaterial(ctx, t.q, row, status, "", revision.ID, row.Baseline); e != nil {
-			return e
-		}
-		return finish("done", "")
-	}
-	decision, err := t.q.LatestMaterialDecision(ctx, revision.ID)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return finish("done", "")
-	}
-	if err != nil {
-		return err
-	}
-	members, err := LockArtifactUsers(ctx, t.q, row.WorkspaceID, util.UUIDToString(decision.ActorID))
-	if err != nil {
-		return finish("blocked", "material_reviewer_revoked")
-	}
-	signer, err := materialParse[stageSignerCredential](decision.Credential)
-	if err != nil {
-		return err
-	}
-	if members[util.UUIDToString(decision.ActorID)].ID != decision.MemberID || !slices.Contains(binding.ReviewerIDs, util.UUIDToString(decision.ActorID)) {
-		return finish("blocked", "material_reviewer_revoked")
-	}
-	if err = CheckArtifactCredentialInTx(ctx, t.tx, signer.credential(util.UUIDToString(decision.ActorID))); err != nil {
-		return finish("blocked", "material_approval_expired")
-	}
-	stored, err := materialParse[materialMergeReceipt](revision.Review)
-	if err != nil {
-		return err
-	}
-	review, err := provider.Observe(ctx, stored.Number)
-	if err != nil {
-		return materialProviderFailure(finish, err, "material_review_unconfirmed")
-	}
-	if err = materialReviewMatches(row, rev, binding, review); err != nil {
-		return finish("blocked", materialCode(err))
-	}
-	if review.Number != stored.Number || review.HeadSHA != decision.HeadSha || review.HeadSHA != stored.HeadSHA {
-		return finish("blocked", "material_head_changed")
-	}
-	note := materialgit.DecisionNote{Key: util.UUIDToString(decision.ID), ActorID: util.UUIDToString(decision.ActorID), RevisionID: rev.ID, HeadSHA: review.HeadSHA, Decision: decision.Decision, Reason: decision.Reason, URL: ""}
-	if err = provider.SyncDecision(ctx, review.Number, note); err != nil {
-		return materialProviderFailure(finish, err, "material_review_sync_pending")
-	}
-	if decision.Decision != "approve" {
-		return finish("done", "")
-	}
-	if err = materialVerifyFiles(ctx, provider, row, rev, review.HeadSHA); err != nil {
-		return finish("blocked", materialCode(err))
-	}
-	decisionID := util.UUIDToString(decision.ID)
-	if review.State == "merged" && stored.DecisionID != decisionID {
-		return finish("blocked", "material_merge_not_authorized")
-	}
-	if review.State != "merged" {
-		if review.State != "open" {
-			return finish("blocked", "material_review_not_open")
-		}
-		if !review.GatesPassed {
-			reason := review.BlockReason
-			if reason == "" {
-				reason = "material_native_gates_pending"
-			}
-			return finish("pending", reason)
-		}
-		if stored.DecisionID != decisionID {
-			stored.DecisionID = decisionID
-			if err = t.q.ObserveMaterialRevision(ctx, db.ObserveMaterialRevisionParams{ID: revision.ID, PublicationStatus: revision.PublicationStatus, Review: materialJSON(stored)}); err != nil {
-				return err
-			}
-			if err = t.tx.Commit(ctx); err != nil {
-				return err
-			}
-			return errMaterialMergePrepared
-		}
-		review, err = provider.Merge(ctx, materialgit.MergeExpectation{
-			Number:     review.Number,
-			HeadSHA:    decision.HeadSha,
-			Branch:     review.Branch,
-			BaseBranch: review.BaseBranch,
-			Changes:    review.Changes,
-		})
-		if err != nil {
-			return materialProviderFailure(finish, err, "material_merge_unconfirmed")
-		}
-	}
-	if review.State != "merged" || !material.IsSHA(review.MergeSHA) {
-		return finish("pending", "material_merge_unconfirmed")
-	}
-	if review.Number != stored.Number || review.HeadSHA != decision.HeadSha || review.MergeActor == "" {
-		return finish("blocked", "material_review_changed")
-	}
-	if err = materialReviewMatches(row, rev, binding, review); err != nil {
-		return finish("blocked", materialCode(err))
-	}
-	if err = materialVerifyFiles(ctx, provider, row, rev, review.MergeSHA); err != nil {
-		return finish("blocked", materialCode(err))
-	}
-	if err = t.q.ObserveMaterialRevision(ctx, db.ObserveMaterialRevisionParams{ID: revision.ID, PublicationStatus: "merged", Review: materialJSON(review)}); err != nil {
-		return err
-	}
-	if rev.Kind == "plan" {
-		p, e := t.q.GetMaterialPlan(ctx, row.ID)
-		if e != nil {
-			return e
-		}
-		p.Status = "approved"
-		p.RevisionID = revision.ID
-		p.Blocker = pgtype.Text{}
-		if e = saveMaterialPlan(ctx, t.q, p); e != nil {
-			return e
-		}
-		if _, e = updateMaterial(ctx, t.q, row, "plan_approved", "", revision.ID, row.Baseline); e != nil {
-			return e
-		}
-	} else {
-		base := material.Baseline{ID: rev.ID, RevisionID: rev.ID, Commit: review.MergeSHA, Path: row.Path, ContentSHA256: rev.ContentSHA256, ReviewURL: review.URL, VerifiedAt: time.Now().UTC()}
-		row, err = updateMaterial(ctx, t.q, row, "baseline_ready", "", revision.ID, materialJSON(base))
-		if err != nil {
-			return err
-		}
-		if err = ensureMaterialJob(ctx, t.q, row, revision.ID, "plan"); err != nil {
-			return err
-		}
-	}
-	return finish("done", "")
-}
-
 func materialPlanPrompt(row db.GitMaterial, base material.Baseline, rev material.Revision) string {
 	return fmt.Sprintf(`Generate a technical design and task breakdown for the approved requirement below. Do not implement code, assign agents, create implementation issues, or change issue status. The requirement approval is not permission to code. Return the full design and full task plan through the material revision API/CLI with kind "plan", source_baseline_id "%s", fixed sources and stable acceptance IDs. Only the configured human reviewer can approve the plan.
 
@@ -400,6 +173,14 @@ func materialPlanBaseline(row db.GitMaterial, rev db.GitMaterialRevision) (mater
 	return base, content, nil
 }
 func materialInvoke(ctx context.Context, q *db.Queries, agent db.Agent, actor pgtype.UUID) (bool, error) {
+	if agent.Kind == "system" && strings.HasPrefix(agent.SystemKey.String, "material:") {
+		if agent.ArchivedAt.Valid || !agent.RuntimeID.Valid {
+			return false, nil
+		}
+		id := util.UUIDToString(agent.RuntimeID)
+		_, e := materialRuntimeForUser(ctx, q, agent.WorkspaceID, &id, actor)
+		return e == nil, e
+	}
 	if agent.ArchivedAt.Valid || auth.TaskCapabilityProfile(agent.TemplateKey, agent.TemplateVersion) != "" {
 		return false, nil
 	}
@@ -431,16 +212,4 @@ func materialCurrentMember(ctx context.Context, q *db.Queries, ws, actor, member
 		return materialError(403, "material_plan_authority_revoked")
 	}
 	return nil
-}
-
-func materialProviderFailure(finish func(string, string) error, err error, fallback string) error {
-	var e *materialgit.Error
-	if errors.As(err, &e) {
-		state := "blocked"
-		if e.Retryable || e.Uncertain {
-			state = "pending"
-		}
-		return finish(state, e.Code)
-	}
-	return finish("pending", fallback)
 }

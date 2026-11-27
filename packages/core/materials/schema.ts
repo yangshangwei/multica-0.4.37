@@ -13,11 +13,12 @@ const webURL = z.string().url().refine((value) => {
 export const MaterialSourceSchema = z.object({ resource_id: id, commit: sha, path: z.string() });
 export const MaterialSettingsSchema = z.object({
   version, enabled: z.boolean(), provider: z.string(), resource_id: id,
-  connection_id: id.nullable(), repository: id, base_branch: id, root_path: z.string(),
-  reviewer_ids: z.array(id), plan_agent_id: id.nullable(), auto_start_plan: z.boolean(),
+  execution_runtime_id: z.string().uuid().nullable().default(null), repository: id, base_branch: id, root_path: z.string(),
+  reviewer_ids: z.array(id), auto_start_plan: z.boolean(),
 });
 export const MaterialSettingsEnvelopeSchema = z.object({
   workspace_id: id, project_id: id, can_configure: z.boolean(), settings: MaterialSettingsSchema.nullable(),
+  execution_protocol: z.number().int().nonnegative().optional(),
 });
 export const MaterialSchema = z.object({
   id, workspace_id: id, project_id: id, title: z.string(), path: z.string(), version,
@@ -41,7 +42,12 @@ export const MaterialPlanSchema = z.object({
   issue_id: id.nullable(), status: z.string(), blocker: z.string().nullable(), baseline_id: id, revision_id: id.nullable(),
 });
 export const MaterialListSchema = z.object({ workspace_id: id, project_id: id, materials: z.array(MaterialSchema) });
+export const MaterialOperationSchema = z.object({
+  id, kind: z.string(), status: z.string(), task_id: id.nullable(),
+  execution_runtime_id: z.string().uuid().nullable(), blocker: z.string().nullable(),
+});
 export const MaterialDetailSchema = z.object({
+  operation: MaterialOperationSchema.nullable().optional(),
   material: MaterialSchema, revisions: z.array(MaterialRevisionSchema), decisions: z.array(MaterialDecisionSchema),
   comments: z.array(MaterialCommentSchema), baseline: MaterialBaselineSchema.nullable(), plan: MaterialPlanSchema.nullable(),
   capabilities: z.object({ can_edit: z.boolean(), can_review: z.boolean(), can_start_plan: z.boolean(), can_retry: z.boolean() }),
@@ -86,6 +92,9 @@ const expectedVersion = { request_id: requestID, expected_version: version };
 export const MaterialCreateInputSchema = z.object({ request_id: requestID, title: z.string().min(1) });
 export const MaterialSettingsInputSchema = MaterialSettingsSchema.omit({ version: true }).extend({
   ...expectedVersion, provider: z.enum(["github", "gitlab"]),
+  execution_runtime_id: z.string().uuid().nullable(),
+}).strict().refine((value) => !value.enabled || value.execution_runtime_id !== null, {
+  message: "Enabled materials require an execution runtime",
 });
 export const MaterialRevisionInputSchema = z.object({
   ...expectedVersion, kind: z.enum(["requirement", "plan"]), content: z.string(), plan_content: z.string().optional(),

@@ -99,6 +99,8 @@ type TaskStatus struct {
 }
 
 type Task struct {
+	MaterialExecution    *protocol.MaterialExecution            `json:"material_execution,omitempty"`
+	MaterialClaim        *protocol.MaterialClaimBinding         `json:"material_claim,omitempty"`
 	KnowledgeContext     *protocol.TaskKnowledgeClaimDescriptor `json:"knowledge_context,omitempty"`
 	ExecutionFence       *ExecutionFence                        `json:"execution_fence,omitempty"`
 	ID                   string                                 `json:"id"`

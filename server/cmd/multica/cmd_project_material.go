@@ -47,6 +47,7 @@ func newProjectMaterialCommand() *cobra.Command {
 		command.RunE = func(cmd *cobra.Command, args []string) error { return runProjectMaterial(cmd, action, args) }
 		group.AddCommand(command)
 	}
+	group.AddCommand(materialOperationCommands()...)
 	return group
 }
 

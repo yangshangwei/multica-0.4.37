@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiClient } from "../api/client";
 import { setSchemaLogger } from "../api/schema";
 import { setCurrentWorkspace } from "../platform/workspace-storage";
-import { canReviewMaterialRevision, newestMaterialRevision, parseMaterialDetail, parseMaterialList, parseMaterialSettings, type MaterialDetail } from "./schema";
+import { canReviewMaterialRevision, decodeMaterialSettingsInput, newestMaterialRevision, parseMaterialDetail, parseMaterialList, parseMaterialSettings, type MaterialDetail } from "./schema";
 
 const sha = "a".repeat(40);
 const digest = "b".repeat(64);
@@ -15,8 +15,8 @@ function detail(): MaterialDetail {
     capabilities: { can_edit: true, can_review: true, can_start_plan: false, can_retry: false },
   };
 }
-const settings = { version: 2, enabled: true, provider: "github", resource_id: "resource", connection_id: "installation-row", repository: "org/materials", base_branch: "main", root_path: "", reviewer_ids: ["user"], plan_agent_id: null, auto_start_plan: false };
-const envelope = () => ({ workspace_id: "ws", project_id: "project", can_configure: true, settings });
+const settings = { version: 2, enabled: true, provider: "github", resource_id: "resource", execution_runtime_id: "12345678-1234-4234-8234-123456789abc", repository: "org/materials", base_branch: "main", root_path: "", reviewer_ids: ["user"], auto_start_plan: false };
+const envelope = () => ({ workspace_id: "ws", project_id: "project", can_configure: true, execution_protocol: 1, settings });
 function respond(value: unknown) {
   const fetcher = vi.fn().mockImplementation(async () => new Response(JSON.stringify(value), { status: 200, headers: { "Content-Type": "application/json" } }));
   vi.stubGlobal("fetch", fetcher);
@@ -31,6 +31,36 @@ describe("material API contracts", () => {
       expect(() => parseMaterialSettings({ ...envelope(), settings: { ...settings, auto_start_plan } }, "ws", "project")).toThrow();
     }
     expect(() => parseMaterialSettings({ ...envelope(), project_id: "foreign" }, "ws", "project")).toThrow();
+  });
+
+  it("reads legacy configuration as unconfigured without inferring its old agent", () => {
+    const legacy = { ...settings, execution_runtime_id: undefined, plan_agent_id: "old-agent", connection_id: "old-connection" };
+    const result = parseMaterialSettings({ ...envelope(), execution_protocol: undefined, settings: legacy }, "ws", "project");
+    expect(result.execution_protocol).toBeUndefined();
+    expect(result.settings?.execution_runtime_id).toBeNull();
+    expect(result.settings).not.toHaveProperty("plan_agent_id");
+  });
+
+  it("refuses retired or malformed pending writes without transforming their request identity", () => {
+    const { version: expected_version, ...body } = settings;
+    const input = { ...body, expected_version, request_id: "same-intent" };
+    expect(decodeMaterialSettingsInput(input)).toEqual(input);
+    expect(decodeMaterialSettingsInput({ ...input, connection_id: "old" })).toBeNull();
+    expect(decodeMaterialSettingsInput({ ...input, plan_agent_id: null })).toBeNull();
+    expect(decodeMaterialSettingsInput({ ...input, execution_runtime_id: undefined })).toBeNull();
+    expect(decodeMaterialSettingsInput({ ...input, execution_runtime_id: null })).toBeNull();
+    expect(decodeMaterialSettingsInput({ ...input, enabled: false, execution_runtime_id: null })).not.toBeNull();
+    for (const execution_runtime_id of [false, {}, "not-a-uuid"]) {
+      expect(() => parseMaterialSettings({ ...envelope(), settings: { ...settings, execution_runtime_id } }, "ws", "project")).toThrow();
+    }
+  });
+
+  it("parses operation facts independently of merge status and refuses malformed identity", () => {
+    const operation = { id: "op", kind: "merge", status: "future_state", task_id: null, execution_runtime_id: settings.execution_runtime_id, blocker: null };
+    const parsed = parseMaterialDetail({ ...detail(), operation }, "ws", "project");
+    expect(parsed.operation).toEqual(operation);
+    expect(parsed.material.status).toBe("in_review");
+    expect(() => parseMaterialDetail({ ...detail(), operation: { ...operation, task_id: false } }, "ws", "project")).toThrow();
   });
 
   it("does not reinterpret malformed lists or authorization as empty or approved", () => {
@@ -106,11 +136,11 @@ describe("material API contracts", () => {
     expect(JSON.parse(fetcher.mock.calls[1]?.[1].body)).toEqual(command.data);
   });
 
-  it("sends installation row identity and false setting without optimistic defaults", async () => {
+  it("sends only selected runtime identity and false setting without optimistic defaults", async () => {
     const fetcher = respond(envelope());
     const { version, ...input } = settings;
     const result = await new ApiClient("https://api.example.test").saveMaterialSettings("project", { ...input, provider: "github", expected_version: version, request_id: "settings-key" }, { workspaceId: "ws" });
     expect(result.settings?.auto_start_plan).toBe(false);
-    expect(JSON.parse(fetcher.mock.calls[0]?.[1].body)).toMatchObject({ connection_id: "installation-row", auto_start_plan: false, expected_version: 2 });
+    expect(JSON.parse(fetcher.mock.calls[0]?.[1].body)).toMatchObject({ execution_runtime_id: "12345678-1234-4234-8234-123456789abc", auto_start_plan: false, expected_version: 2 });
   });
 });
