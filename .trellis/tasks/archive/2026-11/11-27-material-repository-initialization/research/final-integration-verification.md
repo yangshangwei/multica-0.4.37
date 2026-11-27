@@ -42,3 +42,5 @@ GitHub测试服务UTF-8分块拼接修复后，四条用例均在全新独立环
 全部自建API/Web/daemon/Electron/provider进程已退出，专用PostgreSQL容器material-init-ui-90276a8f已停止；数据库和报告保留。最终视觉检查94/pass。提交前主会话再跑两个provider fixture Node测试通过，含刻意拆分中文UTF-8字节的回归。
 
 代码交付提交：`7bc0ec0ec`。初始化任务本地代码及确定性验收完成；真实平台/模型验收继续由前置验收任务承接。
+
+已按计划快进合回`codex/git-engineering-material-workflow`，合入头`5e4b68855`。原工作区逐文件摘要与验收manifest一致；父任务四个未提交文档摘要保持不变。旧未跟踪任务副本保留于仓库外私有备份`multica-init-merge-back-7ratjmek`。没有推送、部署或删除UAT/历史资料。
