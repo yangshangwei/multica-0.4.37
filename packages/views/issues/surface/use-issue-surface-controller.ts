@@ -126,6 +126,8 @@ export interface IssueSurfaceController {
   /** See IssueSurfaceData.isRefreshing — placeholder-backed revalidation. */
   isRefreshing: boolean;
   isEmpty: boolean;
+  /** The active collection successfully resolved empty, without retained error data. */
+  isEmptyReadSuccessful: boolean;
   /**
    * The status catalog a CUSTOM status filter depends on failed to load. The
    * filter cannot be honoured, so the surface shows a retryable error rather
@@ -884,6 +886,12 @@ export function useIssueSurfaceController({
       data.isEmpty &&
       !data.isRefreshing &&
       !(usesTable && (tableSearch.trim() || debouncedActiveSearch)),
+    isEmptyReadSuccessful:
+      data.isEmpty &&
+      !data.isRefreshing &&
+      (usesServerStatusSurface
+        ? tableFacetsQuery.isSuccess && !tableFacetsQuery.isPlaceholderData
+        : usesServerGroupSurface && !serverGroupBranches.isError),
     isStatusCatalogError: data.isStatusCatalogError,
     retryStatusCatalog: catalog.retry,
     sort,

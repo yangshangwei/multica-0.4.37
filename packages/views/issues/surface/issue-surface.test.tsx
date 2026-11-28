@@ -860,6 +860,32 @@ describe("IssueSurface — filtered empty state", () => {
     expect(screen.queryByRole("banner", { name: "Issue tools" })).not.toBeInTheDocument();
   });
 
+  it.each([false, true])("only supplies the table welcome without active filters (filtered: %s)", async (filtered) => {
+    const store = getIssueSurfaceViewStore("workspace:all");
+    act(() => {
+      store.getState().setTableGrouping("none");
+      if (filtered) store.getState().togglePriorityFilter("urgent");
+    });
+    render(
+      <QueryClientProvider client={qc}>
+        <IssueSurface
+          scope={{ type: "workspace" }}
+          modes={["table"]}
+          renderTableEmpty={() => <p>Workspace issue welcome</p>}
+          batchToolbar="never"
+        />
+      </QueryClientProvider>,
+    );
+    if (filtered) {
+      await waitFor(() => expect(qc.isFetching({ queryKey: ["issues", "ws-1", "table-query", "rows"] })).toBe(0));
+      expect(screen.queryByText("Workspace issue welcome")).not.toBeInTheDocument();
+      expect(screen.getByRole("searchbox")).toBeInTheDocument();
+    } else {
+      await screen.findByText("Workspace issue welcome");
+      expect(screen.queryByRole("searchbox")).not.toBeInTheDocument();
+    }
+  });
+
   it("retains filter recovery when the project itself is empty", async () => {
     const store = getIssueSurfaceViewStore("project:pf");
     act(() => store.getState().toggleAgentRunningFilter());

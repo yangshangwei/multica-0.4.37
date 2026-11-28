@@ -6,7 +6,7 @@
  * that renders the raw uuid is the failure this file exists to catch.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { setApiInstance } from "@multica/core/api";
 import type { ApiClient } from "@multica/core/api/client";
@@ -173,9 +173,11 @@ describe("Table grouped by project", () => {
   let queryClient: QueryClient;
   let groupRequests: IssueTableGroupsRequest[];
   let surfaceKey: string;
+  let readState: "populated" | "empty" | "error" | "hiddenGroups";
 
   beforeEach(() => {
     groupRequests = [];
+    readState = "populated";
     surfaceKey = `project-grouping-${Math.floor(Math.random() * 1e9)}`;
     vi.stubGlobal("IntersectionObserver", VisibleIntersectionObserver);
     vi.stubGlobal("ResizeObserver", ObserverStub);
@@ -207,6 +209,11 @@ describe("Table grouped by project", () => {
       }),
       listIssueTableGroups: async (request: IssueTableGroupsRequest) => {
         groupRequests.push(request);
+        if (readState === "error") throw new Error("Unavailable");
+        if (readState === "empty" || readState === "hiddenGroups") return {
+          query_fingerprint: "test", total: readState === "empty" ? 0 : 3,
+          groups: [], next_cursor: null,
+        };
         return {
           query_fingerprint: "test",
           total: 3,
@@ -228,7 +235,8 @@ describe("Table grouped by project", () => {
         };
       },
       listIssueTableRows: async (request: IssueTableRowsRequest) => {
-        const rows = ROWS_BY_GROUP[request.group_key ?? ""] ?? [];
+        if (readState === "error") throw new Error("Unavailable");
+        const rows = readState === "empty" ? [] : ROWS_BY_GROUP[request.group_key ?? "project:none"] ?? [];
         return {
           query_fingerprint: "test",
           group_key: request.group_key ?? null,
@@ -247,17 +255,23 @@ describe("Table grouped by project", () => {
     vi.unstubAllGlobals();
   });
 
-  function render() {
+  function render({ grouping = "project", welcome = false, search = "", querySearch = "" }: {
+    grouping?: "project" | "none";
+    welcome?: boolean;
+    search?: string;
+    querySearch?: string;
+  } = {}) {
     const store = getIssueSurfaceViewStore(surfaceKey);
-    store.getState().setTableGrouping("project");
+    store.getState().setTableGrouping(grouping);
     renderWithI18n(
       <QueryClientProvider client={queryClient}>
         <ViewStoreProvider store={store}>
           <IssueSurfaceSelectionProvider selection={selection}>
             <TableView
-              serverQuery={serverQuery}
+              serverQuery={querySearch ? { ...serverQuery, search: querySearch } : serverQuery}
+              renderEmpty={welcome ? () => <section aria-label="Issue welcome">Start with an issue</section> : undefined}
               childProgressMap={new Map()}
-              search=""
+              search={search}
               onSearchChange={() => {}}
               onLoadedIssuesChange={() => {}}
               onCreateIssue={() => {}}
@@ -318,5 +332,40 @@ describe("Table grouped by project", () => {
     render();
     await screen.findByText("MUL-acme");
     await screen.findByText("MUL-loose");
+  });
+
+  it.each(["project", "none"] as const)("keeps the %s table subscribed while showing confirmed-empty content", async (grouping) => {
+    readState = "empty";
+    render({ grouping, welcome: true });
+    expect(screen.queryByRole("region", { name: "Issue welcome" })).not.toBeInTheDocument();
+    await screen.findByRole("region", { name: "Issue welcome" });
+    readState = "error";
+    await act(() => queryClient.refetchQueries({ queryKey: ["issues", "ws-1", "table-query"] }));
+    await waitFor(() => expect(screen.queryByRole("region", { name: "Issue welcome" })).not.toBeInTheDocument());
+    readState = "empty";
+    await act(() => queryClient.refetchQueries({ queryKey: ["issues", "ws-1", "table-query"] }));
+    await screen.findByRole("region", { name: "Issue welcome" });
+    readState = "populated";
+    await act(() => queryClient.refetchQueries({ queryKey: ["issues", "ws-1", "table-query"] }));
+    await screen.findByText("MUL-loose");
+    expect(screen.queryByRole("region", { name: "Issue welcome" })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    { search: "signup", querySearch: "" },
+    { search: "", querySearch: "signup" },
+  ])("keeps search recovery visible for raw or debounced search $search $querySearch", async (search) => {
+    readState = "empty";
+    render({ welcome: true, ...search });
+    await waitFor(() => expect(queryClient.isFetching({ queryKey: ["issues", "ws-1", "table-query"] })).toBe(0));
+    expect(screen.queryByRole("region", { name: "Issue welcome" })).not.toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: "Search title or issue ID…" })).toBeInTheDocument();
+  });
+
+  it("does not treat an empty group window as zero issues when the authoritative total is positive", async () => {
+    readState = "hiddenGroups";
+    render({ welcome: true });
+    await waitFor(() => expect(queryClient.isFetching({ queryKey: ["issues", "ws-1", "table-query"] })).toBe(0));
+    expect(screen.queryByRole("region", { name: "Issue welcome" })).not.toBeInTheDocument();
   });
 });

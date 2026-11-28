@@ -165,6 +165,8 @@ const ADD_COLUMN_ID = "__add";
 
 type TableViewProps = {
   serverQuery: IssueTableQuerySpec;
+  /** Optional first-use content after this table's own query confirms zero issues. */
+  renderEmpty?: () => ReactNode;
   childProgressMap: Map<string, ChildProgress>;
   search: string;
   onSearchChange: (query: string) => void;
@@ -1303,6 +1305,7 @@ function IssueTableBodyCell({
 
 export function TableView({
   serverQuery,
+  renderEmpty,
   childProgressMap,
   search,
   onSearchChange,
@@ -2429,6 +2432,23 @@ export function TableView({
       setExporting(null);
     }
   };
+
+  const rootBranch = serverBranchData[serverBranchKey(null, null)];
+  const isConfirmedEmpty = usesServerGrouping
+    ? serverGroupsQuery.isSuccess &&
+      !serverGroupsQuery.isPlaceholderData &&
+      !serverGroupsQuery.isFetching &&
+      serverGroupsQuery.data.pages[0]?.total === 0
+    : !!rootBranch &&
+      rootBranch.headUpdatedAt > 0 &&
+      !rootBranch.loading &&
+      !rootBranch.error &&
+      !rootBranch.placeholder &&
+      rootBranch.total === 0;
+  if (renderEmpty && isConfirmedEmpty && !search.trim() && !serverQuery.search?.trim()) {
+    const emptyContent = renderEmpty();
+    if (emptyContent != null) return emptyContent;
+  }
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">

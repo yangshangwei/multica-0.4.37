@@ -54,6 +54,7 @@ interface IssueSurfaceComponentProps extends IssueSurfaceProps {
   renderHeader?: (context: IssueSurfaceRenderContext) => ReactNode;
   headerActions?: (context: IssueSurfaceRenderContext) => ReactNode;
   renderEmpty?: (context: IssueSurfaceRenderContext) => ReactNode;
+  renderTableEmpty?: (context: IssueSurfaceRenderContext) => ReactNode;
   renderLoading?: (context: IssueSurfaceRenderContext) => ReactNode;
   /** An authoritative unfiltered scope count, not the loaded row count. */
   isScopeEmpty?: boolean;
@@ -73,6 +74,7 @@ export function IssueSurface({
   renderHeader,
   headerActions,
   renderEmpty,
+  renderTableEmpty,
   renderLoading,
   isScopeEmpty,
   clientFilter,
@@ -165,6 +167,7 @@ export function IssueSurface({
         renderHeader={renderHeader}
         headerActions={headerActions}
         renderEmpty={renderEmpty}
+        renderTableEmpty={renderTableEmpty}
         renderLoading={renderLoading}
         isScopeEmpty={isScopeEmpty}
         clientFilter={clientFilter}
@@ -186,6 +189,7 @@ function IssueSurfaceContent({
   renderHeader,
   headerActions,
   renderEmpty,
+  renderTableEmpty,
   renderLoading,
   isScopeEmpty,
   clientFilter,
@@ -363,6 +367,10 @@ function IssueSurfaceContent({
             {controller.viewMode === "table" && (
               <TableView
                 serverQuery={controller.tableQuerySpec}
+                renderEmpty={renderTableEmpty && !viewBaseline && !controller.hasActiveFilters &&
+                  !controller.tableSearch.trim() && !controller.tableQuerySpec.search?.trim()
+                  ? () => renderTableEmpty(renderContext)
+                  : undefined}
                 childProgressMap={controller.childProgressMap}
                 search={controller.tableSearch}
                 onSearchChange={controller.setTableSearch}

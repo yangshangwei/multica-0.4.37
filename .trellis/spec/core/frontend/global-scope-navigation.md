@@ -57,7 +57,7 @@ path to a global resume operation.
 
 In complete navigation, Collaboration appears above Workspace in the shared left directory. Its fresh
 preference is collapsed, presenting a single quiet heading with a neutral Beta
-marker. The whole heading is one native disclosure button: clicking its title,
+marker. The heading is one native disclosure button: clicking its title,
 Beta marker, unread count, arrow or remaining row space toggles the directory
 without navigating, matching the other first-level groups. Entering
 a collaboration destination reveals Current handling, Participating and
@@ -73,10 +73,11 @@ are not zero. The notification item is an active native link to
 `/account?view=notifications&filter=unread`; collapse removes the child links
 while the protected count observer and main notification page remain available.
 
-The separate “Return to previous collaboration” action resumes the remembered
+The “Resume last view” action (“恢复上次浏览” in Simplified Chinese) resumes the remembered
 account destination, including selected issue, fragment and scroll, without
-selecting an issue again. It appears exactly once outside the disclosure so
-closed groups and icon-only navigation retain an accessible native button.
+selecting an issue again. It appears exactly once after notifications inside
+the expanded collaboration directory. Closing the group or switching to
+icon-only navigation hides the action along with the other directory children.
 It is disabled in account scope to avoid resetting an editor or focus already
 there. The disclosure and explicit list links keep their existing behavior.
 `onAccountResume` comes from the platform: Web resolves the current viewer's
@@ -91,21 +92,28 @@ callers. Filtering, exact targets and mounted return restoration follow
 [the notification contract](./collaboration-notifications.md).
 
 The title's hover/focus tooltip and shared workbench header explain cross-workspace
-scope and Beta maturity in both supported locales. New collaboration creation
-also has a neutral Beta marker. The heading and creation entry provide the same
+scope and Beta maturity in both supported locales. The sidebar plus shares the
+group's single neutral Beta marker. The heading and creation entry provide the same
 localized `aria-description` independently of the floating content. The heading
 has a localized expand/collapse name, one keyboard stop and a coarse-pointer
 target; Enter and Space each toggle it once. Child links own account navigation.
 
-In complete navigation, Start work is fixed in the sidebar header above both scope directories. Its
-three directly visible controls are New issue, Start collaboration and AI Chat,
-in that order. New issue and Start collaboration use the same neutral sidebar
-menu styling, with no persistent primary fill; hover uses the shared sidebar
-accent. Collaboration keeps a neutral Beta marker. Ordinary creation and AI Chat show
-the displayed workspace name; collaboration shows cross-workspace scope. Keep
-supporting captions accessible without changing the controls' stable action
-names. Long workspace names may truncate visually only with the full name
-available. Coarse controls are at least 44px tall.
+In complete navigation, workspace actions sit immediately below the displayed
+Workspace picker and above its directory. The accessible Start work group has
+no visible heading. New issue and AI Chat share one compact row; the creation
+button has a restrained sidebar-accent fill, while Chat retains its native link,
+selected state and known positive unread-message count. The workspace name is
+shown once in the picker, with full scope descriptions on both actions rather
+than repeated visual captions. The Workspace label is omitted when a named
+workspace is available. Keep existing draft indicators and route-owned shortcuts.
+Coarse controls remain at least 44px tall; compact Sheets always show full labels.
+
+Start collaboration is an always-visible plus button beside the Collaboration
+disclosure in complete navigation. It is a separate sibling control, never
+nested in the disclosure and never toggling the group. The group owns the single
+Beta marker. The plus keeps the localized action name and Beta/scope accessible
+description, a hover/focus tooltip, the original creation ref and dialog focus
+return. In icon-only mode, collaboration creation remains in More navigation.
 
 Select the navigation workspace from the actual route, otherwise the remembered
 available workspace, otherwise the first authoritative directory member. A
@@ -129,7 +137,7 @@ Remaining on the original account path during a delayed transition preserves
 the request; sidebar unmount alone must not cancel it. Never await `push`, use
 a timer/microtask as admission, or install the preview as API workspace identity.
 
-AI Chat is one native header link to the displayed workspace's existing chat
+AI Chat is one native workspace-action link to the displayed workspace's existing chat
 route; remove its duplicate personal-directory entry. Its unread observer stays
 under actual workspace authority and retains the shared unread-message count,
 foreground/current-session and floating-window exclusions. Account previews
@@ -251,7 +259,8 @@ Resize begins only in expanded noncompact presentation. Folding, compact
 transition or unmount cancels live inline width previews without committing
 them. Icon content can scroll vertically in short windows; coarse icon controls
 retain centered 16px icons in 44px targets inside the same 64px rail. Compact
-complete navigation puts its header (search and Start work) and directory in one
+complete navigation puts its header (brand and search) and directory, including
+the workspace action row, in one
 `SidebarContent` scrollport, with a nonshrinking content wrapper; the footer stays
 outside. Fixing a tall compact header outside the only directory scroller can
 reduce that scroller to zero height at 200% native zoom. Native popup focus and tooltips
@@ -360,8 +369,9 @@ account modal ownership. Production
 Web and actual Electron navigation journeys live in
 `e2e/global-scope-navigation.spec.ts`; record build identity and exact native
 harness scope. Class assertions or JSDOM offsets are not visual/native proof.
-That journey also verifies the direct Start work controls and their scope
-captions, account-to-workspace ordinary creation and AI Chat, native
+That journey also verifies the compact workspace action row, independent
+collaboration plus, accessible scope descriptions, account-to-workspace ordinary
+creation and AI Chat, native
 collaboration focus return, and compact sheet dismissal. Preserve its original
 account/workspace restoration assertions when adding these interactions.
 `e2e/sidebar-icon-rail.spec.ts` owns the focused production Web/actual Electron

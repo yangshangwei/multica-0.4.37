@@ -1,12 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { cloneElement, type ReactElement } from "react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Issue } from "@multica/core/types";
+import { IssueViewSchema, type IssueView } from "@multica/core/api/schemas";
+import { useActiveIssueViewStore } from "@multica/core/issue-views/active-view-store";
+import { useCreateModeStore } from "@multica/core/issues/stores/create-mode-store";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../locales/en/common.json";
 import enIssues from "../../locales/en/issues.json";
+import enLayout from "../../locales/en/layout.json";
+import enCollaboration from "../../locales/en/collaboration.json";
 
-const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues } };
+const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues, layout: enLayout, collaboration: enCollaboration } };
+const mockOpenCreation = vi.hoisted(() => vi.fn());
+vi.mock("../../collaboration/source-bridge", () => ({
+  SourceCollaborationCreation: ({ workspaceId, renderTrigger }: {
+    workspaceId: string;
+    renderTrigger?: (label: string) => ReactElement<{ onClick?: () => void }>;
+  }) => cloneElement(
+    renderTrigger?.("New collaboration") ?? <button>New collaboration</button>,
+    { onClick: () => mockOpenCreation(workspaceId) },
+  ),
+  SourceCollaborationActionDialog: () => null,
+}));
 vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "ws-1",
 }));
@@ -63,6 +80,7 @@ vi.mock("../../workspace/workspace-avatar", () => ({
 
 // Mock api (queries use api internally)
 const mockListIssues = vi.hoisted(() => vi.fn().mockResolvedValue({ issues: [], total: 0 }));
+const mockListIssueViews = vi.hoisted(() => vi.fn<() => Promise<IssueView[]>>().mockResolvedValue([]));
 const mockListGroupedIssues = vi.hoisted(() => vi.fn().mockResolvedValue({ groups: [] }));
 const mockListIssueTableGroups = vi.hoisted(() =>
   vi.fn(async (request: any) => {
@@ -251,6 +269,7 @@ vi.mock("@multica/core/api", async (importOriginal) => {
     listIssueTableGroups: (request: any) => mockListIssueTableGroups(request),
     listIssueTableRows: (request: any) => mockListIssueTableRows(request),
     listIssueTableFacets: (request: any) => mockListIssueTableFacets(request),
+    listIssueViews: () => mockListIssueViews(),
     updateIssue: vi.fn(),
     listMembers: (...args: any[]) => mockListMembers(...args),
     listAgents: (...args: any[]) => mockListAgents(...args),
@@ -422,10 +441,11 @@ vi.mock("@multica/core/issues/stores/recent-issues-store", () => ({
   selectRecentIssues: () => () => [],
 }));
 
+const mockModalState = vi.hoisted(() => ({ open: vi.fn() }));
 vi.mock("@multica/core/modals", () => ({
   useModalStore: Object.assign(
-    () => ({ open: vi.fn() }),
-    { getState: () => ({ open: vi.fn() }) },
+    (selector?: (state: typeof mockModalState) => unknown) => selector ? selector(mockModalState) : mockModalState,
+    { getState: () => mockModalState },
   ),
 }));
 
@@ -640,13 +660,14 @@ function renderWithQuery(ui: React.ReactElement) {
       mutations: { retry: false },
     },
   });
-  return render(
+  const result = render(
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
       <QueryClientProvider client={qc}>
         {ui}
       </QueryClientProvider>
     </I18nProvider>,
   );
+  return { ...result, queryClient: qc };
 }
 
 // ---------------------------------------------------------------------------
@@ -686,6 +707,9 @@ describe("IssuesPage (shared)", () => {
     mockViewState.statusFilters = [];
     mockViewState.priorityFilters = [];
     mockScope = "all";
+    mockListIssueViews.mockResolvedValue([]);
+    useActiveIssueViewStore.setState({ active: {} });
+    useCreateModeStore.getState().setLastMode("agent");
   });
 
   it("shows loading skeletons initially", () => {
@@ -693,6 +717,7 @@ describe("IssuesPage (shared)", () => {
     expect(
       screen.getAllByRole("generic").some((el) => el.getAttribute("data-slot") === "skeleton"),
     ).toBe(true);
+    expect(screen.queryByRole("heading", { name: enIssues.welcome.title })).not.toBeInTheDocument();
   });
 
   it("renders issue titles after data loads", async () => {
@@ -778,13 +803,85 @@ describe("IssuesPage (shared)", () => {
     expect(screen.queryByText("Test WS")).not.toBeInTheDocument();
   });
 
-  it("shows empty state when there are no issues", async () => {
+  it("welcomes an empty workspace with creation, help, and a passive example", async () => {
     mockListIssues.mockResolvedValue({ issues: [], total: 0 });
 
     renderWithQuery(<IssuesPage />);
 
-    await screen.findByText("No issues yet");
-    expect(screen.getByText("Create an issue to get started.")).toBeInTheDocument();
+    const welcome = await screen.findByRole("region", { name: enIssues.welcome.title });
+    expect(within(welcome).getByRole("link", { name: enIssues.welcome.docs })).toHaveAttribute("href", "/test/docs/issues");
+    const example = within(welcome).getByRole("figure", { name: enIssues.welcome.example_label });
+    expect(within(example).getByText(enIssues.welcome.example_title)).toBeInTheDocument();
+    expect(within(example).queryByRole("button")).not.toBeInTheDocument();
+    expect(within(example).queryByRole("link")).not.toBeInTheDocument();
+    expect(mockOpenCreation).not.toHaveBeenCalled();
+    // The helper's full preference matrix belongs to core/create-mode-store.test.ts.
+    useCreateModeStore.getState().setLastMode("manual");
+    fireEvent.click(within(welcome).getByRole("button", { name: enLayout.sidebar.new_issue }));
+    expect(mockModalState.open).toHaveBeenCalledExactlyOnceWith("create-issue", null);
+    expect(mockOpenCreation).not.toHaveBeenCalled();
+    const collaboration = within(welcome).getByRole("button", { name: "New collaboration" });
+    expect(collaboration).toHaveAttribute("aria-description", enCollaboration.beta.description);
+    expect(within(collaboration).getByText(enCollaboration.beta.label)).toBeInTheDocument();
+    fireEvent.click(collaboration);
+    expect(mockOpenCreation).toHaveBeenCalledExactlyOnceWith("ws-1");
+    expect(mockModalState.open).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps ordinary creation as the header action and honors the quick-create preference", async () => {
+    renderWithQuery(<IssuesPage />);
+    const welcome = await screen.findByRole("region", { name: enIssues.welcome.title });
+    const headerCreate = screen.getAllByRole("button", { name: enLayout.sidebar.new_issue })[0]!;
+    expect(welcome).not.toContainElement(headerCreate);
+    fireEvent.click(headerCreate);
+    expect(mockModalState.open).toHaveBeenCalledExactlyOnceWith("quick-create-issue", null);
+    expect(mockOpenCreation).not.toHaveBeenCalled();
+    const headerCollaboration = screen.getAllByRole("button", { name: "New collaboration" })[0]!;
+    expect(headerCollaboration).toHaveAttribute("aria-label", "New collaboration");
+    expect(headerCollaboration).toHaveAttribute("aria-description", enCollaboration.beta.description);
+    expect(within(headerCollaboration).getByText(enCollaboration.beta.label)).toBeInTheDocument();
+  });
+
+  it.each(["members", "agents"])("retains the ordinary empty state for the %s scope", async (scope) => {
+    mockScope = scope;
+    renderWithQuery(<IssuesPage />);
+    await screen.findByText(enIssues.page.empty_title);
+    expect(screen.queryByRole("heading", { name: enIssues.welcome.title })).not.toBeInTheDocument();
+  });
+
+  it("does not describe an empty saved view as an empty workspace", async () => {
+    mockListIssueViews.mockResolvedValue([IssueViewSchema.parse({ id: "saved-view", name: "Saved view", query: {}, display: {} })]);
+    useActiveIssueViewStore.setState({ active: { "ws-1:workspace": "saved-view" } });
+    renderWithQuery(<IssuesPage />);
+    await screen.findByText(enIssues.page.empty_title);
+    expect(screen.queryByRole("heading", { name: enIssues.welcome.title })).not.toBeInTheDocument();
+  });
+
+  it("retains filter recovery instead of the welcome when filters match nothing", async () => {
+    mockViewState.priorityFilters = ["urgent"];
+    renderWithQuery(<IssuesPage />);
+    await screen.findByText(enIssues.filtered_empty.title);
+    expect(screen.getByRole("button", { name: enIssues.filtered_empty.clear_button })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: enIssues.welcome.title })).not.toBeInTheDocument();
+  });
+
+  it("does not welcome an initial failed read as an empty workspace", async () => {
+    mockListIssues.mockRejectedValue(new Error("Unavailable"));
+    const { queryClient } = renderWithQuery(<IssuesPage />);
+    await waitFor(() => expect(queryClient.getQueryCache().findAll({ queryKey: ["issues", "ws-1", "table-query", "facets"] }).some((query) => query.state.status === "error")).toBe(true));
+    expect(screen.queryByRole("heading", { name: enIssues.welcome.title })).not.toBeInTheDocument();
+  });
+
+  it("restores the welcome only after a failed refresh of empty data recovers", async () => {
+    const { queryClient } = renderWithQuery(<IssuesPage />);
+    await screen.findByRole("heading", { name: enIssues.welcome.title });
+    mockListIssues.mockRejectedValue(new Error("Unavailable"));
+    await act(() => queryClient.refetchQueries({ queryKey: ["issues", "ws-1", "table-query", "facets"] }));
+    await screen.findByText(enIssues.page.empty_title);
+    expect(screen.queryByRole("heading", { name: enIssues.welcome.title })).not.toBeInTheDocument();
+    mockListIssues.mockResolvedValue({ issues: [], total: 0 });
+    await act(() => queryClient.refetchQueries({ queryKey: ["issues", "ws-1", "table-query", "facets"] }));
+    await screen.findByRole("heading", { name: enIssues.welcome.title });
   });
 
   it("shows scope tab buttons", async () => {
