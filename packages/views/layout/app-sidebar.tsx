@@ -689,9 +689,10 @@ function SidebarAccountMenu() {
   </DropdownMenu>;
 }
 
-function SidebarWorkspaceActions({ workspace, workspaceActive }: {
+function SidebarWorkspaceActions({ workspace, workspaceActive, inboxUnread }: {
   workspace: Workspace | null;
   workspaceActive: boolean;
+  inboxUnread?: number;
 }) {
   const { t } = useT("layout");
   const navigation = useNavigation();
@@ -736,27 +737,34 @@ function SidebarWorkspaceActions({ workspace, workspaceActive }: {
   };
 
   return <SidebarGroup className={cn("py-1", iconCollapsed && "items-center px-0")}>
-    <div role="group" aria-label={t(($) => $.sidebar.start_work)} className={cn("min-w-0", !iconCollapsed && "@container/sidebar-actions")}>
-      <SidebarMenu className={cn("gap-1 @min-[13rem]/sidebar-actions:gap-1.5", !iconCollapsed && "grid grid-cols-[minmax(0,1fr)_auto]")}>
+    <div role="group" aria-label={t(($) => $.sidebar.start_work)} className="min-w-0">
+      <SidebarMenu className="gap-0.5">
         <SidebarMenuItem className="min-w-0"><SidebarMenuButton disabled={!workspace} onClick={createIssue}
           aria-label={t(($) => $.sidebar.new_issue)}
           aria-description={workspace ? workspace.name : t(($) => $.sidebar.open_workspace_to_create)}
           title={createTooltip}
           tooltip={iconCollapsed ? `${t(($) => $.sidebar.new_issue)} · ${workspaceCaption}` : undefined}
-          className={cn("h-9 gap-1 px-1.5 font-medium pointer-coarse:min-h-11 @min-[13rem]/sidebar-actions:gap-1.5 @min-[13rem]/sidebar-actions:px-2", iconCollapsed ? "relative mx-auto" : "bg-sidebar-accent/70 hover:bg-sidebar-accent")}>
-          <SquarePen aria-hidden className={iconCollapsed ? undefined : "hidden @min-[13rem]/sidebar-actions:block"} />
+          className={cn("font-medium pointer-coarse:min-h-11", iconCollapsed ? "relative mx-auto" : "bg-sidebar-accent/70 hover:bg-sidebar-accent")}>
+          <SquarePen aria-hidden />
           {!iconCollapsed && <span className="min-w-0 flex-1 truncate">{t(($) => $.sidebar.new_issue)}</span>}
           {!iconCollapsed && workspaceActive && <span className="absolute right-1 top-1 size-1.5"><DraftDot /></span>}
           {iconCollapsed && workspaceActive && <DraftDot />}
-          {!iconCollapsed && workspaceActive && shortcut && <ShortcutKeycaps shortcut={shortcut} decorative className="pointer-events-none ms-auto hidden shrink-0 @min-[18rem]/sidebar-actions:inline-flex" />}
+          {!iconCollapsed && workspaceActive && shortcut && <ShortcutKeycaps shortcut={shortcut} decorative className="pointer-events-none ms-auto shrink-0" />}
         </SidebarMenuButton></SidebarMenuItem>
         {workspace ? workspaceActive ? <ActiveWorkspaceChatLink workspace={workspace} /> : <WorkspaceChatLink workspace={workspace} />
           : <SidebarMenuItem className="min-w-0"><SidebarMenuButton disabled aria-label={t(($) => $.nav.chat)}
             aria-description={t(($) => $.sidebar.open_workspace_to_chat)} title={t(($) => $.sidebar.open_workspace_to_chat)}
-            className={cn("h-9 gap-1 px-1.5 text-muted-foreground pointer-coarse:min-h-11 @min-[13rem]/sidebar-actions:gap-1.5 @min-[13rem]/sidebar-actions:px-2", iconCollapsed ? "mx-auto" : "border border-sidebar-border")}>
-            <MessageSquare aria-hidden className={iconCollapsed ? undefined : "hidden @min-[13rem]/sidebar-actions:block"} />
+            className={cn("text-muted-foreground", iconCollapsed && "mx-auto")}>
+            <MessageSquare aria-hidden />
             {!iconCollapsed && <span className="min-w-0 flex-1 truncate">{t(($) => $.nav.chat)}</span>}
           </SidebarMenuButton></SidebarMenuItem>}
+        {workspace && !iconCollapsed && personalNav.map((item) => {
+          const href = paths.workspace(workspace.slug)[item.key]();
+          const count = item.key === "inbox" ? inboxUnread : undefined;
+          return <NavRow key={item.key} href={href} label={t(($) => $.nav[item.labelKey])}
+            isActive={isNavActive(navigation.pathname, href)}
+            trailing={count !== undefined && count > 0 ? <CappedNumberFlow value={count} animated={false} className="ml-auto text-caption" /> : undefined} />;
+        })}
       </SidebarMenu>
     </div>
   </SidebarGroup>;
@@ -765,8 +773,6 @@ function SidebarWorkspaceActions({ workspace, workspaceActive }: {
 function WorkspaceChatLink({ workspace, unread }: { workspace: Workspace; unread?: number }) {
   const { t } = useT("layout");
   const { pathname } = useNavigation();
-  const { state, isCompact } = useSidebar();
-  const iconCollapsed = state === "collapsed" && !isCompact;
   const href = paths.workspace(workspace.slug).chat();
   const hasUnread = unread !== undefined && unread > 0;
   const description = hasUnread
@@ -774,9 +780,6 @@ function WorkspaceChatLink({ workspace, unread }: { workspace: Workspace; unread
     : workspace.name;
   return <NavRow href={href} label={t(($) => $.nav.chat)} isActive={isNavActive(pathname, href)}
     description={description}
-    className={cn("h-9 gap-1 px-1.5 pointer-coarse:min-h-11 data-active:font-medium data-active:hover:bg-sidebar-accent @min-[13rem]/sidebar-actions:gap-1.5 @min-[13rem]/sidebar-actions:px-2",
-      !iconCollapsed && "border border-sidebar-border [&>svg]:hidden",
-      !iconCollapsed && (hasUnread ? "@min-[15rem]/sidebar-actions:[&>svg]:block" : "@min-[13rem]/sidebar-actions:[&>svg]:block"))}
     trailing={hasUnread ? <CappedNumberFlow value={unread} animated={false} className="ml-auto text-caption" /> : undefined} />;
 }
 
@@ -900,15 +903,13 @@ function WorkspacePicker({ workspace, workspaces, invitations, creationDisabled,
   return <SidebarGroup className={cn("pb-0", iconCollapsed && "items-center px-0")}>
     {!iconCollapsed && !workspace && <SidebarGroupLabel>{t(($) => $.sidebar.workspaces_label)}</SidebarGroupLabel>}
     <div className="flex min-w-0 items-center gap-1">
-      {!iconCollapsed && workspace && <SidebarMenuButton aria-label={workspace.name} onClick={() => selectWorkspace(workspace.slug)} className="min-w-0 flex-1 font-medium">
-        <span aria-hidden="true" className="relative"><WorkspaceAvatar name={workspace.name} avatarUrl={workspace.avatar_url} size="sm" />
+      <DropdownMenu key={iconCollapsed ? "icon" : "full"}><DropdownMenuTrigger render={<SidebarMenuButton aria-label={t(($) => $.sidebar.switch_workspace)} aria-description={workspace?.name} title={t(($) => $.sidebar.switch_workspace)} tooltip={iconCollapsed ? `${t(($) => $.sidebar.switch_workspace)}${workspace ? ` · ${workspace.name}` : ""}` : undefined} className={iconCollapsed ? "mx-auto justify-center" : workspace ? "min-w-0 flex-1 font-medium" : "text-muted-foreground"}>
+        {workspace && <span aria-hidden="true" className="relative shrink-0"><WorkspaceAvatar name={workspace.name} avatarUrl={workspace.avatar_url} size="sm" />
           {(invitations.length > 0 || otherUnread) && <span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-brand ring-1 ring-sidebar" />}
-        </span><span className="truncate">{workspace.name}</span>
-      </SidebarMenuButton>}
-      <DropdownMenu key={iconCollapsed ? "icon" : "full"}><DropdownMenuTrigger render={<SidebarMenuButton aria-label={t(($) => $.sidebar.switch_workspace)} aria-description={workspace?.name} title={t(($) => $.sidebar.switch_workspace)} tooltip={iconCollapsed ? `${t(($) => $.sidebar.switch_workspace)}${workspace ? ` · ${workspace.name}` : ""}` : undefined} className={iconCollapsed ? "mx-auto justify-center" : workspace ? "w-9 shrink-0 justify-center pointer-coarse:min-w-11" : "text-muted-foreground"}>
-        {iconCollapsed && workspace ? <span aria-hidden="true" className="relative"><WorkspaceAvatar name={workspace.name} avatarUrl={workspace.avatar_url} size="sm" />
-          {(invitations.length > 0 || otherUnread) && <span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-brand ring-1 ring-sidebar" />}
-        </span> : <>{!workspace && <span className={iconCollapsed ? "sr-only" : "flex-1"}>{t(($) => $.sidebar.switch_workspace)}</span>}<ChevronDown aria-hidden className="size-4" /></>}
+        </span>}
+        {!iconCollapsed && workspace && <span className="min-w-0 flex-1 truncate">{workspace.name}</span>}
+        {!workspace && <span className={iconCollapsed ? "sr-only" : "flex-1"}>{t(($) => $.sidebar.switch_workspace)}</span>}
+        {(!iconCollapsed || !workspace) && <ChevronDown aria-hidden className="size-4" />}
       </SidebarMenuButton>} />
         <DropdownMenuContent align="start" side={iconCollapsed ? "right" : "bottom"} className="min-w-56 max-w-[calc(100vw-2rem)]">
           <DropdownMenuGroup><DropdownMenuLabel>{t(($) => $.sidebar.workspaces_label)}</DropdownMenuLabel>
@@ -1028,7 +1029,6 @@ function WorkspaceLinks({ workspace, personalCounts, pinned, isActivePinnedRoute
     <SidebarMore {...overflow} workspace={workspace} personalCounts={personalCounts} pinned={pinned} iterationEnabled={iterationEnabled} triageEnabled={triageEnabled} triageCount={triageCount} />
   </SidebarGroupContent></SidebarGroup>;
   return <>
-    <SidebarGroup><SidebarGroupContent>{renderRows(personalNav)}</SidebarGroupContent></SidebarGroup>
     {pinned}
     <NavigationGroup group="work" label={t(($) => $.sidebar.work_group)} active={workNav.some((item) => isNavActive(pathname, p[item.key]()))}>
       {renderRows(workNav.filter((item) => (item.key !== "iterations" || iterationEnabled) && (item.key !== "triage" || triageEnabled)))}
@@ -1178,7 +1178,7 @@ function WorkspaceNavigation({ workspace, pickerProps, overflow }: { workspace: 
           )) : null;
   return <>
     <WorkspacePicker {...pickerProps} otherUnread={otherWorkspaceUnread} unreadIds={unreadWsIds} />
-    <SidebarWorkspaceActions workspace={workspace} workspaceActive />
+    <SidebarWorkspaceActions workspace={workspace} workspaceActive inboxUnread={unreadCount} />
     <WorkspaceLinks workspace={workspace} personalCounts={{ inbox: unreadCount }} pinned={pinned} isActivePinnedRoute={isActivePinnedRoute} overflow={overflow}
       iterationEnabled={iterationCapability?.supported === true && iterationCapability.manual === true && iterationCapability.enabled === true}
       triageEnabled={triageSettings?.enabled === true} triageCount={triageCounts?.ready} />

@@ -474,7 +474,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       const compact = await openSidebarNavigation(page);
       await expect(compact.getByRole("group", { name: copy.en.startWork, exact: true })).toBeVisible();
       await expect(compact.getByRole("button", { name: copy.en.create, exact: true })).toHaveAccessibleDescription(fixture.second.name);
-      await expect(compact.getByRole("button", { name: fixture.second.name, exact: true })).toBeVisible();
+      await expect(compact.getByRole("button", { name: copy.en.switchWorkspace, exact: true })).toHaveAccessibleDescription(fixture.second.name);
       await expect(compact.getByRole("button", { name: copy.en.collaboration, exact: true })).toBeVisible();
       await expect(compact.getByRole("button", { name: copy.en.more, exact: true })).toHaveCount(0);
       const compactCollaboration = compact.getByRole("button", { name: copy.en.collaboration, exact: true });

@@ -83,6 +83,15 @@ async function openNavigation(page: Page, locale: "en" | "zh-Hans" = "en") {
   return navigation;
 }
 
+async function resumeWorkspace(page: Page, workspace: Workspace) {
+  const previousUrl = page.url();
+  const picker = globalNav(page).getByRole("button", { name: "Switch workspace", exact: true });
+  await picker.getByText(workspace.name, { exact: true }).click();
+  await expect(page.getByRole("menu")).toBeVisible();
+  await expect(page).toHaveURL(previousUrl);
+  await page.getByRole("menuitem").filter({ hasText: workspace.name }).click();
+}
+
 async function expectStartWork(page: Page, workspace: Workspace, locale: "en" | "zh-Hans" = "en") {
   const chinese = locale === "zh-Hans";
   const navigation = page.getByRole("navigation", { name: chinese ? "应用导航" : "Application navigation", exact: true });
@@ -97,7 +106,9 @@ async function expectStartWork(page: Page, workspace: Workspace, locale: "en" | 
   await expect(collaboration).toBeEnabled();
   await expect(collaboration).toHaveAccessibleDescription(/Beta/);
   await expect(navigation.locator('[data-sidebar-scope="collaboration"]').getByText("Beta", { exact: true })).toHaveCount(1);
-  await expect(navigation.getByRole("button", { name: workspace.name, exact: true })).toBeVisible();
+  const picker = navigation.getByRole("button", { name: chinese ? "切换工作空间" : "Switch workspace", exact: true });
+  await expect(picker).toHaveAccessibleDescription(workspace.name);
+  await expect(picker.getByText(workspace.name, { exact: true })).toBeVisible();
   for (const control of [newIssue, chat]) {
     await expect(control.getByText(workspace.name, { exact: true })).toHaveCount(0);
     await expect(control).toHaveAccessibleDescription(new RegExp(workspace.name));
@@ -111,8 +122,9 @@ async function expectStartWork(page: Page, workspace: Workspace, locale: "en" | 
   const bounds = await Promise.all([newIssue, collaboration, chat].map((control) => control.boundingBox()));
   expect(bounds.every((box) => box !== null)).toBe(true);
   expect(bounds[1]!.y).toBeLessThan(bounds[0]!.y);
-  expect(Math.abs(bounds[0]!.y - bounds[2]!.y)).toBeLessThanOrEqual(1);
-  expect(bounds[0]!.x + bounds[0]!.width).toBeLessThanOrEqual(bounds[2]!.x);
+  expect(bounds[0]!.y + bounds[0]!.height).toBeLessThanOrEqual(bounds[2]!.y);
+  expect(Math.abs(bounds[0]!.x - bounds[2]!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(bounds[0]!.width - bounds[2]!.width)).toBeLessThanOrEqual(1);
   if (await page.evaluate(() => matchMedia("(pointer: coarse)").matches)) {
     expect(bounds[1]!.width).toBeGreaterThanOrEqual(44);
     expect(bounds[1]!.height).toBeGreaterThanOrEqual(44);
@@ -136,7 +148,7 @@ async function setSidebarTheme(page: Page, theme: "light" | "dark" | "system") {
 }
 
 async function expectCompactStartWorkBounds(group: Locator, locale: "en" | "zh-Hans" = "en") {
-  const labels = locale === "zh-Hans" ? ["新建任务", "AI 对话"] : ["New Issue", "AI Chat"];
+  const labels = locale === "zh-Hans" ? ["新建任务", "AI 对话", "收件箱", "我的任务"] : ["New Issue", "AI Chat", "Inbox", "My Issues"];
   const geometry = await group.locator("button, a").evaluateAll((controls, labelNames) => {
     const bounds = (rect: DOMRect) => ({ left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom,
       width: rect.width, height: rect.height });
@@ -167,7 +179,7 @@ async function expectCompactStartWorkBounds(group: Locator, locale: "en" | "zh-H
         viewport: { width: innerWidth, height: innerHeight }, coarse: matchMedia("(pointer: coarse)").matches };
     });
   }, labels);
-  expect(geometry).toHaveLength(2);
+  expect(geometry).toHaveLength(labels.length);
   for (const row of geometry) {
     expect(row.control.width, `${row.name} must have a painted target`).toBeGreaterThan(0);
     expect(row.control.left).toBeGreaterThanOrEqual(-1);
@@ -265,7 +277,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(notificationsHeading).toBeVisible();
       await expect(notificationsLink).toHaveCount(0);
       await expect(collaborationDirectory.getByRole("link", { name: "Current handling", exact: true })).toHaveCount(0);
-      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
+      await resumeWorkspace(page, fixture.second);
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true }).focus();
       await page.keyboard.press("Shift+Tab");
@@ -302,7 +314,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true })).toHaveAttribute("aria-expanded", "true");
       await expect(page.getByRole("heading", { name: "Participating", exact: true })).toBeVisible();
       await collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true }).click();
-      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
+      await resumeWorkspace(page, fixture.second);
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await collaborationDirectory.getByText("Collaboration", { exact: true }).click();
       await collaborationDirectory.getByRole("link", { name: "Participating", exact: true }).click();
@@ -410,7 +422,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       // Let the real capture listener observe a committed frame before switching.
       await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
       const saved = { list: await list.evaluate((element) => element.scrollTop), detail: await detail.evaluate((element) => element.scrollTop) };
-      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
+      await resumeWorkspace(page, fixture.second);
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await returnToAccount();
       await expect(page.getByRole("heading", { name: selected.title, exact: true })).toBeVisible();
@@ -457,14 +469,14 @@ for (const platform of ["Web", "Desktop"] as const) {
       };
       await page.route(issueUrl, intercept);
       try {
-        await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
+        await resumeWorkspace(page, fixture.second);
         await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
         await returnToAccount();
         await expect(banner).toBeVisible();
         await detail.evaluate((element) => { element.scrollTop = 620; });
         await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
         expect(await detail.evaluate((element) => element.scrollTop)).toBe(620);
-        await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
+        await resumeWorkspace(page, fixture.second);
         await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
         await returnToAccount();
         await expect(banner).toBeVisible();
@@ -511,7 +523,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await detail.evaluate((element) => { element.scrollTop = 800; });
       await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
       expect(await detail.evaluate((element) => element.scrollTop)).toBe(800);
-      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
+      await resumeWorkspace(page, fixture.second);
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await returnToAccount();
       await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(800);
@@ -529,7 +541,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(compactStartWork.chat).toBeFocused();
       const compactStartWorkBounds = await expectCompactStartWorkBounds(compactStartWork.group);
       await testInfo.attach("start-work-compact-en-geometry.json", { body: JSON.stringify(compactStartWorkBounds), contentType: "application/json" });
-      await expect(compactNavigation.getByRole("button", { name: fixture.second.name, exact: true })).toBeVisible();
+      await expect(compactNavigation.getByRole("button", { name: "Switch workspace", exact: true })).toHaveAccessibleDescription(fixture.second.name);
       await expect(compactNavigation.getByRole("button", { name: /^(Expand|Collapse) collaboration navigation$/ })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await capture(`${platform.toLowerCase()}-scope-compact.png`);
@@ -555,7 +567,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       const chineseStartWork = await expectStartWork(page, reloadedWorkspace, "zh-Hans");
       const chineseStartWorkBounds = await expectCompactStartWorkBounds(chineseStartWork.group, "zh-Hans");
       await testInfo.attach("start-work-compact-zh-geometry.json", { body: JSON.stringify(chineseStartWorkBounds), contentType: "application/json" });
-      await expect(chineseNavigation.getByRole("button", { name: reloadedWorkspace.name, exact: true })).toBeVisible();
+      await expect(chineseNavigation.getByRole("button", { name: "切换工作空间", exact: true })).toHaveAccessibleDescription(reloadedWorkspace.name);
       await expect(chineseNavigation.getByRole("button", { name: /^(展开|收起)协作空间导航$/ })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await capture(`${platform.toLowerCase()}-scope-compact-zh.png`);

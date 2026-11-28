@@ -202,7 +202,7 @@ vi.mock("../navigation", async (importOriginal) => ({
   useNavigation: () => ({ pathname: navigation.current.pathname, push: navigationPush, searchParams: new URLSearchParams(navigation.current.search ?? ""), hash: "" }),
 }));
 vi.mock("../projects/components/project-icon", () => ({ ProjectIcon: () => <span /> }));
-vi.mock("../workspace/workspace-avatar", () => ({ WorkspaceAvatar: () => <span /> }));
+vi.mock("../workspace/workspace-avatar", () => ({ WorkspaceAvatar: () => <span data-testid="workspace-avatar" /> }));
 vi.mock("@multica/ui/components/common/actor-avatar", () => ({ ActorAvatar: () => <span /> }));
 
 vi.mock("@multica/core/auth", () => ({
@@ -608,6 +608,74 @@ it("groups workspace actions below the workspace picker without repeating its na
   expect(within(group).queryByRole("button", { name: "Start collaboration" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "New" })).not.toBeInTheDocument();
   expect(screen.getAllByRole("link", { name: "AI Chat" })).toHaveLength(1);
+});
+
+describe("workspace picker row", () => {
+  beforeEach(() => {
+    menuState.real = true;
+    workspaces.current = [
+      { id: "ws-1", name: "Acme", slug: "acme", avatar_url: null },
+      { id: "ws-2", name: "Other workspace", slug: "other", avatar_url: null },
+    ];
+  });
+
+  afterEach(() => { workspaces.current = []; });
+
+  it.each([false, true])("opens one workspace menu from the name, avatar and arrow without navigating (compact: %s)", async (compact) => {
+    sidebarState.isCompact = compact;
+    sidebarState.state = compact ? "collapsed" : "expanded";
+    const selectWorkspace = vi.fn();
+    renderWithI18n(<AppSidebar onWorkspaceSelect={selectWorkspace} />);
+    const picker = screen.getByRole("button", { name: "Switch workspace" });
+    expect(picker).toHaveAccessibleDescription("Acme");
+    expect(picker).toContainElement(screen.getByText("Acme", { exact: true }));
+    expect(within(picker).getByTestId("workspace-avatar")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Acme" })).not.toBeInTheDocument();
+    const arrow = picker.querySelector("svg");
+    expect(arrow).not.toBeNull();
+    for (const target of [within(picker).getByText("Acme", { exact: true }), within(picker).getByTestId("workspace-avatar"), arrow!]) {
+      await userEvent.click(target);
+      await screen.findByRole("menu");
+      expect(selectWorkspace).not.toHaveBeenCalled();
+      expect(navigationPush).not.toHaveBeenCalled();
+      await userEvent.keyboard("{Escape}");
+      await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+      expect(picker).toHaveFocus();
+    }
+    await userEvent.click(picker);
+    await userEvent.click(await screen.findByRole("menuitem", { name: "Other workspace" }));
+    expect(selectWorkspace).toHaveBeenCalledExactlyOnceWith("other");
+    expect(navigationPush).not.toHaveBeenCalled();
+  });
+});
+
+it.each([
+  { scope: "workspace", compact: false },
+  { scope: "workspace", compact: true },
+  { scope: "account", compact: false },
+])("keeps personal navigation once alongside workspace actions in $scope scope (compact: $compact)", ({ scope, compact }) => {
+  sidebarState.isCompact = compact;
+  if (scope === "account") navigation.current = { pathname: "/account", search: "view=participating" };
+  queryLog.length = 0;
+  const workspace: Workspace = {
+    id: "ws-2", name: "Other workspace", slug: "other", description: null, context: null,
+    settings: {}, repos: [], issue_prefix: "OTHER", avatar_url: null,
+    created_at: "2026-11-22T00:00:00Z", updated_at: "2026-11-22T00:00:00Z",
+  };
+  renderWithI18n(<AppSidebar {...(scope === "account" ? { navigationWorkspace: workspace } : {})} />);
+  const group = screen.getByRole("group", { name: "Start work" });
+  const slug = scope === "account" ? "other" : "acme";
+  for (const [name, path] of [["AI Chat", "chat"], ["Inbox", "inbox"], ["My Issues", "my-issues"]]) {
+    const links = screen.getAllByRole("link", { name });
+    expect(links).toHaveLength(1);
+    expect(group).toContainElement(links[0]!);
+    expect(links[0]).toHaveAttribute("href", `/${slug}/${path}`);
+  }
+  if (scope === "account") {
+    expect(queryLog).not.toContain("chat");
+    expect(queryLog).not.toContain("inbox");
+    expect(queryLog).not.toContain("pins");
+  }
 });
 
 it("starts collaboration independently beside its collapsed disclosure", async () => {

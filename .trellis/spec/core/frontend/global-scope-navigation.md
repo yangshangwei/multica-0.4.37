@@ -63,8 +63,8 @@ without navigating, matching the other first-level groups. Entering
 a collaboration destination reveals Current handling, Participating and
 Collaboration notifications, with
 the selected list remaining highlighted when its detail is open. Manual collapse
-is still allowed on that full path. The workspace name resumes the displayed
-workspace's destination; its adjacent selector chooses a directory member.
+is still allowed on that full path. The workspace avatar, name and arrow share
+one menu trigger; selecting a workspace from that menu opens its destination.
 
 `CollaborationNavigation` owns one protected notification Query observer so
 collapsing the directory retains authoritative unread feedback. Its collapsed
@@ -100,9 +100,14 @@ target; Enter and Space each toggle it once. Child links own account navigation.
 
 In complete navigation, workspace actions sit immediately below the displayed
 Workspace picker and above its directory. The accessible Start work group has
-no visible heading. New issue and AI Chat share one compact row; the creation
-button has a restrained sidebar-accent fill, while Chat retains its native link,
-selected state and known positive unread-message count. The workspace name is
+no visible heading. New issue occupies a full-width row with a restrained
+sidebar-accent fill and its shortcut visible in expanded navigation. AI Chat
+sits below as a standard navigation row, retaining its native link, selected
+state and known positive unread-message count. Both icons remain visible at
+expanded widths, including when Chat has unread messages. Inbox and My Issues
+follow Chat in that same group without a separate vertical gap. Account previews
+reuse those destinations without workspace-owned reads; icon mode retains the
+existing My Issues rail link and Inbox menu entry exactly once. The workspace name is
 shown once in the picker, with full scope descriptions on both actions rather
 than repeated visual captions. The Workspace label is omitted when a named
 workspace is available. Keep existing draft indicators and route-owned shortcuts.
@@ -369,7 +374,8 @@ account modal ownership. Production
 Web and actual Electron navigation journeys live in
 `e2e/global-scope-navigation.spec.ts`; record build identity and exact native
 harness scope. Class assertions or JSDOM offsets are not visual/native proof.
-That journey also verifies the compact workspace action row, independent
+That journey also verifies the stacked workspace action rows, shared workspace
+menu trigger, independent
 collaboration plus, accessible scope descriptions, account-to-workspace ordinary
 creation and AI Chat, native
 collaboration focus return, and compact sheet dismissal. Preserve its original
