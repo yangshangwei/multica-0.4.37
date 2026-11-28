@@ -676,6 +676,28 @@ func (q *Queries) HasAgentRepliedInThread(ctx context.Context, arg HasAgentRepli
 	return has_replied, err
 }
 
+const hasSecurityReviewerResult = `-- name: HasSecurityReviewerResult :one
+SELECT EXISTS (
+    SELECT 1 FROM comment
+    WHERE issue_id = $1 AND author_type = 'agent' AND author_id = $2
+      AND source_task_id = $3 AND type = 'comment'
+) AS has_result
+`
+
+type HasSecurityReviewerResultParams struct {
+	IssueID      pgtype.UUID `json:"issue_id"`
+	AuthorID     pgtype.UUID `json:"author_id"`
+	SourceTaskID pgtype.UUID `json:"source_task_id"`
+}
+
+// Progress and system failure notices cannot satisfy the review evidence check.
+func (q *Queries) HasSecurityReviewerResult(ctx context.Context, arg HasSecurityReviewerResultParams) (bool, error) {
+	row := q.db.QueryRow(ctx, hasSecurityReviewerResult, arg.IssueID, arg.AuthorID, arg.SourceTaskID)
+	var has_result bool
+	err := row.Scan(&has_result)
+	return has_result, err
+}
+
 const listChildCommentsForParents = `-- name: ListChildCommentsForParents :many
 SELECT id, issue_id, author_type, author_id, content, type, created_at, updated_at, parent_id, workspace_id, resolved_at, resolved_by_type, resolved_by_id, source_task_id, quick_action_id, via_plugin_id, revision, dispatch_eligible, deleted_at FROM comment
 WHERE parent_id = ANY($1::uuid[])
@@ -2054,4 +2076,22 @@ func (q *Queries) UpdateComment(ctx context.Context, arg UpdateCommentParams) (U
 		&i.IssueRevision,
 	)
 	return i, err
+}
+
+const withdrawSecurityReviewReturn = `-- name: WithdrawSecurityReviewReturn :exec
+UPDATE comment SET dispatch_eligible = false
+WHERE id = $1 AND source_task_id = $2
+  AND author_type = 'system' AND type = 'progress_update'
+`
+
+type WithdrawSecurityReviewReturnParams struct {
+	CommentID    pgtype.UUID `json:"comment_id"`
+	SourceTaskID pgtype.UUID `json:"source_task_id"`
+}
+
+// A current-authority refusal settles only this platform-owned return. Keep
+// its evidence visible, but never replay it after authority is later restored.
+func (q *Queries) WithdrawSecurityReviewReturn(ctx context.Context, arg WithdrawSecurityReviewReturnParams) error {
+	_, err := q.db.Exec(ctx, withdrawSecurityReviewReturn, arg.CommentID, arg.SourceTaskID)
+	return err
 }

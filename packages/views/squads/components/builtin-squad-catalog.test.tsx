@@ -155,13 +155,13 @@ describe("BuiltinSquadCatalog", () => {
     {
       locale: "en" as const,
       title: "Security Remediation Squad",
-      summary: "Triage security risks, reproduce code vulnerabilities before repairing outside production, verify with independent review, and have a security owner confirm key decisions.",
+      summary: "Automatically assess security risks, reproduce code vulnerabilities, repair outside production, and independently verify and review before delivery.",
       apply: "Apply to project",
     },
     {
       locale: "zh-Hans" as const,
       title: "安全漏洞修复小队",
-      summary: "分诊安全风险，代码漏洞先复现再在非生产环境修复，由独立成员验证和审查，关键决策由安全负责人确认。",
+      summary: "自动分诊安全风险，代码漏洞先复现再在非生产环境修复，经独立验证和审查后交付待审核。",
       apply: "应用到项目",
     },
   ])("localizes security remediation in $locale and keeps its original setup content", ({ locale, title, summary, apply }) => {

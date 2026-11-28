@@ -59,9 +59,9 @@ type RoleSkillTemplate struct {
 var builtinRoleSkillVersions = map[string]int32{
 	"multica-requirement-clarification":       3,
 	"multica-architecture-decision-record":    6,
-	"multica-test-report":                     1,
+	"multica-test-report":                     2,
 	"multica-code-review":                     2,
-	"multica-debugging":                       1,
+	"multica-debugging":                       2,
 	"multica-security-review":                 4,
 	"multica-release-check":                   4,
 	"multica-documentation-change":            2,

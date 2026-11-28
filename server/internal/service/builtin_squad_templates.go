@@ -309,7 +309,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "security-remediation",
-		Version:           2,
+		Version:           3,
 		DefaultName:       "Security Remediation Squad",
 		AvatarEmoji:       "🛡️",
 		LeaderTemplateKey: "security-remediation-lead",
@@ -323,8 +323,8 @@ var builtinSquadTemplates = []SquadTemplate{
 				"zh": "审查适用性、信任边界和最终安全证据，不编写攻击载荷",
 			}},
 			{TemplateKey: "diagnostician", Roles: map[string]string{
-				"en": "Investigates unknown causes within its role limits, handing security stops to a human",
-				"zh": "在既有职责范围内调查未知原因；触及安全停止条件时交人工处理",
+				"en": "Investigates authorized local security failures without accessing production or sensitive data",
+				"zh": "在授权的本地安全修复范围内调查未知原因，不接触生产或敏感数据",
 			}},
 			{TemplateKey: "implementer", Roles: map[string]string{
 				"en": "Makes one minimal repair with a regression test on an isolated branch",
@@ -348,8 +348,8 @@ var builtinSquadTemplates = []SquadTemplate{
 			"zh": "安全漏洞修复小队",
 		},
 		Descriptions: map[string]string{
-			"en": "Triages dependency, code and other security risks, reproduces a code vulnerability before routing a minimal repair and independent review, has a human security owner confirm key decisions, and hands production risks to people.",
-			"zh": "分诊依赖、代码和其他安全风险，代码漏洞先复现再安排最小修复与独立审查；关键决策由安全负责人确认，生产风险交人工处理。",
+			"en": "Automatically triages security risks, reproduces code vulnerabilities, coordinates minimal nonproduction repairs and independent review, and hands production operations and risk acceptance to people.",
+			"zh": "自动分诊安全风险，代码漏洞先复现再在非生产环境修复，经独立验证和审查后交付待审核；生产操作和风险接受交人工处理。",
 		},
 	},
 	{

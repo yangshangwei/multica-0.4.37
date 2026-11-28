@@ -1763,10 +1763,10 @@ SET status = 'cancelled',
                   AND recovery.author_type = 'system'
                   AND recovery.type = 'progress_update'
                   AND recovery.source_task_id IS NOT NULL
-                  AND failed.status = 'failed'
+                  AND failed.status IN ('failed', 'completed')
                   AND failed.delegated_from_task_id IS NOT NULL
                   AND failed.autopilot_run_id IS NULL
-                  AND failed.trigger_evidence_kind IS DISTINCT FROM 'delegated_failure'
+                  AND (failed.trigger_evidence_kind IS NULL OR failed.trigger_evidence_kind NOT IN ('delegated_failure', 'delegated_result'))
                   AND source.autopilot_run_id IS NULL
                   AND source.issue_id = task.issue_id
                   AND source.agent_id = task.agent_id
@@ -2132,6 +2132,12 @@ WHERE id = (
     WHERE t.issue_id = @issue_id
       AND lock_issue_execution(t.issue_id, @comment_id::uuid)
       AND t.agent_id = @agent_id
+      AND (NOT @security_return::boolean OR (
+          t.is_leader_task AND t.squad_id = @squad_id::uuid
+          AND t.originator_user_id = @originator_id::uuid
+          AND t.runtime_id = @runtime_id::uuid
+          AND COALESCE(t.context->>'head_sha', '') = COALESCE(sqlc.narg('head_sha')::text, '')
+      ))
       AND (
           t.status = 'queued'
           OR (t.status = 'deferred' AND t.context->>'channel_issue_media_pending' = 'true')
@@ -2172,7 +2178,7 @@ WHERE issue_id = @issue_id
 -- automatic attempt until they need a standalone successor.
 SELECT count(*)
 FROM agent_task_queue
-WHERE trigger_evidence_kind = 'delegated_failure'
+WHERE trigger_evidence_kind IN ('delegated_failure', 'delegated_result')
   AND trigger_evidence_ref_id = @failed_task_id;
 
 -- name: AcknowledgeExhaustedDelegatedFailureRecovery :one
@@ -2188,7 +2194,7 @@ SET delivered_comment_ids = (
 WHERE acknowledged.id = (
     SELECT attempt.id
     FROM agent_task_queue attempt
-    WHERE attempt.trigger_evidence_kind = 'delegated_failure'
+    WHERE attempt.trigger_evidence_kind IN ('delegated_failure', 'delegated_result')
       AND attempt.trigger_evidence_ref_id = @failed_task_id
     ORDER BY attempt.created_at DESC, attempt.id DESC
     LIMIT 1
@@ -2197,7 +2203,7 @@ WHERE acknowledged.id = (
   AND (
       SELECT count(*)
       FROM agent_task_queue attempt_count
-      WHERE attempt_count.trigger_evidence_kind = 'delegated_failure'
+      WHERE attempt_count.trigger_evidence_kind IN ('delegated_failure', 'delegated_result')
         AND attempt_count.trigger_evidence_ref_id = @failed_task_id
   ) >= @max_attempts::int
 RETURNING acknowledged.*;
@@ -2217,15 +2223,16 @@ JOIN agent source_agent ON source_agent.id = source.agent_id
 LEFT JOIN issue_status source_status
   ON source_status.workspace_id = source_issue.workspace_id
  AND source_status.key = source_issue.status
-WHERE recovery.author_type = 'system'
+WHERE recovery.dispatch_eligible
+  AND recovery.author_type = 'system'
   AND recovery.type = 'progress_update'
   AND recovery.source_task_id IS NOT NULL
   AND recovery.issue_id = source_issue.id
   AND recovery.workspace_id = source_issue.workspace_id
-  AND failed.status = 'failed'
+  AND failed.status IN ('failed', 'completed')
   AND failed.delegated_from_task_id IS NOT NULL
   AND failed.autopilot_run_id IS NULL
-  AND failed.trigger_evidence_kind IS DISTINCT FROM 'delegated_failure'
+  AND (failed.trigger_evidence_kind IS NULL OR failed.trigger_evidence_kind NOT IN ('delegated_failure', 'delegated_result'))
   AND source.autopilot_run_id IS NULL
   AND source.issue_id IS NOT NULL
   AND source.agent_id <> failed.agent_id
@@ -2819,3 +2826,19 @@ FOR SHARE NOWAIT;
 -- Internal runtime caller resolves and locks the owning workspace/issue first.
 -- NOWAIT avoids reversing another task-owner/issue writer's lock order.
 SELECT * FROM agent_task_queue WHERE id=$1 FOR UPDATE NOWAIT;
+
+-- name: RegisterSecurityReviewReturnForActiveTask :one
+-- A platform return must not enter another squad or originator's claimed run.
+UPDATE agent_task_queue
+SET coalesced_comment_ids = ARRAY(SELECT DISTINCT e FROM unnest(array_append(coalesced_comment_ids, @comment_id::uuid)) AS e WHERE e IS NOT NULL)
+WHERE id = (
+    SELECT t.id FROM agent_task_queue t
+    WHERE t.issue_id = @issue_id AND t.agent_id = @agent_id
+      AND lock_issue_execution(t.issue_id, @comment_id::uuid)
+      AND t.status IN ('dispatched', 'running', 'waiting_local_directory')
+      AND t.is_leader_task AND t.squad_id = @squad_id::uuid
+      AND t.originator_user_id = @originator_id::uuid AND t.runtime_id = @runtime_id::uuid
+      AND COALESCE(t.context->>'head_sha', '') = COALESCE(sqlc.narg('head_sha')::text, '')
+    ORDER BY t.created_at DESC LIMIT 1
+)
+RETURNING id;

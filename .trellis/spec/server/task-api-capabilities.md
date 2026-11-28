@@ -27,7 +27,7 @@ The auth package accepts the bound getter to avoid importing service. Propagate
 lookup errors unchanged and retain existing fail-closed handling; never bypass
 instrumentation or substitute pool queries for a transaction snapshot.
 
-A restricted comment persists `dispatch_eligible=false`, publishes existing suppress_execution metadata and cannot trigger agents/plugins immediately or on completion reconciliation. Do not auto-unresolve a thread or cancel deferred escalations. Service-generated final-output comments and failure recovery respect the immutable role restriction after task-token cleanup. Human notifications and ordinary comment revision/activity remain part of comment delivery. Existing independently configured task lifecycle plugin subscriptions remain platform-authorized observers; comment non-dispatch does not disable those standing subscriptions.
+A restricted comment persists `dispatch_eligible=false`, publishes existing suppress_execution metadata and cannot trigger agents/plugins immediately or on completion reconciliation. Do not auto-unresolve a thread or cancel deferred escalations. Service-generated final-output comments and failure recovery respect the immutable role restriction after task-token cleanup. Human notifications and ordinary comment revision/activity remain part of comment delivery. A separate platform-owned security reviewer terminal return is described below; it never makes the original restricted comment executable. Existing independently configured task lifecycle plugin subscriptions remain platform-authorized observers; comment non-dispatch does not disable those standing subscriptions.
 
 Claiming a restricted role for a non-issue/unattributed task or with external MCP/plugin tools is refused explicitly before launch; do not give a scoped mat_ alongside an unrestricted broker mdt_. Daemon plugin/credential endpoints enforce a task backstop. Clear unproven prior provider-session reuse and sibling summaries; inject an authoritative capability brief overriding generic status/leader-wake instructions. Saved role/skill copies are not silently rewritten.
 
@@ -89,3 +89,69 @@ correct queued/blocked receipt handling and failed evaluation, then time out
 without a final response. Record action evidence and process failure together;
 never relabel the complete trial as passed or infer a backend/model root cause
 without further evidence. Missing final usage is unknown, not zero cost.
+
+## Security reviewer terminal return
+
+### 1. Scope / trigger
+A terminal reviewer execution genuinely delegated by a built-in security squad
+coordinator may return to that original coordinator. This is a platform task
+lifecycle effect; restricted review comments keep `dispatch_eligible=false`.
+Platform return and exhaustion comment events publish `suppress_execution=true`
+so comment plugins cannot fan out from the internal return. Independent standing
+task-lifecycle subscriptions keep their existing authority.
+
+### 2. Signatures
+`service/security_squad_return.go` validates persisted delegation/current
+principals and creates result-aware notification content. `TaskService` reuses
+the existing durable delegated-return signal, coverage, pending merge, attempts
+and sweep rather than routing reviewer mentions. No API capability or schema
+expansion is required.
+
+### 3. Contracts
+Require the immutable security squad/leader template keys, original leader task,
+same issue and originator, authentic executable delegation comment, current
+squad assignment/leader/reviewer roster, live runtime ownership and invocation
+rights. Creation-version numbers are not an opt-in or saved prompt version:
+v2 copies can receive a lifecycle return while still requiring their saved gate.
+Guest mentions do not gain automatic continuation or status ownership.
+
+A platform system/progress notification is a trigger for coordinator evaluation,
+not a reviewer result. Completed-without-result and failed executions report the
+missing/failed evidence; neither passes review. Preserve bounded retry/attempt
+handling and durable deduplication, and do not merge unrelated squads/originators
+into a pending task. Recheck authority on recovery, credential delivery and
+execution start, including coalesced platform returns. A prior valid delegation
+is not a perpetual grant. A current-authority refusal permanently withdraws that
+platform signal by setting its dispatch eligibility false; keep the evidence,
+exclude it from bounded recovery scans, and require a new authorized delegation
+after permissions are restored. Missing ordinary comment IDs retain the existing
+surviving-input behavior at credential finalization; this narrow guard must not
+block unrelated claims. The existing execution-start admission check is unchanged. Non-security restricted workloads remain inert.
+
+### 4. Validation / error matrix
+| Input | Required behavior |
+| --- | --- |
+| Genuine current security delegation terminal outcome | Return to original authorized coordinator once |
+| Restricted comment mentions/replies/ordinary replay | No execution from the comment |
+| Wrong source task/squad/issue/roster or revoked authority | No platform continuation |
+| Failed, missing, stale or progress-only result | Report missing evidence; never acceptance |
+| Duplicate terminal callback/sweep | Reuse durable coverage, no duplicate independent return |
+| Guest issue or changed assignment | No takeover |
+
+### 5. Good / base / bad cases
+Good: a completed independent review wakes its original coordinator via a
+platform signal, and the coordinator reads the actual result. Base: a generic
+restricted reviewer still posts an inert comment. Bad: use the inert comment ID
+as an executable trigger or remove suppression to make a workflow advance.
+
+### 6. Tests required
+Use real task completion/failure, stored comment eligibility and queue lineage.
+Cover valid success, no-result, failure/retry, duplicate callback/sweep, revoked
+originator/invoke/runtime authority, changed leader/roster/assignment, cross-task
+spoofs and unchanged generic restricted comment denials. Scripted all-agent
+workflow must deliver `in_review` without a human gate and never `done`.
+
+### 7. Wrong vs correct
+Wrong: reviewer can dispatch because a prompt asks it to mention the leader.
+Correct: reviewer has no dispatch API; the platform validates an existing
+coordinator's own delegation and returns its terminal outcome within that scope.

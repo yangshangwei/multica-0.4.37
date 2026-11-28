@@ -3836,6 +3836,9 @@ func (s *TaskService) FinalizeTaskClaim(
 		if err := ValidateManagedTaskBinding(ctx, task); err != nil {
 			return err
 		}
+		if err := s.validateSecurityReviewReturnTask(ctx, qtx, currentTask); err != nil {
+			return err
+		}
 		if err := s.finalizeTaskCapability(ctx, qtx, currentTask, &token, len(daemonTokens)); err != nil {
 			return err
 		}
@@ -4538,6 +4541,11 @@ func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, resu
 					"current_status", existing.Status,
 					"agent_id", util.UUIDToString(existing.AgentID),
 				)
+				if existing.Status == "completed" {
+					if recoveryErr := s.returnSecurityReviewerCompletion(ctx, existing); recoveryErr != nil {
+						return nil, recoveryErr
+					}
+				}
 				return &existing, nil
 			}
 			slog.Warn("complete task failed",
@@ -4648,6 +4656,12 @@ func (s *TaskService) CompleteTask(ctx context.Context, taskID pgtype.UUID, resu
 
 	// Broadcast
 	s.broadcastTaskEvent(ctx, protocol.EventTaskCompleted, task)
+
+	// Restricted review comments remain inert. A terminal platform signal may
+	// return a proven security delegation to its original coordinator.
+	if err := s.returnSecurityReviewerCompletion(ctx, task); err != nil {
+		return nil, fmt.Errorf("return delegated reviewer completion: %w", err)
+	}
 
 	return &task, nil
 }
@@ -6030,11 +6044,12 @@ type DelegatedFailureRecoverySweepResult struct {
 }
 
 type delegatedFailureRecoveryTarget struct {
-	failed  db.AgentTaskQueue
-	source  db.AgentTaskQueue
-	issue   db.Issue
-	agent   db.Agent
-	comment db.Comment
+	failed         db.AgentTaskQueue
+	source         db.AgentTaskQueue
+	issue          db.Issue
+	agent          db.Agent
+	comment        db.Comment
+	securityReturn bool
 }
 
 // IsDelegatedFailureRecoveryComment identifies the durable platform signal
@@ -6072,17 +6087,17 @@ func delegatedFailureRecoveryContent(failed, source db.AgentTaskQueue) string {
 // intentional no-op: non-terminal rows, retry-pending rows, autopilot work,
 // recovery tasks themselves, terminal/backlog source issues, unavailable
 // source agents, and self-delegation must never start a recovery loop.
-func loadDelegatedFailureRecoveryTarget(ctx context.Context, q *db.Queries, failed db.AgentTaskQueue) (*delegatedFailureRecoveryTarget, error) {
+func (s *TaskService) loadDelegatedFailureRecoveryTarget(ctx context.Context, q *db.Queries, failed db.AgentTaskQueue) (*delegatedFailureRecoveryTarget, error) {
 
-	if failed.Status != "failed" || !failed.DelegatedFromTaskID.Valid || failed.AutopilotRunID.Valid ||
-		(failed.TriggerEvidenceKind.Valid && failed.TriggerEvidenceKind.String == string(attribution.EvidenceDelegatedFailure)) {
+	if (failed.Status != "failed" && failed.Status != "completed") || !failed.DelegatedFromTaskID.Valid || failed.AutopilotRunID.Valid ||
+		(failed.TriggerEvidenceKind.Valid && (failed.TriggerEvidenceKind.String == string(attribution.EvidenceDelegatedFailure) || failed.TriggerEvidenceKind.String == string(attribution.EvidenceDelegatedResult))) {
 		return nil, nil
 	}
 	restricted, policyErr := RestrictedAgentResult(ctx, q, util.UUIDToString(failed.AgentID))
 	if policyErr != nil {
 		return nil, policyErr
 	}
-	if restricted {
+	if !restricted && failed.Status != "failed" {
 		return nil, nil
 	}
 
@@ -6124,7 +6139,16 @@ func loadDelegatedFailureRecoveryTarget(ctx context.Context, q *db.Queries, fail
 	if agent.ArchivedAt.Valid || !agent.RuntimeID.Valid || agent.WorkspaceID != issue.WorkspaceID {
 		return nil, nil
 	}
-	return &delegatedFailureRecoveryTarget{failed: failed, source: source, issue: issue, agent: agent}, nil
+	if restricted {
+		allowed, err := s.securityReviewerReturnAllowed(ctx, q, failed, source, issue, agent)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, nil
+		}
+		if err != nil || !allowed {
+			return nil, err
+		}
+	}
+	return &delegatedFailureRecoveryTarget{failed: failed, source: source, issue: issue, agent: agent, securityReturn: restricted}, nil
 }
 
 // ensureDelegatedFailureRecoveryComment creates one durable recovery signal
@@ -6139,7 +6163,7 @@ func (s *TaskService) ensureDelegatedFailureRecoveryComment(ctx context.Context,
 		if err != nil {
 			return fmt.Errorf("lock failed task: %w", err)
 		}
-		target, err = loadDelegatedFailureRecoveryTarget(ctx, qtx, failed)
+		target, err = s.loadDelegatedFailureRecoveryTarget(ctx, qtx, failed)
 		if err != nil || target == nil {
 			return err
 		}
@@ -6155,13 +6179,20 @@ func (s *TaskService) ensureDelegatedFailureRecoveryComment(ctx context.Context,
 		if !errors.Is(err, pgx.ErrNoRows) {
 			return fmt.Errorf("find recovery comment: %w", err)
 		}
+		content := delegatedFailureRecoveryContent(target.failed, target.source)
+		if target.securityReturn {
+			content, err = s.securityReviewerReturnContent(ctx, qtx, target.failed, target.source)
+			if err != nil {
+				return err
+			}
+		}
 		createdComment, err := qtx.CreateComment(ctx, db.CreateCommentParams{
 			ID:           dbid.NewV7(),
 			IssueID:      target.issue.ID,
 			WorkspaceID:  target.issue.WorkspaceID,
 			AuthorType:   "system",
 			AuthorID:     pgtype.UUID{Valid: true},
-			Content:      delegatedFailureRecoveryContent(target.failed, target.source),
+			Content:      content,
 			Type:         delegatedFailureRecoveryCommentType,
 			ParentID:     target.source.TriggerCommentID,
 			SourceTaskID: failed.ID,
@@ -6188,7 +6219,7 @@ func (s *TaskService) ensureDelegatedFailureRecoveryComment(ctx context.Context,
 				"comment":            commentEventFields(target.comment),
 				"issue_title":        target.issue.Title,
 				"issue_status":       target.issue.Status,
-				"suppress_execution": !target.comment.DispatchEligible,
+				"suppress_execution": target.securityReturn || !target.comment.DispatchEligible,
 			},
 		})
 	}
@@ -6197,7 +6228,7 @@ func (s *TaskService) ensureDelegatedFailureRecoveryComment(ctx context.Context,
 
 func delegatedFailureRecoveryExhaustionContent(target *delegatedFailureRecoveryTarget) string {
 	return fmt.Sprintf(
-		"Automatic recovery for delegated task `%s` stopped after %d coordinator tasks ended before receiving the recovery signal. No more recovery tasks will be created automatically; resume or dismiss the work manually. Source coordinator task: `%s`.",
+		"Automatic return for delegated task `%s` stopped after %d coordinator tasks ended before receiving the return signal. No more recovery tasks will be created automatically; resume or dismiss the work manually. Source coordinator task: `%s`.",
 		util.UUIDToString(target.failed.ID),
 		delegatedFailureRecoveryMaxTaskAttempts,
 		util.UUIDToString(target.source.ID),
@@ -6354,7 +6385,7 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 				"comment":            commentEventFields(exhaustedComment),
 				"issue_title":        target.issue.Title,
 				"issue_status":       target.issue.Status,
-				"suppress_execution": !target.comment.DispatchEligible,
+				"suppress_execution": target.securityReturn || !target.comment.DispatchEligible,
 			},
 		})
 	}
@@ -6371,6 +6402,20 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 // reconciliation schedule the follow-up. The three-pass loop closes state
 // changes around those writes.
 func (s *TaskService) dispatchDelegatedFailureRecovery(ctx context.Context, target *delegatedFailureRecoveryTarget, excludeTaskID pgtype.UUID) (delegatedFailureRecoveryDispatchOutcome, error) {
+	if !target.comment.DispatchEligible {
+		return delegatedFailureRecoveryCovered, nil
+	}
+	if target.securityReturn {
+		current, err := s.loadDelegatedFailureRecoveryTarget(ctx, s.Queries, target.failed)
+		if err != nil {
+			return delegatedFailureRecoveryCovered, err
+		}
+		if current == nil {
+			return delegatedFailureRecoveryCovered, s.withdrawSecurityReviewReturn(ctx, target.comment, target.failed)
+		}
+		current.comment = target.comment
+		target = current
+	}
 	if err := s.checkIssueExecution(ctx, s.Queries, target.issue.ID, target.comment.ID, nil); err != nil {
 		return delegatedFailureRecoveryCovered, err
 	}
@@ -6409,6 +6454,11 @@ func (s *TaskService) dispatchDelegatedFailureRecovery(ctx context.Context, targ
 			TriggerSummary: s.buildCommentTriggerSummary(ctx, target.issue.WorkspaceID, target.comment.ID),
 			IssueID:        target.issue.ID,
 			AgentID:        target.agent.ID,
+			SecurityReturn: target.securityReturn,
+			SquadID:        target.source.SquadID,
+			OriginatorID:   target.failed.OriginatorUserID,
+			RuntimeID:      target.agent.RuntimeID,
+			HeadSha:        headShaText(s.ResolveIssueReviewSHA(ctx, target.issue.ID)),
 		}); err == nil {
 			slog.Info("delegated failure recovery merged into pending coordinator task",
 				"failed_task_id", util.UUIDToString(target.failed.ID),
@@ -6433,6 +6483,10 @@ func (s *TaskService) dispatchDelegatedFailureRecovery(ctx context.Context, targ
 		if !submittedInstallation.Valid {
 			submittedInstallation = target.source.SubmittedInstallationID
 		}
+		evidenceKind := attribution.EvidenceDelegatedFailure
+		if target.failed.Status == "completed" {
+			evidenceKind = attribution.EvidenceDelegatedResult
+		}
 		task, err := s.Queries.CreateAgentTask(ctx, db.CreateAgentTaskParams{
 			SubmittedInstallationID: submittedInstallation,
 			ID:                      dbid.NewV7(),
@@ -6451,7 +6505,7 @@ func (s *TaskService) dispatchDelegatedFailureRecovery(ctx context.Context, targ
 			OriginatorSource:        pgtype.Text{String: string(source), Valid: true},
 			DelegatedFromTaskID:     target.failed.ID,
 			RuleVersionID:           ruleVersionID,
-			TriggerEvidenceKind:     pgtype.Text{String: string(attribution.EvidenceDelegatedFailure), Valid: true},
+			TriggerEvidenceKind:     pgtype.Text{String: string(evidenceKind), Valid: true},
 			TriggerEvidenceRefID:    target.failed.ID,
 			HeadSha:                 headShaText(s.ResolveIssueReviewSHA(ctx, target.issue.ID)),
 		})
@@ -6474,6 +6528,18 @@ func (s *TaskService) dispatchDelegatedFailureRecovery(ctx context.Context, targ
 		// its claim payload is immutable. Register the comment as undelivered so
 		// its completion reconciliation creates the successor. Running tasks do
 		// not own that slot, so they took the durable queued-successor path above.
+		if target.securityReturn {
+			_, err := s.Queries.RegisterSecurityReviewReturnForActiveTask(ctx, db.RegisterSecurityReviewReturnForActiveTaskParams{
+				CommentID: target.comment.ID, IssueID: target.issue.ID, AgentID: target.agent.ID, SquadID: target.source.SquadID, OriginatorID: target.failed.OriginatorUserID, RuntimeID: target.agent.RuntimeID, HeadSha: headShaText(s.ResolveIssueReviewSHA(ctx, target.issue.ID)),
+			})
+			if err == nil {
+				return delegatedFailureRecoveryReplayed, nil
+			}
+			if !errors.Is(err, pgx.ErrNoRows) {
+				return delegatedFailureRecoveryCovered, err
+			}
+			continue
+		}
 		if active, err := s.Queries.RegisterPlannedCommentForActiveTask(ctx, db.RegisterPlannedCommentForActiveTaskParams{
 			CommentID: target.comment.ID,
 			IssueID:   target.issue.ID,
@@ -6556,9 +6622,12 @@ func (s *TaskService) dispatchDelegatedFailureRecoveryComment(ctx context.Contex
 	if err != nil {
 		return delegatedFailureRecoveryCovered, fmt.Errorf("load failed recovery source: %w", err)
 	}
-	target, err := loadDelegatedFailureRecoveryTarget(ctx, s.Queries, failed)
-	if err != nil || target == nil {
+	target, err := s.loadDelegatedFailureRecoveryTarget(ctx, s.Queries, failed)
+	if err != nil {
 		return delegatedFailureRecoveryCovered, err
+	}
+	if target == nil {
+		return delegatedFailureRecoveryCovered, s.withdrawSecurityReviewReturn(ctx, comment, failed)
 	}
 	if target.issue.ID != comment.IssueID || target.issue.WorkspaceID != comment.WorkspaceID {
 		return delegatedFailureRecoveryCovered, fmt.Errorf("delegated failure recovery comment scope mismatch")

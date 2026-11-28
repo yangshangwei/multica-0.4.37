@@ -35,8 +35,8 @@ func TestListSquadTemplates_SecurityRemediationLanguages(t *testing.T) {
 				t.Fatal("security-remediation is absent from the catalog")
 			}
 			template := out.Templates[index]
-			if template.Title != tc.title || template.Version != 2 || template.AvatarEmoji != "🛡️" {
-				t.Errorf("catalog presentation = %q/%d/%q, want %q/2/🛡️", template.Title, template.Version, template.AvatarEmoji, tc.title)
+			if template.Title != tc.title || template.Version != 3 || template.AvatarEmoji != "🛡️" {
+				t.Errorf("catalog presentation = %q/%d/%q, want %q/3/🛡️", template.Title, template.Version, template.AvatarEmoji, tc.title)
 			}
 			if template.Leader.TemplateKey != "security-remediation-lead" || template.Leader.AutonomyLevel != "coordinator" || len(template.Members) != 7 {
 				t.Errorf("catalog roster = leader:%+v members:%d", template.Leader, len(template.Members))
@@ -56,7 +56,7 @@ func TestCreateSquadFromTemplate_SecurityRemediationPrivateRoster(t *testing.T) 
 			if len(out.CreatedAgents) != 8 || len(out.ReusedAgents) != 0 {
 				t.Fatalf("staffing created/reused = %d/%d, want 8/0", len(out.CreatedAgents), len(out.ReusedAgents))
 			}
-			if out.Squad.TemplateKey != template.Key || out.Squad.TemplateVersion != 2 || out.Squad.Name != template.Title(language) {
+			if out.Squad.TemplateKey != template.Key || out.Squad.TemplateVersion != 3 || out.Squad.Name != template.Title(language) {
 				t.Errorf("squad provenance/name = %s/%d/%q", out.Squad.TemplateKey, out.Squad.TemplateVersion, out.Squad.Name)
 			}
 			if out.Squad.Instructions != template.Instructions() || out.Squad.AvatarURL == nil || *out.Squad.AvatarURL != "icon:shield-check" {

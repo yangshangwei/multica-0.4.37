@@ -20,7 +20,7 @@ SET delivered_comment_ids = (
 WHERE acknowledged.id = (
     SELECT attempt.id
     FROM agent_task_queue attempt
-    WHERE attempt.trigger_evidence_kind = 'delegated_failure'
+    WHERE attempt.trigger_evidence_kind IN ('delegated_failure', 'delegated_result')
       AND attempt.trigger_evidence_ref_id = $2
     ORDER BY attempt.created_at DESC, attempt.id DESC
     LIMIT 1
@@ -29,7 +29,7 @@ WHERE acknowledged.id = (
   AND (
       SELECT count(*)
       FROM agent_task_queue attempt_count
-      WHERE attempt_count.trigger_evidence_kind = 'delegated_failure'
+      WHERE attempt_count.trigger_evidence_kind IN ('delegated_failure', 'delegated_result')
         AND attempt_count.trigger_evidence_ref_id = $2
   ) >= $3::int
 RETURNING acknowledged.id, acknowledged.agent_id, acknowledged.issue_id, acknowledged.status, acknowledged.priority, acknowledged.dispatched_at, acknowledged.started_at, acknowledged.completed_at, acknowledged.result, acknowledged.error, acknowledged.created_at, acknowledged.context, acknowledged.runtime_id, acknowledged.session_id, acknowledged.work_dir, acknowledged.trigger_comment_id, acknowledged.chat_session_id, acknowledged.autopilot_run_id, acknowledged.attempt, acknowledged.max_attempts, acknowledged.parent_task_id, acknowledged.failure_reason, acknowledged.trigger_summary, acknowledged.force_fresh_session, acknowledged.is_leader_task, acknowledged.wait_reason, acknowledged.initiator_user_id, acknowledged.handoff_note, acknowledged.prepare_lease_expires_at, acknowledged.squad_id, acknowledged.runtime_mcp_overlay, acknowledged.escalation_for_task_id, acknowledged.fire_at, acknowledged.originator_user_id, acknowledged.runtime_connected_apps, acknowledged.coalesced_comment_ids, acknowledged.delivered_comment_ids, acknowledged.chat_input_task_id, acknowledged.chat_finalize_deferred_at, acknowledged.originator_source, acknowledged.delegated_from_task_id, acknowledged.retry_of_task_id, acknowledged.rerun_of_task_id, acknowledged.rule_version_id, acknowledged.trigger_evidence_kind, acknowledged.trigger_evidence_ref_id, acknowledged.accountable_user_id, acknowledged.session_rollout_missing, acknowledged.retired_session_id, acknowledged.quick_actions_disabled, acknowledged.regenerate_quick_actions_for, acknowledged.branch_name, acknowledged.durable_work_dir, acknowledged.channel_context_revision, acknowledged.submitted_installation_id, acknowledged.execution_installation_id, acknowledged.execution_binding_id, acknowledged.execution_binding_epoch, acknowledged.state_version, acknowledged.execution_admission_version, acknowledged.claim_generation, acknowledged.queued_at, acknowledged.queued_at_source, acknowledged.knowledge_context_version, acknowledged.knowledge_delivery
@@ -450,10 +450,10 @@ SET status = 'cancelled',
                   AND recovery.author_type = 'system'
                   AND recovery.type = 'progress_update'
                   AND recovery.source_task_id IS NOT NULL
-                  AND failed.status = 'failed'
+                  AND failed.status IN ('failed', 'completed')
                   AND failed.delegated_from_task_id IS NOT NULL
                   AND failed.autopilot_run_id IS NULL
-                  AND failed.trigger_evidence_kind IS DISTINCT FROM 'delegated_failure'
+                  AND (failed.trigger_evidence_kind IS NULL OR failed.trigger_evidence_kind NOT IN ('delegated_failure', 'delegated_result'))
                   AND source.autopilot_run_id IS NULL
                   AND source.issue_id = task.issue_id
                   AND source.agent_id = task.agent_id
@@ -2356,7 +2356,7 @@ func (q *Queries) CompleteAgentTask(ctx context.Context, arg CompleteAgentTaskPa
 const countDelegatedFailureRecoveryTasks = `-- name: CountDelegatedFailureRecoveryTasks :one
 SELECT count(*)
 FROM agent_task_queue
-WHERE trigger_evidence_kind = 'delegated_failure'
+WHERE trigger_evidence_kind IN ('delegated_failure', 'delegated_result')
   AND trigger_evidence_ref_id = $1
 `
 
@@ -6381,15 +6381,16 @@ JOIN agent source_agent ON source_agent.id = source.agent_id
 LEFT JOIN issue_status source_status
   ON source_status.workspace_id = source_issue.workspace_id
  AND source_status.key = source_issue.status
-WHERE recovery.author_type = 'system'
+WHERE recovery.dispatch_eligible
+  AND recovery.author_type = 'system'
   AND recovery.type = 'progress_update'
   AND recovery.source_task_id IS NOT NULL
   AND recovery.issue_id = source_issue.id
   AND recovery.workspace_id = source_issue.workspace_id
-  AND failed.status = 'failed'
+  AND failed.status IN ('failed', 'completed')
   AND failed.delegated_from_task_id IS NOT NULL
   AND failed.autopilot_run_id IS NULL
-  AND failed.trigger_evidence_kind IS DISTINCT FROM 'delegated_failure'
+  AND (failed.trigger_evidence_kind IS NULL OR failed.trigger_evidence_kind NOT IN ('delegated_failure', 'delegated_result'))
   AND source.autopilot_run_id IS NULL
   AND source.issue_id IS NOT NULL
   AND source.agent_id <> failed.agent_id
@@ -7828,6 +7829,12 @@ WHERE id = (
     WHERE t.issue_id = $3
       AND lock_issue_execution(t.issue_id, $1::uuid)
       AND t.agent_id = $4
+      AND (NOT $5::boolean OR (
+          t.is_leader_task AND t.squad_id = $6::uuid
+          AND t.originator_user_id = $7::uuid
+          AND t.runtime_id = $8::uuid
+          AND COALESCE(t.context->>'head_sha', '') = COALESCE($9::text, '')
+      ))
       AND (
           t.status = 'queued'
           OR (t.status = 'deferred' AND t.context->>'channel_issue_media_pending' = 'true')
@@ -7845,6 +7852,11 @@ type MergeDelegatedFailureCommentIntoPendingTaskParams struct {
 	TriggerSummary pgtype.Text `json:"trigger_summary"`
 	IssueID        pgtype.UUID `json:"issue_id"`
 	AgentID        pgtype.UUID `json:"agent_id"`
+	SecurityReturn bool        `json:"security_return"`
+	SquadID        pgtype.UUID `json:"squad_id"`
+	OriginatorID   pgtype.UUID `json:"originator_id"`
+	RuntimeID      pgtype.UUID `json:"runtime_id"`
+	HeadSha        pgtype.Text `json:"head_sha"`
 }
 
 // A delegated failure is a platform-owned input, not a new human instruction:
@@ -7859,6 +7871,11 @@ func (q *Queries) MergeDelegatedFailureCommentIntoPendingTask(ctx context.Contex
 		arg.TriggerSummary,
 		arg.IssueID,
 		arg.AgentID,
+		arg.SecurityReturn,
+		arg.SquadID,
+		arg.OriginatorID,
+		arg.RuntimeID,
+		arg.HeadSha,
 	)
 	var i AgentTaskQueue
 	err := row.Scan(
@@ -8937,6 +8954,48 @@ func (q *Queries) RegisterPlannedCommentForActiveTask(ctx context.Context, arg R
 	var i RegisterPlannedCommentForActiveTaskRow
 	err := row.Scan(&i.ID, &i.CoalescedCommentIds)
 	return i, err
+}
+
+const registerSecurityReviewReturnForActiveTask = `-- name: RegisterSecurityReviewReturnForActiveTask :one
+UPDATE agent_task_queue
+SET coalesced_comment_ids = ARRAY(SELECT DISTINCT e FROM unnest(array_append(coalesced_comment_ids, $1::uuid)) AS e WHERE e IS NOT NULL)
+WHERE id = (
+    SELECT t.id FROM agent_task_queue t
+    WHERE t.issue_id = $2 AND t.agent_id = $3
+      AND lock_issue_execution(t.issue_id, $1::uuid)
+      AND t.status IN ('dispatched', 'running', 'waiting_local_directory')
+      AND t.is_leader_task AND t.squad_id = $4::uuid
+      AND t.originator_user_id = $5::uuid AND t.runtime_id = $6::uuid
+      AND COALESCE(t.context->>'head_sha', '') = COALESCE($7::text, '')
+    ORDER BY t.created_at DESC LIMIT 1
+)
+RETURNING id
+`
+
+type RegisterSecurityReviewReturnForActiveTaskParams struct {
+	CommentID    pgtype.UUID `json:"comment_id"`
+	IssueID      pgtype.UUID `json:"issue_id"`
+	AgentID      pgtype.UUID `json:"agent_id"`
+	SquadID      pgtype.UUID `json:"squad_id"`
+	OriginatorID pgtype.UUID `json:"originator_id"`
+	RuntimeID    pgtype.UUID `json:"runtime_id"`
+	HeadSha      pgtype.Text `json:"head_sha"`
+}
+
+// A platform return must not enter another squad or originator's claimed run.
+func (q *Queries) RegisterSecurityReviewReturnForActiveTask(ctx context.Context, arg RegisterSecurityReviewReturnForActiveTaskParams) (pgtype.UUID, error) {
+	row := q.db.QueryRow(ctx, registerSecurityReviewReturnForActiveTask,
+		arg.CommentID,
+		arg.IssueID,
+		arg.AgentID,
+		arg.SquadID,
+		arg.OriginatorID,
+		arg.RuntimeID,
+		arg.HeadSha,
+	)
+	var id pgtype.UUID
+	err := row.Scan(&id)
+	return id, err
 }
 
 const requeueAgentTaskAfterClaimFailure = `-- name: RequeueAgentTaskAfterClaimFailure :one

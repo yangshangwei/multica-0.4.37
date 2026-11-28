@@ -447,22 +447,10 @@ func TestSecurityRemediationRouting_OwnerReplyMentioningSquadQueuesOneLeaderTask
 	}
 }
 
-// A reviewer whose run fails leaves no result, and nothing tells the leader.
-// The platform posts the error under the reviewer's own name, in the gate
-// comment's thread, with the failed run as its source. Read back through the
-// thread read the instructions name, only `type` separates that notice from a
-// result, which is why the result check in the instructions names the type.
-// Nobody gains a task, so the gate stays closed until a person comes back.
-//
-// That a restricted agent's failure wakes no coordinator is owned by
-// TestTaskCapabilityFailureCannotWakeCoordinator in
-// service/task_capability_test.go. What lives here is the notice as the
-// thread read returns it, on this squad's own roster.
-//
-// The control fails an unrestricted member's run the same way, and that does
-// hand the failure back to the leader. The recovery path itself is pinned in
-// service/delegated_failure_recovery_test.go.
-func TestSecurityRemediationRouting_FailedReviewerLeavesANoticeAndWakesNobody(t *testing.T) {
+// A terminal reviewer failure remains a non-result notice. The platform returns
+// the failed delegation to its original authorized security coordinator once;
+// no reviewer comment is made executable and the issue is not accepted.
+func TestSecurityRemediationRouting_FailedReviewerReturnsToCoordinatorWithoutAcceptance(t *testing.T) {
 	s := stageSecurityRemediationSquad(t, nil)
 	leaderTask := s.startLeaderTask(t, testUserID)
 	reviewer, worker := s.agent(t, "security-reviewer"), s.agent(t, "implementer")
@@ -526,16 +514,14 @@ func TestSecurityRemediationRouting_FailedReviewerLeavesANoticeAndWakesNobody(t 
 		t.Fatalf("failure notice type/content = %q/%q, want type system carrying the run's error: the type is all that tells it from a result",
 			notice.Type, notice.Content)
 	}
-	if count := dbfx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE issue_id = $1`, s.issue); count != tasksBefore {
-		t.Fatalf("the reviewer's failure changed the issue's task count from %d to %d, want no task for anyone", tasksBefore, count)
+	if count := dbfx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE issue_id = $1`, s.issue); count != tasksBefore+1 {
+		t.Fatalf("the reviewer's failure changed task count from %d to %d, want one coordinator return", tasksBefore, count)
 	}
-	if count := leaderTasks(); count != 0 {
-		t.Fatalf("the reviewer's failure queued %d leader tasks, want none", count)
+	if count := leaderTasks(); count != 1 {
+		t.Fatalf("the reviewer's failure queued %d leader tasks, want one", count)
 	}
 
-	// Control: the same failure from an unrestricted member is handed back to
-	// the leader, so the silence above comes from the restriction and not from
-	// the fixture.
+	// A second member failure coalesces into the pending coordinator return.
 	fail(workerTask.ID, "agent crashed")
 	if count := leaderTasks(); count != 1 {
 		t.Fatalf("control: the unrestricted member's failure queued %d leader tasks, want exactly one", count)

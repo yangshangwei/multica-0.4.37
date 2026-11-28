@@ -230,7 +230,7 @@ func TestCreateAgentFromTemplate_DiagnosticianCopiesAndPreservesWorkspaceContent
 	if first.Name != "诊断工程师" || first.Description != role.Description("zh") || first.Instructions != role.Instructions() {
 		t.Error("diagnostician must copy the localized identity and canonical server instructions")
 	}
-	if first.TemplateKey != role.Key || first.TemplateVersion != 1 || first.AutonomyLevel != "contributor" || first.MaxConcurrentTasks != 6 || first.PermissionMode != "private" {
+	if first.TemplateKey != role.Key || first.TemplateVersion != 2 || first.AutonomyLevel != "contributor" || first.MaxConcurrentTasks != 6 || first.PermissionMode != "private" {
 		t.Errorf("diagnostician policy/provenance = %s v%d %s/%d/%s", first.TemplateKey, first.TemplateVersion, first.AutonomyLevel, first.MaxConcurrentTasks, first.PermissionMode)
 	}
 	if len(first.Skills) != 1 || first.Skills[0].Name != "multica-debugging" {
@@ -247,7 +247,7 @@ func TestCreateAgentFromTemplate_DiagnosticianCopiesAndPreservesWorkspaceContent
 	if !ok || content != method.Content || description != method.Description {
 		t.Error("materialized debugging skill must copy the complete embedded content and description")
 	}
-	if category != "quality" || icon != "microscope" || origin != roleSkillOriginType || version != 1 {
+	if category != "quality" || icon != "microscope" || origin != roleSkillOriginType || version != 2 {
 		t.Errorf("debugging skill metadata = %s/%s/%s/v%d", category, icon, origin, version)
 	}
 

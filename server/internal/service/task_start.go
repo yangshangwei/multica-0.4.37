@@ -73,6 +73,9 @@ func (s *TaskService) startTaskAtomically(ctx context.Context, current db.AgentT
 	if lockedTask.IssueID != current.IssueID {
 		return db.AgentTaskQueue{}, errors.New("task issue changed before start; retry task start")
 	}
+	if err = s.validateSecurityReviewReturnTask(ctx, q, lockedTask); err != nil {
+		return db.AgentTaskQueue{}, err
+	}
 	if err = s.checkIssueExecution(ctx, q, lockedTask.IssueID, lockedTask.TriggerCommentID, lockedTask.CoalescedCommentIds); err != nil {
 		return db.AgentTaskQueue{}, err
 	}

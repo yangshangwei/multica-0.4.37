@@ -444,8 +444,8 @@ func TestDiagnostician_EvidenceContract(t *testing.T) {
 	if !ok {
 		t.Fatal("diagnostician template missing from the roster")
 	}
-	if !role.Listed || role.Version != 1 || role.MaxConcurrentTasks != 6 {
-		t.Errorf("diagnostician defaults = listed:%t version:%d concurrency:%d, want true, 1, 6", role.Listed, role.Version, role.MaxConcurrentTasks)
+	if !role.Listed || role.Version != 2 || role.MaxConcurrentTasks != 6 {
+		t.Errorf("diagnostician defaults = listed:%t version:%d concurrency:%d, want true, 2, 6", role.Listed, role.Version, role.MaxConcurrentTasks)
 	}
 	for _, other := range AgentRoleTemplates() {
 		if other.Key != role.Key && other.AvatarEmoji == role.AvatarEmoji {
@@ -456,8 +456,8 @@ func TestDiagnostician_EvidenceContract(t *testing.T) {
 	if !ok {
 		t.Fatal("multica-debugging skill missing from the registry")
 	}
-	if skill.Version != 1 {
-		t.Errorf("debugging skill version = %d, want 1", skill.Version)
+	if skill.Version != 2 {
+		t.Errorf("debugging skill version = %d, want 2", skill.Version)
 	}
 	// Method and evidence grading travel with both the role and the skill:
 	// reproduce, minimize, hypothesize, verify, and grade every conclusion as
@@ -742,6 +742,32 @@ func TestRoleSkillTemplates_PresentationDefaults(t *testing.T) {
 		}
 		if !skill.IsCategory(tpl.Category) || !skill.IsIconName(tpl.Icon) {
 			t.Errorf("%s: category %q or icon %q is not on the whitelist", tpl.Name, tpl.Category, tpl.Icon)
+		}
+	}
+}
+
+// Local security repair is an explicit bounded exception in both role and
+// attached method; retaining a blanket stop in either would strand the squad.
+func TestSecurityRepair_LocalRoleAndSkillBoundary(t *testing.T) {
+	for _, pair := range []struct{ role, skill string }{{"qa-engineer", "multica-test-report"}, {"diagnostician", "multica-debugging"}} {
+		role, _ := AgentRoleTemplateByKey(pair.role)
+		skill, _ := RoleSkillTemplateByName(pair.skill)
+		if role.Version != 2 || skill.Version != 2 {
+			t.Errorf("%s/%s versions = %d/%d, want 2/2", pair.role, pair.skill, role.Version, skill.Version)
+		}
+		for name, body := range map[string]string{pair.role: role.Instructions(), pair.skill: skill.Content} {
+			t.Run(name, func(t *testing.T) {
+				for _, marker := range []string{"已授权", "非生产", "本地测试夹具", "合成数据", "不出站", "真实凭据", "客户", "超出"} {
+					if !strings.Contains(body, marker) {
+						t.Errorf("missing scoped-security boundary %q", marker)
+					}
+				}
+				for _, obsolete := range []string{"失败涉及数据丢失、安全缺陷或凭据泄露：报告后停止调查", "缺陷涉及数据丢失、权限或安全问题。报告后停止", "失败看起来涉及数据丢失、权限漏洞或安全缺陷。"} {
+					if strings.Contains(body, obsolete) {
+						t.Errorf("blanket security stop remains: %s", obsolete)
+					}
+				}
+			})
 		}
 	}
 }

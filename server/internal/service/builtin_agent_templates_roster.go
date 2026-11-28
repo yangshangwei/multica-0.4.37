@@ -68,7 +68,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "qa-engineer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "QA Engineer",
 		AvatarEmoji:        "🧪",
@@ -86,7 +86,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "diagnostician",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Diagnostician",
 		AvatarEmoji:        "🩺",
@@ -372,7 +372,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "security-remediation-lead",
-		Version:            2,
+		Version:            3,
 		DefaultName:        "Security Remediation Lead",
 		AvatarEmoji:        "🛡️",
 		Autonomy:           AutonomyCoordinator,

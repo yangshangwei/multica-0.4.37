@@ -23,7 +23,7 @@ Open **Squads → Templates**, then choose **Apply to project** to use a workflo
 | **Discovery Squad** | Lead, Product Analyst, Architect | Whether the question is "what would count as done" or "how would we build it" — answers only, no code |
 | **Docs Squad** | Lead, Technical Writer, Code Reviewer | Which document the shipped change invalidated, then whether the draft matches the code |
 | **Maintenance Squad** | Lead, Security Reviewer, Diagnostician, Implementer, QA Engineer | Diagnose unknown flaky-test or upgrade failures, then handle one item at a time with verification |
-| **Security Remediation Squad** | Lead, Product Analyst, Security Reviewer, Diagnostician, Implementer, QA Engineer, Migration Reviewer, Code Reviewer | Triage dependency, code and other security risks; reproduce a code vulnerability before repairing it; a security owner decides before reproduction and repair, and again before closing; repair outside production, verify independently, or escalate |
+| **Security Remediation Squad** | Lead, Product Analyst, Security Reviewer, Diagnostician, Implementer, QA Engineer, Migration Reviewer, Code Reviewer | Automatically assess security risks, reproduce code vulnerabilities, repair outside production, independently verify and review, then deliver to in_review |
 | **Release Squad** | Lead, Release Engineer, QA Engineer, Technical Writer | Release readiness: a rollback that exists, a verified build, notes that match |
 | **Incident Response Squad** | Lead, Product Analyst, Implementer, Release Engineer, QA Engineer, Diagnostician | Restore service first; hand a separate root-cause follow-up to the diagnostician afterwards |
 
@@ -43,179 +43,51 @@ The leader's routing policy is copied into the squad's instructions, where you c
 
 ## Security remediation
 
-The **Security Remediation Squad** (`security-remediation`, version 2) handles security triage and repairs in development or test environments. Its dedicated leader coordinates seven existing specialist roles. The roster's highest autonomy is Coordinator; it includes no Operator. Existing roles keep their saved instructions, skills, runtime and Access when reused.
-
-Version 2 adds three constraints to the triage and routing of version 1: a code vulnerability is reproduced before it is repaired; two gates, one before reproduction and repair and one before closing, wait for a human security owner's decision; and the closing summary reconciles every conclusion with its source and the commit it applies to.
+The **Security Remediation Squad** (`security-remediation`, version 3) automatically coordinates security repairs in development and test environments. Every squad member may be an agent, and the issue may be created by an agent or automation. Neither a human creator nor a designated security owner is required to start. A dedicated Coordinator leader coordinates seven working roles; the squad has no Operator.
 
 ### Before you start
 
-Check the following before the first issue. The workflow stops if any one is missing.
+Assign the issue directly to the squad for the complete workflow, and check:
 
-**Name a security owner.** On the squad detail page choose **Add Member**, pick a workspace member, and enter `security owner` as the **Role** ("安全负责人" also works). You can add several; any one of them can decide a gate. Without such a member the issue's creator takes the role. An issue created by an automation or an agent has no human creator, so the leader replies that the squad has no security owner ("小队缺少安全负责人") and stops. After adding one, comment on the issue and mention the squad; only then does the squad continue. Only a workspace owner or admin, or the person who created the squad, can add members and edit a **Role**, so they are the ones who name the security owner. The leader never adds a member or edits a role itself; when a change is needed it asks a person. The leader matches those words anywhere in the **Role**, rather than matching the whole role. Use `security owner` or "安全负责人" directly, and keep them out of other roles, including "not a security owner" or "security owner's assistant".
-
-**Make sure the security owner can run the squad's agents.** Agents created by the template have [Access](/agents#permissions-and-access) set to "Only me": only the owner of the agents (the person who created the squad) can run them, and administrators are no exception. When the security owner is someone else, their decision has no effect:
-
-- A comment that mentions the squad is posted, with a notice that the squad wasn't triggered because "This target can't be found, or you don't have permission to use it".
-- A comment without a mention shows no notice and starts no agent.
-
-There are two ways to let other people decide a gate:
-
-- **Open it when you create the squad.** On the Squads page choose **New Squad**, then **Create from template**, and set "Who can assign work to this squad" to "Everyone in the workspace". A squad created with **Apply to project** in the template catalog has no such option; its agents are always "Only me".
-- **Open it afterwards.** The owner of the agents opens each agent's detail page, goes to **Settings** > **Access**, and under "Who can run this agent" chooses "Entire workspace", or "Specific people" with the security owner selected, then clicks **Save**; nothing changes until it is saved. To change several at once, select the agents in the agent list and choose **Set access scope**. Change the leader and every member: after a decision, each delegation the leader makes is checked against the permissions of the person who decided. Agents that were reused keep their earlier setting, so check them too.
-
-Opening the agents to the whole workspace also lets other members run them on the owner's runtime. Choose "Specific people" when only one or two owners decide gates.
-
-**Bind the leader and members to available nonproduction runtimes.** If the leader has no runtime, the squad may appear in the `@` list but cannot be selected; permission alone does not make it runnable. Configure the runtime on the agent detail page and check that it is online.
-
-**Raise the instruction size limit if the leader runs on Codex.** Otherwise the leader cannot read the roster or the squad instructions, and its instructions tell it to stop on every turn without delegating. See [Limits](#limits).
+- The leader and members have available nonproduction runtimes with only the required repository, local fixtures and synthetic data.
+- The execution's originator may invoke the leader and every member. Newly created agents default to private Access; reused agents keep their permissions. Owners can grant selected members or the workspace access in the agent's **Settings → Access**.
+- Squad instructions, leader instructions, diagnostic and QA roles and their skills use the updated workflow. Upgrading the application does not replace saved content; see [Existing squads](#existing-squads).
 
 ### Workflow
 
-The three risk types follow different steps. A code vulnerability has the most:
-
-| Step | What happens | Who moves it forward |
+| Step | Work | How it continues |
 |---|---|---|
-| Intake | The leader writes the triage record. If production is exploitable now, or credentials or customer data are exposed, it stops here and hands over to people | Leader |
-| G1 | In one comment the leader dispatches the Security Reviewer and lists the open decisions with its own proposals. The Migration Reviewer joins when the change affects schema, API, installed clients or stored data | The security owner decides |
-| Reproduction | The reproducer writes a test that fails on the baseline commit | The reproducer returns a result |
-| Repair | The Implementer commits a minimal patch and does not modify the reproduction test | The Implementer returns a result |
-| Verification | When the squad has a vulnerability verification member, it first reruns the reproduction test on the fix commit; then the QA Engineer verifies the original risk and runs regression checks | Each returns a result |
-| G2 | In one comment the leader dispatches the Code Reviewer and the Security Reviewer, plus the Migration Reviewer when a migration is involved | The security owner decides |
-| Closing | The leader reconciles the evidence, writes the summary and hands the issue over at `in_review` | A person accepts it and marks it `done` |
+| Intake | Record the source, affected scope and evidence gaps; check execution boundaries | The leader chooses the next step without requiring a human owner |
+| G1: security assessment | Security Reviewer checks applicability, reachability and repair scope; Migration Reviewer joins for contract or stored-data changes | The leader checks all required current results and proceeds |
+| Reproduction | A vulnerability verification member or independent QA Engineer supplies a local test that fails on the baseline | The leader routes the confirmed reproduction to the Implementer |
+| Repair | Implementer makes a minimal patch; permitted unknown-cause work goes to Diagnostician first | Members return actual results |
+| Verification | An independent member reruns the reproduction on the fix commit and checks regressions | Failure returns for bounded repair |
+| G2: independent review | Code and Security Reviewers, plus Migration Reviewer when needed, assess the same commit | Complete passing evidence allows closing; gaps return for repair |
+| Delivery | The leader reconciles evidence and posts the summary | Deliver to `in_review`, never automatically to `done` |
 
-When everything goes well a person acts three times: the G1 decision, the G2 decision, and final acceptance. More human steps appear when G1 chooses human reproduction, when a reviewer is needed outside the two gates (for example a migration discovered halfway through the repair), when any member stops, or when the security owner's decision disagrees with a reviewer's result.
+G1 and G2 are evidence checkpoints and no longer wait for human release comments. One reviewer batch counts as one next step; other delegation selects one member per turn. Each member may be redispatched once per checkpoint; returning a review does not reset that allowance. Each finding permits at most two repair rounds before an evidence-backed human handoff.
 
-The gates need a person because the three reviewer roles are [restricted role templates](/agents-create#role-templates): their comments never start an agent and never wake the leader (see [Leader re-trigger rules](#leader-re-trigger-rules); reviewers reused from older versions are the exception, see [Existing squads](#existing-squads)). Once the review results are in, the workflow stays where it is until the security owner has read them and decided. After the Product Analyst, Diagnostician, Implementer or QA Engineer returns a result, the leader continues on its own.
+### How review results return
 
-All of this assumes the issue is assigned to this squad. When the squad was mentioned into someone else's issue, a member's result does not wake the leader, and the leader neither subscribes the security owner nor changes the issue's status: after every returned result a person has to mention the squad before the workflow continues. Assign the issue to the squad to get the full workflow.
+Restricted reviewers' comments still cannot dispatch agents through mentions, replies or ordinary comment routing. When a review execution ends, the platform uses the actual delegation record to notify the original security squad leader. Failure or completion without a result also returns for recovery assessment. This notification does not mean the review passed.
 
-The other two risk types differ from the table as follows:
+The platform checks the current squad, leader, issue assignment and invocation authority. A reassigned issue, invalid squad or leader, or revoked authority cannot continue through an old delegation. The leader reads each current reviewer's own result and checks its source execution and commit. Progress, system failure notices, earlier-round results and the leader's own summary are not review evidence.
 
-| Risk type | Differences |
-|---|---|
-| **Dependency or component** | No reproduction test. At G1 the Security Reviewer supplies reachability evidence: the version actually resolved, the dependency path in the lockfile, and whether the affected function is called. Repair one advisory or dependency at a time and keep the lockfile and source evidence. When no safe, compatible version exists, hold and hand over to the security owner. |
-| **Other risks** | Configuration, supply chain, build artifacts, agents, skills and MCP, and runtime boundaries. At G1 the Security Reviewer states the source, the trust boundary and the evidence gaps, and the security owner decides whether a reproduction test is needed. Missing evidence remains `unknown` with an owner and a next check. Never retrieve real secrets to fill a gap. |
-
-When the cause or trigger of a code vulnerability is unclear, the Diagnostician investigates after G1 and before the repair; diagnosis and implementation go to different members. When scope or acceptance criteria are unclear, the leader asks the Product Analyst first.
-
-Each role keeps its own stop and approval boundaries. In particular, the Diagnostician reports security defects or exposed credentials for human handling; the leader must respect that stop before any further implementation. The leader pastes the actual roster's exact member mention link and delegates one next step per turn; the batch of reviewers before a gate counts as one next step. A report written by the leader under another role's heading is not independent review.
-
-### Deciding a gate
-
-The leader's gate comment states which reviewers were dispatched, the open decisions with the leader's proposal for each, the conclusions available for each, who decides, and how.
-
-| Gate | Open decisions | Available conclusions |
-|---|---|---|
-| G1: before reproduction and repair | Severity, disposition, route, deadline, who reproduces, who needs to know | Disposition: repair, not affected (with a reason and evidence), won't fix, risk accepted. Reproduction: the vulnerability verification member, independent human reproduction, self-proof by the patch author, not applicable |
-| G2: before closing | Review conclusions, variant list, backport range | Accept, return (naming the gap), risk accepted |
-
-The security owner reads the reviewers' results first, then writes the decision in either of two ways:
-
-1. Comment on the issue, type `@` and pick the squad from the list that opens. A top-level comment and a reply both work. A name that was not picked from the list, or a pasted "@squad name", is plain text and not a mention; the squad name in the leader's gate comment is plain text too, so copying it does not work.
-2. Post a top-level comment that mentions nobody.
-
-For example, G1 decided the first way:
-
-> @Security Remediation Squad G1: severity high; disposition: repair; route as proposed; due December 18; the patch author proves it; disclosure normal.
-
-G2 decided the second way:
-
-> G2: review conclusions accepted. Variant list confirmed, two places. No backport needed.
-
-The most common mistake is to reply in the thread that holds the leader's comment without mentioning the squad. Such a reply may not reach the squad. When the thread starts with an agent's comment, the reply goes to that agent alone, on a turn where the leader has neither the roster nor the squad instructions; the version 2 instructions tell the leader to answer only with the correct way to decide, and the workflow does not advance. Only when the thread starts with a person's comment that itself went to this squad does the reply reach the leader with the squad's context. Use one of the two ways above rather than relying on a reply.
-
-Keep these rules in mind:
-
-- The second way works only when the issue is assigned to this squad. When the squad was mentioned into someone else's issue, use the first.
-- The leader continues only after confirming three things: the decision comes from the security owner in person; every reviewer has returned a result after the comment that most recently dispatched that reviewer; and every open decision has a conclusion, written item by item or as acceptance of the proposals. An old G1 result, a result from before a returned G2, a failure notice or a progress comment cannot stand in for the current result. Won't fix, risk accepted and any deferral also need a reason and a review date. If anything is missing, the leader replies with what is missing.
-- Post the release after every reviewer's result, and keep it unchanged until the leader explicitly confirms that this release passed its checks. An edit, adding or removing a reaction, resolving it or setting it as the conclusion, and adding or removing attachments increase the comment's `revision`, whoever does it. At validation time, a `revision` above 1 always invalidates the release, even if the text and author are unchanged. If the comment was too early or changed, the security owner must read the results and post a new comment; editing the old one cannot repair it. A normal reply, a waiting notice or a rejection is not confirmation that the release passed. The leader can reference and confirm this release in its next delegation, closing or handover comment; it does not need a separate acknowledgment comment.
-- If nothing happens after the decision, check the permissions described in [Before you start](#before-you-start).
-- If a reviewer never returns a result, or the thread shows a failure notice posted under its name, mention the squad as usual and say so. The leader checks the run history: if the run is still going, it says whom it is waiting for; if it ended without a result or no run exists, it dispatches that reviewer once more. Each reviewer has one retry per gate and one per temporary review point; returning G2 for another review does not reset that allowance. Another failure goes to the security owner to repair the cause, with no further automatic dispatch. The owner cannot waive a required review to release the gate. A reviewer's failure does not notify the leader on its own, and the failure notice does not count as a review result.
-- A temporary review point outside G1 and G2 requires the same three checks, including the current review results. Other decisions handed to the security owner, such as whether to proceed on static evidence when safe reproduction is impossible, also require that owner's own unchanged comment.
-
-Before posting the first gate comment, the leader subscribes the security owners on the roster to the issue, so they are notified when reviewers return results. People who turned notifications off are not notified and need to come back and look.
+The full automatic workflow requires the issue to remain assigned to this squad. Mentioning the squad into somebody else's issue does not grant status ownership or guarantee automatic member return. Assign the issue directly when continuous coordination is needed.
 
 ### Reproduction
 
-A code vulnerability needs a "minimal security reproduction" before it is repaired: one automated test in the repository's test layer that fails on the recorded baseline commit because the security property is broken. It has four boundaries:
+Code vulnerabilities are reproduced before repair. The default reproducer is a QA Engineer independent of the patch author; a suitable vulnerability verification member on the roster can be preferred. Diagnostician handles permitted unknown causes, Implementer writes the patch, and code/security reviewers independently review it.
 
-- Local test fixtures and synthetic data only. No outbound traffic; no real credentials, production or third-party systems.
-- Stop once the flaw is shown to be reachable and triggerable. No payload chaining, data extraction or persistence. Memory-corruption and remote-execution flaws stop at evidence of the trigger.
-- No attack script that can be used outside the test framework.
-- The patch author must not modify the reproduction test.
+Reproduction uses an automated test in the repository's test layer with local fixtures and synthetic data only. No outbound traffic, real credentials, production or third-party systems. Stop when the security property demonstrably fails on the baseline; do not create standalone attack scripts, chain payloads, extract data or establish persistence.
 
-It is a failing test, not an exploit. The squad still does not write exploits, attack payloads or data-extraction steps.
+The reproducer supplies the test path, baseline commit, actual command, exit code and failure output. The patch author cannot edit the independent reproduction test; necessary changes return to its author. If safe independent reproduction is impossible, hand off to a person rather than treating self-proof or static checks as an automatic pass.
 
-The security owner decides at G1 who reproduces:
-
-| Reproducer | Condition | Recorded as |
-|---|---|---|
-| Vulnerability verification member | The squad has an agent whose role contains `vulnerability verification`, and it is neither the patch author nor a reviewer of the same vulnerability | Independent reproduction |
-| Independent human reproduction | The squad has no vulnerability verification member; done by the security owner or someone they name, and the security owner posts the result as a comment in one of the two ways described in [Deciding a gate](#deciding-a-gate) | Independent reproduction |
-| Self-proof by the patch author | The squad has no vulnerability verification member and the security owner accepts self-proof; the Implementer commits the failing test first and the patch second, as two separate commits | Marked "not independently reproduced" |
-| Proceed on static evidence | Safe reproduction is impossible and the security owner decides to continue | The closing summary states this limit |
-
-Only an independent reproduction lets exploitability be recorded as confirmed. The Diagnostician and the QA Engineer do not reproduce before the repair: their role rules tell them to stop and report when they meet a security defect. The QA Engineer must also stop if verification shows that a security defect remains; the leader cannot assign someone else to bypass that rule.
-
-### The vulnerability verification seat
-
-The vulnerability verification seat is a pilot. The template does not include it, and the roster still has seven working roles. Without the seat, G1 chooses between independent human reproduction and self-proof by the patch author.
-
-If you need independent reproduction without a person doing it every time, add the seat yourself:
-
-1. [Create an agent](/agents-create) with the instructions below. A hand-built agent has no autonomy level and the product currently has no control to set one, so the limits in the sample are instructions to the agent, not something the platform enforces.
-2. On the squad detail page choose **Add Member**, select the agent, and enter `vulnerability verification` as the **Role** ("漏洞验证" also works).
-3. Make sure the security owner can run it, as described in [Before you start](#before-you-start).
-
-```text
-# Vulnerability verification
-
-You write the minimal security reproduction for the Security Remediation Squad and rerun it on the fix commit. You show that a security property is broken; you do not exploit the flaw, write the patch or review the patch.
-
-## Responsibilities
-
-- Write one minimal security reproduction: an automated test in the repository's test layer that fails on the baseline commit named in the delegation comment because the security property is broken.
-- List places with the same pattern: how you searched, where it matched, and whether each match is reachable in the same way.
-- When asked, rerun the same test on the fix commit and report the real result. Do not modify the test.
-
-## Not your job
-
-- Writing the patch or changing the code under test. If the patch has a problem, put it in your result; the Implementer handles it.
-- Reviewing the patch. A vulnerability you reproduced is reviewed by someone else.
-- Going past the stop point. Stop once the flaw is shown to be reachable and triggerable. No payload chaining, data extraction or persistence. Memory-corruption and remote-execution flaws stop at evidence of the trigger. No attack script that can be reused outside the test framework.
-- Touching real environments. Use local test fixtures and synthetic data only. No outbound traffic. Do not read real credentials, production data or third-party systems.
-- Any production operation. Commit only on isolated branches in development and test environments.
-
-## Input
-
-Read the triage record, baseline commit and stop boundaries in the delegation comment first, then the affected code path and the existing tests near it. When the delegation comment says to refer only to the `finding_id`, keep details that locate the vulnerability out of branch names, commit messages and test names.
-
-## Deliverable
-
-Post one comment that mentions no member or agent, stating in order:
-
-- Reproduction: test file path and test name, baseline commit, the real command, exit code and failing output.
-- Same-pattern list: the search pattern and directories, each match and whether it is reachable in the same way.
-- Rerun after the fix (when asked): the fix commit, the real command and exit code.
-- Not done: what you did not run, read or verify, and why.
-
-## Done when
-
-The reproduction test fails on the baseline commit, and it fails because the reported security property is broken. The commands, exit codes and output in your result come from runs you actually executed. The list states how you searched. The rerun targets the fix commit named in the delegation comment.
-
-## When a person must step in
-
-- Reproduction needs real credentials, production data, a production environment or a third-party system.
-- The problem can be shown only by going past the stop point.
-- Safe reproduction is impossible. State why and what you tried, then stop.
-- You find signs that production is exploitable now, or that credentials or customer data are exposed. Report and stop.
-```
-
-This template exists only in the documentation. It is not a built-in role, and upgrades do not update it. Whether it becomes a built-in role depends on evidence from real use.
+Dependency vulnerabilities use advisory applicability, resolved versions, lockfile paths and reachability evidence rather than exploit reproduction. For other risks, the leader uses the security assessment to choose validation; missing evidence remains `unknown`.
 
 ### Triage record and deadlines
 
-The leader keeps a triage record in the issue's comments. Each update is a new comment that preserves the older record; it never edits an earlier delegation comment and risks cancelling or retriggering its runs. The version 1 fields are unchanged: risk type, source, affected surface and versions, reachability, affected assets, severity, exploitability, evidence state, production impact, route, blocked actions and next owner. Version 2 adds twelve fields:
+The leader keeps a triage record in the issue's comments. Each update is a new comment that preserves the older record; it never edits an earlier delegation comment and risks cancelling or retriggering its runs. The version 1 fields are unchanged: risk type, source, affected surface and versions, reachability, affected assets, severity, exploitability, evidence state, production impact, route, blocked actions and next owner. The record also includes:
 
 | Field | What it records |
 |---|---|
@@ -234,9 +106,9 @@ The leader keeps a triage record in the issue's comments. Each update is a new c
 
 These fields are evidence recorded in comments. They add no issue status, approval type or permission. Four rules apply:
 
-- `unknown` is never rewritten as not affected. `not_affected` comes only from the security owner's decision at G1, with a reason and evidence.
+- `unknown` is never rewritten as not affected. `not_affected` requires the G1 assessment's fixed reason and supporting evidence.
 - `fixed` is entered only after G2 is accepted, with the fix commit.
-- `risk_accepted` and `wont_fix` need a reason and a review date written by the security owner.
+- `risk_accepted` and `wont_fix` need a reason and a review date written by an authorized human.
 - `exploitability` records whether exploitability is confirmed in this project; `exploit_maturity` records whether exploitation exists in the wild. They are filled in separately and neither is derived from the other.
 
 Default deadlines count from the moment the severity is confirmed at G1:
@@ -248,71 +120,43 @@ Default deadlines count from the moment the severity is confirmed at G1:
 | medium | 90 days |
 | low | Next regular release |
 
-The leader proposes a deadline from the table and the security owner confirms or changes it at G1. An unknown severity has no default; the security owner sets it. A flaw that is exploitable in production now does not use this table and goes straight to people and incident response. The deadline is one line in the triage record; it is not written to the issue's due date.
+The leader derives the default deadline from the confirmed severity. An unknown severity has no default and stays `unset` pending evidence. A flaw that is exploitable in production now does not use this table and goes straight to people and incident response. The deadline is one line in the triage record; it is not written to the issue's due date.
 
 These numbers follow common practice. They do not come from any single standard and are not compliance advice. To use different deadlines, edit the table in the squad instructions on the **Instructions** tab of the squad detail page. The leader's own instructions carry a copy; when the two differ, the squad instructions decide.
 
 ### Evidence, variants and confidentiality
 
 - **Conclusions are bound to commits.** Every conclusion names the commit it applies to. If the fix commit changes after verification or review, the earlier conclusions are void and the affected steps are redone on the new commit.
-- **Closing reconciliation.** The leader's closing summary lists the source comment, author and commit for every conclusion: reproduction, repair, verification after the fix, regression, each reviewer's conclusion, and the security owner's decisions at G1 and G2. A conclusion that cannot be tied to a definite commit, or that was voided and not redone, does not pass. When a member's statement disagrees with the raw command output, the leader marks the difference and the raw output decides.
-- **Variants.** The reproducer lists places with the same pattern, and the G2 reviewers check that the list is complete. After the security owner confirms it at G2, the leader creates one unassigned issue per variant in `backlog`, titled with only the finding identifier and a sequence number. Variants are not folded into the current patch. When the squad was mentioned into someone else's issue, it lists the variants and creates no issues.
+- **Closing reconciliation.** The leader's closing summary lists the source comment, author and commit for every conclusion: reproduction, repair, verification after the fix, regression, each reviewer's conclusion, and the leader's evidence checks at G1 and G2. A conclusion that cannot be tied to a definite commit, or that was voided and not redone, does not pass. When a member's statement disagrees with the raw command output, the leader marks the difference and the raw output decides.
+- **Variants.** The reproducer lists places with the same pattern, and the G2 reviewers check that the list is complete. After the G2 evidence check passes, the leader creates one unassigned issue per variant in `backlog`, titled with only the finding identifier and a sequence number. Variants are not folded into the current patch. When the squad was mentioned into someone else's issue, it lists the variants and creates no issues.
 - **Confidentiality.** With `need-to-know`, until the fix is released, the branch names, commit messages, PR titles and descriptions, and the titles and descriptions of derived issues the squad writes refer only to the `finding_id` and carry no detail that locates the vulnerability. Evidence in issue comments is always redacted. External disclosure (advisories, identifier requests, notices to upstream or customers) is drafted only; a person publishes it.
 
 Deliver the affectedness decision, source and file/version evidence, minimal change, regression test that fails without the repair, actual commands and results, compatibility evidence, rollback limits and residual risks. The parent issue is handed over at `in_review`, with `done` left to human review or existing integrations. Record final `no_action` only when there is no next action to dispatch.
 
 If the current deployment is exploitable, production is affected, credentials or customer data are exposed, or a safe compatible repair is unavailable, stop the local repair and hand the evidence to a human and the Incident Response or Release workflow. Production deployment, live migration, credential access or rotation, external notices and irreversible deletion require their existing individual approvals. The squad does not write exploit payloads or perform these operations.
 
-After a recoverable blocker is resolved, the security owner posts a new, unchanged comment explaining how it was resolved, the evidence and the allowed nonproduction next step, using one of the [gate release methods](#deciding-a-gate). The leader checks the safety boundaries and required gates again; any remaining stop condition keeps the workflow stopped. That comment cannot override a member's own stop rules or bring incident-response work, real-credential access or third-party testing back into local execution.
+### Limits and human handoff
 
-### Limits
+Production operations, real credentials, customer data, external disclosure and decisions to accept risk or not fix remain human responsibilities. The squad pauses when the work requires those actions, falls outside authorized scope, cannot produce safe evidence, or exhausts bounded retries. A notification or completed execution never substitutes for required verification. Resolving a blocker does not expand authority: the leader checks evidence and boundaries again before resuming.
 
-- **The gates depend on a person.** Once the review results are in, nothing moves without the security owner's comment. While the security owner is away the issue waits at the gate and stays `in_progress`.
-- **There is no issue-level visibility control.** Anyone who can read the issue can read its comments. The confidentiality rules bind only what the squad itself writes; when a narrower audience is needed, the security owner decides whether to keep details outside the issue.
-- **Confidentiality does not cover pushes.** `need-to-know` binds names and wording only. The reproduction test and the patch are commits on branches of the repository; once they are pushed, the repository's permissions decide who can read them. When people outside the need-to-know group can read the repository, `need-to-know` does not keep the reproduction test from being read before the fix is released; prepare a repository or fork that only that group can read first.
-- **Isolation comes from the deployment.** "No outbound traffic" and "no real credentials" are instructions to the agents, not network or filesystem limits. The template adds no [filesystem sandbox](/security-model); put the squad's agents on a restricted nonproduction runtime.
-- **Notifications may be off.** If subscribing the security owner fails, the gate is not blocked, and people who turned notifications off are not reminded.
-- **Naming the security owner is bound by instructions.** The platform lets a leader manage squad members and edit the squad instructions. The instructions tell this leader not to, but that is not a platform restriction. The member list on the squad detail page shows who the security owners are now.
-
-<Callout type="warning">
-When the leader runs on Codex, raise Codex's instruction size limit first. Otherwise the leader cannot read the roster or the squad instructions.
-</Callout>
-
-With the default roster and minimal task context, the generated instruction file for a version 2 leader and squad measures 79,766 bytes (about 80 KB): the leader's own instructions, the Squad Operating Protocol, the roster and the squad instructions, followed by the platform's general guidance. Actual task and workspace configuration can make it longer. By default Codex reads only the first 32 KiB, so the roster and the squad instructions fall in the part that is dropped. Add one line to the Codex configuration file on the machine that runs the daemon. The file is `~/.codex/config.toml` by default; when `CODEX_HOME` is set in the daemon's environment, it is `config.toml` in that directory. The line must come before every `[...]` table in the file:
-
-```toml
-project_doc_max_bytes = 131072
-```
-
-- This is a temporary configuration step for tasks started afterwards; the daemon does not need a restart and does not currently raise this value to match the injected text. Edit an existing root-level key instead of adding a duplicate, and keep an existing larger value.
-- `131072` is an example budget of 128 KiB, not a fixed value that fits every squad. Allow enough UTF-8 bytes for the actual generated `AGENTS.md`, including additional instruction files from the repository or its parent directories in the total reading budget.
-- Before starting work, check that the new task's `CODEX_HOME/config.toml` retains the root-level `project_doc_max_bytes`, and check whether the installed Codex version reports instruction truncation. Do not copy or publish credentials when checking configuration.
-- Without a sufficient limit, the version 2 instructions tell the leader to reply that this turn's instructions are incomplete ("本轮指令不完整") and stop, instead of delegating from a partial brief. This is a rule the model must follow, not a runtime guarantee that incomplete instructions will be rejected.
-- That check decides whether the brief is complete by looking for the last section of the squad instructions, "最终证据" (final evidence). When you edit the squad instructions, keep that section and keep it last.
-- This rests on Codex's public source code and on a manual measurement of the composed brief. Multica's automated tests cover only the copying of the configuration file and the presence of this stop rule in the instructions. It has not been verified with a real Codex run, and the instruction size limits of other runtimes have not been checked.
+The runtime must enforce filesystem and network isolation. Role instructions do not provide a host sandbox, and anyone who can read an issue can read its comments. Keep evidence redacted and use an appropriate audience. The leader must receive the complete roster and instructions; a truncated instruction file stops delegation. Size the runtime's instruction budget for the actual generated document, rather than relying on a measurement from an older template.
 
 ### Existing squads
 
-Upgrading Multica does not change squads and agents that already exist. Their instructions are copies made when they were created.
+Template upgrades do not overwrite saved squad, agent or skill content. Creating another squad can reuse the same old agents and skills, so it does not guarantee an upgrade.
 
-| What the workspace has | Result |
-|---|---|
-| A Security Remediation Squad created before the upgrade | Keeps running as version 1 |
-| No such leader, and a squad created after the upgrade | Leader instructions and squad instructions are both version 2 |
-| A version 1 leader, and another squad created after the upgrade | The new squad reuses that leader: squad instructions are version 2, leader instructions are still version 1 |
+To adopt automatic repair on an existing built-in security squad:
 
-In the third case the gates and the reproduction rules take effect through the squad instructions, but the older leader instructions say only "one next step per turn" and do not count a gate's reviewer batch as one step, so reviewers may be dispatched one at a time and more decisions are needed. The older leader instructions also lack the rule that a plain reply is not a decision: a reply without the squad mention, in a thread that starts with the leader's comment, reaches the leader without the squad instructions, so on that turn it acts on its version 1 instructions alone and the gate rules do not apply. If this combination runs on Codex without the higher limit, the squad instructions are cut in the middle of the gate section and the leader reads neither the conditions for a decision nor the reproduction boundaries; a check at the top of the squad instructions tells the leader to reply that the instructions are incomplete and stop. Raise the limit first, as described in [Limits](#limits).
+1. Upgrade the backend to a version that returns delegated security-review execution outcomes. Prompt edits alone cannot add this platform behavior.
+2. Save custom edits, then update both the squad's **Instructions** and its leader's **Capabilities → Instructions → System prompt** from the current templates. Updating only one leaves conflicting instructions.
+3. Update reused Diagnostician and QA Engineer instructions and their assigned `multica-debugging` and `multica-test-report` skills. Preserve the explicit local nonproduction boundary. Owners of shared agents should account for every squad that uses them.
+4. Check Access and runtimes, then mention the squad on the assigned issue to resume. Confirm a real reviewer completion returns to the leader and the flow reaches `in_review` without a human release.
 
-Reused reviewers from older versions (Code Reviewer v1, Security Reviewer v1, Migration Reviewer v1 or v2) are not [restricted role templates](/agents-create#role-templates), so their comments still wake the leader. The instructions tell the leader not to treat an agent's comment as a decision, so the gate still waits for the security owner.
+Current squad text is available on a newly created squad's **Instructions** tab. To obtain fresh leader/role text through the UI, create from the current templates in a workspace without those existing roles, then copy their saved instructions. Use the current role-skill template content when replacing skills; review custom changes before saving.
 
-To move an existing squad fully to version 2, replace both instruction bodies by hand:
+The backend identifies this return path by server-recorded security squad and leader template keys plus actual delegation and current authority. Template version records creation provenance; changing a display name or adding a role label does not enable the return, and editing saved text does not change that version. Existing built-in instances can adopt the new text without rewriting provenance. Old instructions may still wait for a person even after receiving an execution notification.
 
-- **Squad instructions.** On the Squads page choose **New Squad**, then **Create from template**, and create a new Security Remediation Squad. Copy the full text from its **Instructions** tab, paste it into the **Instructions** tab of the original squad, and save. You can also switch to the new squad: it shares its leader with the original squad, so the leader step below is still required. Give it a different name when you create it, so that a decision does not mention the wrong squad.
-- **Leader instructions.** The product currently has no place to view the leader template's text. Create a squad from the template in a workspace that does not have this leader yet and has an online runtime you can use, open the new leader's detail page, copy the full **System prompt** under **Capabilities** > **Instructions**, then paste it into the same place on the original leader and save.
-
-Edited instructions are not merged automatically. Save your own changes first, then carry them into the new version one by one.
-
-Routine upgrades remain a fit for Maintenance; ordinary defects use Bug Fix, and Review Gate reviews a finished change. Security Remediation connects those repair and review stages around a security finding. The version 2 workflow has been checked with instruction contract tests and scripted scenarios, in which test code plays every role; they show that the platform hands control to the party the instructions expect at each step. Whether a real model follows the instructions remains unverified, and this workflow is not a compliance statement. Use a restricted nonproduction runtime and review the evidence yourself.
+Automated tests can verify routing and evidence contracts. They do not prove that every model follows the instructions or that a deployed instance already uses the new configuration.
 
 ## When to use a squad
 

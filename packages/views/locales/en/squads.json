@@ -228,7 +228,7 @@
       "discovery": "Clarify a request and assess feasibility before committing to implementation.",
       "docs": "Keep release notes, API docs, and runbooks aligned with shipped code.",
       "maintenance": "Upgrade dependencies and resolve security advisories or flaky tests.",
-      "security_remediation": "Triage security risks, reproduce code vulnerabilities before repairing outside production, verify with independent review, and have a security owner confirm key decisions.",
+      "security_remediation": "Automatically assess security risks, reproduce code vulnerabilities, repair outside production, and independently verify and review before delivery.",
       "release": "Verify a release and prepare its notes and rollback before human approval.",
       "incident": "Restore service, verify recovery, then investigate the root cause."
     }

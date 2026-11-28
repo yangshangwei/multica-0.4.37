@@ -759,3 +759,18 @@ FROM comment c
 JOIN ancestor_ids path ON path.id = c.id
 ORDER BY c.id
 FOR UPDATE OF c;
+
+-- name: HasSecurityReviewerResult :one
+-- Progress and system failure notices cannot satisfy the review evidence check.
+SELECT EXISTS (
+    SELECT 1 FROM comment
+    WHERE issue_id = @issue_id AND author_type = 'agent' AND author_id = @author_id
+      AND source_task_id = @source_task_id AND type = 'comment'
+) AS has_result;
+
+-- name: WithdrawSecurityReviewReturn :exec
+-- A current-authority refusal settles only this platform-owned return. Keep
+-- its evidence visible, but never replay it after authority is later restored.
+UPDATE comment SET dispatch_eligible = false
+WHERE id = @comment_id AND source_task_id = @source_task_id
+  AND author_type = 'system' AND type = 'progress_update';
